@@ -14,7 +14,7 @@ import {
   type CartQueryDataReturn,
   type CartReturn,
   flattenConnection,
-  UNSTABLE_Analytics as Analytics,
+  Analytics,
 } from '@shopify/hydrogen';
 import {isLocalPath} from '~/lib/utils';
 import {Link} from '~/components/Link';

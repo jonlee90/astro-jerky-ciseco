@@ -36,3 +36,37 @@ export const MEDIA_FRAGMENT = `#graphql
     }
   }
 `;
+export const PRODUCT_MIX_FRAGMENT = `#graphql
+  fragment ProductMix on Product {
+    id
+    title
+    tags
+    description
+    media(first: 7) {
+      nodes {
+        ...Media
+      }
+    }
+    variants(first: 2) {
+      nodes {
+        id
+        availableForSale
+        image {
+          url
+          altText
+          width
+          height
+        }
+        selectedOptions {
+          name
+          value
+        }
+        product {
+          handle
+          title
+        }
+      }
+    }
+  }
+  ${MEDIA_FRAGMENT}
+`;

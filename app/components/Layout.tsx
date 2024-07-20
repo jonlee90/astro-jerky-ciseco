@@ -1,4 +1,4 @@
-import {Await} from '@remix-run/react';
+import {Await, useLocation,useNavigate} from '@remix-run/react';
 import {Suspense, useEffect} from 'react';
 import {CartForm} from '@shopify/hydrogen';
 import type {
@@ -16,6 +16,14 @@ import Footer from './Footer';
 import {Drawer, useDrawer} from './Drawer';
 import {CartLoading} from './CartLoading';
 import {Cart} from './Cart';
+import NavMobileBottom from './Header/NavMobileBottom';
+import { AnnouncementBar } from './AnnouncementBar';
+import { FREE_SHIPPING_THRESHOLD } from '~/lib/const';
+import { MobileHeader } from './Header/MobileHeader';
+import { DesktopHeader } from './Header/DesktopHeader';
+import { ButtonAnimation } from './Button/ButtonAnimation';
+import { IconCaret } from './Icon';
+import { CartCount } from './CartCount';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -23,6 +31,8 @@ type LayoutProps = {
 };
 
 export function Layout({children, layout}: LayoutProps) {
+  const { pathname, state } = useLocation();
+  const isBackButton = pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true);
   return (
     <>
       <div className="flex flex-col min-h-screen">
@@ -39,13 +49,17 @@ export function Layout({children, layout}: LayoutProps) {
         </main>
       </div>
 
-      {!!layout && <Footer />}
+      {!!layout && !isBackButton && <Footer />}
     </>
   );
 }
 
 function MyHeader() {
-  const isHome = useIsHomePath();
+  const rootData = useRootLoaderData();
+  const { pathname, state } = useLocation();
+  const navigate = useNavigate();
+  const navLink = pathname.includes('/bundle/') && !state ? '/bundle' : -1;
+  const isBackButton = pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true);
 
   const {
     isOpen: isCartOpen,
@@ -69,11 +83,37 @@ function MyHeader() {
 
   return (
     <>
+      <AnnouncementBar content={`FREE SHIPPING ON $${FREE_SHIPPING_THRESHOLD} OR MORE`}/>
       <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
-      <MobileMenuDrawer isOpen={isMenuOpen} onClose={closeMenu} />
-      <div className="nc-Header z-20">
+      {/*
         <MainNav openMenu={openMenu} openCart={openCart} isHome={isHome} />
-      </div>
+      */}
+      {isBackButton ?
+        <>
+          <ButtonAnimation
+              onClick={() => navigate(navLink)} 
+              className="pdp-nav-button transform left-5"
+          >
+            <IconCaret
+              direction='right' 
+              className="!size-14 z-50 rounded-full bg-black text-white font-bold p-2"
+            />
+          </ButtonAnimation>
+          
+          <Await resolve={rootData?.cart}>
+            {(cart) => (
+              cart?.totalQuantity > 0 && <CartCount openCart={openCart} className='pdp-nav-button right-5' />  
+            )}
+          </Await>
+        </>
+      :
+      <>
+        <MobileMenuDrawer isOpen={isMenuOpen} onClose={closeMenu} />
+        <DesktopHeader openCart={openCart} />
+        <MobileHeader openMenu={openMenu} />
+        <NavMobileBottom openCart={openCart} />
+      </>
+      }
     </>
   );
 }

@@ -15,23 +15,23 @@ const Prices: FC<PricesProps> = ({
   className = '',
   price,
   compareAtPrice,
-  contentClass = 'py-1 px-2 md:py-1.5 md:px-2.5 text-sm font-medium',
-  compareAtPriceClass = 'text-xs text-slate-500',
+  contentClass = 'py-1 px-2 md:py-1.5 md:px-2.5 text-lead font-medium',
+  compareAtPriceClass = 'text-sm text-slate-500',
   withoutTrailingZeros,
 }) => {
   return (
     <div className={`${className}`}>
       <div
-        className={`flex items-center border-2 border-green-500 rounded-lg ${contentClass}`}
+        className={`flex text-lead items-center ${contentClass}`}
       >
         {price ? (
           <Money
             withoutTrailingZeros={withoutTrailingZeros}
-            className="text-green-500 !leading-none"
+            className="!leading-none"
             data={price}
           />
         ) : null}
-        {compareAtPrice ? (
+        {compareAtPrice && price && compareAtPrice.amount > price.amount ? (
           <s className={`ms-1 ${compareAtPriceClass}`}>
             <Money
               withoutTrailingZeros={withoutTrailingZeros}

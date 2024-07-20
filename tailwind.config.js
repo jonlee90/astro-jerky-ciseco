@@ -95,8 +95,8 @@ export default {
         mobileGallery: 'calc(100vw - 4rem)',
       },
       fontFamily: {
-        sans: ['Poppins', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        serif: ['Poppins', 'Palatino', 'ui-serif'],
+        sans: ['JosefinSansRegular', 'Poppins', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        serif: ['JosefinSansRegular', 'Poppins', 'Palatino', 'ui-serif'],
       },
       fontSize: {
         display: ['var(--font-size-display)', '1.1'],

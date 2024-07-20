@@ -11,7 +11,7 @@ import {
   Image,
   VariantSelector,
   getSelectedProductOptions,
-  UNSTABLE_Analytics as Analytics,
+  Analytics,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 import clsx from 'clsx';
@@ -50,7 +50,12 @@ import {RouteContent} from '~/sections/RouteContent';
 import {getSeoMeta} from '@shopify/hydrogen';
 import {getLoaderRouteFromMetaobject} from '~/utils/getLoaderRouteFromMetaobject';
 import {useRootLoaderData} from '~/lib/root-data';
-
+import { motion } from 'framer-motion';
+import { useMediaQuery } from 'react-responsive'
+import { IconFacebook } from '~/components/Icon';
+import { IconX } from '~/components/Icon';
+import { IconPinterest } from '~/components/Icon';
+import { convertToNumber } from '~/lib/utils';
 export const headers = routeHeaders;
 
 export async function loader({params, request, context}: LoaderFunctionArgs) {
@@ -179,6 +184,37 @@ export default function Product() {
     product;
   const {shippingPolicy, refundPolicy, subscriptionPolicy} = shop;
 
+
+  const [currentQuantity, setCurrentQuantity] = useState(3);
+  const selectedVariant = product.selectedVariant;
+
+  // Buy 3 for $33 discount logic
+  const setPrice = 33;
+  const setQuantity = 3;
+  const sets = Math.floor(currentQuantity / setQuantity);
+  const remainingItems = currentQuantity % setQuantity;
+  const regularPrice = parseFloat(selectedVariant.price.amount);
+  const discountedTotalValue = (sets * setPrice) + (remainingItems * regularPrice);
+
+  const discountAmount = (sets * setQuantity * regularPrice - sets * setPrice);
+
+  const selectedVariantPrice = {
+    amount: discountedTotalValue.toString(),
+    currencyCode: "USD"
+  };
+  const selectedVariantCompareAtPrice = {
+    amount: selectedVariant?.compareAtPrice?.amount ? convertToNumber(selectedVariant.compareAtPrice.amount, currentQuantity) : 0,
+    currencyCode: "USD"
+  };
+
+  
+  const isOnSale =
+    selectedVariantPrice?.amount &&
+    selectedVariantCompareAtPrice?.amount &&
+    selectedVariantPrice?.amount < selectedVariantCompareAtPrice?.amount;
+
+
+
   return (
     <div
       className={clsx(
@@ -210,6 +246,10 @@ export default function Product() {
                   {(resp) => (
                     <ProductForm
                       variants={resp.product?.variants.nodes || []}
+                      currentQuantity={currentQuantity}
+                      setCurrentQuantity={setCurrentQuantity}
+                      selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
+                      selectedVariantPrice={selectedVariantPrice}
                     />
                   )}
                 </Await>
@@ -243,35 +283,31 @@ export default function Product() {
                 </div>
               )}
 
-              {/* ---------- 6 ----------  */}
-              <div>
-                <Policy
-                  shippingPolicy={shippingPolicy}
-                  refundPolicy={refundPolicy}
-                  subscriptionPolicy={subscriptionPolicy}
-                />
-              </div>
+          {/* Product description */}
+              {!!descriptionHtml && (
+                <div className="">
+                  <h2 className="text-2xl font-semibold">Product Details</h2>
+                  <div
+                    className="prose prose-sm sm:prose dark:prose-invert sm:max-w-4xl mt-7"
+                    dangerouslySetInnerHTML={{
+                      __html: descriptionHtml || '',
+                    }}
+                  />
+                </div>
+              )}
+              <SocialSharing />
+
             </div>
           </div>
         </div>
 
         {/* DETAIL AND REVIEW */}
         <div className="mt-12 sm:mt-16 space-y-12 sm:space-y-16">
-          {/* Product description */}
-          {!!descriptionHtml && (
-            <div className="">
-              <h2 className="text-2xl font-semibold">Product Details</h2>
-              <div
-                className="prose prose-sm sm:prose dark:prose-invert sm:max-w-4xl mt-7"
-                dangerouslySetInnerHTML={{
-                  __html: descriptionHtml || '',
-                }}
-              />
-            </div>
-          )}
 
           {/* PROduct reviews */}
           <ProductReviews product={product} />
+
+          
 
           <hr className="border-slate-200 dark:border-slate-700" />
 
@@ -284,7 +320,7 @@ export default function Product() {
               {(products) => (
                 <>
                   <SnapSliderProducts
-                    heading_bold={'Customers also purchased'}
+                    heading_bold={'YOU MIGHT ALSO LIKE'}
                     products={products.nodes}
                     className=""
                     headingFontClass="text-2xl font-semibold"
@@ -293,6 +329,15 @@ export default function Product() {
               )}
             </Await>
           </Suspense>
+        </div>
+        
+        {/* ---------- 6 ----------  */}
+        <div>
+          <Policy
+            shippingPolicy={shippingPolicy}
+            refundPolicy={refundPolicy}
+            subscriptionPolicy={subscriptionPolicy}
+          />
         </div>
       </main>
 
@@ -305,11 +350,12 @@ export default function Product() {
             {
               id: product.id,
               title: product.title,
-              price: product.selectedVariant?.price.amount || '0',
               vendor: product.vendor,
               variantId: product.selectedVariant?.id || '',
               variantTitle: product.selectedVariant?.title || '',
-              quantity: 1,
+              quantity: currentQuantity,
+              price: discountedTotalValue.toFixed(2),
+              discount: discountAmount > 0 ? discountAmount.toFixed(2) : null,
             },
           ],
         }}
@@ -320,14 +366,22 @@ export default function Product() {
 
 export function ProductForm({
   variants,
+  currentQuantity,
+  setCurrentQuantity,
+  selectedVariantPrice,
+  selectedVariantCompareAtPrice
 }: {
-  variants: ProductVariantFragmentFragment[];
+  variants: ProductVariantFragmentFragment[],
+  currentQuantity: number,
+  setCurrentQuantity: any,
+  selectedVariantCompareAtPrice: any,
+  selectedVariantPrice: any
 }) {
   const {product, storeDomain} = useLoaderData<typeof loader>();
 
   const closeRef = useRef<HTMLButtonElement>(null);
 
-  const [quantity, setQuantity] = useState(1);
+  const isDesktop = useMediaQuery({ minWidth: 767 });
 
   /**
    * Likewise, we're defaulting to the first variant for purposes
@@ -345,6 +399,16 @@ export function ProductForm({
     publishedAt: product.publishedAt,
   });
 
+  const variantsByQuantity = [];
+  for(let i = 1; i < 4; i++) {
+    const quantity = i > 1 ? 3 * (i - 1) : i;
+    variantsByQuantity.push({
+      quantity: quantity,
+      title: 'Buy ' + quantity + ' Bag' + (i > 1 ? 's' : '')
+    });
+  }
+  console.log(selectedVariantPrice, 'selectedVariantPrice')
+console.log(selectedVariantCompareAtPrice, 'selectedVariantCompareAtPrice')
   return (
     <>
       {/* ---------- HEADING ----------  */}
@@ -353,17 +417,17 @@ export function ProductForm({
           <p className="mb-2 text-sm text-slate-600">{product.vendor}</p>
         )} */}
         <h1
-          className="text-2xl sm:text-3xl font-semibold"
+          className="text-2xl sm:text-3xl font-semibold text-center"
           title={product.title}
         >
-          {product.title}
+            {product.title + ' (' + selectedVariant.title + ')'}
         </h1>
 
-        <div className="flex flex-wrap items-center mt-5 gap-4 lg:gap-5">
+        <div className="justify-center flex flex-wrap items-center mt-5 gap-4 lg:gap-5">
           <Prices
-            contentClass="py-1 px-2 md:py-1.5 md:px-3 text-lg font-semibold"
-            price={selectedVariant.price}
-            compareAtPrice={selectedVariant.compareAtPrice}
+            contentClass="py-1 px-2 md:py-1.5 md:px-3 text-xl font-semibold"
+            price={selectedVariantPrice}
+            compareAtPrice={selectedVariantCompareAtPrice}
           />
 
           {(status || product.reviews_rating_count) && (
@@ -389,8 +453,26 @@ export function ProductForm({
           </div>
         </div>
       </div>
+      <div className="flex flex-col items-center gap-3 lg:gap-4 mb-4">
+        {
+          variantsByQuantity.map(({quantity, title}) => (
+            <motion.button
+              key={quantity}
+              className={clsx(
+                'variant-button flex-auto',
+                quantity === currentQuantity ? 'variant-button-pressed': '',
+                isDesktop ? "variant-button-hover" : '',
+            //    isAvailable ? 'opacity-100' : 'opacity-50',
+              )}
+              onClick={() => setCurrentQuantity(quantity)}
+            >
+              {title}
+            </motion.button>
+          ))
+        }
+      </div>
 
-      {/* ---------- VARIANTS AND COLORS LIST ----------  */}
+      {/* ---------- VARIANTS AND COLORS LIST ----------  
       <VariantSelector
         handle={product.handle}
         options={product.options}
@@ -404,6 +486,7 @@ export function ProductForm({
           }
         }}
       </VariantSelector>
+      */}
       {selectedVariant && (
         <div className="grid items-stretch gap-4">
           {isOutOfStock ? (
@@ -412,32 +495,24 @@ export function ProductForm({
               <span className="ms-2">Sold out</span>
             </ButtonSecondary>
           ) : (
-            <div className="flex gap-2 sm:gap-3.5 items-stretch">
-              <div className="flex items-center justify-center bg-slate-100/70 dark:bg-slate-800/70 p-2 sm:p-3 rounded-full">
-                <NcInputNumber
-                  className=""
-                  defaultValue={quantity}
-                  onChange={setQuantity}
-                />
-              </div>
+            <div className="flex items-stretch">
               <div className="flex-1 *:h-full *:flex">
                 <AddToCartButton
                   lines={[
                     {
                       merchandiseId: selectedVariant.id!,
-                      quantity,
+                      quantity: currentQuantity,
                     },
                   ]}
-                  className="w-full flex-1"
+                  className="w-full flex-1 add-to-cart-button"
                   data-test="add-to-cart"
                 >
-                  <ButtonPrimary
-                    as="span"
-                    className="w-full h-full flex items-center justify-center gap-3 "
+                  <span
+                    className="flex items-center justify-center gap-2 uppercase font-bold"
                   >
                     <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
                     <span>Add to Cart</span>
-                  </ButtonPrimary>
+                  </span>
                 </AddToCartButton>
               </div>
             </div>
@@ -607,7 +682,25 @@ const ProductReviews = ({product}: {product: ProductQuery['product']}) => {
     </>
   );
 };
-
+const SocialSharing = () => {
+  const linkStyle = 'flex items-center justify-center gap-1';
+  return (
+    <div className="grid grid-cols-3">
+      <Link className={linkStyle}>
+        <IconFacebook />
+        <span>Share</span>
+      </Link>
+      <Link className={linkStyle}>
+        <IconX />
+        <span>Tweet</span>
+      </Link>
+      <Link className={linkStyle}>
+        <IconPinterest />
+        <span>Pin it</span>
+      </Link>
+    </div>
+  )
+}
 export const PRODUCT_VARIANT_FRAGMENT = `#graphql
   fragment ProductVariantFragment on ProductVariant {
     id

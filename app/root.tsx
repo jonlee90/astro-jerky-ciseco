@@ -14,11 +14,12 @@ import {
   useLoaderData,
   useRouteError,
   type ShouldRevalidateFunction,
+  useNavigation
 } from '@remix-run/react';
 import {
   useNonce,
   getSeoMeta,
-  UNSTABLE_Analytics as Analytics,
+  Analytics,
   getShopAnalytics,
 } from '@shopify/hydrogen';
 import {Layout} from '~/components/Layout';
@@ -32,6 +33,7 @@ import {DEFAULT_LOCALE} from './lib/utils';
 import rcSliderStyle from 'rc-slider/assets/index.css?url';
 import {COMMON_COLLECTION_ITEM_FRAGMENT} from './data/commonFragments';
 import {OkendoProvider, getOkendoProviderData} from '@okendo/shopify-hydrogen';
+import { motion, AnimatePresence } from "framer-motion";
 
 // This is important to avoid re-fetching root queries on sub-navigations
 export const shouldRevalidate: ShouldRevalidateFunction = ({
@@ -141,10 +143,13 @@ export const meta: MetaFunction<typeof loader> = ({data, matches}) => {
   return getSeoMeta(...matches.map((match) => (match?.data as any)?.seo));
 };
 
+const NAVBAR_LOGO = 'https://cdn.shopify.com/s/files/1/0641/9742/7365/files/astro-logo.png?v=1708205146';
 export default function App() {
   const nonce = useNonce();
   const data = useLoaderData<typeof loader>();
   const locale = data.selectedLocale ?? DEFAULT_LOCALE;
+  const navigation = useNavigation();
+  const isLoading = navigation.state === "loading";
 
   return (
     <html lang={locale.language}>
@@ -158,6 +163,26 @@ export default function App() {
         <Links />
       </head>
       <body className="bg-white">
+        <AnimatePresence>
+          {isLoading && (
+            <motion.div
+              key="loading"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 flex items-center justify-center bg-white z-50"
+            >
+              <motion.img
+                src={NAVBAR_LOGO}
+                alt="Loading"
+                initial={{ scale: 0.9 }}
+                animate={{ scale: [0.9, 1.1, 0.9] }}
+                transition={{ duration: 1, repeat: Infinity }}
+                className="size-20"
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
         <OkendoProvider
           nonce={nonce}
           okendoProviderData={data.okendoProviderData}

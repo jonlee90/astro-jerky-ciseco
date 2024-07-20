@@ -7,7 +7,7 @@ import {useLoaderData} from '@remix-run/react';
 import type {Filter} from '@shopify/hydrogen/storefront-api-types';
 import {
   Pagination,
-  UNSTABLE_Analytics as Analytics,
+  Analytics,
   getSeoMeta,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';

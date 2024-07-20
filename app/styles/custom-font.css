@@ -23,10 +23,20 @@
   font-weight: 700;
   src: url('./fonts/Poppins/Poppins-Bold.ttf');
 }
+@font-face {
+  font-family: RobotoSlabRegular;
+  font-weight: 400;
+  src: url('./fonts/RobotoSlab-Regular.ttf');
+}
+@font-face {
+  font-family: JosefinSansRegular;
+  font-weight: 400;
+  src: url('./fonts/JosefinSans-Regular.ttf');
+}
 
 :root {
-  --font-display: Poppins;
-  --font-body: Poppins;
+  --font-display: RobotoSlabRegular;
+  --font-body: JosefinSansRegular;
 }
 
 html body {

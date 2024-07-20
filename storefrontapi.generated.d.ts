@@ -1,7 +1,7 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable eslint-comments/no-unlimited-disable */
 /* eslint-disable */
-import * as StorefrontAPI from '@shopify/hydrogen/storefront-api-types';
+import type * as StorefrontAPI from '@shopify/hydrogen/storefront-api-types';
 
 export type OrderCardFragment = Pick<
   StorefrontAPI.Order,
@@ -186,6 +186,68 @@ export type MediaFragment =
   | Media_MediaImage_Fragment
   | Media_Model3d_Fragment
   | Media_Video_Fragment;
+
+export type ProductMixFragment = Pick<
+  StorefrontAPI.Product,
+  'id' | 'title' | 'tags' | 'description'
+> & {
+  media: {
+    nodes: Array<
+      | ({__typename: 'ExternalVideo'} & Pick<
+          StorefrontAPI.ExternalVideo,
+          'id' | 'embedUrl' | 'host' | 'mediaContentType' | 'alt'
+        > & {
+            previewImage?: StorefrontAPI.Maybe<
+              Pick<StorefrontAPI.Image, 'url'>
+            >;
+          })
+      | ({__typename: 'MediaImage'} & Pick<
+          StorefrontAPI.MediaImage,
+          'id' | 'mediaContentType' | 'alt'
+        > & {
+            image?: StorefrontAPI.Maybe<
+              Pick<StorefrontAPI.Image, 'id' | 'url' | 'width' | 'height'>
+            >;
+            previewImage?: StorefrontAPI.Maybe<
+              Pick<StorefrontAPI.Image, 'url'>
+            >;
+          })
+      | ({__typename: 'Model3d'} & Pick<
+          StorefrontAPI.Model3d,
+          'id' | 'mediaContentType' | 'alt'
+        > & {
+            sources: Array<
+              Pick<StorefrontAPI.Model3dSource, 'mimeType' | 'url'>
+            >;
+            previewImage?: StorefrontAPI.Maybe<
+              Pick<StorefrontAPI.Image, 'url'>
+            >;
+          })
+      | ({__typename: 'Video'} & Pick<
+          StorefrontAPI.Video,
+          'id' | 'mediaContentType' | 'alt'
+        > & {
+            sources: Array<Pick<StorefrontAPI.VideoSource, 'mimeType' | 'url'>>;
+            previewImage?: StorefrontAPI.Maybe<
+              Pick<StorefrontAPI.Image, 'url'>
+            >;
+          })
+    >;
+  };
+  variants: {
+    nodes: Array<
+      Pick<StorefrontAPI.ProductVariant, 'id' | 'availableForSale'> & {
+        image?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.Image, 'url' | 'altText' | 'width' | 'height'>
+        >;
+        selectedOptions: Array<
+          Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+        >;
+        product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
+      }
+    >;
+  };
+};
 
 export type MenuItemFragment = Pick<
   StorefrontAPI.MenuItem,
@@ -475,6 +537,84 @@ export type ApiAllProductsQuery = {
         okendoStarRatingSnippet?: StorefrontAPI.Maybe<
           Pick<StorefrontAPI.Metafield, 'value'>
         >;
+      }
+    >;
+  };
+};
+
+export type MixAllProductsQueryVariables = StorefrontAPI.Exact<{
+  count?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['Int']['input']>;
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+  sortKey?: StorefrontAPI.InputMaybe<StorefrontAPI.ProductSortKeys>;
+  query?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['String']['input']>;
+}>;
+
+export type MixAllProductsQuery = {
+  products: {
+    nodes: Array<
+      Pick<StorefrontAPI.Product, 'id' | 'title' | 'tags' | 'description'> & {
+        media: {
+          nodes: Array<
+            | ({__typename: 'ExternalVideo'} & Pick<
+                StorefrontAPI.ExternalVideo,
+                'id' | 'embedUrl' | 'host' | 'mediaContentType' | 'alt'
+              > & {
+                  previewImage?: StorefrontAPI.Maybe<
+                    Pick<StorefrontAPI.Image, 'url'>
+                  >;
+                })
+            | ({__typename: 'MediaImage'} & Pick<
+                StorefrontAPI.MediaImage,
+                'id' | 'mediaContentType' | 'alt'
+              > & {
+                  image?: StorefrontAPI.Maybe<
+                    Pick<StorefrontAPI.Image, 'id' | 'url' | 'width' | 'height'>
+                  >;
+                  previewImage?: StorefrontAPI.Maybe<
+                    Pick<StorefrontAPI.Image, 'url'>
+                  >;
+                })
+            | ({__typename: 'Model3d'} & Pick<
+                StorefrontAPI.Model3d,
+                'id' | 'mediaContentType' | 'alt'
+              > & {
+                  sources: Array<
+                    Pick<StorefrontAPI.Model3dSource, 'mimeType' | 'url'>
+                  >;
+                  previewImage?: StorefrontAPI.Maybe<
+                    Pick<StorefrontAPI.Image, 'url'>
+                  >;
+                })
+            | ({__typename: 'Video'} & Pick<
+                StorefrontAPI.Video,
+                'id' | 'mediaContentType' | 'alt'
+              > & {
+                  sources: Array<
+                    Pick<StorefrontAPI.VideoSource, 'mimeType' | 'url'>
+                  >;
+                  previewImage?: StorefrontAPI.Maybe<
+                    Pick<StorefrontAPI.Image, 'url'>
+                  >;
+                })
+          >;
+        };
+        variants: {
+          nodes: Array<
+            Pick<StorefrontAPI.ProductVariant, 'id' | 'availableForSale'> & {
+              image?: StorefrontAPI.Maybe<
+                Pick<
+                  StorefrontAPI.Image,
+                  'url' | 'altText' | 'width' | 'height'
+                >
+              >;
+              selectedOptions: Array<
+                Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+              >;
+              product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
+            }
+          >;
+        };
       }
     >;
   };
@@ -3758,6 +3898,10 @@ interface GeneratedQueryTypes {
   '#graphql\n  query ApiAllProducts(\n    $query: String\n    $count: Int\n    $reverse: Boolean\n    $country: CountryCode\n    $language: LanguageCode\n    $sortKey: ProductSortKeys\n  ) @inContext(country: $country, language: $language) {\n    products(first: $count, sortKey: $sortKey, reverse: $reverse, query: $query) {\n      nodes {\n        ...CommonProductCard\n      }\n    }\n  }\n  #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 1) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    reviews_rating_count: metafield(namespace: "reviews", key:"rating_count") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    reviews_rating: metafield(namespace: "reviews", key:"rating") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    outstanding_features: metafield(namespace: "ciseco--product", key:"outstanding_features") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    okendoStarRatingSnippet: metafield(\n\t\t\tnamespace: "okendo"\n\t\t\tkey: "StarRatingSnippet"\n\t\t) {\n\t\t\tvalue\n\t\t}\n  } \n\n': {
     return: ApiAllProductsQuery;
     variables: ApiAllProductsQueryVariables;
+  };
+  '#graphql\n  query MixAllProducts(\n    $count: Int\n    $country: CountryCode\n    $language: LanguageCode\n    $sortKey: ProductSortKeys\n    $query: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: $count, sortKey: $sortKey, query: $query) {\n      nodes {\n        ...ProductMix\n      }\n    }\n  }\n  #graphql\n  fragment ProductMix on Product {\n    id\n    title\n    tags\n    description\n    media(first: 7) {\n      nodes {\n        ...Media\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n      }\n    }\n  }\n  #graphql\n  fragment Media on Media {\n    __typename\n    mediaContentType\n    alt\n    previewImage {\n      url\n    }\n    ... on MediaImage {\n      id\n      image {\n        id\n        url\n        width\n        height\n      }\n    }\n    ... on Video {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on Model3d {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on ExternalVideo {\n      id\n      embedUrl\n      host\n    }\n  }\n\n\n': {
+    return: MixAllProductsQuery;
+    variables: MixAllProductsQueryVariables;
   };
   '#graphql\n  query CollectionDetails(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $filters: [ProductFilter!]\n    $sortKey: ProductCollectionSortKeys!\n    $reverse: Boolean\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      description\n      seo {\n        description\n        title\n      }\n      image {\n        id\n        url\n        width\n        height\n        altText\n      }\n      productsWithDefaultFilter:products(\n        first: 0,\n        filters: {},\n      ) {\n        filters {\n          id\n          label\n          type\n          values {\n            id\n            label\n            count\n            input\n          }\n        }\n      }\n      products(\n        first: $first,\n        last: $last,\n        before: $startCursor,\n        after: $endCursor,\n        filters: $filters,\n        sortKey: $sortKey,\n        reverse: $reverse\n      ) {\n        filters {\n          id\n          label\n          type\n          values {\n            id\n            label\n            count\n            input\n          }\n        }\n        nodes {\n          ...CommonProductCard\n        }\n        pageInfo {\n          hasPreviousPage\n          hasNextPage\n          endCursor\n          startCursor\n        }\n      }\n    }\n  }\n   # All common fragments\n   #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 1) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    reviews_rating_count: metafield(namespace: "reviews", key:"rating_count") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    reviews_rating: metafield(namespace: "reviews", key:"rating") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    outstanding_features: metafield(namespace: "ciseco--product", key:"outstanding_features") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    okendoStarRatingSnippet: metafield(\n\t\t\tnamespace: "okendo"\n\t\t\tkey: "StarRatingSnippet"\n\t\t) {\n\t\t\tvalue\n\t\t}\n  } \n\n': {
     return: CollectionDetailsQuery;

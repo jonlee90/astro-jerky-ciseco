@@ -309,3 +309,7 @@ export function isLocalPath(url: string) {
 
   return false;
 }
+export function convertToNumber(amount: string, quantity: number, discountAmount: number = 0): string {
+  let price = (parseFloat(amount) * quantity) - discountAmount;
+  return (Math.round(price * 100) / 100).toFixed(2);
+}
