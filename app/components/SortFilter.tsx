@@ -78,6 +78,7 @@ interface TTTTT extends Partial<FilterValue> {
   checked: boolean;
 }
 
+
 export function SortFilter({filters, defaultPriceFilter, sorts}: Props) {
   const [params] = useSearchParams();
   const locale = useRootLoaderData().selectedLocale as I18nLocale;

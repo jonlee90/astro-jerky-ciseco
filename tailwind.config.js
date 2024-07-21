@@ -29,8 +29,7 @@ export default {
       center: true,
       padding: {
         DEFAULT: '1rem',
-        xl: '40px',
-        '2xl': '128px',
+        xl: '48px',
       },
     },
     extend: {
@@ -71,6 +70,7 @@ export default {
         // xl: '80em',
         // '2xl': '96em',
         ...defaultTheme.screens,
+        'xs': '450px',
         'sm-max': {max: defaultTheme.screens.md},
         'sm-only': {min: defaultTheme.screens.sm, max: defaultTheme.screens.md},
         'md-only': {min: defaultTheme.screens.md, max: defaultTheme.screens.lg},
@@ -114,6 +114,9 @@ export default {
         darkHeader: 'inset 0px -1px 0px 0px rgba(21, 21, 21, 0.4)',
         lightHeader: 'inset 0px -1px 0px 0px rgba(21, 21, 21, 0.05)',
       },
+      zIndex: {
+        '100': '100',
+      }
     },
   },
   plugins: [formsPlugin, typographyPlugin, aspectRatioPlugin],

@@ -1,5 +1,6 @@
 import clsx from 'clsx';
-import ProductCard, {ProductCardSkeleton} from './ProductCard';
+import ProductCard from './ProductCard';
+import {flattenConnection} from '@shopify/hydrogen';
 import {getImageLoadingPriority} from '~/lib/const';
 import {Product} from '@shopify/hydrogen/storefront-api-types';
 import {CommonProductCardFragment} from 'storefrontapi.generated';
@@ -7,12 +8,15 @@ import {CommonProductCardFragment} from 'storefrontapi.generated';
 export function ProductsGrid({
   nodes,
   className = 'mt-8 lg:mt-10',
-  isSkeleton,
+  isSmall = false,
 }: {
   nodes?: CommonProductCardFragment[];
   className?: string;
-  isSkeleton?: boolean;
+  isSmall?: boolean;
 }) {
+  const variantKey = isSmall ? 1 : 0;
+  // Sort products so that available products come first
+
   return (
     <div
       className={clsx(
@@ -20,18 +24,14 @@ export function ProductsGrid({
         className,
       )}
     >
-      {isSkeleton &&
-        [1, 1, 1, 1, 1, 1, 1, 1].map((_, index) => (
-          <ProductCardSkeleton key={index} index={index} />
-        ))}
 
-      {!isSkeleton &&
-        nodes?.map((product, i) => {
+      {nodes?.map((product, i) => {
           return (
             <ProductCard
               key={product.id}
               product={product}
               loading={getImageLoadingPriority(i)}
+              variantKey={variantKey}
             />
           );
         })}

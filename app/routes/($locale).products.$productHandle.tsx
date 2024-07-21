@@ -221,7 +221,7 @@ export default function Product() {
         'product-page mt-5 lg:mt-10 pb-20 lg:pb-28 space-y-12 sm:space-y-16',
       )}
     >
-      <main className="container">
+      <main className="2xl:max-w-screen-xl container">
         <div className="lg:flex">
           {/* Galleries */}
           <div className="w-full lg:w-[55%] relative">
@@ -256,7 +256,7 @@ export default function Product() {
               </Suspense>
 
               {/*  */}
-              <hr className=" border-slate-200 dark:border-slate-700"></hr>
+              <hr className=" border-slate-200 dark:border-slate-700 mt-3"></hr>
               {/*  */}
 
               {!!outstanding_features?.value && (
@@ -285,10 +285,10 @@ export default function Product() {
 
           {/* Product description */}
               {!!descriptionHtml && (
-                <div className="">
+                <div className="grid gap-7 2xl:gap-8">
                   <h2 className="text-2xl font-semibold">Product Details</h2>
                   <div
-                    className="prose prose-sm sm:prose dark:prose-invert sm:max-w-4xl mt-7"
+                    className="prose prose-sm sm:prose dark:prose-invert sm:max-w-4xl"
                     dangerouslySetInnerHTML={{
                       __html: descriptionHtml || '',
                     }}
@@ -301,15 +301,15 @@ export default function Product() {
           </div>
         </div>
 
+        <hr className="border-slate-200 dark:border-slate-700 my-8" />
         {/* DETAIL AND REVIEW */}
-        <div className="mt-12 sm:mt-16 space-y-12 sm:space-y-16">
+        <div className="space-y-12 sm:space-y-16">
 
           {/* PROduct reviews */}
           <ProductReviews product={product} />
 
           
 
-          <hr className="border-slate-200 dark:border-slate-700" />
 
           {/* OTHER SECTION */}
           <Suspense fallback={<Skeleton className="h-32" />}>
@@ -407,25 +407,23 @@ export function ProductForm({
       title: 'Buy ' + quantity + ' Bag' + (i > 1 ? 's' : '')
     });
   }
-  console.log(selectedVariantPrice, 'selectedVariantPrice')
-console.log(selectedVariantCompareAtPrice, 'selectedVariantCompareAtPrice')
   return (
     <>
       {/* ---------- HEADING ----------  */}
-      <div>
+      <div className='mt-5 lg:mt-20 grid gap-7 2xl:gap-8'>
         {/* {product.vendor && (
           <p className="mb-2 text-sm text-slate-600">{product.vendor}</p>
         )} */}
         <h1
-          className="text-2xl sm:text-3xl font-semibold text-center"
+          className="text-4xl sm:text-5xl font-bold text-center lg:text-left"
           title={product.title}
         >
             {product.title + ' (' + selectedVariant.title + ')'}
         </h1>
 
-        <div className="justify-center flex flex-wrap items-center mt-5 gap-4 lg:gap-5">
+        <div className="flex flex-wrap gap-4 lg:gap-5 justify-center lg:justify-start">
           <Prices
-            contentClass="py-1 px-2 md:py-1.5 md:px-3 text-xl font-semibold"
+            contentClass="!text-2xl "
             price={selectedVariantPrice}
             compareAtPrice={selectedVariantCompareAtPrice}
           />
@@ -453,13 +451,13 @@ console.log(selectedVariantCompareAtPrice, 'selectedVariantCompareAtPrice')
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center gap-3 lg:gap-4 mb-4">
+      <div className="grid grid-cols-3 items-center gap-1 mb-4 xs:gap-3">
         {
           variantsByQuantity.map(({quantity, title}) => (
             <motion.button
               key={quantity}
               className={clsx(
-                'variant-button flex-auto',
+                'variant-button flex-auto text-[16px] xs:text-[18px]',
                 quantity === currentQuantity ? 'variant-button-pressed': '',
                 isDesktop ? "variant-button-hover" : '',
             //    isAvailable ? 'opacity-100' : 'opacity-50',
@@ -495,8 +493,7 @@ console.log(selectedVariantCompareAtPrice, 'selectedVariantCompareAtPrice')
               <span className="ms-2">Sold out</span>
             </ButtonSecondary>
           ) : (
-            <div className="flex items-stretch">
-              <div className="flex-1 *:h-full *:flex">
+            <div className="grid items-stretch gap-4">
                 <AddToCartButton
                   lines={[
                     {
@@ -514,7 +511,6 @@ console.log(selectedVariantCompareAtPrice, 'selectedVariantCompareAtPrice')
                     <span>Add to Cart</span>
                   </span>
                 </AddToCartButton>
-              </div>
             </div>
           )}
           {/* {!isOutOfStock && (

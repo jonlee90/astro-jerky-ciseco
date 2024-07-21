@@ -55,7 +55,7 @@ const PageHeader: FC<Props> = ({
   return (
     <div className={'max-w-screen-sm ' + className}>
       {reverseBreadcrumb && renderBreadcrumb()}
-      <Heading className="block text-2xl sm:text-3xl lg:text-4xl font-semibold capitalize">
+      <Heading className="block text-3xl sm:text-4xl font-semibold capitalize">
         {title}
       </Heading>
       {!reverseBreadcrumb && renderBreadcrumb()}

@@ -6,7 +6,7 @@ import {getSortValuesFromParam} from './getSortValuesFromParam';
 
 export const getPaginationAndFiltersFromRequest = (
   request: Request,
-  pageBy = 12,
+  pageBy = 30,
 ) => {
   const paginationVariables = getPaginationVariables(request, {
     pageBy,

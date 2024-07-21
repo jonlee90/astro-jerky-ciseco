@@ -103,6 +103,7 @@ export const COMMON_PRODUCT_CARD_FRAGMENT = `#graphql
     publishedAt
     availableForSale
     vendor
+    tags
     options {
       name
       values
@@ -124,7 +125,7 @@ export const COMMON_PRODUCT_CARD_FRAGMENT = `#graphql
         }
       }
     }
-    variants(first: 1) {
+    variants(first: 2) {
       nodes {
         ...CommonProductCardVariant
       }
@@ -134,9 +135,17 @@ export const COMMON_PRODUCT_CARD_FRAGMENT = `#graphql
         amount
         currencyCode
       }
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
     }
     compareAtPriceRange {
       minVariantPrice {
+        amount
+        currencyCode
+      }
+      maxVariantPrice {
         amount
         currencyCode
       }

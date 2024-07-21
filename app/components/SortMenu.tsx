@@ -37,7 +37,8 @@ const DEMO: {label: string; key: SortParam}[] = [
 export interface SortMenuProps {
   items?: {
     label: string;
-    key: SortParam;
+    value: string;
+    icon: any;
   }[];
 }
 export default function SortMenu({items = DEMO}: SortMenuProps) {

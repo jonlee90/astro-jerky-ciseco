@@ -225,7 +225,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: 
           </div>
         </div>
       </header>
-      <div className="max-w-screen-lg mx-auto mt-8">
+      <div className="max-w-screen-lg mx-auto mt-8 container">
         {bundleInfoProducts.map(({ title, productsArr }, i) => (
           <MixMatchProductsSlider
             key={i}

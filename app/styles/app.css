@@ -43,6 +43,7 @@
 }
 
 :root {
+  /*
   --c-primary-50: 240, 249, 255;
   --c-primary-100: 224, 242, 254;
   --c-primary-200: 186, 230, 253;
@@ -53,7 +54,30 @@
   --c-primary-700: 3, 105, 161;
   --c-primary-800: 7, 89, 133;
   --c-primary-900: 12, 74, 110;
+*/
+  --c-primary-50: 255, 240, 241;
+--c-primary-100: 255, 224, 225;
+--c-primary-200: 254, 186, 189;
+--c-primary-300: 252, 125, 128;
+--c-primary-400: 248, 56, 60;
+--c-primary-500: 237, 28, 36;
+--c-primary-600: 199, 2, 7;
+--c-primary-700: 161, 3, 6;
+--c-primary-800: 133, 7, 9;
+--c-primary-900: 110, 12, 14;
 
+  /*
+--c-primary-50: 235, 250, 245;
+--c-primary-100: 215, 245, 234;
+--c-primary-200: 180, 235, 213;
+--c-primary-300: 125, 218, 181;
+--c-primary-400: 65, 195, 146;
+--c-primary-500: 0, 166, 81;  
+--c-primary-600: 0, 142, 69;
+--c-primary-700: 0, 114, 56;
+--c-primary-800: 0, 93, 45;
+--c-primary-900: 0, 74, 36;
+*/
   --c-secondary-50: 240, 253, 244;
   --c-secondary-100: 220, 252, 231;
   --c-secondary-200: 187, 247, 208;
@@ -651,7 +675,6 @@ shop-pay-button {
   cursor: pointer;
 }
 .variant-button {
-  width:80%;
   background-color: white;
   border: 2px solid black;
   border-radius: 30px;
@@ -659,8 +682,6 @@ shop-pay-button {
   color: black;
   cursor: pointer;
   display: inline-block;
-  font-size: 18px;
-  padding: 0 18px;
   line-height: 50px;
   text-align: center;
   text-decoration: none;
@@ -696,4 +717,35 @@ shop-pay-button {
 }
 .font-RobotoSlabRegular {
   font-family: RobotoSlabRegular;
+}
+.pointer-bg {
+  vertical-align: middle;
+  display: inline-block;
+  position: relative;
+  padding: 4px 0 4px 20px;
+  height: 32px;
+  margin-right: 15px;
+}
+.pointer-bg::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 16px solid rgb(var(--color-contrast));
+  border-top: 16px solid transparent;
+  border-bottom: 16px solid transparent;
+  margin-left: -1px;
+}
+.pointer-bg::before {
+  content: "";
+  position: absolute;
+  right: -16px;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 16px solid rgb(237, 28, 36);
+  border-top: 16px solid transparent;
+  border-bottom: 16px solid transparent;
 }

@@ -9,6 +9,7 @@ import {
   Pagination,
   Analytics,
   getSeoMeta,
+  flattenConnection,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 import {routeHeaders} from '~/data/cache';
@@ -25,6 +26,8 @@ import {getPaginationAndFiltersFromRequest} from '~/utils/getPaginationAndFilter
 import {getLoaderRouteFromMetaobject} from '~/utils/getLoaderRouteFromMetaobject';
 import {ProductsGrid} from '~/components/ProductsGrid';
 import clsx from 'clsx';
+import { useState } from 'react';
+import { FilterMenu } from '~/components/FilterMenu';
 
 export const headers = routeHeaders;
 
@@ -89,14 +92,25 @@ export default function Collection() {
 
   const noResults = !collection.products.nodes.length;
 
+  const [isSmall, setIsSmall] = useState(false);
+
+  const [currentProducts, setCurrentProducts] = useState(flattenConnection(collection.products));
+  const products = flattenConnection(collection.products);
+  const onTabChange = (value: string) => {
+    const filtedProducts = value == 'all' ? products : products.filter((e) => e.tags.includes(value));
+    setCurrentProducts(filtedProducts);
+  }
+  const onToggle = (value: string) => {
+    setIsSmall(value == 'small' ? true : false);
+  }
+  
   const totalProducts = noResults
     ? 0
-    : getProductTotalByFilter(collection.products.filters?.[0]?.values as any);
-
+    : currentProducts.length;
   return (
     <div
       className={clsx(
-        `nc-PageCollection pt-16 lg:pt-24 pb-20 lg:pb-28 xl:pb-32`,
+        `nc-PageCollection pt-8 lg:pt-14 pb-20 lg:pb-28 xl:pb-32`,
         'space-y-20 sm:space-y-24 lg:space-y-28',
       )}
     >
@@ -119,54 +133,19 @@ export default function Collection() {
             />
           </div>
 
-          <main>
+          <main className='!mt-8 !lg:mt-14'>
             {/* TABS FILTER */}
-            <SortFilter
-              filters={collection.products.filters as Filter[]}
-              defaultPriceFilter={defaultPriceFilter}
+            <FilterMenu
+              onTabChange={onTabChange}
+              onToggle={onToggle}
+              isSmall={isSmall}
             />
 
             <hr className="mt-8 mb-8 lg:mb-12" />
             {/* LOOP ITEMS */}
             <>
               {!noResults ? (
-                <Pagination connection={collection.products}>
-                  {({
-                    nodes,
-                    isLoading,
-                    PreviousLink,
-                    previousPageUrl,
-                    NextLink,
-                    nextPageUrl,
-                    hasNextPage,
-                    state,
-                    hasPreviousPage,
-                  }) => (
-                    <>
-                      {hasPreviousPage && (
-                        <div className="flex items-center justify-center my-14">
-                          <ButtonPrimary
-                            loading={isLoading}
-                            href={previousPageUrl.replace(/%3D$/, '=')}
-                          >
-                            {'Load previous products'}
-                          </ButtonPrimary>
-                        </div>
-                      )}
-                      <ProductsGrid nodes={nodes} />
-                      {hasNextPage && (
-                        <div className="flex items-center justify-center mt-14">
-                          <ButtonPrimary
-                            loading={isLoading}
-                            href={nextPageUrl.replace(/%3D$/, '=')}
-                          >
-                            {'Load more products'}
-                          </ButtonPrimary>
-                        </div>
-                      )}
-                    </>
-                  )}
-                </Pagination>
+                <ProductsGrid nodes={currentProducts} isSmall={isSmall} />
               ) : (
                 <Empty />
               )}

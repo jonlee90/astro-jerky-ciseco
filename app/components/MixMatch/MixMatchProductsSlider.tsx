@@ -47,7 +47,7 @@ export function MixMatchProductsSlider({
   return (
     <div>
       <h1>{title}</h1>
-      <div className="swimlane hiddenScroll gap-12 md:pb-8 md:scroll-px-8 lg:scroll-px-12 md:px-8 lg:px-12 pt-4 text-center">
+      <div className="swimlane hiddenScroll gap-12 md:pb-8 md:scroll-px-8 lg:scroll-px-12 pt-4 text-center">
         {products.map((product, i) => (
           <MixMatchProductCard
             key={i}
