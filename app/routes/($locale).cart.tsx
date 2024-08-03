@@ -10,9 +10,9 @@ import {
   Image,
   Money,
   OptimisticInput,
-  useOptimisticData,
+  cartLinesRemoveDefault,
   type CartQueryDataReturn,
-  type CartReturn,
+  type OptimisticCartLine,
   flattenConnection,
   Analytics,
 } from '@shopify/hydrogen';
@@ -28,17 +28,16 @@ import {
 import type {
   CartCost,
   CartDiscountCode,
-  CartLine,
   CartLineUpdateInput,
 } from '@shopify/hydrogen/storefront-api-types';
 import {
   CartLinePrice,
-  ItemRemoveButton,
-  type OptimisticData,
+  CartLineRemoveButton,
 } from '~/components/Cart';
 import ButtonPrimary from '~/components/Button/ButtonPrimary';
 import clsx from 'clsx';
 import PageHeader from '~/components/PageHeader';
+import { CartApiQueryFragment } from 'storefrontapi.generated';
 
 export async function action({request, context}: ActionFunctionArgs) {
   const {cart} = context;
@@ -53,6 +52,8 @@ export async function action({request, context}: ActionFunctionArgs) {
 
   let status = 200;
   let result: CartQueryDataReturn;
+  
+
 
   switch (action) {
     case CartForm.ACTIONS.LinesAdd:
@@ -90,25 +91,18 @@ export async function action({request, context}: ActionFunctionArgs) {
   /**
    * The Cart ID may change after each mutation. We need to update it each time in the session.
    */
-  const cartId = result.cart.id;
-  const headers = cart.setCartId(result.cart.id);
+  const cartId = result?.cart?.id;
+  const headers = cartId ? cart.setCartId(cartId) : new Headers();
+  
 
   const redirectTo = formData.get('redirectTo') ?? null;
-  if (typeof redirectTo === 'string' && isLocalPath(redirectTo)) {
+  if (typeof redirectTo === 'string') {
     status = 303;
     headers.set('Location', redirectTo);
   }
-
-  const {cart: cartResult, errors, userErrors} = result;
-
-  headers.append('Set-Cookie', await context.session.commit());
-
+  
   return json(
-    {
-      cart: cartResult,
-      userErrors,
-      errors,
-    },
+    result,
     {status, headers},
   );
 }
@@ -147,8 +141,8 @@ export default function CartRoute() {
   );
 }
 
-function Content({cart}: {cart: CartReturn | null}) {
-  const linesCount = Boolean(cart?.lines?.edges?.length || 0);
+function Content({cart}: {cart: CartApiQueryFragment | null}) {
+  const linesCount = Boolean(cart?.lines?.nodes?.length || 0);
   const cartHasItems = !!cart && cart.totalQuantity > 0;
   const currentLines = cart?.lines ? flattenConnection(cart?.lines) : [];
 
@@ -158,7 +152,7 @@ function Content({cart}: {cart: CartReturn | null}) {
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-[60%] xl:w-[55%] divide-y divide-slate-200 dark:divide-slate-700 grid">
             {currentLines.map((line) => (
-              <CartLineItem key={line.id} line={line as CartLine} />
+              <CartLineItem key={line.id} line={line as OptimisticCartLine} />
             ))}
           </div>
           <div className="border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:mx-16 2xl:mx-20 flex-shrink-0"></div>
@@ -180,12 +174,11 @@ function Content({cart}: {cart: CartReturn | null}) {
   );
 }
 
-function CartLineItem({line}: {line: CartLine}) {
-  const optimisticData = useOptimisticData<OptimisticData>(line?.id);
+function CartLineItem({line}: {line: OptimisticCartLine}) {
 
   if (!line?.id) return null;
 
-  const {id, quantity, merchandise} = line;
+  const {id, quantity, merchandise, isOptimistic} = line;
 
   if (typeof quantity === 'undefined' || !merchandise?.product) return null;
 
@@ -213,7 +206,7 @@ function CartLineItem({line}: {line: CartLine}) {
       style={{
         // Hide the line item if the optimistic data action is remove
         // Do not remove the form from the DOM
-        display: optimisticData?.action === 'remove' ? 'none' : 'flex',
+        display: isOptimistic ? 'none' : 'flex',
       }}
       className="relative flex py-8 sm:py-10 xl:py-12 first:pt-0 last:pb-0"
     >
@@ -283,7 +276,7 @@ function CartLineItem({line}: {line: CartLine}) {
         <div className="flex mt-auto pt-4 items-end justify-between text-sm">
           {renderStatusInstock()}
 
-          <ItemRemoveButton lineId={id} />
+          <CartLineRemoveButton lineIds={[id]}  disabled={!!isOptimistic} />
         </div>
       </div>
     </div>
@@ -298,7 +291,7 @@ function CartSummary({
   onClose,
 }: {
   children?: React.ReactNode;
-  cost: CartCost;
+  cost: CartApiQueryFragment['cost'];
   discountCodes: CartDiscountCode[];
   checkoutUrl: string;
   onClose?: () => void;
@@ -399,13 +392,12 @@ function UpdateCartButton({
   );
 }
 
-function CartLineQuantityAdjust({line}: {line: CartLine}) {
+function CartLineQuantityAdjust({line}: {line: OptimisticCartLine}) {
   const optimisticId = line?.id;
-  const optimisticData = useOptimisticData<OptimisticData>(optimisticId);
 
   if (!line || typeof line?.quantity === 'undefined') return null;
 
-  const optimisticQuantity = optimisticData?.quantity || line.quantity;
+  const optimisticQuantity = line.quantity;
 
   const {id: lineId} = line;
   const prevQuantity = Number(Math.max(0, optimisticQuantity - 1).toFixed(0));

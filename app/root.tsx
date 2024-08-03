@@ -32,7 +32,6 @@ import stylesFont from './styles/custom-font.css?url';
 import {DEFAULT_LOCALE} from './lib/utils';
 import rcSliderStyle from 'rc-slider/assets/index.css?url';
 import {COMMON_COLLECTION_ITEM_FRAGMENT} from './data/commonFragments';
-import {OkendoProvider, getOkendoProviderData} from '@okendo/shopify-hydrogen';
 import { motion, AnimatePresence } from "framer-motion";
 
 // This is important to avoid re-fetching root queries on sub-navigations
@@ -93,11 +92,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       country,
     },
   });
-  const okendoProviderData = await getOkendoProviderData({
-    context,
-    subscriberId: context.env.PUBLIC_OKENDO_SUBSCRIBER_ID,
-  });
-  //
+
 
   const seo = seoPayload.root({shop: layout.shop, url: request.url});
   return defer(
@@ -117,7 +112,6 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       isLoggedInPromise,
       selectedLocale: storefront.i18n,
       cart: cart.get(),
-      okendoProviderData,
       seo,
 
       /**********  EXAMPLE UPDATE STARTS  ************/
@@ -126,8 +120,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       publicStoreSubdomain: env.PUBLIC_SHOPIFY_STORE_DOMAIN,
       publicStoreCdnStaticUrl: env.PUBLIC_STORE_CDN_STATIC_URL,
       publicImageFormatForProductOption:
-        env.PUBLIC_IMAGE_FORMAT_FOR_PRODUCT_OPTION,
-      publicOkendoSubcriberId: env.PUBLIC_OKENDO_SUBSCRIBER_ID,
+        env.PUBLIC_IMAGE_FORMAT_FOR_PRODUCT_OPTION
       /**********   EXAMPLE UPDATE END   ************/
     },
     {
@@ -157,36 +150,31 @@ export default function App() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
-        <meta name="oke:subscriber_id" content={data.publicOkendoSubcriberId} />
 
         <Meta />
         <Links />
       </head>
       <body className="bg-white">
-        <AnimatePresence>
           {isLoading && (
-            <motion.div
-              key="loading"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 flex items-center justify-center bg-white z-50"
-            >
-              <motion.img
-                src={NAVBAR_LOGO}
-                alt="Loading"
-                initial={{ scale: 0.9 }}
-                animate={{ scale: [0.9, 1.1, 0.9] }}
-                transition={{ duration: 1, repeat: Infinity }}
-                className="size-20"
-              />
-            </motion.div>
+            <AnimatePresence>
+              <motion.div
+                key="loading"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 flex items-center justify-center bg-white z-50"
+              >
+                <motion.img
+                  src={NAVBAR_LOGO}
+                  alt="Loading"
+                  initial={{ scale: 0.9 }}
+                  animate={{ scale: [0.9, 1.1, 0.9] }}
+                  transition={{ duration: 1, repeat: Infinity }}
+                  className="size-20"
+                />
+              </motion.div>
+            </AnimatePresence>
           )}
-        </AnimatePresence>
-        <OkendoProvider
-          nonce={nonce}
-          okendoProviderData={data.okendoProviderData}
-        />
         <Analytics.Provider
           cart={data.cart}
           shop={data.shop}

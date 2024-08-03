@@ -628,7 +628,7 @@ shop-pay-button {
 .oke-sr-count .oke-sr-label-text {
   display: none !important;
 }
-.bg-logo-green {
+.bg-logo-green, .bg-green-500 {
   background-color:rgb(0, 166, 81);
 }
 .bg-logo-red {
@@ -748,4 +748,13 @@ shop-pay-button {
   border-left: 16px solid rgb(237, 28, 36);
   border-top: 16px solid transparent;
   border-bottom: 16px solid transparent;
+}
+
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: .6;
+}
+.bg-primary {
+  background-color: black;
 }

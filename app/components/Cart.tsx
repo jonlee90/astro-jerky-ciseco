@@ -4,15 +4,19 @@ import {
   CartForm,
   Image,
   Money,
-  useOptimisticData,
+  useOptimisticCart,
+  OptimisticCart,
+  type OptimisticCartLine,
   OptimisticInput,
-  type CartReturn,
+  useOptimisticData,
+  CartReturn
 } from '@shopify/hydrogen';
 import type {
   Cart as CartType,
   CartCost,
   CartLine,
   CartDiscountCode,
+  CartLineUpdateInput,
 } from '@shopify/hydrogen/storefront-api-types';
 import {Link} from '~/components/Link';
 import {FeaturedProducts} from '~/components/FeaturedProducts';
@@ -20,66 +24,81 @@ import Prices from './Prices';
 import ButtonPrimary from './Button/ButtonPrimary';
 import ButtonSecondary from './Button/ButtonSecondary';
 import {ArrowLeftIcon} from '@heroicons/react/24/solid';
+import { CartApiQueryFragment } from 'storefrontapi.generated';
+import { c } from 'node_modules/vite/dist/node/types.d-FdqQ54oU';
+import { Suspense, useRef, useState } from 'react';
+import { FREE_SHIPPING_THRESHOLD } from '~/lib/const';
+import { Progress } from '@material-tailwind/react';
+import { useScroll } from 'framer-motion';
+import { Button } from './Button';
+import Heading from './Heading/Heading';
+import { IconRemove } from './Icon';
+import { defer, type LoaderFunctionArgs } from '@shopify/remix-oxygen';
+import { Await, useLoaderData } from '@remix-run/react';
+
+
+// Root loader returns the cart data
+export async function loader({context}: LoaderFunctionArgs) {
+  return defer({
+    cart: context.cart.get(),
+  });
+}
 
 export function Cart({
   onClose,
   cart,
-}: {
+}:  {
   onClose?: () => void;
-  cart: CartReturn | null;
+  cart: CartApiQueryFragment  | null;
 }) {
-  const linesCount = Boolean(cart?.lines?.edges?.length || 0);
-
+  const optimisticCart = useOptimisticCart(cart);
+  const linesCount = Boolean(optimisticCart?.lines?.nodes?.length || 0);
+  const [disableButton, setDisableButton] = useState(true);
+  const toggleDisableButton = () => {
+    setDisableButton(!disableButton);
+  };
   return (
     <>
       <CartEmpty hidden={linesCount} onClose={onClose} />
-      <CartDetails onClose={onClose} cart={cart} />
+      
+      <div className='grid grid-cols-1 h-screen-no-nav grid-rows-[auto_1fr_auto]'>
+      <Suspense fallback={<></>}>
+          <Await resolve={cart}>
+              {(cartOpt) => (
+                <>
+                  <FreeShippingProgressBar totalAmount={parseFloat(cartOpt?.cost?.totalAmount?.amount || '0')} />
+                    <CartLines lines={cartOpt?.lines} />
+                    {linesCount && (
+                      <CartSummary 
+                        cart={cartOpt}
+                        onClose={onClose}
+                      >
+                        <CartAgreementCheckbox toggleDisableButton={toggleDisableButton} />
+                        <CartCheckoutActions checkoutUrl={optimisticCart?.checkoutUrl} disableButton={disableButton} />
+                      </CartSummary>
+                    )}
+                </>
+              )}
+          </Await>
+        </Suspense>
+          
+      </div>
     </>
   );
 }
 
-export function CartDetails({
-  cart,
-  onClose,
-}: {
-  cart: CartType | null;
-  onClose?: () => void;
-}) {
-  // @todo: get optimistic cart cost
-  const cartHasItems = !!cart && cart.totalQuantity > 0;
+function CartLines({lines}: {lines: OptimisticCartLine[] | undefined}) {
+  const currentLines = lines ? lines : [];
 
-  if (!cartHasItems) {
-    return null;
-  }
-
-  return (
-    <div className="flex flex-col justify-between h-full overflow-hidden">
-      <div className="flex-1 overflow-auto">
-        <CartLines lines={cart?.lines} />
-      </div>
-      {cartHasItems && (
-        <CartSummary
-          cost={cart.cost}
-          discountCodes={cart.discountCodes}
-          checkoutUrl={cart.checkoutUrl}
-          onClose={onClose}
-        />
-      )}
-    </div>
-  );
-}
-
-function CartLines({lines: cartLines}: {lines: CartType['lines'] | undefined}) {
-  const currentLines = cartLines ? flattenConnection(cartLines) : [];
 
   return (
     <section
       aria-labelledby="cart-contents"
-      className="overflow-auto transition flex-1"
+      className={'border-t px-3 pb-6 sm-max:pt-2 overflow-auto transition mb-[165px]'}
     >
-      <ul className="grid divide-y divide-slate-100 dark:divide-slate-700">
-        {currentLines.map((line) => (
-          <CartLineItem key={line.id} line={line as CartLine} />
+      <ul className="grid gap-6 md:gap-10">
+        {flattenConnection(currentLines).map((line) => (
+          <CartLineItem key={line.id} line={line as OptimisticCartLine} />
         ))}
       </ul>
     </section>
@@ -87,66 +106,65 @@ function CartLines({lines: cartLines}: {lines: CartType['lines'] | undefined}) {
 }
 
 function CartSummary({
-  cost,
+  cart,
   children = null,
-  checkoutUrl,
-  discountCodes,
   onClose,
 }: {
+  cart: OptimisticCart<CartApiQueryFragment | null>;
   children?: React.ReactNode;
-  cost: CartCost;
-  discountCodes: CartDiscountCode[];
-  checkoutUrl: string;
   onClose?: () => void;
 }) {
+  const { 
+    cost, 
+    lines,
+    discountCodes,
+    checkoutUrl
+  } = cart;
+
+   // Calculate the total amount from amountPerQuantity
+   const cartTotal = lines ? flattenConnection(lines).reduce((total, {cost: lineCost, quantity}) => {
+    return total  + (lineCost?.compareAtAmountPerQuantity ? (parseFloat(lineCost?.compareAtAmountPerQuantity.amount) * quantity) : 0);
+}, 0) : 0;
+
+  const saleAmount = parseFloat(cost?.subtotalAmount?.amount || '0') - parseFloat(cost?.totalAmount?.amount || '0');
+  const onSale = cartTotal > parseFloat(cost?.subtotalAmount?.amount || '0');
+  const comparePriceObj = {
+    amount: (Math.round(cartTotal * 100) / 100).toFixed(2),
+    currencyCode: cost?.subtotalAmount?.currencyCode,
+  };
   return (
-    <section
-      aria-labelledby="summary-heading"
-      className="grid gap-4 py-6 border-t border-slate-100 flex-shrink-0 mt-auto"
-    >
+    <section aria-labelledby="summary-heading" className='gap-1 my-6 sm:my-8 border-t-2 border-black absolute bottom-0 left-0 mx-5 md:mx-8 bg-white'>
       <h2 id="summary-heading" className="sr-only">
         Order summary
       </h2>
-      <div className="">
-        <div className="flex justify-between text-base font-medium text-gray-900">
-          <p>Subtotal</p>
-          <>
-            {cost?.subtotalAmount?.amount ? (
-              <Money data={cost?.subtotalAmount} />
+      <dl className="grid gap-1">
+        {saleAmount ? (
+          <div className="flex items-center justify-between">
+            <span >Rewards</span>
+            <span  data-test="subtotal">
+              {cost?.subtotalAmount?.amount ? (
+                <Money data={{ currencyCode: cost?.subtotalAmount?.currencyCode, amount: '-' + saleAmount.toString() }} />
+              ) : (
+                '-'
+              )}
+            </span>
+          </div>
+        ) : null}
+        <div className="flex items-center justify-between font-bold">
+          <span>Subtotal</span>
+          <span data-test="subtotal">
+            {cost?.totalAmount?.amount ? (
+              <>
+                <Money data={cost?.totalAmount} className={`inline-block ${comparePriceObj && onSale && 'text-red-600'}`} />
+                {comparePriceObj && onSale && <Money withoutTrailingZeros data={comparePriceObj} className="inline-block line-through opacity-50 ml-1" />}
+              </>
             ) : (
               '-'
             )}
-          </>
+          </span>
         </div>
-        <p className="mt-0.5 text-sm text-gray-500">
-          Shipping and taxes calculated at checkout.
-        </p>
-        <div className="grid grid-cols-2 gap-2 mt-5">
-          <ButtonSecondary
-            href="/cart"
-            className="flex-1 border border-slate-200 dark:border-slate-700"
-            onClick={onClose}
-          >
-            View cart
-          </ButtonSecondary>
-          <a className="flex" href={checkoutUrl} target="_self">
-            <ButtonPrimary className="flex-1">Check out</ButtonPrimary>
-          </a>
-        </div>
-        <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-          <p>
-            or{' '}
-            <button
-              type="button"
-              className="font-medium text-primary-600 hover:text-primary-500"
-              onClick={onClose}
-            >
-              Continue Shopping
-              <span aria-hidden="true"> &rarr;</span>
-            </button>
-          </p>
-        </div>
-      </div>
+      </dl>
+      {children}
     </section>
   );
 }
@@ -156,115 +174,113 @@ export type OptimisticData = {
   quantity?: number;
 };
 
-function CartLineItem({line}: {line: CartLine}) {
-  const optimisticData = useOptimisticData<OptimisticData>(line?.id);
+function CartLineItem({line}: {line: OptimisticCartLine}) {
 
   if (!line?.id) return null;
 
-  const {id, quantity, merchandise} = line;
+  const {id, quantity, merchandise, isOptimistic} = line;
 
   if (typeof quantity === 'undefined' || !merchandise?.product) return null;
 
+  
   return (
-    <div
+    <li
       key={id}
+      className="flex gap-4"
       style={{
         // Hide the line item if the optimistic data action is remove
         // Do not remove the form from the DOM
-        display: optimisticData?.action === 'remove' ? 'none' : 'flex',
+        display: isOptimistic ? 'none' : 'flex',
       }}
-      className="flex py-6"
     >
-      <div className="relative h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-neutral-100">
-        <>
-          {merchandise.image && (
-            <Link to={`/products/${merchandise.product.handle}`}>
-              <Image
-                width={110}
-                height={110}
-                data={merchandise.image}
-                className="absolute inset-0 object-cover rounded w-full h-full"
-                alt={merchandise.title}
-                sizes="(min-width: 1024px) 120px, 100px"
-              />
-            </Link>
-          )}
-        </>
+      <div className="flex-shrink min-w-24">
+        {merchandise.image && (
+          <Image
+            width={100}
+            height={100}
+            data={merchandise.image}
+            className="object-cover object-center w-24 h-24 border rounded md:w-28 md:h-28"
+            alt={merchandise.title}
+          />
+        )}
       </div>
 
-      <div className="ml-4 flex flex-1 flex-col">
-        <div className="flex justify-between gap-5">
-          <div>
-            <h3 className="text-base font-medium">
-              {merchandise?.product?.handle ? (
-                <Link to={`/products/${merchandise.product.handle}`}>
-                  {merchandise?.product?.title || ''}
-                </Link>
-              ) : (
-                <span>{merchandise?.product?.title || ''}</span>
-              )}
-            </h3>
-            <div className="mt-1 text-sm text-slate-500 dark:text-slate-400 flex pe-3 gap-x-4">
-              {merchandise?.selectedOptions.length < 3
-                ? (merchandise?.selectedOptions || []).map((option, index) => {
-                    // Default Title is not a useful option
-                    if (
-                      option.name === 'Title' &&
-                      option.value === 'Default Title'
-                    ) {
-                      return null;
-                    }
-                    if (!option.name || !option.value || index > 3) {
-                      return null;
-                    }
+      <div className="flex justify-between flex-grow">
+        <div className="grid gap-2">
+          <span className='text-lead'>
+            {merchandise?.product?.handle ? (
+              <Link to={`/products/${merchandise.product.handle}`}>
+                {merchandise?.product?.title + ' (' + merchandise.title + ')' || ''}
+              </Link>
+            ) : (
+              <span>{merchandise?.product?.title + ' (' + merchandise.title + ')' || ''}</span>
+            )}
+          </span>
 
-                    return (
-                      <div
-                        key={option.name}
-                        className={clsx(
-                          !!index && 'border-l border-gray-200 pl-4',
-                          'capitalize',
-                        )}
-                      >
-                        <span className="line-clamp-1">{option.value}</span>
-                      </div>
-                    );
-                  })
-                : merchandise.title || ''}
+          <div className="flex items-center gap-2">
+            <div className="flex justify-start text-fine">
+              <CartLineQuantityAdjust line={line} />
             </div>
-          </div>
-          <CartLinePrice line={line} className="mt-0.5" />
-        </div>
-        <div className="flex flex-1 items-end justify-between text-sm">
-          <p className="text-slate-500 dark:text-slate-400">
-            {`Qty ` + line.quantity}
-          </p>
-
-          <div className="flex">
-            <ItemRemoveButton lineId={id} />
+            <CartLineRemoveButton lineIds={[id]}  disabled={!!isOptimistic} />
           </div>
         </div>
+        <span>
+          <CartLinePrice line={line} as="span" />
+        </span>
       </div>
-    </div>
+    </li>
   );
 }
 
-export function ItemRemoveButton({lineId}: {lineId: CartLine['id']}) {
+
+interface CartLineQuantityAdjustProps {
+  line: OptimisticCartLine;
+}
+function CartLineQuantityAdjust({ line }: CartLineQuantityAdjustProps) {
+  if (!line || typeof line?.quantity === 'undefined') return null;
+  const {id: lineId, quantity, isOptimistic} = line;
+  const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
+  const nextQuantity = Number((quantity + 1).toFixed(0));
+
   return (
-    <CartForm
-      route="/cart"
-      action={CartForm.ACTIONS.LinesRemove}
-      inputs={{
-        lineIds: [lineId],
-      }}
-    >
-      <button type="submit" className="font-medium text-primary-600">
-        Remove
-      </button>
-      <OptimisticInput id={lineId} data={{action: 'remove'}} />
-    </CartForm>
+    <>
+      <label htmlFor={`quantity-${lineId}`} className="sr-only">
+        Quantity, {quantity}
+      </label>
+      <div className="flex items-center border rounded">
+        <CartLineUpdateButton  lines={[{ id: lineId, quantity: prevQuantity }]}>
+          <button
+            name="decrease-quantity"
+            aria-label="Decrease quantity"
+            className="w-10 h-10 transition text-primary/50 hover:text-primary disabled:text-primary/10"
+            value={prevQuantity}
+            disabled={quantity <= 1 || !!isOptimistic}
+          >
+            <span>&#8722;</span>
+          </button>
+        </CartLineUpdateButton >
+
+        <div className="px-2 text-center" data-test="item-quantity">
+          {quantity}
+        </div>
+
+        <CartLineUpdateButton  lines={[{ id: lineId, quantity: nextQuantity }]}>
+          <button
+            className="w-10 h-10 transition text-primary/50 hover:text-primary"
+            name="increase-quantity"
+            value={nextQuantity}
+            aria-label="Increase quantity"
+            disabled={!!isOptimistic}
+          >
+            <span>&#43;</span>
+          </button>
+        </CartLineUpdateButton >
+      </div>
+    </>
   );
 }
+
+
 
 export function CartLinePrice({
   line,
@@ -272,7 +288,7 @@ export function CartLinePrice({
   withoutTrailingZeros = true,
   ...passthroughProps
 }: {
-  line: CartLine;
+  line: OptimisticCartLine;
   priceType?: 'regular' | 'compareAt';
   [key: string]: any;
   withoutTrailingZeros?: boolean;
@@ -308,7 +324,7 @@ export function CartEmpty({
 }) {
   return (
     <div className={clsx('h-full overflow-auto py-6')} hidden={hidden}>
-      <section className="grid gap-6">
+      <section className="grid gap-6 text-center mt-28">
         <p>
           Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you
           started!
@@ -320,15 +336,131 @@ export function CartEmpty({
           </ButtonPrimary>
         </div>
       </section>
-      <section className="grid gap-8 pt-16">
-        <FeaturedProducts
-          count={4}
-          heading="Shop Best Sellers"
-          onClose={onClose}
-          sortKey="BEST_SELLING"
-          isCardSmall
-        />
-      </section>
     </div>
+  );
+}
+
+interface FreeShippingProgressBarProps {
+  totalAmount: number;
+}
+function FreeShippingProgressBar({ totalAmount }: FreeShippingProgressBarProps) {
+  return (
+    <div>
+      <div className="flex justify-center font-bold text-sm my-4">
+        <svg className="w-6 mr-2 color-logo-red" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.48 5.28 12 8.813 1.518 5.28M12 21.851V8.814" stroke="currentColor" strokeWidth="1.2" strokeMiterlimit="10"></path>
+          <path d="m7.025 3.425 10.48 3.535" stroke="currentColor" strokeWidth="1.079" strokeMiterlimit="10"></path>
+          <path d="m12 21.851 10.48-4.413V5.279L12 1.75 1.518 5.279v12.159L12 21.85z" stroke="currentColor" strokeWidth="1.2" strokeMiterlimit="10"></path>
+          <path d="m4.322 8.855 4.403 1.524v2.945L4.322 11.67V8.855z" stroke="currentColor" strokeWidth="1.079" strokeMiterlimit="10"></path>
+        </svg>
+        <h4 className="color-logo-green">{totalAmount < FREE_SHIPPING_THRESHOLD ? `FREE SHIPPING on orders over $${FREE_SHIPPING_THRESHOLD}!` : 'Your cart qualifies for free shipping'}</h4>
+      </div>
+      <div className="flex justify-center mb-4">
+        <Progress size='md' className="border border-gray-900/10 bg-gray-900/5 p-[2px] h-3" color="green" value={totalAmount * 1.66} variant="filled"/>
+      </div>
+    </div>
+  );
+}
+
+interface UpdateDiscountFormProps {
+  discountCodes?: string[];
+  children: React.ReactNode;
+}
+function UpdateDiscountForm({ discountCodes, children }: UpdateDiscountFormProps) {
+  return (
+    <CartForm
+      route="/cart"
+      action={CartForm.ACTIONS.DiscountCodesUpdate}
+      inputs={{
+        discountCodes: discountCodes || [],
+      }}
+    >
+      {children}
+    </CartForm>
+  );
+}
+interface CartAgreementCheckboxProps {
+  toggleDisableButton: () => void;
+}
+
+function CartAgreementCheckbox({ toggleDisableButton }: CartAgreementCheckboxProps) {
+  return (
+    <div className="flex flex-row mt-2">
+      <input type="checkbox" className="align-middle mr-2 my-1 size-5" onChange={toggleDisableButton} />
+      <label className="text-fine">
+        I agree with the <a href="/pages/terms-of-service" className="color-logo-red">Terms of Service</a>, <a href="/policies/refund-policy" className="color-logo-red">Returns-Refund-Exchanges Policy</a>, and <a href="/pages/shipping-handling" className="color-logo-red">Shipping and Handling Policy</a>.
+      </label>
+    </div>
+  );
+}
+
+interface CartCheckoutActionsProps {
+  checkoutUrl: string;
+  disableButton: boolean;
+}
+
+function CartCheckoutActions({ checkoutUrl = '', disableButton }: CartCheckoutActionsProps) {
+  if (!checkoutUrl) return null;
+  return (
+    <div className="flex flex-col mt-2">
+      <a href={checkoutUrl} target="_self" className={disableButton ? 'disabled' : ''}>
+        <Button as="span" width="full" className="uppercase">
+          {disableButton ? 'Agree to Checkout' : 'Checkout'}
+        </Button>
+      </a>
+    </div>
+  );
+}
+
+
+function CartLineUpdateButton({
+  children,
+  lines,
+}: {
+  children: React.ReactNode;
+  lines: CartLineUpdateInput[];
+}) {
+  return (
+    <CartForm
+      route="/cart"
+      action={CartForm.ACTIONS.LinesUpdate}
+      inputs={{lines}}
+    >
+      {children}
+    </CartForm>
+  );
+}
+
+/**
+ * A button that removes a line item from the cart. It is disabled
+ * when the line item is new, and the server hasn't yet responded
+ * that it was successfully added to the cart.
+ */
+export function CartLineRemoveButton({
+  lineIds,
+  disabled,
+}: {
+  lineIds: string[];
+  disabled: boolean;
+}) {
+  return (
+    <CartForm
+      route="/cart"
+      action={CartForm.ACTIONS.LinesRemove}
+      inputs={{
+        lineIds: lineIds,
+      }}
+    >
+      <button
+        className="flex items-center justify-center size-8 border rounded"
+        type="submit"
+        disabled={disabled} 
+      >
+      {/* 2. Use the OptimisticInput component to remove the line item */}
+      <OptimisticInput id={lineIds[0]} data={{action: 'removing'}} />
+        <span className="sr-only">Remove</span>
+        <IconRemove aria-hidden="true" />
+      </button>
+    </CartForm>
   );
 }

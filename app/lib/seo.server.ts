@@ -31,7 +31,7 @@ function root({
 }): SeoConfig {
   return {
     title: shop?.name,
-    titleTemplate: '%s | Hydrogen Demo Store',
+    titleTemplate: '%s | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
     description: truncate(shop?.description ?? ''),
     handle: '@shopify',
     url,
@@ -64,7 +64,7 @@ function root({
 function home(): SeoConfig {
   return {
     title: 'Home',
-    titleTemplate: '%s | Hydrogen Demo Store',
+    titleTemplate: '%s | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
     description: 'The best place to buy snowboarding products',
     robots: {
       noIndex: false,
@@ -81,7 +81,7 @@ function home(): SeoConfig {
 function stores(): SeoConfig {
   return {
     title: 'Stores',
-    titleTemplate: '%s | Hydrogen Demo Store',
+    titleTemplate: '%s | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
     description: 'All Ciseco hydrogen stores',
     robots: {
       noIndex: false,

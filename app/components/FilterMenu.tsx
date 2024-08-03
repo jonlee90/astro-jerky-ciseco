@@ -68,7 +68,7 @@ export function FilterMenu({onTabChange,isSmall, onToggle}: any) {
                 </span>
                 
                 {activeItem?.icon ? 
-                    <activeItem.icon size="26" />
+                    <activeItem.icon size={26} />
                     :
                     <MySortIcon />}
                 <ChevronDownIcon className="w-4 h-4 ml-3 flex-shrink-0 hidden sm:block" />
@@ -103,7 +103,7 @@ export function FilterMenu({onTabChange,isSmall, onToggle}: any) {
                               close();
                             }}
                           />
-                          {Icon && <Icon size="26" />}
+                          {Icon && <Icon size={26} />}
                         </div>
                       ))}
                     </div>

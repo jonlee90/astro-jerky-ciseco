@@ -27,14 +27,14 @@ export function SectionSteps(props: SectionStepsFragment) {
             : ''
         }
       >
-        <div className="relative grid sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-16 xl:gap-20">
+        <div className="relative grid sm:grid-cols-3  gap-10 sm:gap-16 xl:gap-20">
           <img
             className="hidden md:block absolute inset-x-0 top-5"
             src={VectorImg}
             alt="vector"
             sizes="max-width: 640px 100vw, max-width: 1024px 80vw, 50vw"
           />
-          {headings?.parsedValue?.map((item, index) => (
+          {headings ? headings.parsedValue?.map((item, index) => (
             <div
               key={`${index + item}`}
               className="relative flex flex-col items-center max-w-xs mx-auto"
@@ -58,7 +58,25 @@ export function SectionSteps(props: SectionStepsFragment) {
                 </span>
               </div>
             </div>
-          ))}
+          ))
+          :
+          <>
+            {icons?.nodes?.map((item, index) => (
+              <div
+                key={`${index}`}
+                className="relative flex flex-col items-center mx-auto"
+              >
+                <div className="mb-4 sm:mb-10 mx-auto">
+                  <Image
+                    className="rounded-3xl"
+                    data={item.image || {}}
+                    sizes="350px"
+                  />
+                </div>
+              </div>
+            ))}
+          </>
+          }
         </div>
       </div>
     </section>

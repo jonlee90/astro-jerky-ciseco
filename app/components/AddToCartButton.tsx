@@ -1,5 +1,5 @@
 import type {CartLineInput} from '@shopify/hydrogen/storefront-api-types';
-import {CartForm} from '@shopify/hydrogen';
+import {CartForm, type OptimisticCartLineInput} from '@shopify/hydrogen';
 import type {FetcherWithComponents} from '@remix-run/react';
 
 export function AddToCartButton({
@@ -10,7 +10,7 @@ export function AddToCartButton({
   ...props
 }: {
   children: React.ReactNode;
-  lines: CartLineInput[];
+  lines: OptimisticCartLineInput[];
   className?: string;
   disabled?: boolean;
   [key: string]: any;
@@ -19,7 +19,7 @@ export function AddToCartButton({
     <CartForm
       route="/cart"
       inputs={{
-        lines,
+        lines
       }}
       action={CartForm.ACTIONS.LinesAdd}
     >

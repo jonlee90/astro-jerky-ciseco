@@ -23,7 +23,8 @@ export default defineConfig({
   },
   ssr: {
     optimizeDeps: {
-      include: ['typographic-base/index', 'textr', '@material-tailwind/react','react-responsive'],
+      include: ['typographic-base/index', 'textr', '@material-tailwind/react','react-responsive', 'react-use/esm/useScroll',
+        'react-circular-progressbar'],
     },
   },
   optimizeDeps: {
@@ -36,7 +37,8 @@ export default defineConfig({
       'react-use/esm/useDebounce',
       'react-use/esm/useWindowScroll',
       '@material-tailwind/react',
-      'react-responsive'
+      'react-responsive',
+      'react-circular-progressbar'
     ],
     esbuildOptions: {
       // Node.js global to browser globalThis

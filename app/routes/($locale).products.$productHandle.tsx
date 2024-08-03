@@ -12,6 +12,7 @@ import {
   VariantSelector,
   getSelectedProductOptions,
   Analytics,
+  useOptimisticVariant,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 import clsx from 'clsx';
@@ -186,7 +187,7 @@ export default function Product() {
 
 
   const [currentQuantity, setCurrentQuantity] = useState(3);
-  const selectedVariant = product.selectedVariant;
+  const selectedVariant = useOptimisticVariant(product.selectedVariant, variants);
 
   // Buy 3 for $33 discount logic
   const setPrice = 33;
@@ -238,23 +239,15 @@ export default function Product() {
           {/* Product Details */}
           <div className="w-full lg:w-[45%] pt-10 lg:pt-0 lg:pl-7 xl:pl-9 2xl:pl-10">
             <div className="sticky top-10 grid gap-7 2xl:gap-8">
-              <Suspense fallback={<ProductForm variants={[]} />}>
-                <Await
-                  errorElement="There was a problem loading related products"
-                  resolve={variants}
-                >
-                  {(resp) => (
                     <ProductForm
-                      variants={resp.product?.variants.nodes || []}
+                      product={product}
+                      selectedVariant={selectedVariant}
+                      variants={variants || []}
                       currentQuantity={currentQuantity}
                       setCurrentQuantity={setCurrentQuantity}
                       selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
                       selectedVariantPrice={selectedVariantPrice}
                     />
-                  )}
-                </Await>
-              </Suspense>
-
               {/*  */}
               <hr className=" border-slate-200 dark:border-slate-700 mt-3"></hr>
               {/*  */}
@@ -365,21 +358,22 @@ export default function Product() {
 }
 
 export function ProductForm({
+  product,
+  selectedVariant,
   variants,
   currentQuantity,
   setCurrentQuantity,
   selectedVariantPrice,
   selectedVariantCompareAtPrice
 }: {
+  product: any;
+  selectedVariant: any;
   variants: ProductVariantFragmentFragment[],
   currentQuantity: number,
   setCurrentQuantity: any,
   selectedVariantCompareAtPrice: any,
   selectedVariantPrice: any
 }) {
-  const {product, storeDomain} = useLoaderData<typeof loader>();
-
-  const closeRef = useRef<HTMLButtonElement>(null);
 
   const isDesktop = useMediaQuery({ minWidth: 767 });
 
@@ -388,15 +382,13 @@ export function ProductForm({
    * of add to cart if there is none returned from the loader.
    * A developer can opt out of this, too.
    */
-  const selectedVariant = product.selectedVariant!;
   const isOutOfStock = !selectedVariant?.availableForSale;
 
   const status = getProductStatus({
     availableForSale: selectedVariant.availableForSale,
     compareAtPriceRangeMinVariantPrice:
       selectedVariant.compareAtPrice || undefined,
-    priceRangeMinVariantPrice: selectedVariant.price,
-    publishedAt: product.publishedAt,
+    priceRangeMinVariantPrice: selectedVariant.price
   });
 
   const variantsByQuantity = [];
@@ -495,12 +487,17 @@ export function ProductForm({
           ) : (
             <div className="grid items-stretch gap-4">
                 <AddToCartButton
-                  lines={[
-                    {
-                      merchandiseId: selectedVariant.id!,
-                      quantity: currentQuantity,
-                    },
-                  ]}
+                  lines={
+                    selectedVariant
+                      ? [
+                          {
+                            merchandiseId: selectedVariant.id,
+                            quantity: currentQuantity,
+                            selectedVariant,
+                          },
+                        ]
+                      : []
+                  }
                   className="w-full flex-1 add-to-cart-button"
                   data-test="add-to-cart"
                 >
@@ -649,35 +646,7 @@ const ProductColorOption = ({option}: {option: VariantOption}) => {
   );
 };
 
-const ProductReviews = ({product}: {product: ProductQuery['product']}) => {
-  const {publicOkendoSubcriberId} = useRootLoaderData();
 
-  if (!product?.id || !publicOkendoSubcriberId) {
-    return null;
-  }
-
-  return (
-    <>
-      <hr className="border-slate-200 dark:border-slate-700" />
-
-      <div className="product-page__reviews scroll-mt-nav" id="reviews">
-        {/* HEADING */}
-        {!!product?.okendoReviewsSnippet ? (
-          <h2 className="text-2xl font-semibold text-center sm:text-left">
-            <span>Reviews</span>
-          </h2>
-        ) : null}
-
-        <div className="product-page__reviews-widget">
-          <OkendoReviews
-            productId={product?.id}
-            okendoReviewsSnippet={product?.okendoReviewsSnippet}
-          />
-        </div>
-      </div>
-    </>
-  );
-};
 const SocialSharing = () => {
   const linkStyle = 'flex items-center justify-center gap-1';
   return (

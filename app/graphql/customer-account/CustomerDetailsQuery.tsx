@@ -52,6 +52,10 @@ ${ADDRESS_PARTIAL_FRAGMENT}
     phoneNumber {
       phoneNumber
     }
+    metafields(identifiers: [{key: "loyalty_points_current", namespace: "custom"},{key: "loyalty_points_lifetime", namespace: "custom"}]) {
+      key
+      value
+    }
     emailAddress {
       emailAddress
     }

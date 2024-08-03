@@ -1,7 +1,8 @@
-import {Await, useLocation,useNavigate} from '@remix-run/react';
+import {Await, useLoaderData, useLocation,useNavigate, useRouteLoaderData} from '@remix-run/react';
 import {Suspense, useEffect} from 'react';
 import {CartForm} from '@shopify/hydrogen';
 import type {
+  CartApiQueryFragment,
   FooterMenuQuery,
   HeaderMenuQuery,
   LayoutQuery,
@@ -29,7 +30,9 @@ type LayoutProps = {
   children: React.ReactNode;
   layout?: LayoutQuery;
 };
-
+interface PageLayoutProps {
+  cart: Promise<CartApiQueryFragment | null>;
+}
 export function Layout({children, layout}: LayoutProps) {
   const { pathname, state } = useLocation();
   const isBackButton = pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true);
@@ -55,8 +58,8 @@ export function Layout({children, layout}: LayoutProps) {
 }
 
 function MyHeader() {
-  const rootData = useRootLoaderData();
   const { pathname, state } = useLocation();
+  const rootData = useRouteLoaderData('root');
   const navigate = useNavigate();
   const navLink = pathname.includes('/bundle/') && !state ? '/bundle' : -1;
   const isBackButton = pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true);
@@ -84,7 +87,13 @@ function MyHeader() {
   return (
     <>
       <AnnouncementBar content={`FREE SHIPPING ON $${FREE_SHIPPING_THRESHOLD} OR MORE`}/>
-      <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
+        <Suspense fallback={<></>}>
+          <Await resolve={rootData?.cart}>
+              {(cart) => (
+                <CartDrawer isOpen={isCartOpen} onClose={closeCart} cart={cart} />
+              )}
+          </Await>
+        </Suspense>
       {/*
         <MainNav openMenu={openMenu} openCart={openCart} isHome={isHome} />
       */}
@@ -100,11 +109,13 @@ function MyHeader() {
             />
           </ButtonAnimation>
           
-          <Await resolve={rootData?.cart}>
-            {(cart) => (
-              cart?.totalQuantity > 0 && <CartCount openCart={openCart} className='pdp-nav-button right-5' />  
-            )}
-          </Await>
+          <Suspense fallback={<></>}>
+            <Await resolve={rootData?.cart}>
+              {(cart) => (
+                cart?.totalQuantity > 0 && <CartCount openCart={openCart} className='pdp-nav-button right-5' />  
+              )}
+            </Await>
+          </Suspense>
         </>
       :
       <>
@@ -118,9 +129,7 @@ function MyHeader() {
   );
 }
 
-function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
-  const rootData = useRootLoaderData();
-
+function CartDrawer({isOpen, onClose, cart}: {isOpen: boolean; onClose: () => void; cart: CartApiQueryFragment}) {
   return (
     <Drawer
       open={isOpen}
@@ -128,13 +137,12 @@ function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
       heading="Shopping Cart"
       openFrom="right"
     >
-      <Suspense fallback={<CartLoading />}>
-        <Await resolve={rootData?.cart}>
-          {(cart) => {
-            return <Cart onClose={onClose} cart={cart} />;
-          }}
-        </Await>
-      </Suspense>
+     
+    <Suspense fallback={<></>}>
+     <Await resolve={cart}>
+        {(cart) => <Cart onClose={onClose} cart={cart as CartApiQueryFragment} />}
+      </Await>
+    </Suspense>
     </Drawer>
   );
 }

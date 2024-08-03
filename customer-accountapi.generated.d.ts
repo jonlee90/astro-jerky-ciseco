@@ -104,6 +104,11 @@ export type CustomerDetailsFragment = Pick<
   phoneNumber?: CustomerAccountAPI.Maybe<
     Pick<CustomerAccountAPI.CustomerPhoneNumber, 'phoneNumber'>
   >;
+  metafields: Array<
+    CustomerAccountAPI.Maybe<
+      Pick<CustomerAccountAPI.Metafield, 'key' | 'value'>
+    >
+  >;
   emailAddress?: CustomerAccountAPI.Maybe<
     Pick<CustomerAccountAPI.CustomerEmailAddress, 'emailAddress'>
   >;
@@ -180,6 +185,11 @@ export type CustomerDetailsQuery = {
   customer: Pick<CustomerAccountAPI.Customer, 'firstName' | 'lastName'> & {
     phoneNumber?: CustomerAccountAPI.Maybe<
       Pick<CustomerAccountAPI.CustomerPhoneNumber, 'phoneNumber'>
+    >;
+    metafields: Array<
+      CustomerAccountAPI.Maybe<
+        Pick<CustomerAccountAPI.Metafield, 'key' | 'value'>
+      >
     >;
     emailAddress?: CustomerAccountAPI.Maybe<
       Pick<CustomerAccountAPI.CustomerEmailAddress, 'emailAddress'>
@@ -506,7 +516,7 @@ export type CustomerUpdateMutation = {
 };
 
 interface GeneratedQueryTypes {
-  '#graphql\n  query CustomerDetails {\n    customer {\n      ...CustomerDetails\n    }\n  }\n  #graphql\n#graphql\n  fragment AddressPartial on CustomerAddress {\n      id\n      formatted\n      firstName\n      lastName\n      company\n      address1\n      address2\n      territoryCode\n      zoneCode\n      city\n      zip\n      phoneNumber\n      country\n    }\n\n  fragment OrderCard on Order {\n    id\n    number\n    processedAt\n    financialStatus\n    fulfillments(first: 1) {\n      nodes {\n        status\n      }\n    }\n    totalPrice {\n      amount\n      currencyCode\n    }\n    lineItems(first: 2) {\n      edges {\n        node {\n          title\n          image {\n            altText\n            height\n            url\n            width\n          }\n        }\n      }\n    }\n  }\n  fragment CustomerDetails on Customer {\n    firstName\n    lastName\n    phoneNumber {\n      phoneNumber\n    }\n    emailAddress {\n      emailAddress\n    }\n    defaultAddress {\n      ...AddressPartial\n    }\n    addresses(first: 6) {\n      edges {\n        node {\n          ...AddressPartial\n        }\n      }\n    }\n    orders(first: 250, sortKey: PROCESSED_AT, reverse: true) {\n      edges {\n        node {\n          ...OrderCard\n        }\n      }\n    }\n  }\n\n': {
+  '#graphql\n  query CustomerDetails {\n    customer {\n      ...CustomerDetails\n    }\n  }\n  #graphql\n#graphql\n  fragment AddressPartial on CustomerAddress {\n      id\n      formatted\n      firstName\n      lastName\n      company\n      address1\n      address2\n      territoryCode\n      zoneCode\n      city\n      zip\n      phoneNumber\n      country\n    }\n\n  fragment OrderCard on Order {\n    id\n    number\n    processedAt\n    financialStatus\n    fulfillments(first: 1) {\n      nodes {\n        status\n      }\n    }\n    totalPrice {\n      amount\n      currencyCode\n    }\n    lineItems(first: 2) {\n      edges {\n        node {\n          title\n          image {\n            altText\n            height\n            url\n            width\n          }\n        }\n      }\n    }\n  }\n  fragment CustomerDetails on Customer {\n    firstName\n    lastName\n    phoneNumber {\n      phoneNumber\n    }\n    metafields(identifiers: [{key: "loyalty_points_current", namespace: "custom"},{key: "loyalty_points_lifetime", namespace: "custom"}]) {\n      key\n      value\n    }\n    emailAddress {\n      emailAddress\n    }\n    defaultAddress {\n      ...AddressPartial\n    }\n    addresses(first: 6) {\n      edges {\n        node {\n          ...AddressPartial\n        }\n      }\n    }\n    orders(first: 250, sortKey: PROCESSED_AT, reverse: true) {\n      edges {\n        node {\n          ...OrderCard\n        }\n      }\n    }\n  }\n\n': {
     return: CustomerDetailsQuery;
     variables: CustomerDetailsQueryVariables;
   };

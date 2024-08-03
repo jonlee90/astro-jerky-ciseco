@@ -1,29 +1,4 @@
 @font-face {
-  font-family: Poppins;
-  font-weight: 300;
-  src: url('./fonts/Poppins/Poppins-Light.ttf');
-}
-@font-face {
-  font-family: Poppins;
-  font-weight: 400;
-  src: url('./fonts/Poppins/Poppins-Regular.ttf');
-}
-@font-face {
-  font-family: Poppins;
-  font-weight: 500;
-  src: url('./fonts/Poppins/Poppins-Medium.ttf');
-}
-@font-face {
-  font-family: Poppins;
-  font-weight: 600;
-  src: url('./fonts/Poppins/Poppins-SemiBold.ttf');
-}
-@font-face {
-  font-family: Poppins;
-  font-weight: 700;
-  src: url('./fonts/Poppins/Poppins-Bold.ttf');
-}
-@font-face {
   font-family: RobotoSlabRegular;
   font-weight: 400;
   src: url('./fonts/RobotoSlab-Regular.ttf');

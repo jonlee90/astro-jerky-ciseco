@@ -6,7 +6,7 @@ import { IconDollar, IconDollarSign, IconEqual, IconStar } from '~/components/Ic
 
 const Rewards: React.FC = () => {
   return (
-    <div className="max-w-xl mx-auto">
+    <div className="max-w-xl mx-auto mb-24">
       <PageHeader 
         title={"Astro's Rewards"}
         description={'Get Jerky, Get Rewards.'} 
