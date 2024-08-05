@@ -6,20 +6,20 @@ import {
   EnvelopeIcon,
   InformationCircleIcon,
 } from '@heroicons/react/24/outline';
-import {useFetcher} from '@remix-run/react';
+import {useFetcher, useRouteLoaderData} from '@remix-run/react';
 import Input from './MyInput';
 import ButtonCircle from './Button/ButtonCircle';
 import {ArrowRightIcon} from '@heroicons/react/24/solid';
 import SocialsList from './SocialsList';
 import {type AddSubscriberMutation} from 'storefrontapi.generated';
-import {useRootLoaderData} from '~/lib/root-data';
 import {FooterMenuDataWrap, HeaderMenuDataWrap} from './Layout';
+import { RootLoader } from '~/root';
 
 interface FooterProps {}
 
 const Footer: React.FC<FooterProps> = () => {
-  const {layout} = useRootLoaderData();
-  const shop = layout?.shop || {};
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const shop = rootData?.layout?.shop;
 
   const renderWidgetMenu = (menu: ParentEnhancedMenuItem, index: number) => {
     return (

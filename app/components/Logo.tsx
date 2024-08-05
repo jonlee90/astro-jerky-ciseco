@@ -1,7 +1,8 @@
 import React from 'react';
 import {Link} from './Link';
-import {useRootLoaderData} from '~/lib/root-data';
+import {useRouteLoaderData} from '@remix-run/react';
 import {Image} from '@shopify/hydrogen';
+import type { RootLoader } from '~/root';
 
 export interface LogoProps {
   className?: string;
@@ -10,7 +11,7 @@ export interface LogoProps {
 const Logo: React.FC<LogoProps> = ({
   className = 'flex-shrink-0 w-10 max-w-28 sm:max-w-32 lg:max-w-none flex text-center',
 }) => {
-  const rootLoaderData = useRootLoaderData();
+  const rootLoaderData = useRouteLoaderData<RootLoader>('root');
 
   if (!rootLoaderData) {
     return null;

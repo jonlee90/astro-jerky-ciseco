@@ -1,4 +1,4 @@
-import {Await, Link} from '@remix-run/react';
+import {Await, Link, useRouteLoaderData} from '@remix-run/react';
 import {
   ClipboardDocumentCheckIcon,
   IdentificationIcon,
@@ -12,7 +12,7 @@ import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-pro
 import 'react-circular-progressbar/dist/styles.css';
 import { motion } from 'framer-motion';
 import { CartForm } from '@shopify/hydrogen';
-import { useRootLoaderData } from '~/lib/root-data';
+import type { RootLoader } from '~/root';
 
 const actions = [
   {
@@ -52,13 +52,13 @@ interface AccountType {
 }
 
 function Account({customer}: AccountType) {
-  const rootData = useRootLoaderData();
+  const rootData = useRouteLoaderData<RootLoader>('root');
   const defaultAddress = customer.defaultAddress;
   const {emailAddress, firstName, lastName} = customer;
   const [loyalty_points_current, loyalty_points_lifetime] = customer.metafields;
-  const loyalty_points_current_value = Number(loyalty_points_current.value);
+  const loyalty_points_current_value = Number(loyalty_points_current ? loyalty_points_current.value : 0);
   const loyalty_points_points_until = loyalty_points_current_value % 100;
-  const loyalty_points_lifetime_value = Number(loyalty_points_lifetime.value);
+  const loyalty_points_lifetime_value = Number(loyalty_points_lifetime ? loyalty_points_lifetime.value : 0);
   const rewardsButtonStyle = 'bg-logo-red text-white border border-color-red py-2 rounded-full w-full disabled:opacity-50 disabled:pointer-events-none';
   const invertedRewardsButtonStyle = 'bg-default-gray color-logo-red';
   

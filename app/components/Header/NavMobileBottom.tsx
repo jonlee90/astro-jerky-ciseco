@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {useLocation, Await} from '@remix-run/react';
-import {useRootLoaderData} from '~/lib/root-data';
+import {useLocation, Await, useRouteLoaderData} from '@remix-run/react';
 import { IconHome } from '../Icon';
 import { IconJerky } from '../Icon';
 import { IconBundle } from '../Icon';
@@ -9,19 +8,20 @@ import { IconCart } from '../Icon';
 import {motion } from 'framer-motion';
 import useWindowScroll from './useWindowScroll';
 import { Link } from '../Link';
+import { RootLoader } from '~/root';
+import { useAside } from '../Aside';
 
 
-export interface NavMobileBottomProps {
-  openCart: () => void;
-}
+
 const navItems = [
   { path: '/', label: 'Home', icon: IconHome },
   { path: '/collections/classic-flavors', label: 'Jerky', icon: IconJerky },
   { path: '/bundle', label: 'Bundle', icon: IconBundle },
   { path: '/rewards', label: 'Rewards', icon: IconReward, needsAuth: false },
 ];
-const NavMobileBottom: React.FC<NavMobileBottomProps> = ({openCart}) => {
-  const rootData = useRootLoaderData();
+const NavMobileBottom = () => {
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const {open} = useAside();
   const { pathname } = useLocation();
   const [opacity, setOpacity] = useState<number>(1);
   const prevScrollY = useRef<number>(0);
@@ -80,7 +80,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({openCart}) => {
           )}
         </Await>
 
-        <motion.button whileTap={{  scale: 0.95  }} onClick={openCart} type="button" className="inline-flex flex-col relative items-center justify-center w-full col-span-1">
+        <motion.button whileTap={{  scale: 0.95  }} onClick={() => open('cart')} type="button" className="inline-flex flex-col relative items-center justify-center w-full col-span-1">
           <Await resolve={rootData?.cart}>
             {(cart) => (
               <>

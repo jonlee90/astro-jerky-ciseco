@@ -1,5 +1,5 @@
 import {Await, useLoaderData, useLocation,useNavigate, useRouteLoaderData} from '@remix-run/react';
-import {Suspense, useEffect} from 'react';
+import {Suspense, useEffect, useState} from 'react';
 import {CartForm} from '@shopify/hydrogen';
 import type {
   CartApiQueryFragment,
@@ -9,7 +9,6 @@ import type {
 } from 'storefrontapi.generated';
 import {type EnhancedMenu, parseMenu, useIsHomePath} from '~/lib/utils';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
-import {useRootLoaderData} from '~/lib/root-data';
 import MainNav from './Header/MainNav';
 import NavMobile from './Header/NavMobile';
 import Logo from './Logo';
@@ -25,19 +24,23 @@ import { DesktopHeader } from './Header/DesktopHeader';
 import { ButtonAnimation } from './Button/ButtonAnimation';
 import { IconCaret } from './Icon';
 import { CartCount } from './CartCount';
+import { Aside, useAside } from './Aside';
+import type { RootLoader } from '~/root';
+import { motion } from 'framer-motion';
+import { useIsHydrated } from '~/hooks/useIsHydrated';
 
 type LayoutProps = {
-  children: React.ReactNode;
-  layout?: LayoutQuery;
-};
-interface PageLayoutProps {
+  layout: LayoutQuery;
+  children?: React.ReactNode;
   cart: Promise<CartApiQueryFragment | null>;
-}
-export function Layout({children, layout}: LayoutProps) {
+};
+
+export function Layout({children, layout, cart}: LayoutProps) {
   const { pathname, state } = useLocation();
   const isBackButton = pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true);
   return (
-    <>
+    <Aside.Provider>
+      <CartAside cart={cart} />
       <div className="flex flex-col min-h-screen">
         <div className="">
           <a href="#mainContent" className="sr-only">
@@ -53,118 +56,74 @@ export function Layout({children, layout}: LayoutProps) {
       </div>
 
       {!!layout && !isBackButton && <Footer />}
-    </>
+    </Aside.Provider>
   );
 }
 
 function MyHeader() {
   const { pathname, state } = useLocation();
-  const rootData = useRouteLoaderData('root');
   const navigate = useNavigate();
   const navLink = pathname.includes('/bundle/') && !state ? '/bundle' : -1;
-  const isBackButton = pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true);
+  const isHydrated = useIsHydrated();
+  const isBackButton = isHydrated && (pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true));
 
-  const {
-    isOpen: isCartOpen,
-    openDrawer: openCart,
-    closeDrawer: closeCart,
-  } = useDrawer();
 
-  const {
-    isOpen: isMenuOpen,
-    openDrawer: openMenu,
-    closeDrawer: closeMenu,
-  } = useDrawer();
-
-  const addToCartFetchers = useCartFetchers(CartForm.ACTIONS.LinesAdd);
-
-  // toggle cart drawer when adding to cart
-  useEffect(() => {
-    if (isCartOpen || !addToCartFetchers.length) return;
-    openCart();
-  }, [addToCartFetchers, isCartOpen, openCart]);
 
   return (
     <>
       <AnnouncementBar content={`FREE SHIPPING ON $${FREE_SHIPPING_THRESHOLD} OR MORE`}/>
-        <Suspense fallback={<></>}>
-          <Await resolve={rootData?.cart}>
-              {(cart) => (
-                <CartDrawer isOpen={isCartOpen} onClose={closeCart} cart={cart} />
-              )}
-          </Await>
-        </Suspense>
       {/*
         <MainNav openMenu={openMenu} openCart={openCart} isHome={isHome} />
       */}
       {isBackButton ?
         <>
-          <ButtonAnimation
-              onClick={() => navigate(navLink)} 
-              className="pdp-nav-button transform left-5"
-          >
+            <motion.button
+              onClick={() => navigate(navLink)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95, opacity: 0.6 }}
+              className={"pdp-nav-button transform left-5"}
+            >
             <IconCaret
               direction='right' 
               className="!size-14 z-50 rounded-full bg-black text-white font-bold p-2"
             />
-          </ButtonAnimation>
-          
-          <Suspense fallback={<></>}>
-            <Await resolve={rootData?.cart}>
-              {(cart) => (
-                cart?.totalQuantity > 0 && <CartCount openCart={openCart} className='pdp-nav-button right-5' />  
-              )}
-            </Await>
-          </Suspense>
+            </motion.button>
+          <CartCount className='pdp-nav-button right-5' />  
         </>
       :
       <>
-        <MobileMenuDrawer isOpen={isMenuOpen} onClose={closeMenu} />
-        <DesktopHeader openCart={openCart} />
-        <MobileHeader openMenu={openMenu} />
-        <NavMobileBottom openCart={openCart} />
+        <DesktopHeader />
+        <MobileHeader />
+        <NavMobileBottom  />
       </>
       }
     </>
   );
 }
 
-function CartDrawer({isOpen, onClose, cart}: {isOpen: boolean; onClose: () => void; cart: CartApiQueryFragment}) {
+function CartAside({cart}: {cart: CartApiQueryFragment}) {
+  const {close} = useAside();
   return (
-    <Drawer
-      open={isOpen}
-      onClose={onClose}
-      heading="Shopping Cart"
-      openFrom="right"
-    >
-     
-    <Suspense fallback={<></>}>
-     <Await resolve={cart}>
-        {(cart) => <Cart onClose={onClose} cart={cart as CartApiQueryFragment} />}
-      </Await>
-    </Suspense>
-    </Drawer>
+    <Aside heading="Shopping Cart" openFrom="right" type="cart">
+      <Suspense fallback={<CartLoading />}>
+        <Await resolve={cart}>
+          {(cart) => {
+            return <Cart onClose={close} cart={cart || null} />;
+          }}
+        </Await>
+      </Suspense>
+    </Aside>
+  );
+}
+function MobileMenuAside() {
+  const {close} = useAside();
+  return (
+    <Aside openFrom="left" renderHeading={() => <Logo />} type="mobile">
+      <NavMobile onClose={close} />
+    </Aside>
   );
 }
 
-function MobileMenuDrawer({
-  isOpen,
-  onClose,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-}) {
-  return (
-    <Drawer
-      open={isOpen}
-      onClose={onClose}
-      openFrom="left"
-      renderHeading={() => <Logo />}
-    >
-      <NavMobile onClose={onClose} />
-    </Drawer>
-  );
-}
 
 export function HeaderMenuDataWrap({
   children,
@@ -179,24 +138,30 @@ export function HeaderMenuDataWrap({
     headerData: HeaderMenuQuery;
   }) => React.ReactNode;
 }) {
-  const {headerPromise, layout, env} = useRootLoaderData();
-  const shop = layout?.shop || {};
+  const rootData = useRouteLoaderData<RootLoader>('root');
+
+  const headerPromise = rootData?.headerPromise;
+  const layout = rootData?.layout;
+  const env = rootData?.env;
+
+  const shop = layout?.shop;
 
   const customPrefixes = {BLOG: '', CATALOG: 'products'};
   return (
     <Suspense fallback={fallback}>
       <Await resolve={headerPromise}>
         {(headerData) => {
-          const menu = headerData.headerMenu
-            ? parseMenu(
-                headerData.headerMenu,
-                shop.primaryDomain.url,
-                env,
-                customPrefixes,
-              )
-            : undefined;
+          const menu =
+            headerData?.headerMenu && shop?.primaryDomain?.url && env
+              ? parseMenu(
+                  headerData.headerMenu,
+                  shop?.primaryDomain?.url,
+                  env,
+                  customPrefixes,
+                )
+              : undefined;
 
-          return children({headerData, headerMenu: menu});
+          return headerData ? children({headerData, headerMenu: menu}) : null;
         }}
       </Await>
     </Suspense>
@@ -214,25 +179,27 @@ export function FooterMenuDataWrap({
     footerData: FooterMenuQuery;
   }) => React.ReactNode;
 }) {
-  const {
-    footerPromise,
-    layout: {shop},
-    env,
-  } = useRootLoaderData();
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const footerPromise = rootData?.footerPromise;
+  const layout = rootData?.layout;
+  const env = rootData?.env;
+  const shop = layout?.shop;
+
   const customPrefixes = {BLOG: '', CATALOG: 'products'};
   return (
     <Suspense fallback={null}>
       <Await resolve={footerPromise}>
         {(footerData) => {
-          const menu = footerData.footerMenu
-            ? parseMenu(
-                footerData.footerMenu,
-                shop.primaryDomain.url,
-                env,
-                customPrefixes,
-              )
-            : undefined;
-          return children({footerData, footerMenu: menu});
+          const menu =
+            footerData?.footerMenu && shop?.primaryDomain?.url && env
+              ? parseMenu(
+                  footerData.footerMenu,
+                  shop.primaryDomain.url,
+                  env,
+                  customPrefixes,
+                )
+              : undefined;
+          return footerData ? children({footerData, footerMenu: menu}) : null;
         }}
       </Await>
     </Suspense>

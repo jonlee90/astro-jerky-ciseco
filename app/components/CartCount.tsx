@@ -1,12 +1,13 @@
 import React, { Suspense, useMemo  } from 'react';
 import { useIsHydrated } from '~/hooks/useIsHydrated';
-import { Link } from '@remix-run/react';
+import { Link, useRouteLoaderData } from '@remix-run/react';
 import { motion } from 'framer-motion';
 import { useLoaderData, Await } from '@remix-run/react';
 import { IconCart } from './Icon';
+import { useAside } from './Aside';
+import { RootLoader } from '~/root';
 
 interface CartCountProps {
-  openCart: () => void;
   className?: string;
 }
 
@@ -49,26 +50,27 @@ const Badge: React.FC<BadgeProps> = ({ openCart, count }) => {
   );
 };
 
-export const CartCount: React.FC<CartCountProps> = ({ openCart, className = '' }) => {
-  const rootData = useLoaderData();
+export const CartCount: React.FC<CartCountProps> = ({ className = '' }) => {
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const {open} = useAside();
 
   return (
-    <motion.div
-      className={`rounded-full bg-logo-green ${className}`}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95, opacity: 0.6 }}
-      onClick={openCart}
-    >
-      <Suspense fallback={<Badge openCart={openCart} count={0} />}>
+      <Suspense fallback={<Badge openCart={() => open('cart')} count={0} />}>
         <Await resolve={rootData?.cart}>
           {(cart) => (
-            <Badge
-              openCart={openCart}
-              count={cart?.totalQuantity || 0}
-            />
+            <motion.div
+              className={`rounded-full bg-logo-green ${className}`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95, opacity: 0.6 }}
+              onClick={() => open('cart')}
+            >
+              <Badge
+                openCart={() => open('cart')}
+                count={cart?.totalQuantity || 0}
+              />
+            </motion.div>
           )}
         </Await>
       </Suspense>
-    </motion.div>
   );
 };

@@ -5,7 +5,7 @@ import {
   redirect,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
-import {useLoaderData, Await, useNavigate} from '@remix-run/react';
+import {useLoaderData, Await, useNavigate, useLocation} from '@remix-run/react';
 import {
   type VariantOption,
   Image,
@@ -50,16 +50,32 @@ import {type SelectedOption} from '@shopify/hydrogen/storefront-api-types';
 import {RouteContent} from '~/sections/RouteContent';
 import {getSeoMeta} from '@shopify/hydrogen';
 import {getLoaderRouteFromMetaobject} from '~/utils/getLoaderRouteFromMetaobject';
-import {useRootLoaderData} from '~/lib/root-data';
 import { motion } from 'framer-motion';
 import { useMediaQuery } from 'react-responsive'
 import { IconFacebook } from '~/components/Icon';
 import { IconX } from '~/components/Icon';
 import { IconPinterest } from '~/components/Icon';
 import { convertToNumber } from '~/lib/utils';
+import { useAside } from '~/components/Aside';
+
 export const headers = routeHeaders;
 
-export async function loader({params, request, context}: LoaderFunctionArgs) {
+export async function loader(args: LoaderFunctionArgs) {
+  const {params} = args;
+  const {productHandle} = params;
+  invariant(productHandle, 'Missing productHandle param, check route filename');
+
+  // Start fetching non-critical data without blocking time to first byte
+  const deferredData = loadDeferredData(args);
+
+  // Await the critical data required to render initial state of the page
+  const criticalData = await loadCriticalData(args);
+
+  return defer({...deferredData, ...criticalData});
+}
+
+async function loadCriticalData(args: LoaderFunctionArgs) {
+  const {params, request, context} = args;
   const {productHandle} = params;
   invariant(productHandle, 'Missing productHandle param, check route filename');
 
@@ -79,14 +95,16 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     throw new Error('Expected product handle to be defined');
   }
 
-  const {shop, product} = await context.storefront.query(PRODUCT_QUERY, {
-    variables: {
-      handle: productHandle,
-      selectedOptions,
-      country: context.storefront.i18n.country,
-      language: context.storefront.i18n.language,
-    },
-  });
+  const [{shop, product}] = await Promise.all([
+    context.storefront.query(PRODUCT_QUERY, {
+      variables: {
+        handle: productHandle,
+        selectedOptions,
+        country: context.storefront.i18n.country,
+        language: context.storefront.i18n.language,
+      },
+    }),
+  ]);
 
   if (!product?.id) {
     throw new Response('product', {status: 404});
@@ -110,6 +128,31 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     }
   }
 
+  const recommended = getRecommendedProducts(context.storefront, product.id);
+
+  // TODO: firstVariant is never used because we will always have a selectedVariant due to redirect
+  // Investigate if we can avoid the redirect for product pages with no search params for first variant
+  const selectedVariant = product.selectedVariant ?? firstVariant;
+  const seo = seoPayload.product({
+    product,
+    selectedVariant,
+    url: request.url,
+  });
+
+  return {
+    shop,
+    product,
+    recommended,
+    storeDomain: shop.primaryDomain.url,
+    seo,
+  };
+}
+
+function loadDeferredData(args: LoaderFunctionArgs) {
+  const {params, request, context} = args;
+  const {productHandle} = params;
+  invariant(productHandle, 'Missing productHandle param, check route filename');
+
   // In order to show which variants are available in the UI, we need to query
   // all of them. But there might be a *lot*, so instead separate the variants
   // into it's own separate query that is deferred. So there's a brief moment
@@ -123,35 +166,18 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     },
   });
 
-  const recommended = getRecommendedProducts(context.storefront, product.id);
-
-  // TODO: firstVariant is never used because we will always have a selectedVariant due to redirect
-  // Investigate if we can avoid the redirect for product pages with no search params for first variant
-  const selectedVariant = product.selectedVariant ?? firstVariant;
-
   // 3. Query the route metaobject
-  const {route} = await getLoaderRouteFromMetaobject({
+  const routePromise = getLoaderRouteFromMetaobject({
     params,
     context,
     request,
     handle: 'route-product',
   });
 
-  const seo = seoPayload.product({
-    product,
-    selectedVariant,
-    url: request.url,
-  });
-
-  return defer({
-    route,
+  return {
     variants,
-    product,
-    shop,
-    storeDomain: shop.primaryDomain.url,
-    recommended,
-    seo,
-  });
+    routePromise,
+  };
 }
 
 export function redirectToFirstVariant({
@@ -179,7 +205,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 };
 
 export default function Product() {
-  const {product, shop, recommended, variants, route} =
+  const {product, shop, recommended, variants, routePromise} =
     useLoaderData<typeof loader>();
   const {media, title, vendor, outstanding_features, descriptionHtml, id} =
     product;
@@ -189,18 +215,22 @@ export default function Product() {
   const [currentQuantity, setCurrentQuantity] = useState(3);
   const selectedVariant = useOptimisticVariant(product.selectedVariant, variants);
 
-  // Buy 3 for $33 discount logic
-  const setPrice = 33;
+  let variantPrice = parseFloat(selectedVariant.price.amount);
+  let discountAmount = 0;
+  let setPrice = 20;
   const setQuantity = 3;
   const sets = Math.floor(currentQuantity / setQuantity);
   const remainingItems = currentQuantity % setQuantity;
-  const regularPrice = parseFloat(selectedVariant.price.amount);
-  const discountedTotalValue = (sets * setPrice) + (remainingItems * regularPrice);
-
-  const discountAmount = (sets * setQuantity * regularPrice - sets * setPrice);
+  //variantPrice *= currentQuantity;
+  // Buy 3 for $33 discount logic
+  if(selectedVariant.title == '3oz') {
+    setPrice = 33;
+  }
+  discountAmount = (sets * setQuantity * variantPrice - sets * setPrice);
+  variantPrice = (sets * setPrice) + (remainingItems * variantPrice);
 
   const selectedVariantPrice = {
-    amount: discountedTotalValue.toString(),
+    amount: variantPrice.toString(),
     currencyCode: "USD"
   };
   const selectedVariantCompareAtPrice = {
@@ -239,15 +269,21 @@ export default function Product() {
           {/* Product Details */}
           <div className="w-full lg:w-[45%] pt-10 lg:pt-0 lg:pl-7 xl:pl-9 2xl:pl-10">
             <div className="sticky top-10 grid gap-7 2xl:gap-8">
-                    <ProductForm
-                      product={product}
-                      selectedVariant={selectedVariant}
-                      variants={variants || []}
-                      currentQuantity={currentQuantity}
-                      setCurrentQuantity={setCurrentQuantity}
-                      selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
-                      selectedVariantPrice={selectedVariantPrice}
-                    />
+                    <Suspense fallback={<ProductForm variants={[]} />}>
+                      <Await
+                        errorElement="There was a problem loading related products"
+                        resolve={variants}
+                      >
+                        {(resp) => (
+                          <ProductForm
+                            currentQuantity={currentQuantity}
+                            setCurrentQuantity={setCurrentQuantity}
+                            selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
+                            selectedVariantPrice={selectedVariantPrice}
+                          />
+                        )}
+                      </Await>
+                    </Suspense>
               {/*  */}
               <hr className=" border-slate-200 dark:border-slate-700 mt-3"></hr>
               {/*  */}
@@ -288,7 +324,7 @@ export default function Product() {
                   />
                 </div>
               )}
-              <SocialSharing />
+              <SocialSharing selectedVariant={selectedVariant} />
 
             </div>
           </div>
@@ -298,8 +334,6 @@ export default function Product() {
         {/* DETAIL AND REVIEW */}
         <div className="space-y-12 sm:space-y-16">
 
-          {/* PROduct reviews */}
-          <ProductReviews product={product} />
 
           
 
@@ -335,7 +369,21 @@ export default function Product() {
       </main>
 
       {/* 3. Render the route's content sections */}
-      <RouteContent route={route} className="space-y-12 sm:space-y-16" />
+      <Suspense fallback={<div className="h-32" />}>
+        <Await
+          errorElement="There was a problem loading route's content sections"
+          resolve={routePromise}
+        >
+          {({route}) => (
+            <>
+              <RouteContent
+                route={route}
+                className="space-y-12 sm:space-y-16"
+              />
+            </>
+          )}
+        </Await>
+      </Suspense>
 
       <Analytics.ProductView
         data={{
@@ -347,7 +395,7 @@ export default function Product() {
               variantId: product.selectedVariant?.id || '',
               variantTitle: product.selectedVariant?.title || '',
               quantity: currentQuantity,
-              price: discountedTotalValue.toFixed(2),
+              price: variantPrice.toFixed(2),
               discount: discountAmount > 0 ? discountAmount.toFixed(2) : null,
             },
           ],
@@ -358,23 +406,19 @@ export default function Product() {
 }
 
 export function ProductForm({
-  product,
-  selectedVariant,
-  variants,
   currentQuantity,
   setCurrentQuantity,
   selectedVariantPrice,
   selectedVariantCompareAtPrice
 }: {
-  product: any;
-  selectedVariant: any;
-  variants: ProductVariantFragmentFragment[],
   currentQuantity: number,
   setCurrentQuantity: any,
   selectedVariantCompareAtPrice: any,
   selectedVariantPrice: any
 }) {
 
+  const {open} = useAside();
+  const {product} = useLoaderData<typeof loader>();
   const isDesktop = useMediaQuery({ minWidth: 767 });
 
   /**
@@ -382,13 +426,15 @@ export function ProductForm({
    * of add to cart if there is none returned from the loader.
    * A developer can opt out of this, too.
    */
+  const selectedVariant = product.selectedVariant!;
   const isOutOfStock = !selectedVariant?.availableForSale;
 
   const status = getProductStatus({
     availableForSale: selectedVariant.availableForSale,
     compareAtPriceRangeMinVariantPrice:
       selectedVariant.compareAtPrice || undefined,
-    priceRangeMinVariantPrice: selectedVariant.price
+    priceRangeMinVariantPrice: selectedVariant.price,
+    size: selectedVariant.title
   });
 
   const variantsByQuantity = [];
@@ -500,6 +546,7 @@ export function ProductForm({
                   }
                   className="w-full flex-1 add-to-cart-button"
                   data-test="add-to-cart"
+                  onClick={() => open('cart')}
                 >
                   <span
                     className="flex items-center justify-center gap-2 uppercase font-bold"
@@ -647,19 +694,37 @@ const ProductColorOption = ({option}: {option: VariantOption}) => {
 };
 
 
-const SocialSharing = () => {
+const SocialSharing = ({selectedVariant}: {selectedVariant: any}) => {
+  const location = useLocation();
+  const currentUrl = `${location.pathname}${location.search}${location.hash}`;
+
   const linkStyle = 'flex items-center justify-center gap-1';
+  console.log(selectedVariant, 'selectedVariant');
+  const productTitle = selectedVariant.product.title.replaceAll('&', ' and ') + ' (' + selectedVariant.title + ')';
+  const productLink = 'https://www.astrofreshjerky.com' + currentUrl;
+  const twitterText = productTitle + '&url=' + productLink;
+  const pinText = productLink + '&media=' + selectedVariant.image.url;
   return (
     <div className="grid grid-cols-3">
-      <Link className={linkStyle}>
+      <Link 
+        className={linkStyle}
+        target="_blank"
+        to={`https://www.facebook.com/sharer.php?u=${productLink}`}
+        >
         <IconFacebook />
         <span>Share</span>
       </Link>
-      <Link className={linkStyle}>
+      <Link className={linkStyle}
+        target="_blank"
+        to={`https://x.com/intent/post?text=${twitterText}`}
+      >
         <IconX />
         <span>Tweet</span>
       </Link>
-      <Link className={linkStyle}>
+      <Link className={linkStyle}
+        target="_blank"
+        to={`https://pinterest.com/pin/create/button/?url=${pinText}`}
+      >
         <IconPinterest />
         <span>Pin it</span>
       </Link>

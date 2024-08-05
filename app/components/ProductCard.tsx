@@ -14,6 +14,10 @@ import {motion, useAnimationControls} from 'framer-motion';
 import {getThumbnailSkeletonByIndex} from './ThumbnailSkeletons';
 import ProductStatus from './ProductStatus';
 import {useMediaQuery} from 'react-responsive';
+import { useAside } from './Aside';
+import { useVariantUrl } from '~/lib/variants';
+import { IconSpicy, IconBbq, IconChicken, IconPepper } from "./Icon";
+
 
 interface MoneyV2 {
   amount: string;
@@ -46,29 +50,21 @@ const ProductCard: FC<ProductCardProps> = ({
   quickAdd,
   variantKey = 0,
 }: ProductCardProps) => {
-  let cardLabel;
 
+  const {open} = useAside();
   const cardProduct = product?.variants ? product : getProductPlaceholder();
   if (!cardProduct?.variants?.nodes?.length) return null;
   const firstVariant = flattenConnection(cardProduct.variants)[variantKey];
   if (!firstVariant) return null;
   const {getImageWithCdnUrlByName} =
     useGetPublicStoreCdnStaticUrlFromRootLoaderData();
-
+  const variantUrl = useVariantUrl(
+    product.handle,
+    firstVariant.selectedOptions,
+  );
   const productMedia = flattenConnection(cardProduct.images);
   const {selectedOptions} = firstVariant;
 
-  const variantQueryString = selectedOptions.length
-    ? '?' + selectedOptions[0].name + '=' + selectedOptions[0].value
-    : '';
-  const isAvailable = firstVariant.availableForSale;
-  if (label) {
-    cardLabel = label;
-  } else if (!isAvailable) {
-    cardLabel = 'SOLD OUT';
-  } else {
-    cardLabel = '3 FOR $33';
-  }
 
   const productAnalytics = {
     productGid: product.id,
@@ -89,7 +85,9 @@ const ProductCard: FC<ProductCardProps> = ({
 
   const intervalDuration = 2000; // 2 seconds per image
   const totalDuration = intervalDuration * productMedia.length; // Total duration for all images to display
-
+  let productIcon;
+  
+  console.log(productIcon, product.tags)
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -130,7 +128,7 @@ const ProductCard: FC<ProductCardProps> = ({
   return ( 
     <motion.div className="flex flex-col gap-2" whileHover={{scale: 1.02}}>
       <Link
-        to={`/products/${product.handle}${variantQueryString}`}
+        to={variantUrl}
         state={{product: product.handle}}
       >
         <div className={clsx('grid gap-4', className)}>
@@ -164,7 +162,8 @@ const ProductCard: FC<ProductCardProps> = ({
                 compareAtPriceRangeMinVariantPrice:
                   product.compareAtPriceRange.minVariantPrice,
                 priceRangeMinVariantPrice: firstVariant.price,
-                tags: product.tags
+                tags: product.tags,
+                size:firstVariant.title
               })}
             />
             <motion.div
@@ -184,17 +183,21 @@ const ProductCard: FC<ProductCardProps> = ({
             <h2 className="w-full uppercase text-lead text-left">
               {product.title + ' (' + selectedOptions[0].value + ')'}
             </h2>
-            <div className="flex gap-4">
-              <span className="flex gap-4 text-copy">
-              <Prices
-                price={firstVariant.price}
-                // compareAtPrice={
-                //   isSale ? product.compareAtPriceRange.minVariantPrice : undefined
-                // }
-                withoutTrailingZeros={
-                  Number(product.priceRange.minVariantPrice.amount || 1) > 99
-                }
-              />
+            <div className="grid grid-cols-2">
+              <span className="text-copy content-center">
+                <Prices
+                contentClass="self-center"
+                  price={firstVariant.price}
+                  // compareAtPrice={
+                  //   isSale ? product.compareAtPriceRange.minVariantPrice : undefined
+                  // }
+                  withoutTrailingZeros={
+                    Number(product.priceRange.minVariantPrice.amount || 1) > 99
+                  }
+                />
+              </span>
+              <span className='text-right items'>
+                {getProductIcon(product.tags)} {/* Render the icon based on tags */}
               </span>
             </div>
           </div>
@@ -206,6 +209,7 @@ const ProductCard: FC<ProductCardProps> = ({
             {
               quantity: 1,
               merchandiseId: firstVariant.id,
+              selectedVariant: firstVariant,
             },
           ]}
           variant="secondary"
@@ -214,6 +218,7 @@ const ProductCard: FC<ProductCardProps> = ({
             products: [productAnalytics],
             totalValue: parseFloat(productAnalytics.price),
           }}
+          onClick={() => open('cart')}
         >
           <span className="flex items-center justify-center gap-2">
             Add to Cart
@@ -230,11 +235,18 @@ const ProductCard: FC<ProductCardProps> = ({
     </motion.div>
   );
 }
+const getProductIcon = (tags) => {
+  if (tags.includes('hot-spicy')) return <IconSpicy size={30} />;
+  if (tags.includes('bbq')) return <IconBbq size={30} />;
+  if (tags.includes('chicken')) return <IconChicken size={30} />;
+  if (tags.includes('peppered')) return <IconPepper size={30} />;
+  return null;
+};
 export const ProductBadge = ({
   status,
   className,
 }: {
-  status: 'Sold out' | 'Sale' | 'New' | '3 FOR $33' | null;
+  status: 'Sold out' | 'Sale' | 'New' | '3 FOR $33' | '3 FOR $20' | null;
   className?: string;
 }) => {
   if (!status) {
@@ -252,11 +264,11 @@ export const ProductBadge = ({
     );
   }
 
-  if (status === '3 FOR $33') {
+  if (status === '3 FOR $33' || status === '3 FOR $20') {
     return (
       <ProductStatus
         className={className}
-        color="logoGreen"
+        color="logoRed"
         status={status}
         icon="IconDiscount"
       />
@@ -313,12 +325,14 @@ export const getProductStatus = ({
   availableForSale,
   compareAtPriceRangeMinVariantPrice,
   priceRangeMinVariantPrice,
-  tags
+  tags,
+  size
 }: {
   availableForSale: boolean;
   compareAtPriceRangeMinVariantPrice?: Pick<MoneyV2, 'amount' | 'currencyCode'>;
   priceRangeMinVariantPrice?: Pick<MoneyV2, 'amount' | 'currencyCode'>;
   tags?: Array<string>;
+  size: string;
 }) => {
   const isSale =
     compareAtPriceRangeMinVariantPrice?.amount &&
@@ -331,11 +345,14 @@ export const getProductStatus = ({
   }
 
       
-  if (tags?.includes('label:3-for-33')) {
+  if (tags?.includes('label:3-for-33') && size == '3oz') {
     return '3 FOR $33';
   }
 
-  if (isSale && availableForSale) {
+  if (tags?.includes('label:3-for-33') && size == '2oz') {
+    return '3 FOR $20';
+  }
+  if (isSale && tags?.includes('on-sale') && availableForSale) {
     return 'Sale';
   }
 

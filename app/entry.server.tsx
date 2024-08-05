@@ -20,6 +20,8 @@ export default async function handleRequest(
       "'self'",
       'localhost:*',
       'https://cdn.shopify.com',
+      'https://d3hw6dc1ow8pp2.cloudfront.net',
+      'https://d3g5hqndtiniji.cloudfront.net',
       'data:',
     ],
     styleSrc: [
@@ -27,6 +29,7 @@ export default async function handleRequest(
       "'unsafe-inline'",
       'https://cdn.shopify.com',
       ' localhost:*',
+      'https://d3hw6dc1ow8pp2.cloudfront.net',
     ],
     connectSrc: [
       'wss://aeaa-76-170-56-64.ngrok-free.app:*',

@@ -3,7 +3,7 @@ import {
   type LoaderFunctionArgs,
   type MetaArgs,
 } from '@shopify/remix-oxygen';
-import {useLoaderData} from '@remix-run/react';
+import {Await, useLoaderData} from '@remix-run/react';
 import type {Filter} from '@shopify/hydrogen/storefront-api-types';
 import {
   Pagination,
@@ -26,7 +26,7 @@ import {getPaginationAndFiltersFromRequest} from '~/utils/getPaginationAndFilter
 import {getLoaderRouteFromMetaobject} from '~/utils/getLoaderRouteFromMetaobject';
 import {ProductsGrid} from '~/components/ProductsGrid';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { FilterMenu } from '~/components/FilterMenu';
 
 export const headers = routeHeaders;
@@ -37,33 +37,35 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
 
   invariant(collectionHandle, 'Missing collectionHandle param');
 
-  const {paginationVariables, filters, sortKey, reverse} =
-    getPaginationAndFiltersFromRequest(request);
-
-  // 2. Query the colelction details
-  const {collection} = await context.storefront.query(COLLECTION_QUERY, {
-    variables: {
-      ...paginationVariables,
-      handle: collectionHandle,
-      filters,
-      sortKey,
-      reverse,
-      country: context.storefront.i18n.country,
-      language: context.storefront.i18n.language,
-    },
-  });
-
-  if (!collection) {
-    throw new Response('collection', {status: 404});
-  }
-
-  // 3. Query the route metaobject
-  const {route} = await getLoaderRouteFromMetaobject({
+  // Query the route metaobject
+  const routePromise = getLoaderRouteFromMetaobject({
     params,
     context,
     request,
     handle: 'route-collection',
   });
+
+  const {paginationVariables, filters, sortKey, reverse} =
+    getPaginationAndFiltersFromRequest(request);
+
+  // 2. Query the colelction details
+  const [{collection}] = await Promise.all([
+    context.storefront.query(COLLECTION_QUERY, {
+      variables: {
+        ...paginationVariables,
+        handle: collectionHandle,
+        filters,
+        sortKey,
+        reverse,
+        country: context.storefront.i18n.country,
+        language: context.storefront.i18n.language,
+      },
+    }),
+  ]);
+
+  if (!collection) {
+    throw new Response('collection', {status: 404});
+  }
 
   const seo = seoPayload.collection({collection, url: request.url});
 
@@ -72,7 +74,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   );
 
   return defer({
-    route,
+    routePromise,
     collection,
     defaultPriceFilter: {
       value: defaultPriceFilter?.values[0] ?? null,
@@ -87,7 +89,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 };
 
 export default function Collection() {
-  const {collection, defaultPriceFilter, route} =
+  const {collection, routePromise} =
     useLoaderData<typeof loader>();
 
   const noResults = !collection.products.nodes.length;
@@ -155,10 +157,21 @@ export default function Collection() {
       </div>
 
       {/* 3. Render the route's content sections */}
-      <RouteContent
-        route={route}
-        className="space-y-20 sm:space-y-24 lg:space-y-28"
-      />
+      <Suspense fallback={<div className="h-32" />}>
+        <Await
+          errorElement="There was a problem loading route's content sections"
+          resolve={routePromise}
+        >
+          {({route}) => (
+            <>
+              <RouteContent
+                route={route}
+                className="space-y-20 sm:space-y-24 lg:space-y-28"
+              />
+            </>
+          )}
+        </Await>
+      </Suspense>
 
       <Analytics.CollectionView
         data={{

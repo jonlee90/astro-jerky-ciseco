@@ -1,10 +1,18 @@
 import {Fragment, lazy, Suspense, useEffect, useMemo, useState} from 'react';
-import {Dialog, Popover, Transition} from '@headlessui/react';
+import {
+  Dialog,
+  Popover,
+  PopoverButton,
+  PopoverPanel,
+  Transition,
+  TransitionChild,
+} from '@headlessui/react';
 import {
   useLocation,
   useSearchParams,
   useNavigate,
   useNavigation,
+  useRouteLoaderData,
 } from '@remix-run/react';
 import type {
   Filter,
@@ -33,7 +41,7 @@ import {ChevronDownIcon} from '@heroicons/react/24/outline';
 import SortMenu, {type SortMenuProps} from './SortMenu';
 import ButtonClose from './ButtonClose';
 import {MyAdjustmentsIcon} from './Icons/MyAdjustmentsIcon';
-import {useRootLoaderData} from '~/lib/root-data';
+import type {RootLoader} from '~/root';
 
 const Slider = lazy(() => delayForDemo(import('rc-slider')));
 
@@ -78,10 +86,10 @@ interface TTTTT extends Partial<FilterValue> {
   checked: boolean;
 }
 
-
 export function SortFilter({filters, defaultPriceFilter, sorts}: Props) {
   const [params] = useSearchParams();
-  const locale = useRootLoaderData().selectedLocale as I18nLocale;
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const locale = rootData?.selectedLocale;
 
   const filtersFromSearchParams = [...params.entries()].reduce(
     (filters, [key, value]) => {
@@ -228,7 +236,7 @@ export function FiltersDrawer({
             <Popover key={filter.id} className="relative">
               {({open, close}) => (
                 <>
-                  <Popover.Button
+                  <PopoverButton
                     className={clsx([
                       `relative flex gap-2 items-center justify-center ps-4 pe-3.5 py-2 text-sm rounded-full border focus:outline-none select-none`,
                       isActive || open
@@ -258,13 +266,15 @@ export function FiltersDrawer({
                     {filter.id === 'filter.v.option.material' && <MyShapIcon />}
 
                     <div className="flex items-center gap-1">
-                      <span className="flex-shrink-0"> {filter.label}</span>
+                      <span className="flex-shrink-0 capitalize">
+                        {filter.label}
+                      </span>
                     </div>
 
                     <CountActived isActive={isActive} count={count} />
 
                     <ChevronDownIcon className="w-4 h-4" />
-                  </Popover.Button>
+                  </PopoverButton>
                   <Transition
                     as={Fragment}
                     enter="transition ease-out duration-200"
@@ -274,7 +284,7 @@ export function FiltersDrawer({
                     leaveFrom="opacity-100 translate-y-0"
                     leaveTo="opacity-0 translate-y-1"
                   >
-                    <Popover.Panel className="absolute z-40 w-screen max-w-xs xl:max-w-sm px-4 mt-3 left-0 sm:px-0">
+                    <PopoverPanel className="absolute z-40 w-screen max-w-xs xl:max-w-sm px-4 mt-3 left-0 sm:px-0">
                       <form
                         onSubmit={(e) => {
                           e.preventDefault();
@@ -339,6 +349,7 @@ export function FiltersDrawer({
                                   name={option.label}
                                   label={option.label}
                                   checked={isChecked}
+                                  labelClassName="capitalize"
                                   onChange={(event) => {
                                     setTemporarySelectedInputs({
                                       ...temporarySelectedInputs,
@@ -386,7 +397,7 @@ export function FiltersDrawer({
                           </ButtonPrimary>
                         </div>
                       </form>
-                    </Popover.Panel>
+                    </PopoverPanel>
                   </Transition>
                 </>
               )}
@@ -768,7 +779,7 @@ function TabMoreFilterOnMobile({
           onClose={closeModalMoreFilter}
         >
           <div className="min-h-screen text-center">
-            <Transition.Child
+            <TransitionChild
               as={Fragment}
               enter="ease-out duration-300"
               enterFrom="opacity-0"
@@ -777,8 +788,8 @@ function TabMoreFilterOnMobile({
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-40 dark:bg-opacity-60" />
-            </Transition.Child>
+              <div className="fixed inset-0 bg-black bg-opacity-40 dark:bg-opacity-60" />
+            </TransitionChild>
 
             {/* This element is to trick the browser into centering the modal contents. */}
             <span
@@ -787,7 +798,8 @@ function TabMoreFilterOnMobile({
             >
               &#8203;
             </span>
-            <Transition.Child
+            <TransitionChild
+              as={'div'}
               className="inline-block h-screen w-full max-w-4xl p-2 lg:p-10"
               enter="ease-out duration-300"
               enterFrom="opacity-0 scale-95"
@@ -892,12 +904,12 @@ function TabMoreFilterOnMobile({
                                 min={
                                   typeof temporaryMinPrice === 'undefined'
                                     ? undefined
-                                    : temporaryMinPrice ?? min
+                                    : (temporaryMinPrice ?? min)
                                 }
                                 max={
                                   typeof temporaryMaxPrice === 'undefined'
                                     ? undefined
-                                    : temporaryMaxPrice ?? max
+                                    : (temporaryMaxPrice ?? max)
                                 }
                                 initMin={initMin || 0}
                                 initMax={initMax || 99999}
@@ -1003,7 +1015,7 @@ function TabMoreFilterOnMobile({
                   </ButtonPrimary>
                 </div>
               </form>
-            </Transition.Child>
+            </TransitionChild>
           </div>
         </Dialog>
       </Transition>

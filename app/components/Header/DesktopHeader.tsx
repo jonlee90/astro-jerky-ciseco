@@ -1,11 +1,11 @@
 import React, { Suspense } from 'react';
-import { Await } from '@remix-run/react';
+import { Await, useRouteLoaderData } from '@remix-run/react';
 import { motion } from 'framer-motion';
 import Logo from '../Logo';
-import { useRootLoaderData } from '~/lib/root-data';
 import { HeaderMenuDataWrap } from '../Layout';
 import { CartCount } from '../CartCount';
 import { Link } from '../Link';
+import { RootLoader } from '~/root';
 
 interface MenuItem {
   id: string;
@@ -14,9 +14,7 @@ interface MenuItem {
   title: string;
 }
 
-interface DesktopHeaderProps {
-  openCart: () => void;
-}
+
 
 interface BadgeProps {
   count: number;
@@ -28,8 +26,8 @@ const Badge: React.FC<BadgeProps> = ({ count }) => (
 
 
 
-export const DesktopHeader: React.FC<DesktopHeaderProps> = ({ openCart }) => {
-  const rootData = useRootLoaderData();
+export const DesktopHeader = () => {
+  const rootData = useRouteLoaderData<RootLoader>('root');
   const linkCss = 'pb-1 uppercase text-2xl font-RobotoSlabRegular font-bold';
 
   return (
@@ -80,7 +78,7 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({ openCart }) => {
         </div>
         <div className="flex items-center gap-1">
           {/* <AccountLink className="relative flex items-center justify-center w-10 h-10 focus:ring-primary/5" /> */}
-          <CartCount openCart={openCart} />
+          <CartCount />
         </div>
       </div>
     </header>

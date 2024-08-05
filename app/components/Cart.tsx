@@ -5,14 +5,12 @@ import {
   Image,
   Money,
   useOptimisticCart,
-  OptimisticCart,
+  type OptimisticCart,
   type OptimisticCartLine,
   OptimisticInput,
-  useOptimisticData,
-  CartReturn
+  type CartReturn
 } from '@shopify/hydrogen';
 import type {
-  Cart as CartType,
   CartCost,
   CartLine,
   CartDiscountCode,
@@ -33,72 +31,72 @@ import { useScroll } from 'framer-motion';
 import { Button } from './Button';
 import Heading from './Heading/Heading';
 import { IconRemove } from './Icon';
-import { defer, type LoaderFunctionArgs } from '@shopify/remix-oxygen';
-import { Await, useLoaderData } from '@remix-run/react';
+import {useVariantUrl} from '~/lib/variants';
+import {useAside} from './Aside';
+import { Await } from '@remix-run/react';
 
 
-// Root loader returns the cart data
-export async function loader({context}: LoaderFunctionArgs) {
-  return defer({
-    cart: context.cart.get(),
-  });
-}
+export type CartType = OptimisticCart<CartApiQueryFragment | null>;
 
 export function Cart({
   onClose,
-  cart,
+  cart: originalCart,
 }:  {
   onClose?: () => void;
   cart: CartApiQueryFragment  | null;
 }) {
-  const optimisticCart = useOptimisticCart(cart);
-  const linesCount = Boolean(optimisticCart?.lines?.nodes?.length || 0);
+  // `useOptimisticCart` adds optimistic line items to the cart.
+  // These line items are displayed in the cart until the server responds.
+  const cart = useOptimisticCart(originalCart);
+  const linesCount = Boolean(cart?.lines?.nodes?.length || 0);
+
+  return (
+    <>
+      <CartEmpty hidden={linesCount} onClose={onClose} />
+      <CartDetails onClose={onClose} cart={cart} />
+    </>
+  );
+}
+function CartDetails({
+  cart,
+  onClose,
+}: {
+  cart: OptimisticCart<CartApiQueryFragment | null>;
+  onClose?: () => void;
+}) {
   const [disableButton, setDisableButton] = useState(true);
   const toggleDisableButton = () => {
     setDisableButton(!disableButton);
   };
+  // @todo: get optimistic cart cost
+  const cartHasItems = (cart?.totalQuantity || 0) > 0;
   return (
-    <>
-      <CartEmpty hidden={linesCount} onClose={onClose} />
-      
-      <div className='grid grid-cols-1 h-screen-no-nav grid-rows-[auto_1fr_auto]'>
-      <Suspense fallback={<></>}>
-          <Await resolve={cart}>
-              {(cartOpt) => (
-                <>
-                  <FreeShippingProgressBar totalAmount={parseFloat(cartOpt?.cost?.totalAmount?.amount || '0')} />
-                    <CartLines lines={cartOpt?.lines} />
-                    {linesCount && (
-                      <CartSummary 
-                        cart={cartOpt}
-                        onClose={onClose}
-                      >
-                        <CartAgreementCheckbox toggleDisableButton={toggleDisableButton} />
-                        <CartCheckoutActions checkoutUrl={optimisticCart?.checkoutUrl} disableButton={disableButton} />
-                      </CartSummary>
-                    )}
-                </>
-              )}
-          </Await>
-        </Suspense>
-          
-      </div>
-    </>
+    <div className='grid grid-cols-1 h-screen-no-nav grid-rows-[auto_1fr_auto]'>
+        <FreeShippingProgressBar totalAmount={parseFloat(cart?.cost?.totalAmount?.amount || '0')} />
+          <CartLines lines={cart?.lines} />
+          {cartHasItems && (
+            <CartSummary 
+              cart={cart}
+              onClose={onClose}
+            >
+              <CartAgreementCheckbox toggleDisableButton={toggleDisableButton} />
+              <CartCheckoutActions checkoutUrl={cart?.checkoutUrl} disableButton={disableButton} />
+            </CartSummary>
+          )}
+    </div>
   );
 }
 
-function CartLines({lines}: {lines: OptimisticCartLine[] | undefined}) {
-  const currentLines = lines ? lines : [];
-
-
+function CartLines({lines: cartLines}: {lines: CartType['lines'] | undefined}) {
+  const currentLines = cartLines ? flattenConnection(cartLines) : [];
   return (
     <section
       aria-labelledby="cart-contents"
       className={'border-t px-3 pb-6 sm-max:pt-2 overflow-auto transition mb-[165px]'}
     >
       <ul className="grid gap-6 md:gap-10">
-        {flattenConnection(currentLines).map((line) => (
-          <CartLineItem key={line.id} line={line as OptimisticCartLine} />
+        {currentLines.map((line) => (
+          <CartLineItem key={line.id} line={line} />
         ))}
       </ul>
     </section>
@@ -179,10 +177,12 @@ function CartLineItem({line}: {line: OptimisticCartLine}) {
   if (!line?.id) return null;
 
   const {id, quantity, merchandise, isOptimistic} = line;
+  const {product, title, image, selectedOptions} = merchandise;
 
-  if (typeof quantity === 'undefined' || !merchandise?.product) return null;
+  const {close: closeCartAside} = useAside();
+  const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
 
-  
+
   return (
     <li
       key={id}
@@ -194,26 +194,28 @@ function CartLineItem({line}: {line: OptimisticCartLine}) {
       }}
     >
       <div className="flex-shrink min-w-24">
-        {merchandise.image && (
-          <Image
-            width={100}
-            height={100}
-            data={merchandise.image}
-            className="object-cover object-center w-24 h-24 border rounded md:w-28 md:h-28"
-            alt={merchandise.title}
-          />
+        {image && (
+          <Link to={lineItemUrl}  onClick={closeCartAside}>
+            <Image
+              width={100}
+              height={100}
+              data={image}
+              className="object-cover object-center w-24 h-24 border rounded md:w-28 md:h-28"
+              alt={title}
+            />
+          </Link>
         )}
       </div>
 
       <div className="flex justify-between flex-grow">
         <div className="grid gap-2">
           <span className='text-lead'>
-            {merchandise?.product?.handle ? (
-              <Link to={`/products/${merchandise.product.handle}`}>
-                {merchandise?.product?.title + ' (' + merchandise.title + ')' || ''}
+            {product?.handle ? (
+              <Link to={lineItemUrl}  onClick={closeCartAside}>
+                {product?.title + ' (' + title + ')' || ''}
               </Link>
             ) : (
-              <span>{merchandise?.product?.title + ' (' + merchandise.title + ')' || ''}</span>
+              <span>{product?.title + ' (' + title + ')' || ''}</span>
             )}
           </span>
 
@@ -221,7 +223,7 @@ function CartLineItem({line}: {line: OptimisticCartLine}) {
             <div className="flex justify-start text-fine">
               <CartLineQuantityAdjust line={line} />
             </div>
-            <CartLineRemoveButton lineIds={[id]}  disabled={!!isOptimistic} />
+            <ItemRemoveButton lineId={id}  disabled={!!isOptimistic} />
           </div>
         </div>
         <span>
@@ -233,10 +235,8 @@ function CartLineItem({line}: {line: OptimisticCartLine}) {
 }
 
 
-interface CartLineQuantityAdjustProps {
-  line: OptimisticCartLine;
-}
-function CartLineQuantityAdjust({ line }: CartLineQuantityAdjustProps) {
+
+function CartLineQuantityAdjust({ line }: {line: OptimisticCartLine}) {
   if (!line || typeof line?.quantity === 'undefined') return null;
   const {id: lineId, quantity, isOptimistic} = line;
   const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
@@ -288,7 +288,7 @@ export function CartLinePrice({
   withoutTrailingZeros = true,
   ...passthroughProps
 }: {
-  line: OptimisticCartLine;
+  line: CartLine;
   priceType?: 'regular' | 'compareAt';
   [key: string]: any;
   withoutTrailingZeros?: boolean;
@@ -395,7 +395,7 @@ function CartAgreementCheckbox({ toggleDisableButton }: CartAgreementCheckboxPro
 }
 
 interface CartCheckoutActionsProps {
-  checkoutUrl: string;
+  checkoutUrl?: string;
   disableButton: boolean;
 }
 
@@ -436,28 +436,27 @@ function CartLineUpdateButton({
  * when the line item is new, and the server hasn't yet responded
  * that it was successfully added to the cart.
  */
-export function CartLineRemoveButton({
-  lineIds,
+export function ItemRemoveButton({
+  lineId,
   disabled,
 }: {
-  lineIds: string[];
+  lineId: CartLineUpdateInput['id'];
   disabled: boolean;
 }) {
   return (
     <CartForm
       route="/cart"
-      action={CartForm.ACTIONS.LinesRemove}
+      action={CartForm.ACTIONS.LinesRemove} 
       inputs={{
-        lineIds: lineIds,
+        lineIds: [lineId],
       }}
     >
       <button
         className="flex items-center justify-center size-8 border rounded"
         type="submit"
         disabled={disabled} 
+        title="Remove item from cart"
       >
-      {/* 2. Use the OptimisticInput component to remove the line item */}
-      <OptimisticInput id={lineIds[0]} data={{action: 'removing'}} />
         <span className="sr-only">Remove</span>
         <IconRemove aria-hidden="true" />
       </button>

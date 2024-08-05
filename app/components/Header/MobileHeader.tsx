@@ -4,11 +4,9 @@ import { motion } from 'framer-motion';
 import useWindowScroll from './useWindowScroll';
 import Logo from '../Logo';
 
-interface MobileHeaderProps {
-  openMenu: () => void;
-}
 
-export function MobileHeader({ openMenu }: MobileHeaderProps) {
+
+export function MobileHeader() {
   const [isVisible, setIsVisible] = useState(true);
   const { y } = useWindowScroll();
   const prevScrollY = useRef(0);

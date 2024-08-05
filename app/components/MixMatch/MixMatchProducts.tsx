@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { SwitchTab } from '../Tabs/SwtchTab';
 import { AddToCartButton } from '../AddToCartButton';
 import { MixMatchProductsSlider } from './MixMatchProductsSlider';
+import { useAside } from '../Aside';
 const progressClass: { [key: number]: string } = {
   1: `grid-cols-1`,
   2: `grid-cols-2`,
@@ -49,6 +50,7 @@ interface MixMatchProductsProps {
 }
 
 export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: MixMatchProductsProps) {
+  const {open} = useAside();
   const [bigBags, setBigBags] = useState(bigProducts);
   const [smallBags, setSmallBags] = useState(smallProducts);
   const { bigQuantity, smallQuantity } = currentBundle;
@@ -57,18 +59,20 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: 
   const sumSmallBags = smallBags.reduce((acc, o) => acc + o.quantity, 0);
   const done = bigQuantity === sumBigBags && smallQuantity === sumSmallBags;
 
-  const cartArray: { merchandiseId: string; quantity: number }[] = [];
+  const cartArray: { merchandiseId: string; quantity: number; selectedVariant: Product; }[] = [];
   if (done) {
     bigBags.forEach((item) => {
       cartArray.push({
         merchandiseId: item.id,
         quantity: item.quantity,
+        selectedVariant: item
       });
     });
     smallBags.forEach((item) => {
       cartArray.push({
         merchandiseId: item.id,
         quantity: item.quantity,
+        selectedVariant: item
       });
     });
   }
@@ -193,6 +197,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: 
                   data-test="add-to-cart"
                   analytics={analyticsData}
                   disabled={!done}
+                  onClick={() => open('cart')}
                 >
                   Add To Cart
                 </AddToCartButton>

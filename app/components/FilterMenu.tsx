@@ -5,7 +5,6 @@ import { useSearchParams, useLocation, useNavigate } from "@remix-run/react";
 import { ProductFilter } from "@shopify/hydrogen/storefront-api-types";
 import clsx from "clsx";
 import {Fragment} from 'react';
-import { useRootLoaderData } from "~/lib/root-data";
 import { I18nLocale } from "~/lib/type";
 import { parseAsCurrency } from "~/lib/utils";
 import { IconSpicy, IconBbq, IconChicken, IconPepper } from "./Icon";

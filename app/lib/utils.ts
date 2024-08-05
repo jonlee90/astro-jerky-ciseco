@@ -1,17 +1,16 @@
-import {useLocation, useMatches} from '@remix-run/react';
+import {useLocation, useRouteLoaderData} from '@remix-run/react';
 import type {MoneyV2} from '@shopify/hydrogen/storefront-api-types';
 import type {FulfillmentStatus} from '@shopify/hydrogen/customer-account-api-types';
-import typographicBase from 'typographic-base/index';
 
 import type {
   ChildMenuItemFragment,
   MenuFragment,
   ParentMenuItemFragment,
 } from 'storefrontapi.generated';
-import {useRootLoaderData} from '~/lib/root-data';
 import {countries} from '~/data/countries';
 
 import type {I18nLocale} from './type';
+import type {RootLoader} from '~/root';
 
 type EnhancedMenuItemProps = {
   to: string;
@@ -40,20 +39,7 @@ export function missingClass(string?: string, prefix?: string) {
   return string.match(regex) === null;
 }
 
-export function formatText(input?: string | React.ReactNode) {
-  if (!input) {
-    return;
-  }
 
-  if (typeof input !== 'string') {
-    return input;
-  }
-
-  return typographicBase(input, {locale: 'en-us'}).replace(
-    /\s([^\s<]+)\s*$/g,
-    '\u00A0$1',
-  );
-}
 
 export function getExcerpt(text: string) {
   const regex = /<p.*>(.*?)<\/p>/;
@@ -225,7 +211,7 @@ export function parseMenu(
 
 export const getInputStyleClasses = (isError?: string | null) => {
   const className =
-    'appearance-none block w-full rounded-xl border-0 py-1.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6';
+    'appearance-none block w-full rounded-xl border-0 py-2 px-3 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6';
   return `${className} ${isError ? 'border-red-500' : 'border-primary/20'}`;
 };
 
@@ -267,7 +253,7 @@ export function getLocaleFromRequest(request: Request): I18nLocale {
 }
 
 export function usePrefixPathWithLocale(path: string) {
-  const rootData = useRootLoaderData();
+  const rootData = useRouteLoaderData<RootLoader>('root');
   const selectedLocale = rootData?.selectedLocale ?? DEFAULT_LOCALE;
 
   return `${selectedLocale.pathPrefix}${
@@ -277,7 +263,7 @@ export function usePrefixPathWithLocale(path: string) {
 
 export function useIsHomePath() {
   const {pathname} = useLocation();
-  const rootData = useRootLoaderData();
+  const rootData = useRouteLoaderData<RootLoader>('root');
   const selectedLocale = rootData?.selectedLocale ?? DEFAULT_LOCALE;
   const strippedPathname = pathname.replace(selectedLocale.pathPrefix, '');
   return strippedPathname === '/' || strippedPathname === '/home-2';
@@ -309,6 +295,7 @@ export function isLocalPath(url: string) {
 
   return false;
 }
+
 export function convertToNumber(amount: string, quantity: number, discountAmount: number = 0): string {
   let price = (parseFloat(amount) * quantity) - discountAmount;
   return (Math.round(price * 100) / 100).toFixed(2);

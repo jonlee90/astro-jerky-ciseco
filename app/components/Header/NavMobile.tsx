@@ -3,17 +3,18 @@ import {ChevronDownIcon} from '@heroicons/react/24/solid';
 import {type ParentEnhancedMenuItem} from '~/lib/utils';
 import SocialsList from '../SocialsList';
 import {Disclosure} from '@headlessui/react';
-import {Form, Link} from '@remix-run/react';
+import {Form, Link, useRouteLoaderData} from '@remix-run/react';
 import LangDropdown from './LangDropdown';
-import {useRootLoaderData} from '~/lib/root-data';
 import {HeaderMenuDataWrap} from '../Layout';
+import { RootLoader } from '~/root';
 
 export interface NavMobileProps {
   onClose?: () => void;
 }
 
 const NavMobile: React.FC<NavMobileProps> = ({onClose}) => {
-  const {layout} = useRootLoaderData();
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const layout = rootData?.layout;
   const {description} = layout?.shop || {};
 
   const _renderMenuChild = (
