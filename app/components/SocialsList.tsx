@@ -32,7 +32,7 @@ const SocialsList: FC<SocialsListProps> = ({
           {item.icon ? (
             <img
               width={30}
-              className="w-full"
+              className="w-full size-10"
               sizes="32px"
               src={item.icon}
               alt={item.name}

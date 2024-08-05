@@ -5,13 +5,14 @@ import {
   redirect,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
-import {useLoaderData, Await, useNavigate} from '@remix-run/react';
+import {useLoaderData, Await, useNavigate, useLocation} from '@remix-run/react';
 import {
   type VariantOption,
   Image,
   VariantSelector,
   getSelectedProductOptions,
-  UNSTABLE_Analytics as Analytics,
+  Analytics,
+  useOptimisticVariant,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 import clsx from 'clsx';
@@ -49,11 +50,32 @@ import {type SelectedOption} from '@shopify/hydrogen/storefront-api-types';
 import {RouteContent} from '~/sections/RouteContent';
 import {getSeoMeta} from '@shopify/hydrogen';
 import {getLoaderRouteFromMetaobject} from '~/utils/getLoaderRouteFromMetaobject';
-import {useRootLoaderData} from '~/lib/root-data';
+import { motion } from 'framer-motion';
+import { useMediaQuery } from 'react-responsive'
+import { IconFacebook } from '~/components/Icon';
+import { IconX } from '~/components/Icon';
+import { IconPinterest } from '~/components/Icon';
+import { convertToNumber } from '~/lib/utils';
+import { useAside } from '~/components/Aside';
 
 export const headers = routeHeaders;
 
-export async function loader({params, request, context}: LoaderFunctionArgs) {
+export async function loader(args: LoaderFunctionArgs) {
+  const {params} = args;
+  const {productHandle} = params;
+  invariant(productHandle, 'Missing productHandle param, check route filename');
+
+  // Start fetching non-critical data without blocking time to first byte
+  const deferredData = loadDeferredData(args);
+
+  // Await the critical data required to render initial state of the page
+  const criticalData = await loadCriticalData(args);
+
+  return defer({...deferredData, ...criticalData});
+}
+
+async function loadCriticalData(args: LoaderFunctionArgs) {
+  const {params, request, context} = args;
   const {productHandle} = params;
   invariant(productHandle, 'Missing productHandle param, check route filename');
 
@@ -73,14 +95,16 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     throw new Error('Expected product handle to be defined');
   }
 
-  const {shop, product} = await context.storefront.query(PRODUCT_QUERY, {
-    variables: {
-      handle: productHandle,
-      selectedOptions,
-      country: context.storefront.i18n.country,
-      language: context.storefront.i18n.language,
-    },
-  });
+  const [{shop, product}] = await Promise.all([
+    context.storefront.query(PRODUCT_QUERY, {
+      variables: {
+        handle: productHandle,
+        selectedOptions,
+        country: context.storefront.i18n.country,
+        language: context.storefront.i18n.language,
+      },
+    }),
+  ]);
 
   if (!product?.id) {
     throw new Response('product', {status: 404});
@@ -104,6 +128,31 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     }
   }
 
+  const recommended = getRecommendedProducts(context.storefront, product.id);
+
+  // TODO: firstVariant is never used because we will always have a selectedVariant due to redirect
+  // Investigate if we can avoid the redirect for product pages with no search params for first variant
+  const selectedVariant = product.selectedVariant ?? firstVariant;
+  const seo = seoPayload.product({
+    product,
+    selectedVariant,
+    url: request.url,
+  });
+
+  return {
+    shop,
+    product,
+    recommended,
+    storeDomain: shop.primaryDomain.url,
+    seo,
+  };
+}
+
+function loadDeferredData(args: LoaderFunctionArgs) {
+  const {params, request, context} = args;
+  const {productHandle} = params;
+  invariant(productHandle, 'Missing productHandle param, check route filename');
+
   // In order to show which variants are available in the UI, we need to query
   // all of them. But there might be a *lot*, so instead separate the variants
   // into it's own separate query that is deferred. So there's a brief moment
@@ -117,35 +166,18 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     },
   });
 
-  const recommended = getRecommendedProducts(context.storefront, product.id);
-
-  // TODO: firstVariant is never used because we will always have a selectedVariant due to redirect
-  // Investigate if we can avoid the redirect for product pages with no search params for first variant
-  const selectedVariant = product.selectedVariant ?? firstVariant;
-
   // 3. Query the route metaobject
-  const {route} = await getLoaderRouteFromMetaobject({
+  const routePromise = getLoaderRouteFromMetaobject({
     params,
     context,
     request,
     handle: 'route-product',
   });
 
-  const seo = seoPayload.product({
-    product,
-    selectedVariant,
-    url: request.url,
-  });
-
-  return defer({
-    route,
+  return {
     variants,
-    product,
-    shop,
-    storeDomain: shop.primaryDomain.url,
-    recommended,
-    seo,
-  });
+    routePromise,
+  };
 }
 
 export function redirectToFirstVariant({
@@ -173,11 +205,46 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 };
 
 export default function Product() {
-  const {product, shop, recommended, variants, route} =
+  const {product, shop, recommended, variants, routePromise} =
     useLoaderData<typeof loader>();
   const {media, title, vendor, outstanding_features, descriptionHtml, id} =
     product;
   const {shippingPolicy, refundPolicy, subscriptionPolicy} = shop;
+
+
+  const [currentQuantity, setCurrentQuantity] = useState(3);
+  const selectedVariant = useOptimisticVariant(product.selectedVariant, variants);
+
+  let variantPrice = parseFloat(selectedVariant.price.amount);
+  let discountAmount = 0;
+  let setPrice = 20;
+  const setQuantity = 3;
+  const sets = Math.floor(currentQuantity / setQuantity);
+  const remainingItems = currentQuantity % setQuantity;
+  //variantPrice *= currentQuantity;
+  // Buy 3 for $33 discount logic
+  if(selectedVariant.title == '3oz') {
+    setPrice = 33;
+  }
+  discountAmount = (sets * setQuantity * variantPrice - sets * setPrice);
+  variantPrice = (sets * setPrice) + (remainingItems * variantPrice);
+
+  const selectedVariantPrice = {
+    amount: variantPrice.toString(),
+    currencyCode: "USD"
+  };
+  const selectedVariantCompareAtPrice = {
+    amount: selectedVariant?.compareAtPrice?.amount ? convertToNumber(selectedVariant.compareAtPrice.amount, currentQuantity) : 0,
+    currencyCode: "USD"
+  };
+
+  
+  const isOnSale =
+    selectedVariantPrice?.amount &&
+    selectedVariantCompareAtPrice?.amount &&
+    selectedVariantPrice?.amount < selectedVariantCompareAtPrice?.amount;
+
+
 
   return (
     <div
@@ -185,7 +252,7 @@ export default function Product() {
         'product-page mt-5 lg:mt-10 pb-20 lg:pb-28 space-y-12 sm:space-y-16',
       )}
     >
-      <main className="container">
+      <main className="2xl:max-w-screen-xl container">
         <div className="lg:flex">
           {/* Galleries */}
           <div className="w-full lg:w-[55%] relative">
@@ -202,21 +269,23 @@ export default function Product() {
           {/* Product Details */}
           <div className="w-full lg:w-[45%] pt-10 lg:pt-0 lg:pl-7 xl:pl-9 2xl:pl-10">
             <div className="sticky top-10 grid gap-7 2xl:gap-8">
-              <Suspense fallback={<ProductForm variants={[]} />}>
-                <Await
-                  errorElement="There was a problem loading related products"
-                  resolve={variants}
-                >
-                  {(resp) => (
-                    <ProductForm
-                      variants={resp.product?.variants.nodes || []}
-                    />
-                  )}
-                </Await>
-              </Suspense>
-
+                    <Suspense fallback={<ProductForm variants={[]} />}>
+                      <Await
+                        errorElement="There was a problem loading related products"
+                        resolve={variants}
+                      >
+                        {(resp) => (
+                          <ProductForm
+                            currentQuantity={currentQuantity}
+                            setCurrentQuantity={setCurrentQuantity}
+                            selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
+                            selectedVariantPrice={selectedVariantPrice}
+                          />
+                        )}
+                      </Await>
+                    </Suspense>
               {/*  */}
-              <hr className=" border-slate-200 dark:border-slate-700"></hr>
+              <hr className=" border-slate-200 dark:border-slate-700 mt-3"></hr>
               {/*  */}
 
               {!!outstanding_features?.value && (
@@ -243,37 +312,31 @@ export default function Product() {
                 </div>
               )}
 
-              {/* ---------- 6 ----------  */}
-              <div>
-                <Policy
-                  shippingPolicy={shippingPolicy}
-                  refundPolicy={refundPolicy}
-                  subscriptionPolicy={subscriptionPolicy}
-                />
-              </div>
+          {/* Product description */}
+              {!!descriptionHtml && (
+                <div className="grid gap-7 2xl:gap-8">
+                  <h2 className="text-2xl font-semibold">Product Details</h2>
+                  <div
+                    className="prose prose-sm sm:prose dark:prose-invert sm:max-w-4xl"
+                    dangerouslySetInnerHTML={{
+                      __html: descriptionHtml || '',
+                    }}
+                  />
+                </div>
+              )}
+              <SocialSharing selectedVariant={selectedVariant} />
+
             </div>
           </div>
         </div>
 
+        <hr className="border-slate-200 dark:border-slate-700 my-8" />
         {/* DETAIL AND REVIEW */}
-        <div className="mt-12 sm:mt-16 space-y-12 sm:space-y-16">
-          {/* Product description */}
-          {!!descriptionHtml && (
-            <div className="">
-              <h2 className="text-2xl font-semibold">Product Details</h2>
-              <div
-                className="prose prose-sm sm:prose dark:prose-invert sm:max-w-4xl mt-7"
-                dangerouslySetInnerHTML={{
-                  __html: descriptionHtml || '',
-                }}
-              />
-            </div>
-          )}
+        <div className="space-y-12 sm:space-y-16">
 
-          {/* PROduct reviews */}
-          <ProductReviews product={product} />
 
-          <hr className="border-slate-200 dark:border-slate-700" />
+          
+
 
           {/* OTHER SECTION */}
           <Suspense fallback={<Skeleton className="h-32" />}>
@@ -284,7 +347,7 @@ export default function Product() {
               {(products) => (
                 <>
                   <SnapSliderProducts
-                    heading_bold={'Customers also purchased'}
+                    heading_bold={'YOU MIGHT ALSO LIKE'}
                     products={products.nodes}
                     className=""
                     headingFontClass="text-2xl font-semibold"
@@ -294,10 +357,33 @@ export default function Product() {
             </Await>
           </Suspense>
         </div>
+        
+        {/* ---------- 6 ----------  */}
+        <div>
+          <Policy
+            shippingPolicy={shippingPolicy}
+            refundPolicy={refundPolicy}
+            subscriptionPolicy={subscriptionPolicy}
+          />
+        </div>
       </main>
 
       {/* 3. Render the route's content sections */}
-      <RouteContent route={route} className="space-y-12 sm:space-y-16" />
+      <Suspense fallback={<div className="h-32" />}>
+        <Await
+          errorElement="There was a problem loading route's content sections"
+          resolve={routePromise}
+        >
+          {({route}) => (
+            <>
+              <RouteContent
+                route={route}
+                className="space-y-12 sm:space-y-16"
+              />
+            </>
+          )}
+        </Await>
+      </Suspense>
 
       <Analytics.ProductView
         data={{
@@ -305,11 +391,12 @@ export default function Product() {
             {
               id: product.id,
               title: product.title,
-              price: product.selectedVariant?.price.amount || '0',
               vendor: product.vendor,
               variantId: product.selectedVariant?.id || '',
               variantTitle: product.selectedVariant?.title || '',
-              quantity: 1,
+              quantity: currentQuantity,
+              price: variantPrice.toFixed(2),
+              discount: discountAmount > 0 ? discountAmount.toFixed(2) : null,
             },
           ],
         }}
@@ -319,15 +406,20 @@ export default function Product() {
 }
 
 export function ProductForm({
-  variants,
+  currentQuantity,
+  setCurrentQuantity,
+  selectedVariantPrice,
+  selectedVariantCompareAtPrice
 }: {
-  variants: ProductVariantFragmentFragment[];
+  currentQuantity: number,
+  setCurrentQuantity: any,
+  selectedVariantCompareAtPrice: any,
+  selectedVariantPrice: any
 }) {
-  const {product, storeDomain} = useLoaderData<typeof loader>();
 
-  const closeRef = useRef<HTMLButtonElement>(null);
-
-  const [quantity, setQuantity] = useState(1);
+  const {open} = useAside();
+  const {product} = useLoaderData<typeof loader>();
+  const isDesktop = useMediaQuery({ minWidth: 767 });
 
   /**
    * Likewise, we're defaulting to the first variant for purposes
@@ -342,28 +434,36 @@ export function ProductForm({
     compareAtPriceRangeMinVariantPrice:
       selectedVariant.compareAtPrice || undefined,
     priceRangeMinVariantPrice: selectedVariant.price,
-    publishedAt: product.publishedAt,
+    size: selectedVariant.title
   });
 
+  const variantsByQuantity = [];
+  for(let i = 1; i < 4; i++) {
+    const quantity = i > 1 ? 3 * (i - 1) : i;
+    variantsByQuantity.push({
+      quantity: quantity,
+      title: 'Buy ' + quantity + ' Bag' + (i > 1 ? 's' : '')
+    });
+  }
   return (
     <>
       {/* ---------- HEADING ----------  */}
-      <div>
+      <div className='mt-5 lg:mt-20 grid gap-7 2xl:gap-8'>
         {/* {product.vendor && (
           <p className="mb-2 text-sm text-slate-600">{product.vendor}</p>
         )} */}
         <h1
-          className="text-2xl sm:text-3xl font-semibold"
+          className="text-4xl sm:text-5xl font-bold text-center lg:text-left"
           title={product.title}
         >
-          {product.title}
+            {product.title + ' (' + selectedVariant.title + ')'}
         </h1>
 
-        <div className="flex flex-wrap items-center mt-5 gap-4 lg:gap-5">
+        <div className="flex flex-wrap gap-4 lg:gap-5 justify-center lg:justify-start">
           <Prices
-            contentClass="py-1 px-2 md:py-1.5 md:px-3 text-lg font-semibold"
-            price={selectedVariant.price}
-            compareAtPrice={selectedVariant.compareAtPrice}
+            contentClass="!text-2xl "
+            price={selectedVariantPrice}
+            compareAtPrice={selectedVariantCompareAtPrice}
           />
 
           {(status || product.reviews_rating_count) && (
@@ -389,8 +489,26 @@ export function ProductForm({
           </div>
         </div>
       </div>
+      <div className="grid grid-cols-3 items-center gap-1 mb-4 xs:gap-3">
+        {
+          variantsByQuantity.map(({quantity, title}) => (
+            <motion.button
+              key={quantity}
+              className={clsx(
+                'variant-button flex-auto text-[16px] xs:text-[18px]',
+                quantity === currentQuantity ? 'variant-button-pressed': '',
+                isDesktop ? "variant-button-hover" : '',
+            //    isAvailable ? 'opacity-100' : 'opacity-50',
+              )}
+              onClick={() => setCurrentQuantity(quantity)}
+            >
+              {title}
+            </motion.button>
+          ))
+        }
+      </div>
 
-      {/* ---------- VARIANTS AND COLORS LIST ----------  */}
+      {/* ---------- VARIANTS AND COLORS LIST ----------  
       <VariantSelector
         handle={product.handle}
         options={product.options}
@@ -404,6 +522,7 @@ export function ProductForm({
           }
         }}
       </VariantSelector>
+      */}
       {selectedVariant && (
         <div className="grid items-stretch gap-4">
           {isOutOfStock ? (
@@ -412,34 +531,30 @@ export function ProductForm({
               <span className="ms-2">Sold out</span>
             </ButtonSecondary>
           ) : (
-            <div className="flex gap-2 sm:gap-3.5 items-stretch">
-              <div className="flex items-center justify-center bg-slate-100/70 dark:bg-slate-800/70 p-2 sm:p-3 rounded-full">
-                <NcInputNumber
-                  className=""
-                  defaultValue={quantity}
-                  onChange={setQuantity}
-                />
-              </div>
-              <div className="flex-1 *:h-full *:flex">
+            <div className="grid items-stretch gap-4">
                 <AddToCartButton
-                  lines={[
-                    {
-                      merchandiseId: selectedVariant.id!,
-                      quantity,
-                    },
-                  ]}
-                  className="w-full flex-1"
+                  lines={
+                    selectedVariant
+                      ? [
+                          {
+                            merchandiseId: selectedVariant.id,
+                            quantity: currentQuantity,
+                            selectedVariant,
+                          },
+                        ]
+                      : []
+                  }
+                  className="w-full flex-1 add-to-cart-button"
                   data-test="add-to-cart"
+                  onClick={() => open('cart')}
                 >
-                  <ButtonPrimary
-                    as="span"
-                    className="w-full h-full flex items-center justify-center gap-3 "
+                  <span
+                    className="flex items-center justify-center gap-2 uppercase font-bold"
                   >
                     <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
                     <span>Add to Cart</span>
-                  </ButtonPrimary>
+                  </span>
                 </AddToCartButton>
-              </div>
             </div>
           )}
           {/* {!isOutOfStock && (
@@ -578,36 +693,44 @@ const ProductColorOption = ({option}: {option: VariantOption}) => {
   );
 };
 
-const ProductReviews = ({product}: {product: ProductQuery['product']}) => {
-  const {publicOkendoSubcriberId} = useRootLoaderData();
 
-  if (!product?.id || !publicOkendoSubcriberId) {
-    return null;
-  }
+const SocialSharing = ({selectedVariant}: {selectedVariant: any}) => {
+  const location = useLocation();
+  const currentUrl = `${location.pathname}${location.search}${location.hash}`;
 
+  const linkStyle = 'flex items-center justify-center gap-1';
+  console.log(selectedVariant, 'selectedVariant');
+  const productTitle = selectedVariant.product.title.replaceAll('&', ' and ') + ' (' + selectedVariant.title + ')';
+  const productLink = 'https://www.astrofreshjerky.com' + currentUrl;
+  const twitterText = productTitle + '&url=' + productLink;
+  const pinText = productLink + '&media=' + selectedVariant.image.url;
   return (
-    <>
-      <hr className="border-slate-200 dark:border-slate-700" />
-
-      <div className="product-page__reviews scroll-mt-nav" id="reviews">
-        {/* HEADING */}
-        {!!product?.okendoReviewsSnippet ? (
-          <h2 className="text-2xl font-semibold text-center sm:text-left">
-            <span>Reviews</span>
-          </h2>
-        ) : null}
-
-        <div className="product-page__reviews-widget">
-          <OkendoReviews
-            productId={product?.id}
-            okendoReviewsSnippet={product?.okendoReviewsSnippet}
-          />
-        </div>
-      </div>
-    </>
-  );
-};
-
+    <div className="grid grid-cols-3">
+      <Link 
+        className={linkStyle}
+        target="_blank"
+        to={`https://www.facebook.com/sharer.php?u=${productLink}`}
+        >
+        <IconFacebook />
+        <span>Share</span>
+      </Link>
+      <Link className={linkStyle}
+        target="_blank"
+        to={`https://x.com/intent/post?text=${twitterText}`}
+      >
+        <IconX />
+        <span>Tweet</span>
+      </Link>
+      <Link className={linkStyle}
+        target="_blank"
+        to={`https://pinterest.com/pin/create/button/?url=${pinText}`}
+      >
+        <IconPinterest />
+        <span>Pin it</span>
+      </Link>
+    </div>
+  )
+}
 export const PRODUCT_VARIANT_FRAGMENT = `#graphql
   fragment ProductVariantFragment on ProductVariant {
     id

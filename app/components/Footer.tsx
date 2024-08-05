@@ -6,25 +6,25 @@ import {
   EnvelopeIcon,
   InformationCircleIcon,
 } from '@heroicons/react/24/outline';
-import {useFetcher} from '@remix-run/react';
+import {useFetcher, useRouteLoaderData} from '@remix-run/react';
 import Input from './MyInput';
 import ButtonCircle from './Button/ButtonCircle';
 import {ArrowRightIcon} from '@heroicons/react/24/solid';
 import SocialsList from './SocialsList';
 import {type AddSubscriberMutation} from 'storefrontapi.generated';
-import {useRootLoaderData} from '~/lib/root-data';
 import {FooterMenuDataWrap, HeaderMenuDataWrap} from './Layout';
+import { RootLoader } from '~/root';
 
 interface FooterProps {}
 
 const Footer: React.FC<FooterProps> = () => {
-  const {layout} = useRootLoaderData();
-  const shop = layout?.shop || {};
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const shop = rootData?.layout?.shop;
 
   const renderWidgetMenu = (menu: ParentEnhancedMenuItem, index: number) => {
     return (
       <div key={index + menu.id} className="text-sm">
-        <h2 className="font-semibold text-neutral-700 dark:text-neutral-200">
+        <h2 className="font-semibold  text-white">
           {menu.title}
         </h2>
         <ul className="mt-5 space-y-4">
@@ -55,27 +55,17 @@ const Footer: React.FC<FooterProps> = () => {
 
   return (
     <footer
-      className="bg-white dark:bg-neutral-900 border-t border-neutral-900/10 dark:border-transparent"
+      className="bg-white border-t border-neutral-900/10"
       aria-labelledby="footer-heading"
     >
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
 
-      <div className="mx-auto max-w-7xl px-6 pb-8 pt-20 sm:pt-24 lg:px-8 lg:pt-28">
-        <div className="xl:grid xl:grid-cols-3 xl:gap-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 xl:col-span-2">
-            <FooterMenuDataWrap>
-              {({footerMenu}) => footerMenu?.items?.map(renderWidgetMenu)}
-            </FooterMenuDataWrap>
-          </div>
-          <div className="mt-10 xl:mt-0">
-            <WidgetAddSubscriberForm />
-          </div>
-        </div>
+      <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8 lg:pt-10  pb-24 text-center bg-logo-green">
 
-        <div className="mt-16 border-t border-gray-900/10 dark:border-neutral-700 pt-8 sm:mt-20 md:flex md:items-center md:justify-between lg:mt-20">
-          <div className="flex flex-wrap gap-x-6 gap-y-3 md:order-2">
+        <div className="pt-8">
+          <div className="flex flex-wrap gap-x-6 gap-y-3 justify-center">
             <HeaderMenuDataWrap>
               {({headerData: {socials}}) => (
                 <SocialsList
@@ -87,14 +77,19 @@ const Footer: React.FC<FooterProps> = () => {
                       href: node.link?.value || '',
                     };
                   })}
-                  itemClass="block w-6 h-6 opacity-90 hover:opacity-100"
+                  itemClass="block opacity-90 hover:opacity-100"
                   className="!gap-5"
                 />
               )}
             </HeaderMenuDataWrap>
           </div>
-          <p className="mt-8 text-[13px] leading-5 text-gray-500 md:order-1 md:mt-0">
-            © {new Date().getFullYear()} {shop.name}, Inc. All rights reserved.
+          <div className="mt-16 flex flex-wrap justify-center gap-5">
+              <FooterMenuDataWrap>
+                {({footerMenu}) => footerMenu?.items?.map(renderWidgetMenu)}
+              </FooterMenuDataWrap>
+          </div>
+          <p className="mt-8 text-[13px] leading-5 text-white md:order-1 md:mt-0">
+            © {new Date().getFullYear()} {shop.name}, LLC. All rights reserved.
           </p>
         </div>
       </div>

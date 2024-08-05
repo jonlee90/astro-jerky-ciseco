@@ -2,7 +2,6 @@ import {Popover, Transition} from '@headlessui/react';
 import {Fragment, Suspense, useEffect, useState} from 'react';
 import Avatar from '@/components/Avatar';
 import {Link} from '../Link';
-import {useRootLoaderData} from '~/lib/root-data';
 import {
   MyDocIcon,
   MyHearthIcon,
@@ -11,13 +10,20 @@ import {
   MyUser2Icon,
   MyUserIcon,
 } from '../Icons/MyIcons';
-import {Await, Form, useFetcher, useNavigation} from '@remix-run/react';
+import {
+  Await,
+  Form,
+  useFetcher,
+  useNavigation,
+  useRouteLoaderData,
+} from '@remix-run/react';
 import {type CustomerShortDetailsQuery} from 'customer-accountapi.generated';
 import {usePrefixPathWithLocale} from '~/lib/utils';
+import type {RootLoader} from '~/root';
 
 export default function AvatarDropdown() {
-  const rootData = useRootLoaderData();
-  const {isLoggedInPromise} = rootData;
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const isLoggedInPromise = rootData?.isLoggedInPromise;
   const {state} = useNavigation();
 
   const [isClicked, setIsClicked] = useState(false);

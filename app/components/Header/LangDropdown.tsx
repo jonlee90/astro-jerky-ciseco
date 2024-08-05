@@ -1,13 +1,18 @@
 import {ChevronDownIcon} from '@heroicons/react/24/solid';
 import {GlobeAltIcon} from '@heroicons/react/24/outline';
 import {type FC, useEffect} from 'react';
-import {useFetcher, useLocation, useNavigation} from '@remix-run/react';
-import {useRootLoaderData} from '~/lib/root-data';
+import {
+  useFetcher,
+  useLocation,
+  useNavigation,
+  useRouteLoaderData,
+} from '@remix-run/react';
 import {type Locale, type Localizations} from '~/lib/type';
 import {DEFAULT_LOCALE} from '~/lib/utils';
 import NcModal from '../NcModal';
 import {CartForm} from '@shopify/hydrogen';
 import {type CartBuyerIdentityInput} from '@shopify/hydrogen/storefront-api-types';
+import type {RootLoader} from '~/root';
 
 interface LangDropdownProps {
   panelClassName?: string;
@@ -19,7 +24,7 @@ const LangDropdown: FC<LangDropdownProps> = ({
   className = '',
 }) => {
   const fetcher = useFetcher();
-  const rootData = useRootLoaderData();
+  const rootData = useRouteLoaderData<RootLoader>('root');
   const selectedLocale = rootData?.selectedLocale ?? DEFAULT_LOCALE;
   const {pathname, search} = useLocation();
   const pathWithoutLocale = `${pathname.replace(

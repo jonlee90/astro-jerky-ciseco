@@ -1,294 +1,252 @@
+import clsx from 'clsx';
 import {type FC} from 'react';
-import Prices from './Prices';
-import {StarIcon} from '@heroicons/react/24/solid';
-import ProductStatus from './ProductStatus';
-import {Image} from '@shopify/hydrogen';
-import {Link} from './Link';
+import {useState, useEffect, useRef} from 'react';
+import {flattenConnection, Image, Money, useMoney} from '@shopify/hydrogen';
+import ButtonSecondary from './Button/ButtonSecondary';
 import {type CommonProductCardFragment} from 'storefrontapi.generated';
 import {useGetPublicStoreCdnStaticUrlFromRootLoaderData} from '~/hooks/useGetPublicStoreCdnStaticUrlFromRootLoaderData';
-import LikeButton from './LikeButton';
-import {isNewArrival} from '~/lib/utils';
-import {
-  type Metafield,
-  type MoneyV2,
-} from '@shopify/hydrogen/storefront-api-types';
 import {AddToCartButton} from './AddToCartButton';
-import ButtonSecondary from './Button/ButtonSecondary';
-import ButtonPrimary from './Button/ButtonPrimary';
-import BagIcon from './BagIcon';
-import {NoSymbolIcon} from '@heroicons/react/24/outline';
+import {Link} from './Link';
+import Prices from './Prices';
+import {isDiscounted, isNewArrival} from '~/lib/utils';
+import {getProductPlaceholder} from '~/lib/placeholders';
+import {motion, useAnimationControls} from 'framer-motion';
 import {getThumbnailSkeletonByIndex} from './ThumbnailSkeletons';
-import {getProductFeatureText} from '~/utils/getProductFeatureText';
-import {OkendoStarRating} from '@okendo/shopify-hydrogen';
+import ProductStatus from './ProductStatus';
+import {useMediaQuery} from 'react-responsive';
+import { useAside } from './Aside';
+import { useVariantUrl } from '~/lib/variants';
+import { IconSpicy, IconBbq, IconChicken, IconPepper } from "./Icon";
 
-export interface ProductCardProps {
-  className?: string;
-  product: CommonProductCardFragment;
-  loading?: HTMLImageElement['loading'];
-  quickAddToCart?: boolean;
-  isCardSmall?: boolean;
+
+interface MoneyV2 {
+  amount: string;
+  currencyCode: string;
 }
 
+interface ProductCardProps {
+  product: CommonProductCardFragment;
+  label?: string;
+  className?: string;
+  loading?: HTMLImageElement['loading'];
+  quickAdd?: boolean;
+  variantKey?: number;
+}
+
+/**
+ * @param {{
+ *   product: ProductCardFragment;
+ *   label?: string;
+ *   className?: string;
+ *   loading?: HTMLImageElement['loading'];
+ *   quickAdd?: boolean;
+ * }}
+ */
 const ProductCard: FC<ProductCardProps> = ({
-  className = '',
   product,
+  label,
+  className,
   loading,
-  quickAddToCart = true,
-  isCardSmall = false,
-}) => {
-  const {
-    id,
-    priceRange,
-    handle,
-    title,
-    options,
-    featuredImage,
-    variants,
-    outstanding_features,
-    okendoStarRatingSnippet,
-  } = product;
+  quickAdd,
+  variantKey = 0,
+}: ProductCardProps) => {
 
-  const firstVariant = variants?.nodes?.[0];
-  const optColor = options.find((option) => option.name === 'Color');
-  const optSizes = options.find((option) => option.name === 'Size');
-  const isSale =
-    Number(product.compareAtPriceRange.minVariantPrice.amount) >
-    Number(product.priceRange.minVariantPrice.amount);
-  //
-
+  const {open} = useAside();
+  const cardProduct = product?.variants ? product : getProductPlaceholder();
+  if (!cardProduct?.variants?.nodes?.length) return null;
+  const firstVariant = flattenConnection(cardProduct.variants)[variantKey];
+  if (!firstVariant) return null;
   const {getImageWithCdnUrlByName} =
     useGetPublicStoreCdnStaticUrlFromRootLoaderData();
-
-  const renderColorOptions = () => {
-    if (!optColor || optColor.values.length < 2) {
-      return null;
-    }
-
-    return (
-      <div className="flex items-center flex-wrap gap-3">
-        {optColor?.values.map((color, index) => {
-          if (index >= 5) {
-            return null;
-          }
-          return (
-            <Link
-              key={color}
-              className={`relative w-4 h-4 rounded-full overflow-hidden cursor-pointer`}
-              title={color}
-              aria-hidden
-              to={getProductUrlWithSelectedOption({
-                product,
-                optionSelected: {
-                  name: 'Color',
-                  value: color,
-                },
-              })}
-            >
-              <div className="absolute inset-0 rounded-full overflow-hidden z-0 object-cover flex">
-                <Image
-                  data={{
-                    url: getImageWithCdnUrlByName(color.replaceAll(/ /g, '_')),
-                    altText: color,
-                  }}
-                  width={20}
-                  height={20}
-                  aspectRatio="1/1"
-                  className="rounded-full"
-                  sizes="(max-width: 640px) 16px, 20px"
-                />
-              </div>
-            </Link>
-          );
-        })}
-        {optColor.values.length > 5 && (
-          <div className="block ps-1 text-sm">
-            <span>+</span>
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  const renderWishlistButton = () => {
-    return (
-      <>
-        <LikeButton id={id} className="absolute top-3 end-3 z-10" />
-      </>
-    );
-  };
-
-  const renderSizeList = () => {
-    const sizes = optSizes?.values;
-
-    if (!sizes || !sizes.length || quickAddToCart) {
-      return null;
-    }
-
-    return (
-      <div className="absolute bottom-0 inset-x-3 gap-1.5 flex justify-center opacity-0 invisible group-hover:bottom-4 group-hover:opacity-100 group-hover:visible transition-all">
-        <div className="flex justify-center flex-wrap gap-1.5">
-          {sizes.map((size, index) => {
-            if (index >= 4) {
-              return null;
-            }
-            return (
-              <Link
-                key={`${index + size}`}
-                className="nc-shadow-lg min-w-10 h-10 flex-shrink-0 px-2 rounded-xl bg-white transition-colors cursor-pointer flex items-center justify-center font-semibold tracking-tight text-sm text-slate-900 hover:bg-slate-50"
-                to={getProductUrlWithSelectedOption({
-                  product,
-                  optionSelected: {
-                    name: 'Size',
-                    value: size,
-                  },
-                })}
-              >
-                <span className="line-clamp-1">{size}</span>
-              </Link>
-            );
-          })}
-          {sizes.length > 4 && (
-            <Link
-              to={'/products/' + product.handle}
-              className="nc-shadow-lg min-w-10 h-10 flex-shrink-0 px-2 rounded-xl bg-white transition-colors cursor-pointer flex items-center justify-center font-semibold tracking-tight text-sm text-slate-900 hover:bg-slate-50"
-            >
-              <span className="-ml-0.5">+{sizes.length - 4}</span>
-            </Link>
-          )}
-        </div>
-      </div>
-    );
-  };
-
-  const renderGroupButtons = () => {
-    if (!quickAddToCart) {
-      return null;
-    }
-    return (
-      <div className="absolute bottom-0 group-hover:bottom-4 inset-x-1 flex justify-center opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-        {firstVariant.availableForSale && (
-          <AddToCartButton
-            lines={[
-              {
-                quantity: 1,
-                merchandiseId: firstVariant.id,
-              },
-            ]}
-          >
-            <ButtonPrimary
-              className="shadow-lg"
-              fontSize="text-xs"
-              sizeClass="py-2 px-4"
-              as="span"
-            >
-              <BagIcon className="w-3.5 h-3.5 mb-0.5" />
-              <span className="ms-1">Add to bag</span>
-            </ButtonPrimary>
-          </AddToCartButton>
-        )}
-        {!firstVariant.availableForSale && (
-          <ButtonSecondary
-            className="ms-1.5 bg-white hover:!bg-gray-100 hover:text-slate-900 transition-colors shadow-lg"
-            fontSize="text-xs"
-            sizeClass="py-2 px-4"
-            disabled
-          >
-            <NoSymbolIcon className="w-3.5 h-3.5" />
-            <span className="ms-1">Soul out</span>
-          </ButtonSecondary>
-        )}
-      </div>
-    );
-  };
-
-  const image = firstVariant?.image || featuredImage;
-  return (
-    <>
-      <div
-        className={`ProductCard relative flex flex-col bg-transparent ${className}`}
-      >
-        <Link
-          to={'/products/' + handle}
-          className="absolute inset-0"
-          prefetch="intent"
-        >
-          <span className="sr-only">{title}</span>
-        </Link>
-
-        <div className="relative flex-shrink-0 bg-slate-50 border border-slate-50 dark:bg-slate-300 rounded-3xl overflow-hidden z-1 group ">
-          <Link to={'/products/' + handle} className="block">
-            <div className="flex aspect-w-15 aspect-h-16 w-full group-hover:opacity-80 transition-opacity">
-              {image && (
-                <Image
-                  data={{...image, width: undefined, height: undefined}}
-                  className="object-cover"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 40vw"
-                  loading={loading}
-                />
-              )}
-            </div>
-          </Link>
-          <ProductBadge
-            status={getProductStatus({
-              availableForSale: product.availableForSale,
-              compareAtPriceRangeMinVariantPrice:
-                product.compareAtPriceRange.minVariantPrice,
-              priceRangeMinVariantPrice: product.priceRange.minVariantPrice,
-              publishedAt: product.publishedAt,
-            })}
-          />
-          {renderWishlistButton()}
-          {renderSizeList()}
-          {renderGroupButtons()}
-        </div>
-
-        <div className="space-y-4 px-2.5 pt-5 pb-2.5">
-          {renderColorOptions()}
-          <div>
-            <h2
-              className="nc-ProductCard__title text-base font-semibold transition-colors"
-              title={title}
-            >
-              {title}
-            </h2>
-            <p
-              className={`text-sm text-slate-500 dark:text-slate-400 mt-1 capitalize`}
-            >
-              {getProductFeatureText({
-                outstanding_features,
-                variants,
-              })}
-            </p>
-          </div>
-
-          <div className="flex justify-between items-end gap-2">
-            <Prices
-              price={product.priceRange.minVariantPrice}
-              // compareAtPrice={
-              //   isSale ? product.compareAtPriceRange.minVariantPrice : undefined
-              // }
-              withoutTrailingZeros={
-                Number(product.priceRange.minVariantPrice.amount || 1) > 99
-              }
-            />
-            {!isCardSmall && (
-              <OkendoStarRating
-                productId={id}
-                okendoStarRatingSnippet={okendoStarRatingSnippet}
-              />
-            )}
-          </div>
-        </div>
-      </div>
-    </>
+  const variantUrl = useVariantUrl(
+    product.handle,
+    firstVariant.selectedOptions,
   );
-};
+  const productMedia = flattenConnection(cardProduct.images);
+  const {selectedOptions} = firstVariant;
 
+
+  const productAnalytics = {
+    productGid: product.id,
+    variantGid: firstVariant.id,
+    name: product.title,
+    variantName: firstVariant.title,
+    brand: product.vendor,
+    price: firstVariant.price.amount,
+    quantity: 1,
+  };
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isInView, setIsInView] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const isDesktop = useMediaQuery({minWidth: 767});
+
+  const intervalDuration = 2000; // 2 seconds per image
+  const totalDuration = intervalDuration * productMedia.length; // Total duration for all images to display
+  let productIcon;
+  
+  console.log(productIcon, product.tags)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.intersectionRatio >= 0.9);
+      },
+      {threshold: [0, 0.9]},
+    );
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+
+    return () => {
+      if (cardRef.current) {
+        observer.unobserve(cardRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isInView) {
+      setCurrentImageIndex(0);
+      return;
+    }
+
+    if (!isHovered && isDesktop) {
+      setCurrentImageIndex(0);
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % productMedia.length);
+    }, intervalDuration);
+
+    return () => clearInterval(interval);
+  }, [isInView, isHovered, isDesktop, productMedia.length, intervalDuration]);
+
+  return ( 
+    <motion.div className="flex flex-col gap-2" whileHover={{scale: 1.02}}>
+      <Link
+        to={variantUrl}
+        state={{product: product.handle}}
+      >
+        <div className={clsx('grid gap-4', className)}>
+          <motion.div
+            ref={cardRef}
+            className="card-image aspect-[4/5] pb-1"
+            onMouseEnter={() => {
+              if (isDesktop) {
+                setIsHovered(true);
+                setIsInView(true);
+              }
+            }}
+            onMouseLeave={() => {
+              if (isDesktop) {
+                setIsHovered(false);
+                setIsInView(false);
+              }
+            }}
+          >
+            <motion.img
+              className={`object-cover w-full absolute`}
+              src={productMedia[currentImageIndex].url}
+              key={productMedia[currentImageIndex].url}
+              initial={{opacity: 0}}
+              animate={{opacity: 1}}
+              transition={{duration: 0.5}}
+            />
+            <ProductBadge
+              status={getProductStatus({
+                availableForSale: product.availableForSale,
+                compareAtPriceRangeMinVariantPrice:
+                  product.compareAtPriceRange.minVariantPrice,
+                priceRangeMinVariantPrice: firstVariant.price,
+                tags: product.tags,
+                size:firstVariant.title
+              })}
+            />
+            <motion.div
+              className="h-0.5 w-0 bg-black absolute bottom-0 left-0"
+              initial={{width: isInView ? (isDesktop ? (isHovered ? '100%' : 0) : '100%') : 0}}
+              animate={{width: isInView && (isDesktop ? isHovered : true) ? '100%' : 0}}
+              transition={{
+                duration: isInView ? totalDuration / 1000 : 0, // Total duration in seconds if in view, 0 otherwise
+                ease: 'linear',
+                repeat: isInView ? Infinity : 0,
+                repeatType: isInView ? 'loop' : undefined,
+                delay: currentImageIndex === 0 ? 0 : -1, // Delay for the first image to start the progress bar animation from 0%
+              }}
+            />
+          </motion.div>
+          <div className="grid gap-1">
+            <h2 className="w-full uppercase text-lead text-left">
+              {product.title + ' (' + selectedOptions[0].value + ')'}
+            </h2>
+            <div className="grid grid-cols-2">
+              <span className="text-copy content-center">
+                <Prices
+                contentClass="self-center"
+                  price={firstVariant.price}
+                  // compareAtPrice={
+                  //   isSale ? product.compareAtPriceRange.minVariantPrice : undefined
+                  // }
+                  withoutTrailingZeros={
+                    Number(product.priceRange.minVariantPrice.amount || 1) > 99
+                  }
+                />
+              </span>
+              <span className='text-right items'>
+                {getProductIcon(product.tags)} {/* Render the icon based on tags */}
+              </span>
+            </div>
+          </div>
+        </div>
+      </Link>
+      {quickAdd && firstVariant.availableForSale && (
+        <AddToCartButton
+          lines={[
+            {
+              quantity: 1,
+              merchandiseId: firstVariant.id,
+              selectedVariant: firstVariant,
+            },
+          ]}
+          variant="secondary"
+          className="mt-2"
+          analytics={{
+            products: [productAnalytics],
+            totalValue: parseFloat(productAnalytics.price),
+          }}
+          onClick={() => open('cart')}
+        >
+          <span className="flex items-center justify-center gap-2">
+            Add to Cart
+          </span>
+        </AddToCartButton>
+      )}
+      {quickAdd && !firstVariant.availableForSale && (
+        <ButtonSecondary className="mt-2" disabled>
+          <span className="flex items-center justify-center gap-2">
+            Sold out
+          </span>
+        </ButtonSecondary>
+      )}
+    </motion.div>
+  );
+}
+const getProductIcon = (tags) => {
+  if (tags.includes('hot-spicy')) return <IconSpicy size={30} />;
+  if (tags.includes('bbq')) return <IconBbq size={30} />;
+  if (tags.includes('chicken')) return <IconChicken size={30} />;
+  if (tags.includes('peppered')) return <IconPepper size={30} />;
+  return null;
+};
 export const ProductBadge = ({
   status,
   className,
 }: {
-  status: 'Sold out' | 'Sale' | 'New' | null;
+  status: 'Sold out' | 'Sale' | 'New' | '3 FOR $33' | '3 FOR $20' | null;
   className?: string;
 }) => {
   if (!status) {
@@ -302,6 +260,17 @@ export const ProductBadge = ({
         color="zinc"
         status={status}
         icon="NoSymbolIcon"
+      />
+    );
+  }
+
+  if (status === '3 FOR $33' || status === '3 FOR $20') {
+    return (
+      <ProductStatus
+        className={className}
+        color="logoRed"
+        status={status}
+        icon="IconDiscount"
       />
     );
   }
@@ -330,39 +299,6 @@ export const ProductBadge = ({
 
   return null;
 };
-
-export const getProductStatus = ({
-  availableForSale,
-  compareAtPriceRangeMinVariantPrice,
-  priceRangeMinVariantPrice,
-  publishedAt,
-}: {
-  availableForSale: boolean;
-  compareAtPriceRangeMinVariantPrice?: Pick<MoneyV2, 'amount' | 'currencyCode'>;
-  priceRangeMinVariantPrice?: Pick<MoneyV2, 'amount' | 'currencyCode'>;
-  publishedAt: string;
-}) => {
-  const isSale =
-    compareAtPriceRangeMinVariantPrice?.amount &&
-    priceRangeMinVariantPrice?.amount &&
-    Number(compareAtPriceRangeMinVariantPrice?.amount) >
-      Number(priceRangeMinVariantPrice.amount);
-
-  if (!availableForSale) {
-    return 'Sold out';
-  }
-
-  if (isSale && availableForSale) {
-    return 'Sale';
-  }
-
-  if (isNewArrival(publishedAt)) {
-    return 'New';
-  }
-
-  return null;
-};
-
 export function getProductUrlWithSelectedOption({
   product,
   optionSelected,
@@ -384,6 +320,46 @@ export function getProductUrlWithSelectedOption({
 
   return `/products/${product.handle}?${searchParams.toString()}`;
 }
+
+export const getProductStatus = ({
+  availableForSale,
+  compareAtPriceRangeMinVariantPrice,
+  priceRangeMinVariantPrice,
+  tags,
+  size
+}: {
+  availableForSale: boolean;
+  compareAtPriceRangeMinVariantPrice?: Pick<MoneyV2, 'amount' | 'currencyCode'>;
+  priceRangeMinVariantPrice?: Pick<MoneyV2, 'amount' | 'currencyCode'>;
+  tags?: Array<string>;
+  size: string;
+}) => {
+  const isSale =
+    compareAtPriceRangeMinVariantPrice?.amount &&
+    priceRangeMinVariantPrice?.amount &&
+    Number(compareAtPriceRangeMinVariantPrice?.amount) >
+      Number(priceRangeMinVariantPrice.amount);
+
+  if (!availableForSale) {
+    return 'Sold out';
+  }
+
+      
+  if (tags?.includes('label:3-for-33') && size == '3oz') {
+    return '3 FOR $33';
+  }
+
+  if (tags?.includes('label:3-for-33') && size == '2oz') {
+    return '3 FOR $20';
+  }
+  if (isSale && tags?.includes('on-sale') && availableForSale) {
+    return 'Sale';
+  }
+
+
+  return null;
+};
+
 
 export const ProductCardSkeleton = ({
   className = '',
@@ -440,7 +416,6 @@ export const ProductCardSkeleton = ({
           />
           <>
             <div className="flex">
-              <StarIcon className="w-4 h-4 text-amber-400" />
               <span className="text-sm ml-1">
                 <span className="line-clamp-1">5.0 (28 reviews)</span>
               </span>
@@ -451,5 +426,9 @@ export const ProductCardSkeleton = ({
     </div>
   );
 };
-
 export default ProductCard;
+
+/** @typedef {import('@shopify/hydrogen').ShopifyAnalyticsProduct} ShopifyAnalyticsProduct */
+/** @typedef {import('@shopify/hydrogen/storefront-api-types').MoneyV2} MoneyV2 */
+/** @typedef {import('@shopify/hydrogen/storefront-api-types').Product} Product */
+/** @typedef {import('storefrontapi.generated').ProductCardFragment} ProductCardFragment */

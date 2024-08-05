@@ -31,12 +31,9 @@ export function ProductGallery({
   return (
     <>
       <div
-        className={`swimlane p-0 lg:grid-flow-row hiddenScroll lg:p-0 lg:overflow-x-auto lg:grid-cols-2 ${className}`}
+        className={`swimlane p-0 lg:grid-flow-row hiddenScroll md:px-8 md:overflow-x-auto md:grid-cols-1 ${className}`}
       >
         {media.map((med, i) => {
-          const isFirst = i === 0;
-          const isFourth = i === 3;
-          const isFullWidth = i % 3 === 0;
 
           const image =
             med.__typename === 'MediaImage'
@@ -45,14 +42,10 @@ export function ProductGallery({
 
           if (!image) return null;
 
-          const style = clsx(
-            isFullWidth ? 'lg:col-span-2' : 'lg:col-span-1',
-            isFirst || isFourth ? '' : 'lg:aspect-[4/5]',
-          );
 
           return (
             <div
-              className={`${style} aspect-square snap-center card-image w-[calc(100vw_-_4rem)] sm:w-[calc(80vw_-_4rem)] lg:w-full cursor-pointer relative group bg-gray-100 rounded-2xl`}
+              className={`lg:col-span-1 aspect-square snap-center card-image w-[calc(100vw_-_4rem)] sm:w-[calc(80vw_-_4rem)] lg:w-full cursor-pointer relative group bg-gray-100 rounded-2xl`}
               key={med.id || image?.id}
               onClick={() => {
                 setOpenModal(true);
@@ -71,12 +64,8 @@ export function ProductGallery({
               <Image
                 loading={i === 0 ? 'eager' : 'lazy'}
                 data={image}
-                aspectRatio={!isFirst && !isFourth ? '4/5' : undefined}
-                sizes={
-                  isFirst || isFourth
-                    ? '(min-width: 48em) 60vw, 90vw'
-                    : '(min-width: 48em) 30vw, 90vw'
-                }
+                aspectRatio={undefined}
+                sizes='(min-width: 48em) 60vw, 90vw'
                 className="object-cover rounded-2xl w-full h-full aspect-square fadeIn"
               />
             </div>

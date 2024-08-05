@@ -3,12 +3,13 @@ import {
   type LoaderFunctionArgs,
   type MetaArgs,
 } from '@shopify/remix-oxygen';
-import {useLoaderData} from '@remix-run/react';
+import {Await, useLoaderData} from '@remix-run/react';
 import type {Filter} from '@shopify/hydrogen/storefront-api-types';
 import {
   Pagination,
-  UNSTABLE_Analytics as Analytics,
+  Analytics,
   getSeoMeta,
+  flattenConnection,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 import {routeHeaders} from '~/data/cache';
@@ -25,6 +26,8 @@ import {getPaginationAndFiltersFromRequest} from '~/utils/getPaginationAndFilter
 import {getLoaderRouteFromMetaobject} from '~/utils/getLoaderRouteFromMetaobject';
 import {ProductsGrid} from '~/components/ProductsGrid';
 import clsx from 'clsx';
+import { Suspense, useState } from 'react';
+import { FilterMenu } from '~/components/FilterMenu';
 
 export const headers = routeHeaders;
 
@@ -34,33 +37,35 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
 
   invariant(collectionHandle, 'Missing collectionHandle param');
 
-  const {paginationVariables, filters, sortKey, reverse} =
-    getPaginationAndFiltersFromRequest(request);
-
-  // 2. Query the colelction details
-  const {collection} = await context.storefront.query(COLLECTION_QUERY, {
-    variables: {
-      ...paginationVariables,
-      handle: collectionHandle,
-      filters,
-      sortKey,
-      reverse,
-      country: context.storefront.i18n.country,
-      language: context.storefront.i18n.language,
-    },
-  });
-
-  if (!collection) {
-    throw new Response('collection', {status: 404});
-  }
-
-  // 3. Query the route metaobject
-  const {route} = await getLoaderRouteFromMetaobject({
+  // Query the route metaobject
+  const routePromise = getLoaderRouteFromMetaobject({
     params,
     context,
     request,
     handle: 'route-collection',
   });
+
+  const {paginationVariables, filters, sortKey, reverse} =
+    getPaginationAndFiltersFromRequest(request);
+
+  // 2. Query the colelction details
+  const [{collection}] = await Promise.all([
+    context.storefront.query(COLLECTION_QUERY, {
+      variables: {
+        ...paginationVariables,
+        handle: collectionHandle,
+        filters,
+        sortKey,
+        reverse,
+        country: context.storefront.i18n.country,
+        language: context.storefront.i18n.language,
+      },
+    }),
+  ]);
+
+  if (!collection) {
+    throw new Response('collection', {status: 404});
+  }
 
   const seo = seoPayload.collection({collection, url: request.url});
 
@@ -69,7 +74,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   );
 
   return defer({
-    route,
+    routePromise,
     collection,
     defaultPriceFilter: {
       value: defaultPriceFilter?.values[0] ?? null,
@@ -84,19 +89,30 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 };
 
 export default function Collection() {
-  const {collection, defaultPriceFilter, route} =
+  const {collection, routePromise} =
     useLoaderData<typeof loader>();
 
   const noResults = !collection.products.nodes.length;
 
+  const [isSmall, setIsSmall] = useState(false);
+
+  const [currentProducts, setCurrentProducts] = useState(flattenConnection(collection.products));
+  const products = flattenConnection(collection.products);
+  const onTabChange = (value: string) => {
+    const filtedProducts = value == 'all' ? products : products.filter((e) => e.tags.includes(value));
+    setCurrentProducts(filtedProducts);
+  }
+  const onToggle = (value: string) => {
+    setIsSmall(value == 'small' ? true : false);
+  }
+  
   const totalProducts = noResults
     ? 0
-    : getProductTotalByFilter(collection.products.filters?.[0]?.values as any);
-
+    : currentProducts.length;
   return (
     <div
       className={clsx(
-        `nc-PageCollection pt-16 lg:pt-24 pb-20 lg:pb-28 xl:pb-32`,
+        `nc-PageCollection pt-8 lg:pt-14 pb-20 lg:pb-28 xl:pb-32`,
         'space-y-20 sm:space-y-24 lg:space-y-28',
       )}
     >
@@ -119,54 +135,19 @@ export default function Collection() {
             />
           </div>
 
-          <main>
+          <main className='!mt-8 !lg:mt-14'>
             {/* TABS FILTER */}
-            <SortFilter
-              filters={collection.products.filters as Filter[]}
-              defaultPriceFilter={defaultPriceFilter}
+            <FilterMenu
+              onTabChange={onTabChange}
+              onToggle={onToggle}
+              isSmall={isSmall}
             />
 
             <hr className="mt-8 mb-8 lg:mb-12" />
             {/* LOOP ITEMS */}
             <>
               {!noResults ? (
-                <Pagination connection={collection.products}>
-                  {({
-                    nodes,
-                    isLoading,
-                    PreviousLink,
-                    previousPageUrl,
-                    NextLink,
-                    nextPageUrl,
-                    hasNextPage,
-                    state,
-                    hasPreviousPage,
-                  }) => (
-                    <>
-                      {hasPreviousPage && (
-                        <div className="flex items-center justify-center my-14">
-                          <ButtonPrimary
-                            loading={isLoading}
-                            href={previousPageUrl.replace(/%3D$/, '=')}
-                          >
-                            {'Load previous products'}
-                          </ButtonPrimary>
-                        </div>
-                      )}
-                      <ProductsGrid nodes={nodes} />
-                      {hasNextPage && (
-                        <div className="flex items-center justify-center mt-14">
-                          <ButtonPrimary
-                            loading={isLoading}
-                            href={nextPageUrl.replace(/%3D$/, '=')}
-                          >
-                            {'Load more products'}
-                          </ButtonPrimary>
-                        </div>
-                      )}
-                    </>
-                  )}
-                </Pagination>
+                <ProductsGrid nodes={currentProducts} isSmall={isSmall} />
               ) : (
                 <Empty />
               )}
@@ -176,10 +157,21 @@ export default function Collection() {
       </div>
 
       {/* 3. Render the route's content sections */}
-      <RouteContent
-        route={route}
-        className="space-y-20 sm:space-y-24 lg:space-y-28"
-      />
+      <Suspense fallback={<div className="h-32" />}>
+        <Await
+          errorElement="There was a problem loading route's content sections"
+          resolve={routePromise}
+        >
+          {({route}) => (
+            <>
+              <RouteContent
+                route={route}
+                className="space-y-20 sm:space-y-24 lg:space-y-28"
+              />
+            </>
+          )}
+        </Await>
+      </Suspense>
 
       <Analytics.CollectionView
         data={{

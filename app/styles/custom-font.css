@@ -1,32 +1,17 @@
 @font-face {
-  font-family: Poppins;
-  font-weight: 300;
-  src: url('./fonts/Poppins/Poppins-Light.ttf');
-}
-@font-face {
-  font-family: Poppins;
+  font-family: RobotoSlabRegular;
   font-weight: 400;
-  src: url('./fonts/Poppins/Poppins-Regular.ttf');
+  src: url('./fonts/RobotoSlab-Regular.ttf');
 }
 @font-face {
-  font-family: Poppins;
-  font-weight: 500;
-  src: url('./fonts/Poppins/Poppins-Medium.ttf');
-}
-@font-face {
-  font-family: Poppins;
-  font-weight: 600;
-  src: url('./fonts/Poppins/Poppins-SemiBold.ttf');
-}
-@font-face {
-  font-family: Poppins;
-  font-weight: 700;
-  src: url('./fonts/Poppins/Poppins-Bold.ttf');
+  font-family: JosefinSansRegular;
+  font-weight: 400;
+  src: url('./fonts/JosefinSans-Regular.ttf');
 }
 
 :root {
-  --font-display: Poppins;
-  --font-body: Poppins;
+  --font-display: RobotoSlabRegular;
+  --font-body: JosefinSansRegular;
 }
 
 html body {

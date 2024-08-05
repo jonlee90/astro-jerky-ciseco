@@ -1,16 +1,17 @@
 import React from 'react';
 import {Link} from './Link';
-import {useRootLoaderData} from '~/lib/root-data';
+import {useRouteLoaderData} from '@remix-run/react';
 import {Image} from '@shopify/hydrogen';
+import type { RootLoader } from '~/root';
 
 export interface LogoProps {
   className?: string;
 }
 
 const Logo: React.FC<LogoProps> = ({
-  className = 'flex-shrink-0 max-w-28 sm:max-w-32 lg:max-w-none flex text-center',
+  className = 'flex-shrink-0 w-10 max-w-28 sm:max-w-32 lg:max-w-none flex text-center',
 }) => {
-  const rootLoaderData = useRootLoaderData();
+  const rootLoaderData = useRouteLoaderData<RootLoader>('root');
 
   if (!rootLoaderData) {
     return null;
@@ -25,7 +26,7 @@ const Logo: React.FC<LogoProps> = ({
     >
       {shop.brand?.logo?.image?.url ? (
         <Image
-          className={`block max-w-60 max-h-11`}
+          className={`block`}
           data={shop.brand?.logo?.image}
           width={shop.brand?.logo?.image.width ?? undefined}
           height={shop.brand?.logo?.image.height ?? undefined}

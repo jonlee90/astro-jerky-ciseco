@@ -1,17 +1,17 @@
 import Prices from '@/components/Prices';
 import {Suspense, useMemo} from 'react';
 import {useIsHydrated} from '~/hooks/useIsHydrated';
-import {useRootLoaderData} from '~/lib/root-data';
 import {Link} from '../Link';
 import {MyCartIcon} from '../Icons/MyIcons';
-import {Await} from '@remix-run/react';
+import {Await, useRouteLoaderData} from '@remix-run/react';
+import { RootLoader } from '~/root';
 
 interface CartBtnProps {
   openCart: () => void;
 }
 
 export default function CartBtn({openCart}: CartBtnProps) {
-  const rootData = useRootLoaderData();
+  const rootData = useRouteLoaderData<RootLoader>('root');
 
   return (
     <Suspense fallback={<Badge count={0} openCart={openCart} />}>

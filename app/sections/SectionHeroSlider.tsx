@@ -197,13 +197,13 @@ const SectionItem = ({section}: {section: HeroItemFragment}) => {
   >(section);
 
   return (
-    <div className="aspect-h-16 aspect-w-10 relative flex flex-col-reverse overflow-hidden sm:aspect-h-16 sm:aspect-w-13 lg:aspect-h-7 lg:aspect-w-16 2xl:aspect-h-[5.75] 2xl:aspect-w-16 lg:flex-col bg-slate-100">
+    <div className="aspect-h-10 aspect-w-10 relative flex flex-col-reverse overflow-hidden sm:aspect-h-13 sm:aspect-w-13 lg:aspect-h-7 lg:aspect-w-16 2xl:aspect-h-[5.75] 2xl:aspect-w-16 lg:flex-col bg-slate-100">
       {/* BG */}
       <div className="nc-SectionHeroSliderItem__image">
         {!!item.horizontal_image?.image && (
           <Image
             data={item.horizontal_image?.image}
-            sizes="110vw"
+            sizes="100vw"
             className="hidden h-full w-full object-cover lg:block"
           />
         )}
@@ -212,15 +212,15 @@ const SectionItem = ({section}: {section: HeroItemFragment}) => {
           <Image
             data={item.vertical_image?.image}
             sizes="100vw"
-            className="block h-full w-full object-cover object-bottom lg:hidden"
+            className="block h-full w-full object-contain object-top lg:hidden"
           />
         )}
       </div>
 
       {/* CONTENT */}
       <div className="flex py-12 sm:py-14 lg:items-center lg:pb-20">
-        <div className="container relative">
-          <div className="nc-SectionHeroSliderItem__left relative w-full max-w-3xl space-y-8 lg:space-y-14">
+        <div className="container relative self-end text-center">
+          <div className="nc-SectionHeroSliderItem__left relative w-full space-y-8 lg:space-y-14">
             <div className="space-y-5 sm:space-y-6">
               {!!item.sub_heading?.value && (
                 <span
@@ -238,7 +238,7 @@ const SectionItem = ({section}: {section: HeroItemFragment}) => {
 
             {!!item.cta_button?.href && (
               <ButtonPrimary
-                className="nc-SectionHeroSliderItem__button"
+                className="nc-SectionHeroSliderItem__button bg-logo-green"
                 sizeClass="py-3 px-6 sm:py-5 sm:px-9"
                 fontSize="text-sm sm:text-base xl:text-lg font-medium"
                 href={item.cta_button?.href?.value}

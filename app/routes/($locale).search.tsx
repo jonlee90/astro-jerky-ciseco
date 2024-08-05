@@ -6,7 +6,7 @@ import {
 import {Form, useLoaderData} from '@remix-run/react';
 import {
   Pagination,
-  UNSTABLE_Analytics as Analytics,
+  Analytics,
   getSeoMeta,
 } from '@shopify/hydrogen';
 import {seoPayload} from '~/lib/seo.server';

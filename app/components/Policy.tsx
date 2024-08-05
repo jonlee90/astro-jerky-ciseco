@@ -16,7 +16,6 @@ const Policy: FC<Props> = ({
 }) => {
   const A_FEATURES = [
     {
-      color: 'bg-red-50',
       name: 'Shipping Policy',
       desc: 'Read our shipping policy to learn more about our shipping rates, delivery times, and shipping options. ',
       svg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -33,9 +32,8 @@ const Policy: FC<Props> = ({
       learnMore: `/policies/${shippingPolicy?.handle}`,
     },
     {
-      color: 'bg-sky-50',
-      name: 'Return Policy',
-      desc: 'Read our return policy to learn more about our return process, eligibility, and how to request a return.',
+      name: 'Return & Refund Policy',
+      desc: 'Read our return and refund policy to learn more about our return and refund process, eligibility, and how to request a return.',
       svg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M22 15C22 18.87 18.87 22 15 22L16.05 20.25" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       <path d="M2 9C2 5.13 5.13 2 9 2L7.95 3.75" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -48,45 +46,17 @@ const Policy: FC<Props> = ({
       </svg>
       `,
       learnMore: `/policies/${refundPolicy?.handle}`,
-    },
-    {
-      color: 'bg-green-50',
-      name: 'Cancellation ',
-      desc: 'Read our cancellation policy to learn more about how to cancel your order, when you can cancel your order, and how to request a cancellation.',
-      svg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M7.99998 3H8.99998C7.04998 8.84 7.04998 15.16 8.99998 21H7.99998" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M15 3C16.95 8.84 16.95 15.16 15 21" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M3 16V15C8.84 16.95 15.16 16.95 21 15V16" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M3 9.0001C8.84 7.0501 15.16 7.0501 21 9.0001" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      `,
-      learnMore: `/policies/${subscriptionPolicy?.handle}`,
-    },
-    {
-      color: 'bg-amber-50',
-      name: 'Refunds policy',
-      desc: 'Read our refund policy to learn more about our refund process, eligibility, and how to request a refund.',
-      svg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M9.5 13.75C9.5 14.72 10.25 15.5 11.17 15.5H13.05C13.85 15.5 14.5 14.82 14.5 13.97C14.5 13.06 14.1 12.73 13.51 12.52L10.5 11.47C9.91 11.26 9.51001 10.94 9.51001 10.02C9.51001 9.17999 10.16 8.48999 10.96 8.48999H12.84C13.76 8.48999 14.51 9.26999 14.51 10.24" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M12 7.5V16.5" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M17 3V7H21" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M22 2L17 7" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      `,
-      learnMore: `/policies/${refundPolicy?.handle}`,
-    },
+    }
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 relative ">
+    <div className="grid grid-cols-2 gap-3 relative mt-20">
       {A_FEATURES.map((item, index) => {
         return (
           <Link
             key={`${index + 1}`}
             to={item.learnMore}
-            className={`relative flex flex-col p-5 rounded-2xl ${item.color} dark:bg-opacity-90 group`}
+            className={`relative flex flex-col p-5 rounded-2xl bg-slate-100 dark:bg-opacity-90 group`}
           >
             <span className="absolute top-5 end-5 group-hover:scale-110 group-hover:opacity-100 opacity-60 transition-all">
               <ArrowUpRightIcon className="w-5 h-5" />

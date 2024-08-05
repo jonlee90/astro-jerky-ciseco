@@ -16,7 +16,8 @@ import clsx from 'clsx';
 
 export const headers = routeHeaders;
 
-export async function loader({params, context, request}: LoaderFunctionArgs) {
+export async function loader(args: LoaderFunctionArgs) {
+  const {params, context} = args;
   const {language, country} = context.storefront.i18n;
   if (
     params.locale &&
@@ -27,28 +28,60 @@ export async function loader({params, context, request}: LoaderFunctionArgs) {
     throw new Response(null, {status: 404});
   }
 
-  const {shop} = await context.storefront.query(HOMEPAGE_SEO_QUERY, {
-    variables: {country, language},
-  });
-  const seo = seoPayload.home();
+  // Start fetching non-critical data without blocking time to first byte
+  const deferredData = loadDeferredData(args);
 
-  //
-  const {route} = await getLoaderRouteFromMetaobject({
-    params,
-    context,
-    request,
-    handle: 'route-home',
-  });
+  // Await the critical data required to render initial state of the page
+  const criticalData = await loadCriticalData(args);
 
-  if (!route) {
+  if (!criticalData.route) {
     return redirect(params?.locale ? `${params.locale}/products` : '/products');
   }
 
   return defer({
+    ...deferredData,
+    ...criticalData,
+  });
+}
+
+/**
+ * Load data necessary for rendering content above the fold. This is the critical data
+ * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
+ */
+async function loadCriticalData({
+  context,
+  params,
+  request,
+}: LoaderFunctionArgs) {
+  const {language, country} = context.storefront.i18n;
+
+  const [{shop}, {route}] = await Promise.all([
+    context.storefront.query(HOMEPAGE_SEO_QUERY, {
+      variables: {country, language},
+    }),
+    getLoaderRouteFromMetaobject({
+      params,
+      context,
+      request,
+      handle: 'route-home',
+    }),
+    // Add other queries here, so that they are loaded in parallel
+  ]);
+
+  return {
     shop,
     route,
-    seo,
-  });
+    seo: seoPayload.home(),
+  };
+}
+
+/**
+ * Load data for rendering content below the fold. This data is deferred and will be
+ * fetched after the initial page load. If it's unavailable, the page should still 200.
+ * Make sure to not throw any errors here, as it will cause the page to 500.
+ */
+function loadDeferredData(args: LoaderFunctionArgs) {
+  return {};
 }
 
 export async function action({request, context}: ActionFunctionArgs) {

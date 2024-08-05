@@ -1,17 +1,19 @@
 import type {SectionGridProductsAndFilterFragment} from 'storefrontapi.generated';
 import Heading from '~/components/Heading/Heading';
 import {SortFilter} from '~/components/SortFilter';
-import {useRootLoaderData} from '~/lib/root-data';
 import ButtonPrimary from '~/components/Button/ButtonPrimary';
 import {Pagination} from '@shopify/hydrogen';
 import {ProductsGrid} from '~/components/ProductsGrid';
+import {useRouteLoaderData} from '@remix-run/react';
+import type {RootLoader} from '~/root';
 
 export function SectionGridProductsAndFilter(
   props: SectionGridProductsAndFilterFragment,
 ) {
   const {heading, sub_heading, collection} = props;
   const products = collection?.reference?.sectionGridProductsAndFilterProducts;
-  const locale = useRootLoaderData().selectedLocale;
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const locale = rootData?.selectedLocale;
 
   const isSkeleton = !collection;
   //
@@ -28,7 +30,7 @@ export function SectionGridProductsAndFilter(
           {heading?.value}
         </Heading>
 
-        {!isSkeleton && (
+        {!isSkeleton && locale && (
           <SortFilter
             filters={
               collection?.reference?.sectionGridProductsAndFilterProducts

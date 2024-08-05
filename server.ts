@@ -4,6 +4,7 @@ import * as remixBuild from 'virtual:remix/server-build';
 import {
   createRequestHandler,
   getStorefrontHeaders,
+  type AppLoadContext,
 } from '@shopify/remix-oxygen';
 import {
   cartGetIdDefault,
@@ -16,6 +17,7 @@ import {
 
 import {AppSession} from '~/lib/session.server';
 import {getLocaleFromRequest} from '~/lib/utils';
+import { CART_QUERY_FRAGMENT } from '~/data/commonFragments';
 
 /**
  * Export a fetch handler in module format.
@@ -70,6 +72,7 @@ export default {
         customerAccount,
         getCartId: cartGetIdDefault(request.headers),
         setCartId: cartSetIdDefault(),
+        cartQueryFragment: CART_QUERY_FRAGMENT,
       });
 
       /**
@@ -79,7 +82,7 @@ export default {
       const handleRequest = createRequestHandler({
         build: remixBuild,
         mode: process.env.NODE_ENV,
-        getLoadContext: () => ({
+        getLoadContext: () : AppLoadContext => ({
           session,
           waitUntil,
           storefront,
@@ -90,6 +93,10 @@ export default {
       });
 
       const response = await handleRequest(request);
+
+      if (session.isPending) {
+        response.headers.set('Set-Cookie', await session.commit());
+      }
 
       if (response.status === 404) {
         /**

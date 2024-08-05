@@ -43,6 +43,7 @@
 }
 
 :root {
+  /*
   --c-primary-50: 240, 249, 255;
   --c-primary-100: 224, 242, 254;
   --c-primary-200: 186, 230, 253;
@@ -53,6 +54,29 @@
   --c-primary-700: 3, 105, 161;
   --c-primary-800: 7, 89, 133;
   --c-primary-900: 12, 74, 110;
+
+  --c-primary-50: 255, 240, 241;
+--c-primary-100: 255, 224, 225;
+--c-primary-200: 254, 186, 189;
+--c-primary-300: 252, 125, 128;
+--c-primary-400: 248, 56, 60;
+--c-primary-500: 237, 28, 36;
+--c-primary-600: 199, 2, 7;
+--c-primary-700: 161, 3, 6;
+--c-primary-800: 133, 7, 9;
+--c-primary-900: 110, 12, 14;
+*/
+  
+--c-primary-50: 235, 250, 245;
+--c-primary-100: 215, 245, 234;
+--c-primary-200: 180, 235, 213;
+--c-primary-300: 125, 218, 181;
+--c-primary-400: 65, 195, 146;
+--c-primary-500: 0, 166, 81;  
+--c-primary-600: 0, 142, 69;
+--c-primary-700: 0, 114, 56;
+--c-primary-800: 0, 93, 45;
+--c-primary-900: 0, 74, 36;
 
   --c-secondary-50: 240, 253, 244;
   --c-secondary-100: 220, 252, 231;
@@ -595,6 +619,142 @@ shop-pay-button {
 }
 
 /*  */
+.toggle-switch {
+  display: grid;
+  background-color: #fafaf9;
+  border: 2px solid rgb(211, 212, 213);
+  padding: 1px;
+}
 .oke-sr-count .oke-sr-label-text {
   display: none !important;
+}
+.bg-logo-green, .bg-green-500 {
+  background-color:rgb(0, 166, 81);
+}
+.bg-logo-red {
+  background-color: rgb(237, 28, 36);
+}
+.bg-logo-yellow {
+  background-color: rgb(255, 203, 8);
+}
+.border-color-logo {
+  border-color: rgb(0, 166, 81);
+}
+.border-color-red {
+  border-color: rgb(237, 28, 36);
+}
+.color-logo-green {
+  color:rgb(0, 166, 81);
+}
+.color-logo-red {
+  color: rgb(237, 28, 36);
+}
+.color-logo-yellow {
+  color: rgb(255, 203, 8);
+}
+.cow-card {
+  background-image: url('/images/cow.png');
+  background-color: rgba(255,255,255,0.81);
+  background-blend-mode: lighten;
+  align-content: center;
+}
+.mix-match-progress-bar:first-of-type {
+  border-top-left-radius: 0.75rem;
+  border-bottom-left-radius: 0.75rem;
+}
+.mix-match-progress-bar:last-of-type {
+  border-top-right-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
+}
+.pdp-nav-button {
+  position: fixed;
+  bottom: 20px;
+  width: 56px;
+  height: 56px;
+  z-index: 60;
+  cursor: pointer;
+}
+.variant-button {
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 30px;
+  box-shadow: black 4px 4px 0 0;
+  color: black;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 50px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.variant-button-hover:hover {
+  background-color:rgb(0, 166, 81);
+  transition: background .1s;
+}
+
+.variant-button-pressed {
+  box-shadow: none;
+  transform: translate(1px, 1px);
+  background-color: rgb(0, 166, 81);
+  font-weight: bold;
+  background-position: left;
+  transition: transform .05s, box-shadow .05s;
+}
+
+.add-to-cart-button {
+  background-color: white;
+  border: 2px solid black;
+  color: black;
+  box-shadow: 5px 5px #000;
+  transition: transform .05s, box-shadow .05s;
+  height: 60px;
+}
+.add-to-cart-button:active {
+  transform: translate(4px,4px);
+  box-shadow: 1px 1px 0 0 #000;
+}
+.font-RobotoSlabRegular {
+  font-family: RobotoSlabRegular;
+}
+.pointer-bg {
+  vertical-align: middle;
+  display: inline-block;
+  position: relative;
+  padding: 4px 0 4px 20px;
+  height: 32px;
+  margin-right: 15px;
+}
+.pointer-bg::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 16px solid rgb(var(--color-contrast));
+  border-top: 16px solid transparent;
+  border-bottom: 16px solid transparent;
+  margin-left: -1px;
+}
+.pointer-bg::before {
+  content: "";
+  position: absolute;
+  right: -16px;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 16px solid rgb(237, 28, 36);
+  border-top: 16px solid transparent;
+  border-bottom: 16px solid transparent;
+}
+
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: .6;
+}
+.bg-primary {
+  background-color: black;
 }

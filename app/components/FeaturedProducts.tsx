@@ -6,7 +6,7 @@ import type {
 } from '@shopify/hydrogen/storefront-api-types';
 import {Skeleton} from '~/components/Skeleton';
 import {usePrefixPathWithLocale} from '~/lib/utils';
-import ProductCard from './ProductCard';
+import ProductCard from '~/components/ProductCard';
 
 interface FeaturedProductsProps {
   count: number;
