@@ -76,7 +76,6 @@ export async function loader({ params, context: { storefront } }: { params: any,
 
 export default function Bundle() {
   const { smallProducts, bigProducts, bundleHandle } = useLoaderData<LoaderData>();
-
   const currentBundle = BundlePacks.find(pack => pack.id === parseInt(bundleHandle));
   return (
     <MixMatchProducts

@@ -154,7 +154,7 @@ export default function Cart() {
 
 function Content({cart: originalCart}: {cart: CartApiQueryFragment  | null}) {
   const cart = useOptimisticCart(originalCart);
-console.log(cart, 'useOptimisticCart')
+
   const linesCount = Boolean(cart?.lines?.nodes?.length || 0);
   const cartHasItems = (cart?.totalQuantity || 0) > 0;
   const currentLines = cart?.lines ? flattenConnection(cart?.lines) : [];
