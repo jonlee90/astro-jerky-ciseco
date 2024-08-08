@@ -652,6 +652,9 @@ shop-pay-button {
 .color-logo-yellow {
   color: rgb(255, 203, 8);
 }
+.bg-default-gray {
+  background-color: #fafaf9;
+}
 .cow-card {
   background-image: url('/images/cow.png');
   background-color: rgba(255,255,255,0.81);
