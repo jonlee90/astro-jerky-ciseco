@@ -87,7 +87,6 @@ const ProductCard: FC<ProductCardProps> = ({
   const totalDuration = intervalDuration * productMedia.length; // Total duration for all images to display
   let productIcon;
   
-  console.log(productIcon, product.tags)
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {

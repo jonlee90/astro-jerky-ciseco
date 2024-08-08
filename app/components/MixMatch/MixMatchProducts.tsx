@@ -59,13 +59,13 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: 
   const sumSmallBags = smallBags.reduce((acc, o) => acc + o.quantity, 0);
   const done = bigQuantity === sumBigBags && smallQuantity === sumSmallBags;
 
-  const cartArray: { merchandiseId: string; quantity: number; selectedVariant: Product; }[] = [];
+  const cartArray: { merchandiseId: string; quantity: number; selectedVariant: Product}[] = [];
   if (done) {
     bigBags.forEach((item) => {
       cartArray.push({
         merchandiseId: item.id,
         quantity: item.quantity,
-        selectedVariant: item
+        selectedVariant: item,
       });
     });
     smallBags.forEach((item) => {

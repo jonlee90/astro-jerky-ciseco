@@ -43,17 +43,19 @@ export function Cart({
   cart: originalCart,
 }:  {
   onClose?: () => void;
-  cart: CartApiQueryFragment  | null;
+  cart: CartReturn  | null;
 }) {
   // `useOptimisticCart` adds optimistic line items to the cart.
   // These line items are displayed in the cart until the server responds.
   const cart = useOptimisticCart(originalCart);
   const linesCount = Boolean(cart?.lines?.nodes?.length || 0);
+  const cartHasItems = cart?.totalQuantity! > 0;
 
   return (
     <>
       <CartEmpty hidden={linesCount} onClose={onClose} />
-      <CartDetails onClose={onClose} cart={cart} />
+      {cartHasItems && <CartDetails onClose={onClose} cart={cart} />}
+      
     </>
   );
 }

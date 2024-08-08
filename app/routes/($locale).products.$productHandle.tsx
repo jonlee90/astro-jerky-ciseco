@@ -699,7 +699,6 @@ const SocialSharing = ({selectedVariant}: {selectedVariant: any}) => {
   const currentUrl = `${location.pathname}${location.search}${location.hash}`;
 
   const linkStyle = 'flex items-center justify-center gap-1';
-  console.log(selectedVariant, 'selectedVariant');
   const productTitle = selectedVariant.product.title.replaceAll('&', ' and ') + ' (' + selectedVariant.title + ')';
   const productLink = 'https://www.astrofreshjerky.com' + currentUrl;
   const twitterText = productTitle + '&url=' + productLink;
