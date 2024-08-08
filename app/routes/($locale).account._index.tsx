@@ -66,7 +66,7 @@ function Account({customer}: AccountType) {
   return (
     <div className="container py-10 sm:py-20">
       <div className="max-w-5xl mx-auto">
-        <div className="max-w-2xl">
+        <div className="max-w-2xl mx-auto">
           <h1 className="text-3xl xl:text-4xl font-semibold">{'My Rewards'}</h1>
           <div className='bg-light-gray rounded-lg max-w-xl mx-auto'>
             <div className='grid grid-cols-2 gap-5 items-center p-5'>

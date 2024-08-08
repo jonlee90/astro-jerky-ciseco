@@ -1,4 +1,3 @@
-import Prices from '@/components/Prices';
 import {Suspense, useMemo} from 'react';
 import {useIsHydrated} from '~/hooks/useIsHydrated';
 import {Link} from '../Link';
