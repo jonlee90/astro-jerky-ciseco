@@ -24,9 +24,11 @@ const Footer: React.FC<FooterProps> = () => {
   const renderWidgetMenu = (menu: ParentEnhancedMenuItem, index: number) => {
     return (
       <div key={index + menu.id} className="text-sm">
-        <h2 className="font-semibold  text-white">
-          {menu.title}
-        </h2>
+        <Link to={menu.to} target={menu.target} prefetch="intent">
+          <h2 className="font-semibold  text-white">
+            {menu.title}
+          </h2>
+        </Link>
         <ul className="mt-5 space-y-4">
           {menu.items?.map((item: ChildEnhancedMenuItem, i) => (
             <li
@@ -55,14 +57,14 @@ const Footer: React.FC<FooterProps> = () => {
 
   return (
     <footer
-      className="bg-white border-t border-neutral-900/10"
+      className="bg-logo-green border-t border-neutral-900/10"
       aria-labelledby="footer-heading"
     >
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
 
-      <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8 lg:pt-10  pb-24 text-center bg-logo-green">
+      <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8 lg:pt-10  pb-24 text-center">
 
         <div className="pt-8">
           <div className="flex flex-wrap gap-x-6 gap-y-3 justify-center">

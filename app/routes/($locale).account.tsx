@@ -20,7 +20,6 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   }
 
   const customer = data?.customer;
-console.log(customer.metafields);
   const heading = customer
     ? customer.firstName
       ? `Welcome, ${customer.firstName}.`

@@ -31,9 +31,7 @@ const SocialsList: FC<SocialsListProps> = ({
           <span className="sr-only">{item.name}</span>
           {item.icon ? (
             <img
-              width={30}
-              className="w-full size-10"
-              sizes="32px"
+              className="size-10"
               src={item.icon}
               alt={item.name}
             />

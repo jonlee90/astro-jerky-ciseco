@@ -5,6 +5,7 @@ import {vitePlugin as remix} from '@remix-run/dev';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import commonjs from '@rollup/plugin-commonjs';
 import nodeResolve from '@rollup/plugin-node-resolve';
+import path from 'path';
 
 export default defineConfig({
   plugins: [
@@ -26,6 +27,8 @@ export default defineConfig({
     alias: {
       // Polyfill for module if necessary
       'module': 'module-polyfill',
+      '~': path.resolve(__dirname, 'app'), // Adjust 'src' to your project's base directory
+      "@": path.resolve(__dirname, 'app'),
     },
   },
   ssr: {
