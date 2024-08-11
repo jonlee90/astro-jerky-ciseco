@@ -1,5 +1,5 @@
 import {Await, useLoaderData, useLocation,useNavigate, useRouteLoaderData} from '@remix-run/react';
-import {Suspense, useEffect, useState} from 'react';
+import {Suspense, useEffect, useRef, useState} from 'react';
 import {CartForm} from '@shopify/hydrogen';
 import type {
   CartApiQueryFragment,
@@ -28,6 +28,7 @@ import { Aside, useAside } from './Aside';
 import type { RootLoader } from '~/root';
 import { motion } from 'framer-motion';
 import { useIsHydrated } from '~/hooks/useIsHydrated';
+import useWindowScroll from './Header/useWindowScroll';
 
 type LayoutProps = {
   layout: LayoutQuery;
@@ -63,11 +64,21 @@ export function Layout({children, layout, cart}: LayoutProps) {
 function MyHeader() {
   const { pathname, state } = useLocation();
   const navigate = useNavigate();
-  const navLink = pathname.includes('/bundle/') && !state ? '/bundle' : -1;
+  const navLink = pathname.includes('/bundle') && !!state ? '/bundle' : -1;
   const isHydrated = useIsHydrated();
   const isBackButton = isHydrated && (pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true));
 
-
+  const [opacity, setOpacity] = useState<number>(1);
+  const prevScrollY = useRef<number>(0);
+  const { y } = useWindowScroll();
+  useEffect(() => {
+    if (y > prevScrollY.current && y > 150) {
+      setOpacity(0.4);
+    } else {
+      setOpacity(1);
+    }
+    prevScrollY.current = y;
+  }, [y]);
 
   return (
     <>
@@ -77,24 +88,26 @@ function MyHeader() {
       */}
       {isBackButton ?
         <>
-            <motion.button
-              onClick={() => navigate(navLink)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95, opacity: 0.6 }}
-              className={"pdp-nav-button transform left-5"}
-            >
+          <motion.button
+            onClick={() => navigate(navLink)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95, opacity: 0.6 }}
+            style={{opacity}}
+            className={`pdp-nav-button transform left-5 ${navLink === '/bundle' ? 'bottom-5' : 'top-10'}`}
+          >
             <IconCaret
               direction='right' 
               className="!size-14 z-50 rounded-full bg-black text-white font-bold p-2"
             />
-            </motion.button>
-          <CartCount className='pdp-nav-button right-5' />  
+          </motion.button>
+
+          <CartCount opacity={opacity} className={`pdp-nav-button right-5 ${navLink === '/bundle' ? 'bottom-5' : 'top-10'}`} />  
         </>
       :
       <>
         <DesktopHeader />
         <MobileHeader />
-        <NavMobileBottom  />
+        <NavMobileBottom opacity={opacity} />
       </>
       }
     </>

@@ -9,6 +9,7 @@ import { RootLoader } from '~/root';
 
 interface CartCountProps {
   className?: string;
+  opacity: number;
 }
 
 interface BadgeProps {
@@ -50,7 +51,7 @@ const Badge: React.FC<BadgeProps> = ({ openCart, count }) => {
   );
 };
 
-export const CartCount: React.FC<CartCountProps> = ({ className = '' }) => {
+export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity}) => {
   const rootData = useRouteLoaderData<RootLoader>('root');
   const {open} = useAside();
 
@@ -59,10 +60,11 @@ export const CartCount: React.FC<CartCountProps> = ({ className = '' }) => {
         <Await resolve={rootData?.cart}>
           {(cart) => (
             <motion.div
-              className={`rounded-full bg-logo-green ${className}`}
+              className={`rounded-full bg-logo-green ${className} ${!cart?.totalQuantity && 'hidden'}`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95, opacity: 0.6 }}
               onClick={() => open('cart')}
+              style={{opacity}}
             >
               <Badge
                 openCart={() => open('cart')}

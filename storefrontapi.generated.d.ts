@@ -1272,12 +1272,9 @@ export type ProductQuery = {
       | 'description'
       | 'publishedAt'
     > & {
-      reviews_rating_count?: StorefrontAPI.Maybe<
-        Pick<StorefrontAPI.Metafield, 'id' | 'value' | 'namespace' | 'key'>
-      >;
-      reviews_rating?: StorefrontAPI.Maybe<
-        Pick<StorefrontAPI.Metafield, 'id' | 'value' | 'namespace' | 'key'>
-      >;
+      collections: {
+        nodes: Array<Pick<StorefrontAPI.Collection, 'id' | 'title' | 'handle'>>;
+      };
       outstanding_features?: StorefrontAPI.Maybe<
         Pick<StorefrontAPI.Metafield, 'id' | 'value' | 'namespace' | 'key'>
       >;
@@ -1378,12 +1375,6 @@ export type ProductQuery = {
         >;
       };
       seo: Pick<StorefrontAPI.Seo, 'description' | 'title'>;
-      okendoStarRatingSnippet?: StorefrontAPI.Maybe<
-        Pick<StorefrontAPI.Metafield, 'value'>
-      >;
-      okendoReviewsSnippet?: StorefrontAPI.Maybe<
-        Pick<StorefrontAPI.Metafield, 'value'>
-      >;
     }
   >;
   shop: Pick<StorefrontAPI.Shop, 'name'> & {
@@ -4174,7 +4165,7 @@ interface GeneratedQueryTypes {
     return: PoliciesIndexQuery;
     variables: PoliciesIndexQueryVariables;
   };
-  '#graphql\n  query Product(\n    $country: CountryCode\n    $language: LanguageCode\n    $handle: String!\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id\n      title\n      vendor\n      handle\n      descriptionHtml\n      description\n      publishedAt\n      reviews_rating_count: metafield(namespace: "reviews", key:"rating_count") {\n        id\n        value\n        namespace\n        key\n      }\n      reviews_rating: metafield(namespace: "reviews", key:"rating") {\n        id\n        value\n        namespace\n        key\n      }\n      outstanding_features: metafield(namespace: "ciseco--product", key:"outstanding_features") {\n        id\n        value\n        namespace\n        key\n      }\n      options {\n        name\n        values\n      }\n      selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {\n        ...ProductVariantFragment\n      }\n      media(first: 7) {\n        nodes {\n          ...Media\n        }\n      }\n      variants(first: 1) {\n        nodes {\n          ...ProductVariantFragment\n        }\n      }\n      seo {\n        description\n        title\n      }\n      ...OkendoStarRatingSnippet\n\t\t  ...OkendoReviewsSnippet\n    }\n    shop {\n      name\n      primaryDomain {\n        url\n      }\n      shippingPolicy {\n        handle\n      }\n      refundPolicy {\n        handle\n      }\n      subscriptionPolicy {\n        handle\n      }\n    }\n  }\n  #graphql\n  fragment Media on Media {\n    __typename\n    mediaContentType\n    alt\n    previewImage {\n      url\n    }\n    ... on MediaImage {\n      id\n      image {\n        id\n        url\n        width\n        height\n      }\n    }\n    ... on Video {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on Model3d {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on ExternalVideo {\n      id\n      embedUrl\n      host\n    }\n  }\n\n  #graphql\n  fragment ProductVariantFragment on ProductVariant {\n    id\n    availableForSale\n    selectedOptions {\n      name\n      value\n    }\n    image {\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n  }\n\n  #graphql\n\tfragment OkendoStarRatingSnippet on Product {\n\t\tokendoStarRatingSnippet: metafield(\n\t\t\tnamespace: "okendo"\n\t\t\tkey: "StarRatingSnippet"\n\t\t) {\n\t\t\tvalue\n\t\t}\n\t}\n\n\t#graphql\n\tfragment OkendoReviewsSnippet on Product {\n\t\tokendoReviewsSnippet: metafield(\n\t\t\tnamespace: "okendo"\n\t\t\tkey: "ReviewsWidgetSnippet"\n\t\t) {\n\t\t\tvalue\n\t\t}\n\t}\n\n': {
+  '#graphql\n  query Product(\n    $country: CountryCode\n    $language: LanguageCode\n    $handle: String!\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id\n      title\n      vendor\n      handle\n      descriptionHtml\n      description\n      publishedAt\n      collections(first: 1) {\n        nodes {\n          id\n          title\n          handle\n        }\n      }\n      outstanding_features: metafield(namespace: "ciseco--product", key:"outstanding_features") {\n        id\n        value\n        namespace\n        key\n      }\n      options {\n        name\n        values\n      }\n      selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {\n        ...ProductVariantFragment\n      }\n      media(first: 7) {\n        nodes {\n          ...Media\n        }\n      }\n      variants(first: 1) {\n        nodes {\n          ...ProductVariantFragment\n        }\n      }\n      seo {\n        description\n        title\n      }\n    }\n    shop {\n      name\n      primaryDomain {\n        url\n      }\n      shippingPolicy {\n        handle\n      }\n      refundPolicy {\n        handle\n      }\n      subscriptionPolicy {\n        handle\n      }\n    }\n  }\n  #graphql\n  fragment Media on Media {\n    __typename\n    mediaContentType\n    alt\n    previewImage {\n      url\n    }\n    ... on MediaImage {\n      id\n      image {\n        id\n        url\n        width\n        height\n      }\n    }\n    ... on Video {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on Model3d {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on ExternalVideo {\n      id\n      embedUrl\n      host\n    }\n  }\n\n  #graphql\n  fragment ProductVariantFragment on ProductVariant {\n    id\n    availableForSale\n    selectedOptions {\n      name\n      value\n    }\n    image {\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n  }\n\n': {
     return: ProductQuery;
     variables: ProductQueryVariables;
   };

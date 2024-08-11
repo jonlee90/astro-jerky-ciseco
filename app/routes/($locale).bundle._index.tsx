@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from '@remix-run/react';
+import { Link } from '~/components/Link';
 import { Money, useMoney } from '@shopify/hydrogen';
 import clsx from 'clsx';
 import { Card, CardHeader, CardBody } from "@material-tailwind/react";

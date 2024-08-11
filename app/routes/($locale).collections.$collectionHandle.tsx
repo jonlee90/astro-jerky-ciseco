@@ -14,12 +14,9 @@ import {
 import invariant from 'tiny-invariant';
 import {routeHeaders} from '~/data/cache';
 import {seoPayload} from '~/lib/seo.server';
-import {SortFilter} from '~/components/SortFilter';
 import {COMMON_PRODUCT_CARD_FRAGMENT} from '~/data/commonFragments';
-import ButtonPrimary from '~/components/Button/ButtonPrimary';
 import {RouteContent} from '~/sections/RouteContent';
 import PageHeader from '~/components/PageHeader';
-import {getProductTotalByFilter} from '~/utils/getProductTotalByFilter';
 import {Empty} from '~/components/Empty';
 import {FireIcon} from '@heroicons/react/24/outline';
 import {getPaginationAndFiltersFromRequest} from '~/utils/getPaginationAndFiltersFromRequest';

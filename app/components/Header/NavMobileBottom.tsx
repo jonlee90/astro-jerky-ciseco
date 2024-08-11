@@ -15,33 +15,30 @@ import { useAside } from '../Aside';
 
 const navItems = [
   { path: '/', label: 'Home', icon: IconHome },
-  { path: '/collections/classic-flavors', label: 'Jerky', icon: IconJerky },
+  { path: '/collections', link:'/collections/classic-flavors', label: 'Jerky', icon: IconJerky },
   { path: '/bundle', label: 'Bundle', icon: IconBundle },
   { path: '/rewards', label: 'Rewards', icon: IconReward, needsAuth: false },
 ];
-const NavMobileBottom = () => {
+const NavMobileBottom = ({opacity}: {opacity: Number}) => {
   const rootData = useRouteLoaderData<RootLoader>('root');
   const {open} = useAside();
   const { pathname } = useLocation();
-  const [opacity, setOpacity] = useState<number>(1);
-  const prevScrollY = useRef<number>(0);
-  const { y } = useWindowScroll();
-  useEffect(() => {
-    if (y > prevScrollY.current && y > 150) {
-      setOpacity(0.4);
-    } else {
-      setOpacity(1);
-    }
-    prevScrollY.current = y;
-  }, [y]);
 
   const isAuthenticated =  rootData?.isLoggedIn;
 
-  const activeItemIndex = navItems.findIndex(
-    (item) => (isAuthenticated && item.path === '/rewards') || item.path === pathname
-  );
+  const activeItemIndex = navItems.findIndex((item) => {
+    if(isAuthenticated && pathname === '/rewards' && item.path === '/rewards') {
+      return true;
+    }else if (item.path === pathname && pathname.includes(item.path)) {
+      return true;
+    }else if(item.path === '/collections' && pathname.includes(item.path)) {
+      return true;
+    }else {
+      return false;
+    }
+  });
   return (
-    <div className="header-shadow overflow-hidden bottom-0 md:hidden fixed z-50 w-full h-14 bg-contrast/80 border-x border-b border-gray-300 pb-1 transform -translate-x-1/2 left-1/2"
+    <div className="header-shadow overflow-hidden bottom-0 md:hidden fixed z-50 w-full h-14 bg-contrast/95 border-x border-b border-gray-300 pb-1 transform -translate-x-1/2 left-1/2"
           style={{ opacity }}
     >
         {activeItemIndex >= 0 && (
@@ -54,10 +51,11 @@ const NavMobileBottom = () => {
         {navItems.map((item, index) => {
           // Skip rendering the fourth item since we handle it separately
           if (index === 3) return null;
+          const urlPath = item.link ? item.link : item.path;
           return (
-            <motion.div key={item.path} whileTap={{  scale: 0.95  }} className="col-span-1 relative">
+            <motion.div key={urlPath} whileTap={{  scale: 0.95  }} className="col-span-1 relative">
               <Link 
-                to={item.path} 
+                to={urlPath} 
                 prefetch="intent" 
                 className="inline-flex flex-col items-center justify-center w-full"
                 >

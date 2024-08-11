@@ -45,8 +45,8 @@ export function MixMatchProductsSlider({
   currentBundle,
 }: MixMatchProductsSliderProps) {
   return (
-    <div>
-      <h1>{title}</h1>
+    <div className='mb-10'>
+      <h2 className='text-xl md:text-2xl font-semibold'>{title}</h2>
       <div className="swimlane hiddenScroll gap-12 md:pb-8 md:scroll-px-8 lg:scroll-px-12 pt-4 text-center">
         {products.map((product, i) => (
           <MixMatchProductCard

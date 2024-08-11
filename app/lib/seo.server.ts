@@ -82,7 +82,7 @@ function stores(): SeoConfig {
   return {
     title: 'Stores',
     titleTemplate: '%s | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
-    description: 'All Ciseco hydrogen stores',
+    description: 'All Astro Fresh Jerky stores',
     robots: {
       noIndex: false,
       noFollow: false,
@@ -275,7 +275,7 @@ function collection({
     description: truncate(
       collection?.seo?.description ?? collection?.description ?? '',
     ),
-    titleTemplate: '%s | Collection',
+    titleTemplate: '%s | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
     media: {
       type: 'image',
       url: collection?.image?.url,
@@ -330,8 +330,8 @@ function listCollections({
 }): SeoConfig {
   return {
     title: 'Collections',
-    titleTemplate: '%s | Collections',
-    description: 'All hydrogen collections',
+    titleTemplate: '%s | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
+    description: 'All Astro Fresh Jerky collections',
     url,
     jsonLd: collectionsJsonLd({collections, url}),
   };
@@ -355,7 +355,7 @@ function article({
   return {
     title: article?.seo?.title ?? article?.title,
     description: truncate(article?.seo?.description ?? ''),
-    titleTemplate: '%s | Journal',
+    titleTemplate: '%s | Journal | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
     url,
     media: {
       type: 'image',
@@ -390,7 +390,7 @@ function blog({
   return {
     title: blog?.seo?.title,
     description: truncate(blog?.seo?.description || ''),
-    titleTemplate: '%s | Blog',
+    titleTemplate: '%s | Blog | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
     url,
     jsonLd: {
       '@context': 'https://schema.org',
@@ -412,7 +412,7 @@ function page({
   return {
     description: truncate(page?.seo?.description || ''),
     title: page?.seo?.title ?? page?.title,
-    titleTemplate: '%s | Page',
+    titleTemplate: '%s | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
     url,
     jsonLd: {
       '@context': 'https://schema.org',
@@ -432,7 +432,7 @@ function policy({
   return {
     description: truncate(policy?.body ?? ''),
     title: policy?.title,
-    titleTemplate: '%s | Policy',
+    titleTemplate: '%s | Policy | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
     url,
   };
 }
@@ -457,8 +457,8 @@ function policies({
     });
   return {
     title: 'Policies',
-    titleTemplate: '%s | Policies',
-    description: 'Hydroge store policies',
+    titleTemplate: '%s | Policies | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
+    description: 'Astro Fresh Jerky store policies',
     jsonLd: [
       {
         '@context': 'https://schema.org',
@@ -468,7 +468,7 @@ function policies({
       {
         '@context': 'https://schema.org',
         '@type': 'WebPage',
-        description: 'Hydrogen store policies',
+        description: 'Astro Fresh Jerky store policies',
         name: 'Policies',
         url,
       },

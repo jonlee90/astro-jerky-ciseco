@@ -1,8 +1,6 @@
 import clsx from 'clsx';
 import ProductCard from './ProductCard';
-import {flattenConnection} from '@shopify/hydrogen';
 import {getImageLoadingPriority} from '~/lib/const';
-import {Product} from '@shopify/hydrogen/storefront-api-types';
 import {CommonProductCardFragment} from 'storefrontapi.generated';
 
 export function ProductsGrid({
@@ -20,7 +18,7 @@ export function ProductsGrid({
   return (
     <div
       className={clsx(
-        'grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10',
+        'grid sm:grid-cols-2 lg:grid-cols-3 gap-x-28 gap-y-10 mx-5',
         className,
       )}
     >

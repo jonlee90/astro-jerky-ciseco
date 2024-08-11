@@ -332,7 +332,7 @@ export function CartEmpty({
           started!
         </p>
         <div>
-          <ButtonPrimary onClick={onClose}>
+          <ButtonPrimary onClick={onClose} className='bg-black'>
             <ArrowLeftIcon className="w-4 h-4 me-2" />
             <span>Continue shopping</span>
           </ButtonPrimary>
