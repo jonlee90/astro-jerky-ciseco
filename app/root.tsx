@@ -26,7 +26,7 @@ import {
 } from '@shopify/hydrogen';
 import {Layout} from '~/components/Layout';
 import {seoPayload} from '~/lib/seo.server';
-import favicon from '@/assets/favicon.svg';
+import favicon from '@/assets/favicon.ico';
 import {GenericError} from './components/GenericError';
 import {NotFound} from './components/NotFound';
 import styles from './styles/app.css?url';

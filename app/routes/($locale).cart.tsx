@@ -54,11 +54,9 @@ export async function action({request, context}: ActionFunctionArgs) {
       result = await cart.addLines(inputs.lines);
       break;
     case CartForm.ACTIONS.LinesUpdate:
-      console.log(inputs.lines, 'lines')
       result = await cart.updateLines(inputs.lines);
       break;
     case CartForm.ACTIONS.LinesRemove:
-      console.log(inputs.lineIds, 'lineIds')
       result = await cart.removeLines(inputs.lineIds);
       break;
     case CartForm.ACTIONS.DiscountCodesUpdate: {
@@ -98,7 +96,6 @@ export async function action({request, context}: ActionFunctionArgs) {
   }
 
   const {cart: cartResult, errors} = result;
-  console.log(cartResult, 'cart')
   return json(
     {
       cart: cartResult,
@@ -140,7 +137,6 @@ export default function Cart() {
           errorElement={<div>An error occurred</div>}
         >
           {(cart) => {
-            console.log(cart, 'CART ROUTE')
             return <Content cart={cart || null} />;
           }}
         </Await>

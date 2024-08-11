@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
-import { SwitchTab } from '../Tabs/SwtchTab';
+import { SwitchTab } from '../Tabs';
 import { AddToCartButton } from '../AddToCartButton';
 import { MixMatchProductsSlider } from './MixMatchProductsSlider';
 import { useAside } from '../Aside';
@@ -186,12 +186,12 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: 
         <div className="max-w-screen-md mx-auto">
           <div className="grid grid-cols-2 my-3">
             <div className="text-left">
-              <h1 className="text-lead">{currentBundle.title}</h1>
+              <h1 className="text-xl font-bold">{currentBundle.title}</h1>
             </div>
             <div className="text-right self-center justify-end flex-row-reverse">
               {done || !(bigQuantity && smallQuantity) ? (
                 <AddToCartButton
-                  className="px-4 py-3 rounded-full w-[166px] relative bg-logo-red text-white text-sm shadow-2xl transition duration-200 border-red-500 disabled:opacity-50 disabled:pointer-events-none"
+                  className="px-4 py-3 rounded-full w-[188px] relative bg-logo-red text-white text-sm shadow-2xl transition duration-200 border-red-500 disabled:opacity-50 disabled:pointer-events-none"
                   lines={cartArray}
                   variant="primary"
                   data-test="add-to-cart"
@@ -202,7 +202,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: 
                   Add To Cart
                 </AddToCartButton>
               ) : (
-                <SwitchTab isSmall={isSmall} onToggle={(val) => onToggle(val)} className="!ml-auto !mr-0" />
+                <SwitchTab isSmall={isSmall} onToggle={(val) => onToggle(val)} bgColor='bg-logo-red' className="!ml-auto !mr-0 h-11" />
               )}
             </div>
           </div>

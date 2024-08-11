@@ -31,13 +31,20 @@ const CollectionItem: FC<CollectionItemProps> = ({
 
   const hImage = horizontal_image?.reference?.image;
 
+  const productTitle = title?.replace('Premium Cut Beef Jerky', '').replace('Premium Cut Chicken Jerky', '');
   return (
     <Link
       to={'/collections/' + handle}
       className={clsx(`block w-full`, className)}
       onClick={onClick}
-    >
-      <div className="relative w-full aspect-w-16 aspect-h-12 sm:aspect-h-9 rounded-2xl overflow-hidden bg-slate-100 group">
+    ><div className="max-w-[18rem] mx-auto">
+          <h2
+            className="text-lg lg:text-2xl  font-semibold mt-0.5 sm:mt-2 p-1 opacity-80 rounded-2xl text-center"
+           >
+            {productTitle} 
+          </h2>
+         </div>
+      <div className={`relative w-full aspect-w-16 ${image ? 'aspect-h-16' : 'aspect-h-12 sm:aspect-h-9'} rounded-2xl overflow-hidden bg-slate-100 group`}>
         {hImage && (
           <Image
             className="absolute inset-0 w-full h-full object-cover rounded-2xl "
@@ -45,27 +52,34 @@ const CollectionItem: FC<CollectionItemProps> = ({
             sizes="(max-width: 640px) 90vw, (max-width: 1200px) 50vw, 40vw"
           />
         )}
+        {image && (
+          <Image
+            className="absolute inset-0 w-full h-full object-cover rounded-2xl opacity-85"
+            data={image}
+            sizes="(max-width: 640px) 70vw, (max-width: 1200px) 50vw, 40vw"
+          />
+        )}
 
         <span className="opacity-0 group-hover:opacity-40 absolute inset-0 bg-black/10 transition-opacity"></span>
 
         <div>
-          <div className="absolute inset-4 lg:inset-8 flex flex-col">
-            <div className="max-w-[18rem]">
-              <span className={`block text-sm text-slate-700`}>Collection</span>
-              {!!title && (
-                <h2
-                  className="text-xl lg:text-2xl text-slate-900 font-semibold mt-0.5 sm:mt-2"
-                  dangerouslySetInnerHTML={{__html: title}}
-                />
-              )}
-            </div>
+          <div className="absolute inset-4 lg:inset-8 flex flex-col text-center">
+         {/*     <div className="max-w-[18rem] mx-auto">
+              {!!productTitle && (
+                  <h2
+                    className="text-lg lg:text-2xl   font-semibold mt-0.5 sm:mt-2 p-1 opacity-85 px-5"
+                    dangerouslySetInnerHTML={{__html: productTitle}}
+                  />
+                )}
+              </div>
+               */}
             <div className="mt-auto">
               <ButtonSecondary
                 sizeClass="py-3 px-4 sm:py-3.5 sm:px-6"
                 fontSize="text-sm font-medium"
-                className="nc-shadow-lg"
+                className="nc-shadow-lg bg-logo-green text-white hover:bg-primary-700 min-w-24 opacity-85"
               >
-                {button_text || 'Shop now'}
+                {button_text || 'Enter'}
               </ButtonSecondary>
             </div>
           </div>

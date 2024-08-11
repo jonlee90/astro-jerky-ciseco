@@ -1,4 +1,4 @@
-import {useRef, Suspense, useState} from 'react';
+import {useRef, Suspense, useState, useEffect} from 'react';
 import {
   defer,
   type MetaArgs,
@@ -29,21 +29,10 @@ import type {Storefront} from '~/lib/type';
 import {routeHeaders} from '~/data/cache';
 import {MEDIA_FRAGMENT} from '~/data/fragments';
 import Prices from '~/components/Prices';
-import NcInputNumber from '~/components/NcInputNumber';
-import Policy from '~/components/Policy';
-import ButtonPrimary from '~/components/Button/ButtonPrimary';
-import BagIcon from '~/components/BagIcon';
 import {NoSymbolIcon} from '@heroicons/react/24/outline';
 import {getProductStatus, ProductBadge} from '~/components/ProductCard';
 import {useGetPublicStoreCdnStaticUrlFromRootLoaderData} from '~/hooks/useGetPublicStoreCdnStaticUrlFromRootLoaderData';
 import ButtonSecondary from '~/components/Button/ButtonSecondary';
-import LikeButton from '~/components/LikeButton';
-import {
-  OKENDO_PRODUCT_REVIEWS_FRAGMENT,
-  OKENDO_PRODUCT_STAR_RATING_FRAGMENT,
-  OkendoReviews,
-  OkendoStarRating,
-} from '@okendo/shopify-hydrogen';
 import {COMMON_PRODUCT_CARD_FRAGMENT} from '~/data/commonFragments';
 import {SnapSliderProducts} from '~/components/SnapSliderProducts';
 import {type SelectedOption} from '@shopify/hydrogen/storefront-api-types';
@@ -57,6 +46,11 @@ import { IconX } from '~/components/Icon';
 import { IconPinterest } from '~/components/Icon';
 import { convertToNumber } from '~/lib/utils';
 import { useAside } from '~/components/Aside';
+import { SlashIcon } from '@heroicons/react/24/solid';
+import Nav from '~/components/Nav';
+import NavItem from '~/components/NavItem';
+import useWindowScroll from '~/components/Header/useWindowScroll';
+import Logo from '~/components/Logo';
 
 export const headers = routeHeaders;
 
@@ -207,9 +201,8 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 export default function Product() {
   const {product, shop, recommended, variants, routePromise} =
     useLoaderData<typeof loader>();
-  const {media, title, vendor, outstanding_features, descriptionHtml, id} =
+  const {media, outstanding_features, descriptionHtml, id} =
     product;
-  const {shippingPolicy, refundPolicy, subscriptionPolicy} = shop;
 
 
   const [currentQuantity, setCurrentQuantity] = useState(3);
@@ -249,9 +242,18 @@ export default function Product() {
   return (
     <div
       className={clsx(
-        'product-page mt-5 lg:mt-10 pb-20 lg:pb-28 space-y-12 sm:space-y-16',
+        'product-page mt-5 mb-20 lg:mt-10 pb-20 lg:pb-28 space-y-20',
       )}
     >
+      
+      <Logo className='w-16 left-1/2  transform -translate-x-1/2 z-50 top-10 absolute' />
+      <BottomAddToCartButton
+        selectedVariant={selectedVariant}
+        currentQuantity={currentQuantity}
+        selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
+        selectedVariantPrice={selectedVariantPrice}
+        setCurrentQuantity={setCurrentQuantity}
+      />
       <main className="2xl:max-w-screen-xl container">
         <div className="lg:flex">
           {/* Galleries */}
@@ -260,26 +262,24 @@ export default function Product() {
               media={media.nodes}
               className="w-full lg:col-span-2 lg:gap-7"
             />
+            {/* LIKE BUTTON WISHLIST
             <LikeButton
               id={id}
               className="absolute top-3 end-3 z-10 !w-10 !h-10"
             />
+            */}
           </div>
 
           {/* Product Details */}
           <div className="w-full lg:w-[45%] pt-10 lg:pt-0 lg:pl-7 xl:pl-9 2xl:pl-10">
             <div className="sticky top-10 grid gap-7 2xl:gap-8">
-                    <Suspense fallback={<ProductForm variants={[]} />}>
+                    <Suspense fallback={<ProductForm />}>
                       <Await
                         errorElement="There was a problem loading related products"
                         resolve={variants}
                       >
                         {(resp) => (
                           <ProductForm
-                            currentQuantity={currentQuantity}
-                            setCurrentQuantity={setCurrentQuantity}
-                            selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
-                            selectedVariantPrice={selectedVariantPrice}
                           />
                         )}
                       </Await>
@@ -358,7 +358,7 @@ export default function Product() {
           </Suspense>
         </div>
         
-        {/* ---------- 6 ----------  */}
+        {/* ---------- 6 ---------- 
         <div>
           <Policy
             shippingPolicy={shippingPolicy}
@@ -366,6 +366,7 @@ export default function Product() {
             subscriptionPolicy={subscriptionPolicy}
           />
         </div>
+         */}
       </main>
 
       {/* 3. Render the route's content sections */}
@@ -405,21 +406,9 @@ export default function Product() {
   );
 }
 
-export function ProductForm({
-  currentQuantity,
-  setCurrentQuantity,
-  selectedVariantPrice,
-  selectedVariantCompareAtPrice
-}: {
-  currentQuantity: number,
-  setCurrentQuantity: any,
-  selectedVariantCompareAtPrice: any,
-  selectedVariantPrice: any
-}) {
+export function ProductForm() {
 
-  const {open} = useAside();
   const {product} = useLoaderData<typeof loader>();
-  const isDesktop = useMediaQuery({ minWidth: 767 });
 
   /**
    * Likewise, we're defaulting to the first variant for purposes
@@ -445,50 +434,59 @@ export function ProductForm({
       title: 'Buy ' + quantity + ' Bag' + (i > 1 ? 's' : '')
     });
   }
+  const collection = product.collections.nodes[0];
   return (
     <>
       {/* ---------- HEADING ----------  */}
       <div className='mt-5 lg:mt-20 grid gap-7 2xl:gap-8'>
-        {/* {product.vendor && (
-          <p className="mb-2 text-sm text-slate-600">{product.vendor}</p>
-        )} */}
+      {!!collection && (
+          <nav className="mb-4" aria-label="Breadcrumb">
+            <ol className="flex items-center space-x-2">
+              <li>
+                <div className="flex items-center text-sm">
+                  <Link
+                    to={'/'}
+                    className="font-medium text-gray-500 hover:text-gray-900"
+                  >
+                    Home
+                  </Link>
+                  <SlashIcon className="ml-2 h-5 w-5 flex-shrink-0 text-gray-300 " />
+                </div>
+              </li>
+              <li>
+                <div className="flex items-center text-sm">
+                  <Link
+                    to={'/collections/' + collection.handle}
+                    className="font-medium text-gray-500 hover:text-gray-900"
+                  >
+                    {/* romove html on title */}
+                    {collection.title.replace(/(<([^>]+)>)/gi, '')}
+                  </Link>
+                </div>
+              </li>
+            </ol>
+          </nav>
+        )}
         <h1
-          className="text-4xl sm:text-5xl font-bold text-center lg:text-left"
+          className="text-4xl sm:text-5xl font-bold"
           title={product.title}
         >
             {product.title + ' (' + selectedVariant.title + ')'}
         </h1>
 
+      {/* ---------- PRODUCT PRICE ----------  
         <div className="flex flex-wrap gap-4 lg:gap-5 justify-center lg:justify-start">
           <Prices
             contentClass="!text-2xl "
             price={selectedVariantPrice}
             compareAtPrice={selectedVariantCompareAtPrice}
           />
-
-          {(status || product.reviews_rating_count) && (
-            <div className="h-7 border-l border-slate-300 dark:border-slate-700 opacity-0 sm:opacity-100" />
-          )}
-
-          {/* Reviews */}
-          <div className="flex items-center gap-2.5">
-            {!!product.okendoStarRatingSnippet ? (
-              <>
-                <OkendoStarRating
-                  productId={product.id}
-                  okendoStarRatingSnippet={product.okendoStarRatingSnippet}
-                />
-                {!!status && <span className="block">·</span>}
-              </>
-            ) : null}
-            {!!status && (
-              <>
-                <ProductBadge className="" status={status} />
-              </>
-            )}
-          </div>
         </div>
+      */}
+
       </div>
+      {/*
+
       <div className="grid grid-cols-3 items-center gap-1 mb-4 xs:gap-3">
         {
           variantsByQuantity.map(({quantity, title}) => (
@@ -508,6 +506,9 @@ export function ProductForm({
         }
       </div>
 
+      */}
+      
+
       {/* ---------- VARIANTS AND COLORS LIST ----------  
       <VariantSelector
         handle={product.handle}
@@ -523,6 +524,8 @@ export function ProductForm({
         }}
       </VariantSelector>
       */}
+
+      {/* ---------- ADD TO CART BUTTOn ----------  
       {selectedVariant && (
         <div className="grid items-stretch gap-4">
           {isOutOfStock ? (
@@ -557,19 +560,110 @@ export function ProductForm({
                 </AddToCartButton>
             </div>
           )}
-          {/* {!isOutOfStock && (
-            <ShopPayButton
-              width="100%"
-              className="rounded-full"
-              variantIds={[selectedVariant?.id!]}
-              storeDomain={storeDomain}
-            />
-          )} */}
         </div>
       )}
+
+      */}
+
     </>
   );
 }
+
+const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity }) => {
+  const variantsByQuantity = [];
+  const isOutOfStock = !selectedVariant?.availableForSale;
+  
+  const {open} = useAside();
+  const [opacity, setOpacity] = useState<number>(1);
+  const prevScrollY = useRef<number>(0);
+  const { y } = useWindowScroll();
+  useEffect(() => {
+    if (y > prevScrollY.current && y > 150) {
+      setOpacity(0.3);
+    } else {
+      setOpacity(1);
+    }
+    prevScrollY.current = y;
+  }, [y]);
+
+  for (let i = 1; i < 4; i++) {
+    const quantity = i > 1 ? 3 * (i - 1) : i;
+    variantsByQuantity.push({
+      quantity: quantity,
+      title: quantity + ' BAG' + (i > 1 ? 'S' : ''),
+      icon_svg: ''
+    });
+  }
+
+  if (!selectedVariant) {
+    return null;
+  }
+
+  return (
+    <div 
+      className='fixed bottom-0 w-full z-50 grid lg:grid-cols-2 '
+    >
+      {isOutOfStock ? (
+        <ButtonSecondary disabled>
+          <NoSymbolIcon className="w-5 h-5" />
+          <span className="ms-2">Sold out</span>
+        </ButtonSecondary>
+      ) : (
+        <>
+          <Nav
+            className="bg-white w-full justify-end"
+            containerClassName="relative flex justify-center w-full text-sm md:text-base border-black border-y"
+            opacity={opacity}
+          >
+            {variantsByQuantity.map((item, index) => (
+              <div className='basis-1/3 lg:border-r border-black' key={index}>
+                <NavItem
+                  isActive={item.quantity === currentQuantity}
+                  onClick={() => setCurrentQuantity(item.quantity)}
+                  className={`w-full h-11 lg:h-16 ${item.quantity !== currentQuantity ?  'hover:bg-slate-200' : '' }`}
+                  radius='rounded-none'
+                >
+                  <div className="flex items-center justify-center space-x-1.5 sm:space-x-2.5 text-sm">
+                    {item.icon_svg && (
+                      <span
+                        className="inline-block *:w-full *:h-full w-4 h-4 sm:w-5 sm:h-5"
+                        dangerouslySetInnerHTML={{ __html: item.icon_svg }}
+                      ></span>
+                    )}
+                    <span>{item.title}</span>
+                  </div>
+                </NavItem>
+              </div>
+            ))}
+          </Nav>
+          <div className='w-full bg-logo-green p-5 hover:bg-primary-400  border-color-logo border-y'>
+            <AddToCartButton
+              lines={[
+                {
+                  merchandiseId: selectedVariant.id,
+                  quantity: currentQuantity,
+                },
+              ]}
+              className="w-full flex-1"
+              data-test="add-to-cart"
+              onClick={() => open('cart')}
+            >
+              <span className="flex items-center justify-center gap-2 uppercase font-bold">
+                <span>Add to Cart - </span>
+                <Prices
+                  contentClass="inline"
+                  price={selectedVariantPrice}
+                  compareAtPrice={selectedVariantCompareAtPrice}
+                  compareAtPriceClass={'text-slate-600'}
+                />
+              </span>
+            </AddToCartButton>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
 
 const ProductOtherOption = ({option}: {option: VariantOption}) => {
   if (!option.values.length) {
@@ -781,17 +875,12 @@ export const PRODUCT_QUERY = `#graphql
       descriptionHtml
       description
       publishedAt
-      reviews_rating_count: metafield(namespace: "reviews", key:"rating_count") {
-        id
-        value
-        namespace
-        key
-      }
-      reviews_rating: metafield(namespace: "reviews", key:"rating") {
-        id
-        value
-        namespace
-        key
+      collections(first: 1) {
+        nodes {
+          id
+          title
+          handle
+        }
       }
       outstanding_features: metafield(namespace: "ciseco--product", key:"outstanding_features") {
         id
@@ -820,8 +909,6 @@ export const PRODUCT_QUERY = `#graphql
         description
         title
       }
-      ...OkendoStarRatingSnippet
-		  ...OkendoReviewsSnippet
     }
     shop {
       name
@@ -841,8 +928,6 @@ export const PRODUCT_QUERY = `#graphql
   }
   ${MEDIA_FRAGMENT}
   ${PRODUCT_VARIANT_FRAGMENT}
-  ${OKENDO_PRODUCT_STAR_RATING_FRAGMENT}
-	${OKENDO_PRODUCT_REVIEWS_FRAGMENT}
 ` as const;
 
 export const VARIANTS_QUERY = `#graphql

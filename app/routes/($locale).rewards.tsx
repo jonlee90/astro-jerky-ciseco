@@ -43,7 +43,7 @@ const Rewards: React.FC = () => {
 
       <div className="text-center">
         <div>
-          <Heading  className='text-lead mb-6 md:mb-8 lg:mb-12'>HOW IT WORKS</Heading>
+          <Heading  className='text-lead mb-6 md:mb-8 lg:mb-12 !justify-center'>HOW IT WORKS</Heading>
           <div className='grid grid-cols-7 items-center justify-items-center'>
             <div className='col-span-2 col-start-2 gap-3 grid'>
               <IconDollar />

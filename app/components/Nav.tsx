@@ -4,15 +4,17 @@ export interface NavProps {
   containerClassName?: string;
   className?: string;
   children?: React.ReactNode;
+  opacity?: number;
 }
 
 const Nav: FC<NavProps> = ({
   containerClassName = '',
   className = '',
   children,
+  opacity = 1
 }) => {
   return (
-    <nav className={`nc-Nav ${containerClassName}`} data-nc-id="Nav">
+    <nav style={{ opacity }} className={`nc-Nav ${containerClassName}`} data-nc-id="Nav">
       <ul className={`flex  ${className}`}>{children}</ul>
     </nav>
   );
