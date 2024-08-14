@@ -2,15 +2,18 @@ import clsx from 'clsx';
 import ProductCard from './ProductCard';
 import {getImageLoadingPriority} from '~/lib/const';
 import {CommonProductCardFragment} from 'storefrontapi.generated';
+import { Collection } from '@shopify/hydrogen/storefront-api-types';
 
 export function ProductsGrid({
   nodes,
   className = 'mt-8 lg:mt-10',
   isSmall = false,
+  collection
 }: {
   nodes?: CommonProductCardFragment[];
   className?: string;
   isSmall?: boolean;
+  collection: Collection;
 }) {
   const variantKey = isSmall ? 1 : 0;
   // Sort products so that available products come first
@@ -30,6 +33,7 @@ export function ProductsGrid({
               product={product}
               loading={getImageLoadingPriority(i)}
               variantKey={variantKey}
+              collection={collection}
             />
           );
         })}

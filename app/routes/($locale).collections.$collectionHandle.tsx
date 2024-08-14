@@ -144,7 +144,7 @@ export default function Collection() {
             {/* LOOP ITEMS */}
             <>
               {!noResults ? (
-                <ProductsGrid nodes={currentProducts} isSmall={isSmall} />
+                <ProductsGrid nodes={currentProducts} isSmall={isSmall} collection={collection} />
               ) : (
                 <Empty />
               )}

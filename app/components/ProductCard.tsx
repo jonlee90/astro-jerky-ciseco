@@ -17,6 +17,7 @@ import {useMediaQuery} from 'react-responsive';
 import { useAside } from './Aside';
 import { useVariantUrl } from '~/lib/variants';
 import { IconSpicy, IconBbq, IconChicken, IconPepper } from "./Icon";
+import { Collection } from '@shopify/hydrogen/storefront-api-types';
 
 
 interface MoneyV2 {
@@ -26,7 +27,7 @@ interface MoneyV2 {
 
 interface ProductCardProps {
   product: CommonProductCardFragment;
-  label?: string;
+  collection?: string;
   className?: string;
   loading?: HTMLImageElement['loading'];
   quickAdd?: boolean;
@@ -36,7 +37,7 @@ interface ProductCardProps {
 /**
  * @param {{
  *   product: ProductCardFragment;
- *   label?: string;
+ *   collection: Collection;
  *   className?: string;
  *   loading?: HTMLImageElement['loading'];
  *   quickAdd?: boolean;
@@ -44,7 +45,7 @@ interface ProductCardProps {
  */
 const ProductCard: FC<ProductCardProps> = ({
   product,
-  label,
+  collection,
   className,
   loading,
   quickAdd,
@@ -56,8 +57,6 @@ const ProductCard: FC<ProductCardProps> = ({
   if (!cardProduct?.variants?.nodes?.length) return null;
   const firstVariant = flattenConnection(cardProduct.variants)[variantKey];
   if (!firstVariant) return null;
-  const {getImageWithCdnUrlByName} =
-    useGetPublicStoreCdnStaticUrlFromRootLoaderData();
   const variantUrl = useVariantUrl(
     product.handle,
     firstVariant.selectedOptions,
@@ -128,7 +127,7 @@ const ProductCard: FC<ProductCardProps> = ({
     <motion.div className="flex flex-col gap-2" whileHover={{scale: 1.02}}>
       <Link
         to={variantUrl}
-        state={{product: product.handle}}
+        state={{product: product.handle, collection}}
       >
         <div className={clsx('grid gap-4', className)}>
           <motion.div
@@ -179,7 +178,7 @@ const ProductCard: FC<ProductCardProps> = ({
             />
           </motion.div>
           <div className="grid gap-1">
-            <h2 className="w-full uppercase text-lead text-left">
+            <h2 className="w-full uppercase text-xl text-left">
               {product.title + ' (' + selectedOptions[0].value + ')'}
             </h2>
             <div className="grid grid-cols-2">

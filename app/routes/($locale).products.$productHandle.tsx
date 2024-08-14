@@ -242,11 +242,10 @@ export default function Product() {
   return (
     <div
       className={clsx(
-        'product-page mt-5 mb-20 lg:mt-10 pb-20 lg:pb-28 space-y-20',
+        'product-page mt-5 mb-20 lg:mt-10 pb-28 ',
       )}
     >
       
-      <Logo className='w-16 left-1/2  transform -translate-x-1/2 z-50 top-10 absolute' />
       <BottomAddToCartButton
         selectedVariant={selectedVariant}
         currentQuantity={currentQuantity}
@@ -410,6 +409,9 @@ export function ProductForm() {
 
   const {product} = useLoaderData<typeof loader>();
 
+  const location = useLocation();
+  const { collection } = location.state || {};
+  console.log(collection);
   /**
    * Likewise, we're defaulting to the first variant for purposes
    * of add to cart if there is none returned from the loader.
@@ -434,12 +436,13 @@ export function ProductForm() {
       title: 'Buy ' + quantity + ' Bag' + (i > 1 ? 's' : '')
     });
   }
-  const collection = product.collections.nodes[0];
+  const collectionObj = collection ? collection : product.collections.nodes[0];
+
   return (
     <>
       {/* ---------- HEADING ----------  */}
-      <div className='mt-5 lg:mt-20 grid gap-7 2xl:gap-8'>
-      {!!collection && (
+      <div className='mt-5  grid gap-7 2xl:gap-8'>
+      {!!collectionObj && (
           <nav className="mb-4" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-2">
               <li>
@@ -456,11 +459,11 @@ export function ProductForm() {
               <li>
                 <div className="flex items-center text-sm">
                   <Link
-                    to={'/collections/' + collection.handle}
+                    to={'/collections/' + collectionObj.handle}
                     className="font-medium text-gray-500 hover:text-gray-900"
                   >
                     {/* romove html on title */}
-                    {collection.title.replace(/(<([^>]+)>)/gi, '')}
+                    {collectionObj.title.replace(/(<([^>]+)>)/gi, '')}
                   </Link>
                 </div>
               </li>
@@ -642,6 +645,7 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
                 {
                   merchandiseId: selectedVariant.id,
                   quantity: currentQuantity,
+                  selectedVariant: selectedVariant
                 },
               ]}
               className="w-full flex-1"
@@ -877,7 +881,6 @@ export const PRODUCT_QUERY = `#graphql
       publishedAt
       collections(first: 1) {
         nodes {
-          id
           title
           handle
         }

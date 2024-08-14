@@ -75,14 +75,14 @@ export const CollectionSlider = ({
           ref={sliderRef}
           className="relative w-full flex gap-4 lg:gap-8 snap-x snap-mandatory overflow-x-auto scroll-p-l-container hiddenScrollbar"
         >
-          <div className="w-0 nc-p-l-container"></div>
+          <div className="w-0 px-3"></div>
           {isSkeleton
             ? [1, 1, 1, 1, 1].map((_, index) => (
                 <div
                   key={index}
                   className="mySnapItem snap-start shrink-0 last:pr-4 lg:last:pr-10"
                 >
-                  <div className="w-64 sm:w-96 lg:w-[28rem] xl:w-[30rem] 2xl:w-[34rem] flex">
+                  <div className="w-64 sm:w-96 flex">
                     <CollectionItemSkeleton key={index} />
                   </div>
                 </div>
@@ -92,7 +92,7 @@ export const CollectionSlider = ({
                   key={`${item.id}`}
                   className="mySnapItem snap-start shrink-0 last:pr-4 lg:last:pr-10"
                 >
-                  <div className="w-64 sm:w-96 lg:w-[28rem] xl:w-[30rem] 2xl:w-[34rem] flex">
+                  <div className="w-64 sm:w-96 flex">
                     <CollectionItem item={item} button_text={button_text} />
                   </div>
                 </div>

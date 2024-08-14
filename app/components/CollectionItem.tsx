@@ -77,7 +77,7 @@ const CollectionItem: FC<CollectionItemProps> = ({
               <ButtonSecondary
                 sizeClass="py-3 px-4 sm:py-3.5 sm:px-6"
                 fontSize="text-sm font-medium"
-                className="nc-shadow-lg bg-logo-green text-white hover:bg-primary-700 min-w-24 opacity-85"
+                className="nc-shadow-lg bg-logo-green text-white hover:bg-primary-700 min-w-24"
               >
                 {button_text || 'Enter'}
               </ButtonSecondary>

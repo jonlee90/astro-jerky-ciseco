@@ -673,8 +673,6 @@ shop-pay-button {
 }
 .pdp-nav-button {
   position: fixed;
-  width: 56px;
-  height: 56px;
   z-index: 49;
   cursor: pointer;
 }

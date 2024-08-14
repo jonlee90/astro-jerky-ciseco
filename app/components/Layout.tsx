@@ -29,6 +29,7 @@ import type { RootLoader } from '~/root';
 import { motion } from 'framer-motion';
 import { useIsHydrated } from '~/hooks/useIsHydrated';
 import useWindowScroll from './Header/useWindowScroll';
+import { useMediaQuery } from 'react-responsive';
 
 type LayoutProps = {
   layout: LayoutQuery;
@@ -67,6 +68,7 @@ function MyHeader() {
   const navLink = pathname.includes('/bundle') && !!state ? '/bundle' : -1;
   const isHydrated = useIsHydrated();
   const isBackButton = isHydrated && (pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true));
+  const isDesktop = useMediaQuery({minWidth: 767});
 
   const [opacity, setOpacity] = useState<number>(1);
   const prevScrollY = useRef<number>(0);
@@ -93,7 +95,7 @@ function MyHeader() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95, opacity: 0.6 }}
             style={{opacity}}
-            className={`pdp-nav-button transform left-5 ${navLink === '/bundle' ? 'bottom-5' : 'top-10'}`}
+            className={`pdp-nav-button transform left-5 ${navLink === '/bundle' ? 'bottom-5' : pathname.includes('/products/') && isDesktop ? 'top-10' : 'bottom-32'}`}
           >
             <IconCaret
               direction='right' 
@@ -101,7 +103,7 @@ function MyHeader() {
             />
           </motion.button>
 
-          <CartCount opacity={opacity} className={`pdp-nav-button right-5 ${navLink === '/bundle' ? 'bottom-5' : 'top-10'}`} />  
+          <CartCount opacity={opacity} className={`pdp-nav-button right-5 ${navLink === '/bundle' ? 'bottom-5' : pathname.includes('/products/') && isDesktop ? 'top-10' : 'bottom-32'}`} />  
         </>
       :
       <>

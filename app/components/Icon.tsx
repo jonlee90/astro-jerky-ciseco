@@ -114,7 +114,7 @@ export function IconCaret({
   return (
     <Icon
       {...props}
-      className={`w-5 h-5 transition ${rotate} ${className}`}
+      className={`transition ${rotate} ${className}`}
       fill="transparent"
       stroke={stroke}
     >
