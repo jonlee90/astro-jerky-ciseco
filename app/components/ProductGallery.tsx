@@ -45,7 +45,7 @@ export function ProductGallery({
 
           return (
             <div
-              className={`lg:col-span-1 aspect-square snap-center card-image w-[calc(100vw_-_4rem)] sm:w-[calc(80vw_-_4rem)] lg:w-full cursor-pointer relative group bg-gray-100 rounded-2xl`}
+              className={`lg:col-span-1 aspect-square snap-center card-image w-[calc(100vw_-_2rem)] sm:w-[calc(80vw_-_2rem)] lg:w-full cursor-pointer relative group bg-gray-100 rounded-2xl`}
               key={med.id || image?.id}
               onClick={() => {
                 setOpenModal(true);
