@@ -183,7 +183,7 @@ function MainLayout({children}: {children?: React.ReactNode}) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
-
+        <meta name="p:domain_verify" content="8f65b0b25d12b875f5c72b695ab71612"/>
         <Meta />
         <Links />
       </head>

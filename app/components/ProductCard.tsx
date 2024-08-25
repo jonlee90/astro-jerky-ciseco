@@ -196,7 +196,7 @@ const ProductCard: FC<ProductCardProps> = ({
                   }
                 />
               </span>
-              <span className='text-right items'>
+              <span className='text-right items -mt-1'>
                 {getProductIcon(product.tags)} {/* Render the icon based on tags */}
               </span>
             </div>
