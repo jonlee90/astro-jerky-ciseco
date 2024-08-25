@@ -8,16 +8,9 @@ export function ContactForm() {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-gray-900">General Enquiries</h3>
-            <p className="text-gray-700">
-              info@astrofreshjerky.com
-            </p>
-          </div>
-          
-          <div className="space-y-4">
             <h3 className="text-xl font-semibold text-gray-900">Customer Service</h3>
             <p className="text-gray-700">
-              customerservice@astrofreshjerky.com
+            info@astrofreshjerky.com
             </p>
           </div>
 
@@ -29,7 +22,7 @@ export function ContactForm() {
           </div>
         </div>
 
-        <div className="mt-8 space-y-4 text-center">
+        <div className="space-y-4 text-center">
           <h3 className="text-xl font-semibold text-gray-900">Follow Us</h3>
           <div className="flex space-x-4 justify-center">
             <a href="https://www.facebook.com/astrofreshjerky" className="text-gray-500 hover:text-gray-900">
