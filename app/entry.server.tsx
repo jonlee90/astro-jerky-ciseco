@@ -32,7 +32,6 @@ export default async function handleRequest(
       'https://d3hw6dc1ow8pp2.cloudfront.net',
     ],
     connectSrc: [
-      'wss://aeaa-76-170-56-64.ngrok-free.app:*',
       "'self'",
       'https://monorail-edge.shopifysvc.com',
       'localhost:*',
