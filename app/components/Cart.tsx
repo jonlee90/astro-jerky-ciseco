@@ -390,7 +390,7 @@ function CartAgreementCheckbox({ toggleDisableButton }: CartAgreementCheckboxPro
     <div className="flex flex-row mt-2">
       <input type="checkbox" className="align-middle mr-2 my-1 size-5" onChange={toggleDisableButton} />
       <label className="text-fine">
-        I agree with the <a href="/pages/terms-of-service" className="color-logo-red">Terms of Service</a>, <a href="/policies/refund-policy" className="color-logo-red">Returns-Refund-Exchanges Policy</a>, and <a href="/pages/shipping-handling" className="color-logo-red">Shipping and Handling Policy</a>.
+        I agree with the <a href="/policies/terms-of-service" className="color-logo-red">Terms of Service</a>, <a href="/policies/refund-policy" className="color-logo-red">Returns/Refund/Exchanges Policy</a>, and <a href="/policies/shipping-policy" className="color-logo-red">Shipping and Handling Policy</a>.
       </label>
     </div>
   );
