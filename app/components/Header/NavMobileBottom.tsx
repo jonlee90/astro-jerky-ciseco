@@ -38,7 +38,7 @@ const NavMobileBottom = ({opacity}: {opacity: Number}) => {
     }
   });
   return (
-    <div className="header-shadow overflow-hidden bottom-0 md:hidden fixed z-50 w-full h-14 bg-contrast/95 border-x border-b border-gray-300 pb-1 transform -translate-x-1/2 left-1/2"
+    <div className="header-shadow overflow-hidden bottom-0 md:hidden fixed z-50 w-full h-[68px] bg-contrast/95 border-x border-b border-gray-300 pb-1 transform -translate-x-1/2 left-1/2"
           style={{ opacity }}
     >
         {activeItemIndex >= 0 && (
