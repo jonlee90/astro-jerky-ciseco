@@ -1,15 +1,14 @@
-import {useRef, Suspense, useState, useEffect} from 'react';
+import {useRef, Suspense, useState, useEffect, Fragment} from 'react';
 import {
   defer,
   type MetaArgs,
   redirect,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
-import {useLoaderData, Await, useNavigate, useLocation} from '@remix-run/react';
+import {useLoaderData, Await, useLocation} from '@remix-run/react';
 import {
   type VariantOption,
   Image,
-  VariantSelector,
   getSelectedProductOptions,
   Analytics,
   useOptimisticVariant,
@@ -18,7 +17,6 @@ import invariant from 'tiny-invariant';
 import clsx from 'clsx';
 import type {
   ProductQuery,
-  ProductVariantFragmentFragment,
 } from 'storefrontapi.generated';
 import {ProductGallery} from '~/components/ProductGallery';
 import {Skeleton} from '~/components/Skeleton';
@@ -40,8 +38,7 @@ import {RouteContent} from '~/sections/RouteContent';
 import {getSeoMeta} from '@shopify/hydrogen';
 import {getLoaderRouteFromMetaobject} from '~/utils/getLoaderRouteFromMetaobject';
 import { motion } from 'framer-motion';
-import { useMediaQuery } from 'react-responsive'
-import { IconFacebook } from '~/components/Icon';
+import { IconArrowRight, IconFacebook } from '~/components/Icon';
 import { IconX } from '~/components/Icon';
 import { IconPinterest } from '~/components/Icon';
 import { convertToNumber } from '~/lib/utils';
@@ -50,7 +47,8 @@ import { SlashIcon } from '@heroicons/react/24/solid';
 import Nav from '~/components/Nav';
 import NavItem from '~/components/NavItem';
 import useWindowScroll from '~/components/Header/useWindowScroll';
-import Logo from '~/components/Logo';
+import { Popover, Transition } from '@headlessui/react';
+import { CartCount } from '~/components/CartCount';
 
 export const headers = routeHeaders;
 
@@ -207,6 +205,18 @@ export default function Product() {
 
   const [currentQuantity, setCurrentQuantity] = useState(3);
   const selectedVariant = useOptimisticVariant(product.selectedVariant, variants);
+  const [isButtonVisible, setIsButtonVisible] = useState(false);
+  const prevScrollY = useRef<number>(0);
+  const [opacity, setOpacity] = useState<number>(1);
+  const { y } = useWindowScroll();
+
+  
+  const location = useLocation(); // Get the current location
+
+  // Reset isButtonVisible when the route changes
+  useEffect(() => {
+    setIsButtonVisible(false);
+  }, [location]);
 
   let variantPrice = parseFloat(selectedVariant.price.amount);
   let discountAmount = 0;
@@ -237,7 +247,21 @@ export default function Product() {
     selectedVariantCompareAtPrice?.amount &&
     selectedVariantPrice?.amount < selectedVariantCompareAtPrice?.amount;
 
+  
+    useEffect(() => {
+      if (y > prevScrollY.current && y > 150) {
+        setOpacity(0.8);
+      } else {
+        setOpacity(1);
+      }
 
+      if(y > 150 && !isButtonVisible) {
+        setIsButtonVisible(true);
+      }
+
+      
+      prevScrollY.current = y;
+    }, [y]);
 
   return (
     <div
@@ -245,14 +269,21 @@ export default function Product() {
         'product-page mt-5 mb-20 lg:mt-10 pb-28 ',
       )}
     >
-      
-      <BottomAddToCartButton
-        selectedVariant={selectedVariant}
-        currentQuantity={currentQuantity}
-        selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
-        selectedVariantPrice={selectedVariantPrice}
-        setCurrentQuantity={setCurrentQuantity}
-      />
+      <motion.div
+        initial={{ y: '100%' }}
+        animate={isButtonVisible ? { y: 0 } : { y: '100%' }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+        className="fixed bottom-0 w-full lg:hidden z-50"
+        style={{opacity}}
+      >
+        <BottomAddToCartButton
+          selectedVariant={selectedVariant}
+          currentQuantity={currentQuantity}
+          selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
+          selectedVariantPrice={selectedVariantPrice}
+          setCurrentQuantity={setCurrentQuantity}
+        />
+      </motion.div>
       <main className="2xl:max-w-screen-xl container">
         <div className="lg:flex">
           {/* Galleries */}
@@ -279,6 +310,10 @@ export default function Product() {
                       >
                         {(resp) => (
                           <ProductForm
+                            currentQuantity={currentQuantity}
+                            selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
+                            selectedVariantPrice={selectedVariantPrice}
+                            setCurrentQuantity={setCurrentQuantity}
                           />
                         )}
                       </Await>
@@ -313,7 +348,8 @@ export default function Product() {
 
           {/* Product description */}
               {!!descriptionHtml && (
-                <div className="grid gap-7 2xl:gap-8">
+                <div 
+                  className="grid gap-7 2xl:gap-8 description-container">
                   <h2 className="text-2xl font-semibold">Product Details</h2>
                   <div
                     className="prose prose-sm sm:prose dark:prose-invert sm:max-w-4xl"
@@ -405,13 +441,12 @@ export default function Product() {
   );
 }
 
-export function ProductForm() {
+export function ProductForm({currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity }) {
 
   const {product} = useLoaderData<typeof loader>();
 
   const location = useLocation();
   const { collection } = location.state || {};
-  console.log(collection);
   /**
    * Likewise, we're defaulting to the first variant for purposes
    * of add to cart if there is none returned from the loader.
@@ -476,103 +511,185 @@ export function ProductForm() {
         >
             {product.title + ' (' + selectedVariant.title + ')'}
         </h1>
+      </div>
 
-      {/* ---------- PRODUCT PRICE ----------  
-        <div className="flex flex-wrap gap-4 lg:gap-5 justify-center lg:justify-start">
-          <Prices
-            contentClass="!text-2xl "
-            price={selectedVariantPrice}
-            compareAtPrice={selectedVariantCompareAtPrice}
-          />
+      <div className='hidden lg:grid gap-7 2xl:gap-8'>
+        
+        <hr className=" border-slate-200 dark:border-slate-700 mt-3"></hr>
+        <div className="grid grid-cols-3 items-center gap-1 mb-4 xs:gap-3">
+          {
+            variantsByQuantity.map(({quantity, title}) => (
+              <motion.button
+                key={quantity}
+                className={clsx(
+                  'variant-button flex-auto text-[16px] xs:text-[18px]',
+                  quantity === currentQuantity ? 'variant-button-pressed': '',
+                )}
+                onClick={() => setCurrentQuantity(quantity)}
+              >
+                {title}
+              </motion.button>
+            ))
+          }
         </div>
-      */}
-
+        {selectedVariant && (
+          <div className="items-stretch gap-4">
+            {isOutOfStock ? (
+              <ButtonSecondary disabled>
+                <NoSymbolIcon className="w-5 h-5" />
+                <span className="ms-2">Sold out</span>
+              </ButtonSecondary>
+            ) : (
+              <div className="grid items-stretch gap-4">
+                <AddToCartButton3d
+                    isSmallButton={false}
+                    selectedVariant={selectedVariant}
+                    currentQuantity={currentQuantity}
+                    selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
+                    selectedVariantPrice={selectedVariantPrice}
+                  />
+              </div>
+            )}
+          </div>
+        )}
       </div>
-      {/*
-
-      <div className="grid grid-cols-3 items-center gap-1 mb-4 xs:gap-3">
-        {
-          variantsByQuantity.map(({quantity, title}) => (
-            <motion.button
-              key={quantity}
-              className={clsx(
-                'variant-button flex-auto text-[16px] xs:text-[18px]',
-                quantity === currentQuantity ? 'variant-button-pressed': '',
-                isDesktop ? "variant-button-hover" : '',
-            //    isAvailable ? 'opacity-100' : 'opacity-50',
-              )}
-              onClick={() => setCurrentQuantity(quantity)}
-            >
-              {title}
-            </motion.button>
-          ))
-        }
-      </div>
-
-      */}
       
 
-      {/* ---------- VARIANTS AND COLORS LIST ----------  
-      <VariantSelector
-        handle={product.handle}
-        options={product.options}
-        variants={variants}
-      >
-        {({option}) => {
-          if (option.name === 'Color') {
-            return <ProductColorOption option={option} />;
-          } else {
-            return <ProductOtherOption option={option} />;
-          }
-        }}
-      </VariantSelector>
-      */}
-
-      {/* ---------- ADD TO CART BUTTOn ----------  
-      {selectedVariant && (
-        <div className="grid items-stretch gap-4">
-          {isOutOfStock ? (
-            <ButtonSecondary disabled>
-              <NoSymbolIcon className="w-5 h-5" />
-              <span className="ms-2">Sold out</span>
-            </ButtonSecondary>
-          ) : (
-            <div className="grid items-stretch gap-4">
-                <AddToCartButton
-                  lines={
-                    selectedVariant
-                      ? [
-                          {
-                            merchandiseId: selectedVariant.id,
-                            quantity: currentQuantity,
-                            selectedVariant,
-                          },
-                        ]
-                      : []
-                  }
-                  className="w-full flex-1 add-to-cart-button"
-                  data-test="add-to-cart"
-                  onClick={() => open('cart')}
-                >
-                  <span
-                    className="flex items-center justify-center gap-2 uppercase font-bold"
-                  >
-                    <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
-                    <span>Add to Cart</span>
-                  </span>
-                </AddToCartButton>
-            </div>
-          )}
-        </div>
-      )}
-
-      */}
+    
 
     </>
   );
 }
-
 const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity }) => {
+  const variantsByQuantity = [];
+  const isOutOfStock = !selectedVariant?.availableForSale;
+
+
+  for (let i = 1; i < 4; i++) {
+    const quantity = i > 1 ? 3 * (i - 1) : i;
+    variantsByQuantity.push({
+      quantity: quantity,
+      title: quantity + ' Bag' + (i > 1 ? 's' : '')
+    });
+  }
+  const [activeItem, setActiveItem] = useState(variantsByQuantity?.find((item) => item.quantity == 3));
+
+  if (!selectedVariant) {
+    return null;
+  }
+  return (
+    <div 
+      className='w-full z-50'
+    >
+      {isOutOfStock ? (
+        <ButtonSecondary disabled>
+          <NoSymbolIcon className="w-5 h-5" />
+          <span className="ms-2">Sold out</span>
+        </ButtonSecondary>
+      ) : (
+        <div className='py-5 px-3 grid grid-cols-5'>
+          <div className='col-span-1'>
+            <div className='border-black border'>
+              <Popover 
+                className="relative flex-shrink-0"
+              >
+                {({open, close}) => (
+                  <div className="popover-container">
+                    <Popover.Button
+                      className={clsx(
+                        `flex gap-2 flex-shrink-0 items-center pdp-quantity-button justify-center  h-[56px] py-2 text-sm border border-black bg-white w-full outline-none`,
+                         open
+                          ? 'pdp-quantity-button-active'
+                          : '',
+                      )}
+                    >
+                      <span className="flex-shrink-0">
+                        {(activeItem || variantsByQuantity[0]).title || '3 Bags'}
+                      </span>
+                    </Popover.Button>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-200"
+                      enterFrom="opacity-0 translate-y-1"
+                      enterTo="opacity-100 translate-y-0"
+                      leave="transition ease-in duration-150"
+                      leaveFrom="opacity-100 translate-y-0"
+                      leaveTo="opacity-0 translate-y-1"
+                    >
+                      <Popover.Panel 
+                        className="popover-panel absolute z-40 mb-3 bottom-14 right-0 sm:px-0"
+                      >
+                        <div className="overflow-hidden">
+                          <div className="relative flex flex-col">
+                            {variantsByQuantity.map(({title, quantity}, key) => (
+                                <button
+                                  key={key}
+                                  className='items-center justify-center  h-[50px] py-2 text-sm w-full border border-black mt-1 shadow-xl bg-white'
+                                  onClick={() => {
+                                    setCurrentQuantity(quantity);
+                                    setActiveItem(variantsByQuantity?.find((item) => item.quantity === quantity))
+                                    close(); 
+                                  }}
+                                >
+                                  {title}
+                                </button>
+                            ))}
+                          </div>
+                        </div>
+                      </Popover.Panel>
+                    </Transition>
+                  </div>
+                )}
+              </Popover>
+            </div>
+          </div>
+          <AddToCartButton3d
+            selectedVariant={selectedVariant}
+            currentQuantity={currentQuantity}
+            selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
+            selectedVariantPrice={selectedVariantPrice}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, isSmallButton = true}) => {
+  const {open} = useAside();
+  return (
+    <div className='col-span-4 ml-2 flex flex-row'>
+        <div className={`text-sm border-black border w-full`}>
+          <AddToCartButton
+            lines={[
+              {
+                merchandiseId: selectedVariant.id,
+                quantity: currentQuantity,
+                selectedVariant: selectedVariant
+              },
+            ]}
+            className={`w-full pdp-add-to-cart-button bg-black text-white py-2 outline-none ${isSmallButton ? 'h-[56px]' : 'h-[60px] text-lead' }`}
+            data-test="add-to-cart"
+            onClick={() => open('cart')}
+          >
+            <span className={`flex items-center ml-3 gap-2 font-bold `}>
+              <span>Add to Cart - </span>
+              <Prices
+                contentClass={`inline ${isSmallButton ? 'text-sm' : '' }`}
+                price={selectedVariantPrice}
+                compareAtPrice={selectedVariantCompareAtPrice}
+                compareAtPriceClass={'text-slate-600'}
+              />
+            </span>
+            <IconArrowRight className='absolute right-3 top-1/2 transform -translate-y-1/2' />
+          </AddToCartButton>
+        </div>
+        <CartCount opacity={1} className={`cursor-pointer ml-2 h-14 w-14`} />
+    </div>
+  )
+}
+
+const BottomAddToCartButtons = ({ selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity }) => {
   const variantsByQuantity = [];
   const isOutOfStock = !selectedVariant?.availableForSale;
   

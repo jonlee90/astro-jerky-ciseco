@@ -17,7 +17,7 @@ export const BundlePacks: BundlePack[] = [
     description: '2 Big & 1 Small Bags',
     bigQuantity: 2,
     smallQuantity: 1,
-    price: '28',
+    price: '27',
     msrp: '31.97'
   },
   {
@@ -26,7 +26,7 @@ export const BundlePacks: BundlePack[] = [
     description: '3 Big & 2 Small Bags',
     bigQuantity: 3,
     smallQuantity: 2,
-    price: '46',
+    price: '43.99',
     msrp: '51.95'
   },
   {
@@ -35,7 +35,7 @@ export const BundlePacks: BundlePack[] = [
     description: '5 Big & 3 Small Bags',
     bigQuantity: 5,
     smallQuantity: 3,
-    price: '75',
+    price: '68.98',
     msrp: '83.92'
   },
   {
@@ -44,7 +44,7 @@ export const BundlePacks: BundlePack[] = [
     description: '11 Small Bags',
     bigQuantity: 0,
     smallQuantity: 11,
-    price: '77',
+    price: '69.98',
     msrp: '87.89'
   },
   {
@@ -53,7 +53,7 @@ export const BundlePacks: BundlePack[] = [
     description: '11 Big Bags',
     bigQuantity: 11,
     smallQuantity: 0,
-    price: '119',
+    price: '99.99',
     msrp: '131.89'
   },
   {
@@ -62,7 +62,7 @@ export const BundlePacks: BundlePack[] = [
     description: '11 Big & 11 Small Bags',
     bigQuantity: 11,
     smallQuantity: 11,
-    price: '175',
+    price: '165',
     msrp: '219.78'
   }
 ];

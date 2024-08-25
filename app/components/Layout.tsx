@@ -64,10 +64,9 @@ export function Layout({children, layout, cart}: LayoutProps) {
 
 function MyHeader() {
   const { pathname, state } = useLocation();
-  const navigate = useNavigate();
-  const navLink = pathname.includes('/bundle') && !!state ? '/bundle' : -1;
   const isHydrated = useIsHydrated();
   const isBackButton = isHydrated && (pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true));
+  const isCartButton = isHydrated && !!state && pathname.includes('/bundle/') && true;
   const isDesktop = useMediaQuery({minWidth: 767});
 
   const [opacity, setOpacity] = useState<number>(1);
@@ -88,22 +87,22 @@ function MyHeader() {
       {/*
         <MainNav openMenu={openMenu} openCart={openCart} isHome={isHome} />
       */}
-      {isBackButton ?
+      {isBackButton && isHydrated ?
         <>
-          <motion.button
+          {/*<motion.button
             onClick={() => navigate(navLink)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95, opacity: 0.6 }}
             style={{opacity}}
-            className={`pdp-nav-button transform left-5 ${navLink === '/bundle' ? 'bottom-5' : pathname.includes('/products/') && isDesktop ? 'top-10' : 'bottom-32'}`}
+            className={`pdp-nav-button transform left-5 ${navLink === '/bundle' ? 'bottom-5' : pathname.includes('/products/') && isDesktop ? 'top-10' : 'bottom-24'}`}
           >
             <IconCaret
               direction='right' 
               className="!size-14 z-50 rounded-full bg-black text-white font-bold p-2"
             />
-          </motion.button>
+          </motion.button>*/}
 
-          <CartCount opacity={opacity} className={`pdp-nav-button right-5 ${navLink === '/bundle' ? 'bottom-5' : pathname.includes('/products/') && isDesktop ? 'top-10' : 'bottom-32'}`} />  
+          {isCartButton ? <CartCount opacity={opacity} className={`pdp-nav-button right-5 ${isDesktop ? 'top-10' : 'bottom-5'}`} /> : <></> }
         </>
       :
       <>

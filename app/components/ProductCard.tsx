@@ -17,7 +17,6 @@ import {useMediaQuery} from 'react-responsive';
 import { useAside } from './Aside';
 import { useVariantUrl } from '~/lib/variants';
 import { IconSpicy, IconBbq, IconChicken, IconPepper } from "./Icon";
-import { Collection } from '@shopify/hydrogen/storefront-api-types';
 
 
 interface MoneyV2 {
@@ -124,7 +123,10 @@ const ProductCard: FC<ProductCardProps> = ({
   }, [isInView, isHovered, isDesktop, productMedia.length, intervalDuration]);
 
   return ( 
-    <motion.div className="flex flex-col gap-2" whileHover={{scale: 1.02}}>
+    <motion.div 
+      className="flex flex-col gap-2" 
+      whileHover={{scale: 1.02}} 
+      >
       <Link
         to={variantUrl}
         state={{product: product.handle, collection}}
