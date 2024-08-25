@@ -22,7 +22,14 @@ export default async function handleRequest(
       'https://cdn.shopify.com',
       'https://d3hw6dc1ow8pp2.cloudfront.net',
       'https://d3g5hqndtiniji.cloudfront.net',
+      'https://*.googletagmanager.com',
       'data:',
+    ],
+    imgSrc: [
+      "'self'",
+      'https://cdn.shopify.com',
+      'https://*.google-analytics.com',
+      'https://*.googletagmanager.com'
     ],
     styleSrc: [
       "'self'",
@@ -37,6 +44,9 @@ export default async function handleRequest(
       'http://localhost:*',
       'ws ://localhost:*',
       'ws://127.0.0.1:*',
+      'https://*.google-analytics.com',
+      'https://*.analytics.google.com',
+      'https://*.googletagmanager.com',
     ],
   });
   const body = await renderToReadableStream(

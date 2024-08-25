@@ -23,6 +23,7 @@ import {
   getSeoMeta,
   Analytics,
   getShopAnalytics,
+  Script,
 } from '@shopify/hydrogen';
 import {Layout} from '~/components/Layout';
 import {seoPayload} from '~/lib/seo.server';
@@ -37,6 +38,7 @@ import {COMMON_COLLECTION_ITEM_FRAGMENT} from './data/commonFragments';
 import { motion, AnimatePresence } from "framer-motion";
 import invariant from 'tiny-invariant';
 import { useIsHydrated } from './hooks/useIsHydrated';
+import {GoogleTagManager} from '~/components/GoogleTagManager'
 
 export type RootLoader = typeof loader;
 
@@ -186,6 +188,16 @@ function MainLayout({children}: {children?: React.ReactNode}) {
         <meta name="p:domain_verify" content="8f65b0b25d12b875f5c72b695ab71612"/>
         <Meta />
         <Links />
+        <Script dangerouslySetInnerHTML={{
+         __html: `<script async src="https://www.googletagmanager.com/gtag/js?id=G-B77YJ6XNWH"></script>
+                  <script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+
+                    gtag('config', 'G-B77YJ6XNWH');
+                  </script>`,
+        }}></Script>
       </head>
       <body className="bg-white">
         {isHydrated && (<AnimatePresence>
@@ -220,6 +232,7 @@ function MainLayout({children}: {children?: React.ReactNode}) {
               >
                 {children}
               </Layout>
+              <GoogleTagManager />
             </Analytics.Provider>
         ) : (
           children
