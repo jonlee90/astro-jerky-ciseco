@@ -673,10 +673,24 @@ shop-pay-button {
 }
 .pdp-nav-button {
   position: fixed;
-  width: 56px;
-  height: 56px;
   z-index: 49;
   cursor: pointer;
+}
+.pdp-add-to-cart-button, .pdp-quantity-button {
+  transform: translate(-3px, -3px);
+  transition: transform 0.05s ease; /* Smooth transition */
+}
+.pdp-quantity-button-active, .pdp-add-to-cart-button:active {
+  transform: translate(0px, 0px);
+}
+.popover-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.popover-button, .popover-panel {
+  width: 100%;
 }
 .variant-button {
   background-color: white;

@@ -120,7 +120,7 @@ export default function Collection() {
             <div className="flex items-center text-sm font-medium gap-2 text-neutral-500 mb-2">
               <FireIcon className="w-5 h-5" />
               <span className="text-neutral-700 ">
-                {totalProducts} products
+                {totalProducts} Jerkies
               </span>
             </div>
             <PageHeader
@@ -144,7 +144,7 @@ export default function Collection() {
             {/* LOOP ITEMS */}
             <>
               {!noResults ? (
-                <ProductsGrid nodes={currentProducts} isSmall={isSmall} />
+                <ProductsGrid nodes={currentProducts} isSmall={isSmall} collection={collection} />
               ) : (
                 <Empty />
               )}

@@ -6,6 +6,7 @@ import { useLoaderData, Await } from '@remix-run/react';
 import { IconCart } from './Icon';
 import { useAside } from './Aside';
 import { RootLoader } from '~/root';
+import { useMediaQuery } from 'react-responsive';
 
 interface CartCountProps {
   className?: string;
@@ -23,7 +24,7 @@ const Badge: React.FC<BadgeProps> = ({ openCart, count }) => {
   const BadgeCounter = useMemo(
     () => (
       <>
-        <IconCart className="w-8 h-8" />
+        <IconCart className="size-8" />
         <div
           className='text-contrast bg-white color-logo-green absolute top-3 right-2.5 text-xs font-medium subpixel-antialiased size-4 flex items-center justify-center text-center rounded-full'
         >
@@ -53,6 +54,7 @@ const Badge: React.FC<BadgeProps> = ({ openCart, count }) => {
 
 export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity}) => {
   const rootData = useRouteLoaderData<RootLoader>('root');
+  const isMobile = useMediaQuery({maxWidth: 767});
   const {open} = useAside();
 
   return (
@@ -60,7 +62,7 @@ export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity}) 
         <Await resolve={rootData?.cart}>
           {(cart) => (
             <motion.div
-              className={`rounded-full bg-logo-green ${className} ${!cart?.totalQuantity && 'hidden'}`}
+              className={`rounded-full bg-logo-green ${className} ${!cart?.totalQuantity && isMobile && 'hidden'}`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95, opacity: 0.6 }}
               onClick={() => open('cart')}

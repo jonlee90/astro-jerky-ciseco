@@ -114,7 +114,7 @@ export function IconCaret({
   return (
     <Icon
       {...props}
-      className={`w-5 h-5 transition ${rotate} ${className}`}
+      className={`transition ${rotate} ${className}`}
       fill="transparent"
       stroke={stroke}
     >
@@ -441,5 +441,10 @@ export function IconDollarSign({className = ''}) {
 export function IconEqual({className = ''}) {
   return (
     <svg className={`size-6 ${className}`} xmlns="http://www.w3.org/2000/svg" width="28" height="32" viewBox="0 0 448 512"><path fill="black" d="M416 304H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32m0-192H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32"/></svg>
+  )
+}
+export function IconArrowRight({className = ''}) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" className={`${className}`} width="30" height="30" viewBox="0 0 24 24"><path fill="white" d="m23.068 11.993l-4.25-4.236l-1.412 1.417l1.835 1.83L.932 11v2l18.305.002l-1.821 1.828l1.416 1.412z"/></svg>
   )
 }

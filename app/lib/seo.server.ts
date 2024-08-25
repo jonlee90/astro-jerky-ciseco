@@ -64,7 +64,7 @@ function root({
 function home(): SeoConfig {
   return {
     title: 'Home',
-    titleTemplate: '%s | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
+    titleTemplate: 'Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
     description: 'The best place to buy snowboarding products',
     robots: {
       noIndex: false,

@@ -78,7 +78,7 @@ export const DesktopHeader = () => {
         </div>
         <div className="flex items-center gap-1">
           {/* <AccountLink className="relative flex items-center justify-center w-10 h-10 focus:ring-primary/5" /> */}
-          <CartCount />
+          <CartCount opacity={1} />
         </div>
       </div>
     </header>

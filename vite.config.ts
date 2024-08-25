@@ -25,8 +25,6 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      // Polyfill for module if necessary
-      'module': 'module-polyfill',
       '~': path.resolve(__dirname, 'app'), // Adjust 'src' to your project's base directory
       "@": path.resolve(__dirname, 'app'),
     },
@@ -58,6 +56,7 @@ export default defineConfig({
     },
   },
   build: {
+    sourcemap: false, // Disable source maps globally
     rollupOptions: {
       output: {
         globals: {

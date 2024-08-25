@@ -219,8 +219,8 @@ const SectionItem = ({section}: {section: HeroItemFragment}) => {
 
       {/* CONTENT */}
       <div className="flex py-12 sm:py-14 lg:items-center lg:pb-20">
-        <div className="container relative self-end text-center">
-          <div className="nc-SectionHeroSliderItem__left relative w-full space-y-8 lg:space-y-14">
+        <div className="container relative self-center text-center">
+          <div className="nc-SectionHeroSliderItem__left relative w-full lg:space-y-14">
             <div className="space-y-5 sm:space-y-6">
               {!!item.sub_heading?.value && (
                 <span
@@ -238,7 +238,7 @@ const SectionItem = ({section}: {section: HeroItemFragment}) => {
 
             {!!item.cta_button?.href && (
               <ButtonPrimary
-                className="nc-SectionHeroSliderItem__button bg-logo-green hover:bg-primary-700"
+                className="nc-SectionHeroSliderItem__button bg-logo-green hover:bg-primary-700 mb-12"
                 sizeClass="py-3 px-6 sm:py-5 sm:px-9"
                 fontSize="text-sm sm:text-base xl:text-lg font-medium"
                 href={item.cta_button?.href?.value}
