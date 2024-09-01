@@ -202,6 +202,8 @@ export default function Product() {
   const {media, outstanding_features, descriptionHtml, id} =
     product;
 
+  const { pathname, state } = useLocation();
+  const isBackButton = pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true);
 
   const [currentQuantity, setCurrentQuantity] = useState(3);
   const selectedVariant = useOptimisticVariant(product.selectedVariant, variants);
@@ -273,7 +275,7 @@ export default function Product() {
         initial={{ y: '100%' }}
         animate={isButtonVisible ? { y: 0 } : { y: '100%' }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
-        className="fixed bottom-0 w-full lg:hidden z-50"
+        className={`fixed w-full lg:hidden z-50 ${isBackButton ? 'bottom-0' : 'bottom-16'}`}
         style={{opacity}}
       >
         <BottomAddToCartButton
@@ -622,7 +624,7 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
                         <div className="overflow-hidden">
                           <div className="relative flex flex-col">
                             {variantsByQuantity.map(({title, quantity}, key) => (
-                                <button
+                                <motion.button
                                   key={key}
                                   className='items-center justify-center  h-[50px] py-2 text-sm w-full border border-black mt-1 shadow-xl bg-white'
                                   onClick={() => {
@@ -632,7 +634,7 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
                                   }}
                                 >
                                   {title}
-                                </button>
+                                </motion.button>
                             ))}
                           </div>
                         </div>
