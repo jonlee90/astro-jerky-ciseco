@@ -2,13 +2,15 @@
 /// <reference types="@shopify/remix-oxygen" />
 /// <reference types="@shopify/oxygen-workers-types" />
 
+// Enhance TypeScript's built-in typings.
+import '@total-typescript/ts-reset';
+
 import type {
-  WithCache,
-  HydrogenCart,
+  HydrogenContext,
   HydrogenSessionData,
+  HydrogenEnv,
 } from '@shopify/hydrogen';
-import type {Storefront, CustomerAccount} from '~/lib/type';
-import type {AppSession} from '~/lib/session.server';
+import type {createAppLoadContext} from '~/lib/context';
 
 declare global {
   /**
@@ -16,44 +18,18 @@ declare global {
    */
   const process: {env: {NODE_ENV: 'production' | 'development'}};
 
-  /**
-   * Declare expected Env parameter in fetch handler.
-   */
-  interface Env {
-    SESSION_SECRET: string;
-    PUBLIC_STOREFRONT_API_TOKEN: string;
-    PRIVATE_STOREFRONT_API_TOKEN: string;
-    PUBLIC_STORE_DOMAIN: string;
-    PUBLIC_STOREFRONT_ID: string;
-    PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID: string;
-    PUBLIC_CUSTOMER_ACCOUNT_API_URL: string;
-    PUBLIC_CHECKOUT_DOMAIN: string;
-    // MY CUSTOM ENV
-    PUBLIC_SHOPIFY_STORE_DOMAIN: string;
-    PUBLIC_STORE_CDN_STATIC_URL: string;
-    PUBLIC_IMAGE_FORMAT_FOR_PRODUCT_OPTION: string;
-    PUBLIC_OKENDO_SUBSCRIBER_ID: string;
+  interface Env extends HydrogenEnv {
+    // declare additional Env parameter use in the fetch handler and Remix loader context here
   }
 }
 
 declare module '@shopify/remix-oxygen' {
-  /**
-   * Declare local additions to the Remix loader context.
-   */
-  export interface AppLoadContext {
-    waitUntil: ExecutionContext['waitUntil'];
-    session: AppSession;
-    storefront: Storefront;
-    customerAccount: CustomerAccount;
-    cart: HydrogenCart;
-    env: Env;
+  interface AppLoadContext
+    extends Awaited<ReturnType<typeof createAppLoadContext>> {
+    // to change context type, change the return of createAppLoadContext() instead
   }
 
-  /**
-   * Declare local additions to the Remix session data.
-   */
-  interface SessionData extends HydrogenSessionData {}
+  interface SessionData extends HydrogenSessionData {
+    // declare local additions to the Remix session data here
+  }
 }
-
-// Needed to make this file a module.
-export {};

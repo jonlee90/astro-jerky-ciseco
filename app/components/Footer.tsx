@@ -1,34 +1,42 @@
-import React from 'react';
-import type {ChildEnhancedMenuItem, ParentEnhancedMenuItem} from '~/lib/utils';
+import React, { Suspense } from 'react';
+import {getUrlAndCheckIfExternal, type ChildEnhancedMenuItem, type ParentEnhancedMenuItem} from '~/lib/utils';
 import {Link} from './Link';
 import {
   CheckCircleIcon,
   EnvelopeIcon,
   InformationCircleIcon,
 } from '@heroicons/react/24/outline';
-import {useFetcher, useRouteLoaderData} from '@remix-run/react';
+import {Await, NavLink, useFetcher, useRouteLoaderData} from '@remix-run/react';
 import Input from './MyInput';
 import ButtonCircle from './Button/ButtonCircle';
 import {ArrowRightIcon} from '@heroicons/react/24/solid';
 import SocialsList from './SocialsList';
-import {type AddSubscriberMutation} from 'storefrontapi.generated';
-import {FooterMenuDataWrap, HeaderMenuDataWrap} from './Layout';
+import {FooterMenuQuery, HeaderMenuQuery, type AddSubscriberMutation} from 'storefrontapi.generated';
+import {FooterMenuDataWrap, HeaderMenuDataWrap} from './PageLayout';
 import { RootLoader } from '~/root';
 
-interface FooterProps {}
+interface FooterProps {
+  footer: Promise<FooterMenuQuery | null>;
+  header: HeaderMenuQuery;
+  publicStoreDomain: string;
+  primaryDomainUrl:string
+}
 
-const Footer: React.FC<FooterProps> = () => {
-  const rootData = useRouteLoaderData<RootLoader>('root');
-  const shop = rootData?.layout?.shop;
+const Footer: React.FC<FooterProps> = ({
+  footer,
+  header,
+  publicStoreDomain,
+  primaryDomainUrl
+}: FooterProps) => {
 
   const renderWidgetMenu = (menu: ParentEnhancedMenuItem, index: number) => {
     return (
       <div key={index + menu.id} className="text-sm">
-        <Link to={menu.to} target={menu.target} prefetch="intent">
+        <NavLink key={index} to={getUrlAndCheckIfExternal(menu.url, publicStoreDomain, primaryDomainUrl)}  prefetch="intent">
           <h2 className="font-semibold  text-white">
             {menu.title}
           </h2>
-        </Link>
+        </NavLink>
         <ul className="mt-5 space-y-4">
           {menu.items?.map((item: ChildEnhancedMenuItem, i) => (
             <li
@@ -68,30 +76,28 @@ const Footer: React.FC<FooterProps> = () => {
 
         <div className="pt-8">
           <div className="flex flex-wrap gap-x-6 gap-y-3 justify-center">
-            <HeaderMenuDataWrap>
-              {({headerData: {socials}}) => (
-                <SocialsList
-                  data={socials.edges.map((edge) => {
-                    const node = edge.node;
-                    return {
-                      name: node.title?.value || '',
-                      icon: node.icon?.reference?.image?.url || '',
-                      href: node.link?.value || '',
-                    };
-                  })}
-                  itemClass="block opacity-90 hover:opacity-100"
-                  className="!gap-5"
-                />
-              )}
-            </HeaderMenuDataWrap>
+            <SocialsList
+              data={header?.socials?.edges.map((edge) => {
+                const node = edge.node;
+                return {
+                  name: node.title?.value || '',
+                  icon: node.icon?.reference?.image?.url || '',
+                  href: node.link?.value || '',
+                };
+              })}
+              itemClass="block opacity-90 hover:opacity-100"
+              className="!gap-5"
+            />
           </div>
           <div className="mt-16 flex flex-wrap justify-center gap-5">
-              <FooterMenuDataWrap>
-                {({footerMenu}) => footerMenu?.items?.map(renderWidgetMenu)}
-              </FooterMenuDataWrap>
+            <Suspense>
+              <Await resolve={footer}>
+                {(footer) => footer?.footerMenu?.items?.map(renderWidgetMenu)}
+              </Await>
+            </Suspense>
           </div>
           <p className="mt-8 text-[13px] leading-5 text-white md:order-1 md:mt-0">
-            © {new Date().getFullYear()} {shop.name}, LLC. All rights reserved.
+            © {new Date().getFullYear()} Astro Fresh Jerky, LLC. All rights reserved.
           </p>
         </div>
       </div>

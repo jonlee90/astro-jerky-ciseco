@@ -5,7 +5,6 @@ import type {
   CartApiQueryFragment,
   FooterMenuQuery,
   HeaderMenuQuery,
-  LayoutQuery,
 } from 'storefrontapi.generated';
 import {type EnhancedMenu, parseMenu, useIsHomePath} from '~/lib/utils';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
@@ -15,10 +14,9 @@ import Logo from './Logo';
 import Footer from './Footer';
 import {Drawer, useDrawer} from './Drawer';
 import {CartLoading} from './CartLoading';
-import {Cart} from './Cart';
+import {CartMain} from './CartMain';
 import NavMobileBottom from './Header/NavMobileBottom';
 import { AnnouncementBar } from './AnnouncementBar';
-import { FREE_SHIPPING_THRESHOLD } from '~/lib/const';
 import { MobileHeader } from './Header/MobileHeader';
 import { DesktopHeader } from './Header/DesktopHeader';
 import { ButtonAnimation } from './Button/ButtonAnimation';
@@ -30,16 +28,31 @@ import { motion } from 'framer-motion';
 import { useIsHydrated } from '~/hooks/useIsHydrated';
 import useWindowScroll from './Header/useWindowScroll';
 import { useMediaQuery } from 'react-responsive';
+import { Header } from './Header/Header';
+
 
 type LayoutProps = {
-  layout: LayoutQuery;
-  children?: React.ReactNode;
   cart: Promise<CartApiQueryFragment | null>;
+  footer: Promise<FooterMenuQuery | null>;
+  header: HeaderMenuQuery;
+  isLoggedIn: Promise<boolean>;
+  publicStoreDomain: string;
+  children?: React.ReactNode;
+  layout: any;
 };
 
-export function Layout({children, layout, cart}: LayoutProps) {
+export function PageLayout({
+  cart,
+  children = null,
+  footer,
+  header,
+  isLoggedIn,
+  publicStoreDomain,
+  layout
+}: LayoutProps) {
   const { pathname, state } = useLocation();
   const isBackButton = pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true);
+  const primaryDomainUrl = layout?.shop.primaryDomain.url;
   return (
     <Aside.Provider>
       <CartAside cart={cart} />
@@ -50,79 +63,39 @@ export function Layout({children, layout, cart}: LayoutProps) {
           </a>
         </div>
 
-        {!!layout && <MyHeader />}
+        {header && (
+          <Header 
+            header={header}
+            cart={cart}
+            isLoggedIn={isLoggedIn} 
+            primaryDomainUrl={primaryDomainUrl}
+            publicStoreDomain={publicStoreDomain}
+          />
+        )}
 
         <main role="main" className="flex-grow">
           {children}
         </main>
       </div>
 
-      {!!layout && !isBackButton && <Footer />}
+      <Footer 
+        footer={footer}
+        header={header}
+        primaryDomainUrl={primaryDomainUrl}
+        publicStoreDomain={publicStoreDomain}
+      />
     </Aside.Provider>
   );
 }
 
-function MyHeader() {
-  const { pathname, state } = useLocation();
-  const isHydrated = useIsHydrated();
-  const isBackButton = isHydrated && (pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true));
-  const isCartButton = isHydrated && !!state && pathname.includes('/bundle/') && true;
-  const isDesktop = useMediaQuery({minWidth: 767});
 
-  const [opacity, setOpacity] = useState<number>(1);
-  const prevScrollY = useRef<number>(0);
-  const { y } = useWindowScroll();
-  useEffect(() => {
-    if (y > prevScrollY.current && y > 150) {
-      setOpacity(0.4);
-    } else {
-      setOpacity(1);
-    }
-    prevScrollY.current = y;
-  }, [y]);
-
-  return (
-    <>
-      <AnnouncementBar content={`FREE SHIPPING ON $${FREE_SHIPPING_THRESHOLD} OR MORE`}/>
-      {/*
-        <MainNav openMenu={openMenu} openCart={openCart} isHome={isHome} />
-      */}
-      {isBackButton && isHydrated ?
-        <>
-          {/*<motion.button
-            onClick={() => navigate(navLink)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95, opacity: 0.6 }}
-            style={{opacity}}
-            className={`pdp-nav-button transform left-5 ${navLink === '/bundle' ? 'bottom-5' : pathname.includes('/products/') && isDesktop ? 'top-10' : 'bottom-24'}`}
-          >
-            <IconCaret
-              direction='right' 
-              className="!size-14 z-50 rounded-full bg-black text-white font-bold p-2"
-            />
-          </motion.button>*/}
-
-          {isCartButton ? <CartCount opacity={opacity} className={`pdp-nav-button right-5 ${isDesktop ? 'top-10' : 'bottom-5'}`} /> : <></> }
-        </>
-      :
-      <>
-        <DesktopHeader />
-        <MobileHeader />
-        <NavMobileBottom opacity={opacity} />
-      </>
-      }
-    </>
-  );
-}
-
-function CartAside({cart}: {cart: CartApiQueryFragment}) {
-  const {close} = useAside();
+function CartAside({cart}: {cart: LayoutProps['cart']}) {
   return (
     <Aside heading="Shopping Cart" openFrom="right" type="cart">
       <Suspense fallback={<CartLoading />}>
         <Await resolve={cart}>
           {(cart) => {
-            return <Cart onClose={close} cart={cart || null} />;
+            return <CartMain layout='aside' cart={cart} />;
           }}
         </Await>
       </Suspense>
@@ -154,7 +127,7 @@ export function HeaderMenuDataWrap({
 }) {
   const rootData = useRouteLoaderData<RootLoader>('root');
 
-  const headerPromise = rootData?.headerPromise;
+  const headerPromise = rootData?.header;
   const layout = rootData?.layout;
   const env = rootData?.env;
 
@@ -194,7 +167,7 @@ export function FooterMenuDataWrap({
   }) => React.ReactNode;
 }) {
   const rootData = useRouteLoaderData<RootLoader>('root');
-  const footerPromise = rootData?.footerPromise;
+  const footerPromise = rootData?.footer;
   const layout = rootData?.layout;
   const env = rootData?.env;
   const shop = layout?.shop;

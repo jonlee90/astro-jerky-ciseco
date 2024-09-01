@@ -25,7 +25,6 @@ import {
   getShopAnalytics,
   Script,
 } from '@shopify/hydrogen';
-import {Layout} from '~/components/Layout';
 import {seoPayload} from '~/lib/seo.server';
 import favicon from '@/assets/favicon.ico';
 import {GenericError} from './components/GenericError';
@@ -38,7 +37,8 @@ import {COMMON_COLLECTION_ITEM_FRAGMENT} from './data/commonFragments';
 import { motion, AnimatePresence } from "framer-motion";
 import invariant from 'tiny-invariant';
 import { useIsHydrated } from './hooks/useIsHydrated';
-import {GoogleTagManager} from '~/components/GoogleTagManager'
+import {GoogleTagManager, GoogleTagManagerScript} from '~/components/GoogleTagManager'
+import { PageLayout } from './components/PageLayout';
 
 export type RootLoader = typeof loader;
 
@@ -73,26 +73,26 @@ export const links: LinksFunction = () => {
 };
 
 export async function loader(args: LoaderFunctionArgs) {
-  const {env} = args.context;
-
   // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
-  // Await the critical data required to render initial state of the page
-  const criticalData = await loadCriticalData(args);
-  //
-  return defer({
-    ...deferredData,
-    ...criticalData,
+   // Await the critical data required to render initial state of the page
+   const criticalData = await loadCriticalData(args);
 
-    /**********  EXAMPLE UPDATE STARTS  ************/
-    env,
-    publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
-    publicStoreSubdomain: env.PUBLIC_SHOPIFY_STORE_DOMAIN,
-    publicStoreCdnStaticUrl: env.PUBLIC_STORE_CDN_STATIC_URL,
-    publicImageFormatForProductOption:
-      env.PUBLIC_IMAGE_FORMAT_FOR_PRODUCT_OPTION
-    /**********   EXAMPLE UPDATE END   ************/
-  });
+   const {storefront, env} = args.context;
+ 
+   return defer({
+     ...deferredData,
+     ...criticalData,
+     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
+     shop: getShopAnalytics({
+       storefront,
+       publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
+     }),
+     consent: {
+       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
+       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
+     },
+   });
 }
 
 /**
@@ -100,26 +100,29 @@ export async function loader(args: LoaderFunctionArgs) {
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
 async function loadCriticalData({request, context}: LoaderFunctionArgs) {
-  const [layout] = await Promise.all([
-    getLayoutData(context)
-    // Add other queries here, so that they are loaded in parallel
-  ]);
+  const {storefront} = context;
+  const {language, country} = storefront.i18n;
 
+  const [header, layout] = await Promise.all([
+    storefront.query(HEADER_QUERY, {
+      cache: storefront.CacheLong(),
+      variables: {
+        featuredCollectionsFirst: 1,
+        socialsFirst: 10,
+        headerMenuHandle: 'main-menu',
+        language,
+        country,
+      },
+    }),
+    getLayoutData(context)
+  ]);
   const seo = seoPayload.root({shop: layout.shop, url: request.url});
-  const {storefront, env} = context;
 
   return {
     layout,
     seo,
-    shop: getShopAnalytics({
-      storefront: context.storefront,
-      publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
-    }),
-    consent: {
-      checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
-      storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
-    },
-    selectedLocale: storefront.i18n
+    selectedLocale: storefront.i18n,
+    header
   };
 }
 
@@ -133,18 +136,8 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
   const isLoggedInPromise = customerAccount.isLoggedIn();
   const {language, country} = storefront.i18n;
 
-  // Load the header, footer and layout data in parallel
-  const headerPromise = storefront.query(HEADER_QUERY, {
-    cache: storefront.CacheLong(),
-    variables: {
-      featuredCollectionsFirst: 1,
-      socialsFirst: 10,
-      headerMenuHandle: 'main-menu',
-      language,
-      country,
-    },
-  });
-  const footerPromise = storefront.query(FOOTER_QUERY, {
+ 
+  const footer = storefront.query(FOOTER_QUERY, {
     cache: storefront.CacheLong(),
     variables: {
       footerMenuHandle: 'footer',
@@ -157,8 +150,7 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
     isLoggedIn: isLoggedInPromise,
     isLoggedInPromise,
     cart: cart.get(),
-    headerPromise,
-    footerPromise,
+    footer,
   };
 }
 
@@ -171,7 +163,7 @@ export const meta: MetaFunction<RootLoader> = ({data, matches}) => {
 const NAVBAR_LOGO = 'https://cdn.shopify.com/s/files/1/0641/9742/7365/files/astro-logo.png?v=1708205146';
 
 
-function MainLayout({children}: {children?: React.ReactNode}) {
+export function Layout({children}: {children?: React.ReactNode}) {
   const nonce = useNonce();
   const data = useRouteLoaderData<RootLoader>('root');
   const locale = data?.selectedLocale ?? DEFAULT_LOCALE;
@@ -185,16 +177,15 @@ function MainLayout({children}: {children?: React.ReactNode}) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
-        <meta name="p:domain_verify" content="8f65b0b25d12b875f5c72b695ab71612"/>
         <Meta />
         <Links />
-        <Script dangerouslySetInnerHTML={{
+        {/*        <Script dangerouslySetInnerHTML={{
          __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
                     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
                     })(window,document,'script','dataLayer','GTM-5BP4M9R5');`,
-        }}></Script>
+        }}></Script>*/}
       </head>
       <body className="bg-white">
           <noscript>
@@ -235,12 +226,12 @@ function MainLayout({children}: {children?: React.ReactNode}) {
               shop={data.shop}
               consent={data.consent}
             >
-              <Layout
+              <PageLayout
                 key={`${locale.language}-${locale.country}`}
                 {...data}
               >
                 {children}
-              </Layout>
+              </PageLayout>
               <GoogleTagManager />
             </Analytics.Provider>
         ) : (
@@ -257,41 +248,32 @@ function MainLayout({children}: {children?: React.ReactNode}) {
 
 export default function App() {
   return (
-    <MainLayout>
-      <Outlet />
-    </MainLayout>
+    <Outlet />
   );
 }
 
-export function ErrorBoundary({error}: {error: Error}) {
-  const routeError = useRouteError();
-  const isRouteError = isRouteErrorResponse(routeError);
-  let title = 'Error';
-  let pageType = 'page';
+export function ErrorBoundary() {
+  const error = useRouteError();
+  let errorMessage = 'Unknown error';
+  let errorStatus = 500;
 
-  if (isRouteError) {
-    title = 'Not found';
-    if (routeError.status === 404) pageType = routeError.data || pageType;
+  if (isRouteErrorResponse(error)) {
+    errorMessage = error?.data?.message ?? error.data;
+    errorStatus = error.status;
+  } else if (error instanceof Error) {
+    errorMessage = error.message;
   }
 
   return (
-    <MainLayout>
-      <>
-        {isRouteError ? (
-          <>
-            {routeError.status === 404 ? (
-              <NotFound type={pageType} />
-            ) : (
-              <GenericError
-                error={{message: `${routeError.status} ${routeError.data}`}}
-              />
-            )}
-          </>
-        ) : (
-          <GenericError error={error instanceof Error ? error : undefined} />
-        )}
-      </>
-    </MainLayout>
+    <div className="route-error">
+      <h1>Oops</h1>
+      <h2>{errorStatus}</h2>
+      {errorMessage && (
+        <fieldset>
+          <pre>{errorMessage}</pre>
+        </fieldset>
+      )}
+    </div>
   );
 }
 

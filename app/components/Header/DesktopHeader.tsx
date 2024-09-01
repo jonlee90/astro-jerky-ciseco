@@ -1,33 +1,29 @@
 import React, { Suspense } from 'react';
-import { Await, useRouteLoaderData } from '@remix-run/react';
+import { Await, NavLink } from '@remix-run/react';
 import { motion } from 'framer-motion';
 import Logo from '../Logo';
-import { HeaderMenuDataWrap } from '../Layout';
+import { HeaderMenuDataWrap } from '../PageLayout';
 import { CartCount } from '../CartCount';
 import { Link } from '../Link';
 import { RootLoader } from '~/root';
+import { HeaderMenuQuery } from 'storefrontapi.generated';
+import { getUrlAndCheckIfExternal } from '~/lib/utils';
 
-interface MenuItem {
-  id: string;
-  to: string;
-  target?: string;
-  title: string;
+interface DesktopHeaderProps {
+  headerMenu: HeaderMenuQuery['headerMenu'];
+  isLoggedIn: Promise<boolean>;
+  publicStoreDomain: string;
+  primaryDomainUrl: string;
 }
 
 
 
-interface BadgeProps {
-  count: number;
-}
-
-const Badge: React.FC<BadgeProps> = ({ count }) => (
-  <span className="badge">{count}</span>
-);
-
-
-
-export const DesktopHeader = () => {
-  const rootData = useRouteLoaderData<RootLoader>('root');
+export const DesktopHeader = ({
+  headerMenu, 
+  isLoggedIn,
+  publicStoreDomain,
+  primaryDomainUrl
+}: DesktopHeaderProps) => {
   const linkCss = 'pb-1 uppercase text-2xl font-RobotoSlabRegular font-bold';
 
   return (
@@ -41,12 +37,10 @@ export const DesktopHeader = () => {
         <div className="flex gap-12">
           <nav className="flex gap-8">
             {/* Top level menu items */}
-            <Await resolve={rootData?.isLoggedIn}>
+            <Await resolve={isLoggedIn}>
               {(isLoggedIn) => (
                 <>
-                  <HeaderMenuDataWrap>
-                  {({headerMenu}) => {
-                    return (headerMenu?.items || []).map((item) => (
+                  {(headerMenu?.items || []).map((item) => (
                       <motion.div
                         whileHover="highlight"
                         variants={{
@@ -56,21 +50,19 @@ export const DesktopHeader = () => {
                         }} 
                         key={item.id}
                       >
-                        <Link
+                        <NavLink
                           key={item.id}
-                          to={isLoggedIn && item.to === '/rewards' ? '/account' : item.to}
-                          target={item.target}
+                          to={isLoggedIn && item.url === '/rewards' ? '/account' : getUrlAndCheckIfExternal(item.url, publicStoreDomain, primaryDomainUrl)}
                           prefetch="intent"
                           className={({ isActive }) =>
                             isActive ? `color-logo-green -mb-px ${linkCss}` : linkCss
                           }
                         >
                           {item.title}
-                        </Link>
+                        </NavLink>
                       </motion.div>
                     ))
-                  }}
-                </HeaderMenuDataWrap>
+                  }
                 </>
               )}
             </Await>

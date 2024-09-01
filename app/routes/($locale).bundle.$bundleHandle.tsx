@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { BundlePacks } from '~/data/bundleData';
 import { MixMatchProducts } from '~/components/MixMatch/MixMatchProducts';
 import { PRODUCT_MIX_FRAGMENT } from '~/data/fragments';
+import { ProductMixFragment } from 'storefrontapi.generated';
 
 // Type Definitions
 interface ProductVariant {
@@ -23,8 +24,8 @@ interface ProductVariant {
 
 interface LoaderData {
   bundleHandle: string;
-  smallProducts: ProductVariant[];
-  bigProducts: ProductVariant[];
+  smallProducts: ProductMixFragment[];
+  bigProducts: ProductMixFragment[];
 }
 
 export async function loader({ params, context: { storefront } }: { params: any, context: any }) {

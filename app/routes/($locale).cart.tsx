@@ -1,42 +1,23 @@
-import {Await, useLoaderData, useRouteLoaderData} from '@remix-run/react';
-import invariant from 'tiny-invariant';
-import {
-  type LoaderFunctionArgs,
-  type ActionFunctionArgs,
-  json,
-} from '@shopify/remix-oxygen';
-import {
-  CartForm,
-  Image,
-  Money,
-  type CartQueryDataReturn,
-  type CartReturn,
-  flattenConnection,
-  Analytics,
-  useOptimisticCart,
-  type OptimisticCartLine,
-} from '@shopify/hydrogen';
-import {isLocalPath} from '~/lib/utils';
-import {Link} from '~/components/Link';
-import {FeaturedProducts} from '~/components/FeaturedProducts';
-import {ArrowLeftIcon, CheckIcon} from '@heroicons/react/24/outline';
-import type {
-  CartDiscountCode,
-  CartLineUpdateInput,
-} from '@shopify/hydrogen/storefront-api-types';
-import {
-  CartLinePrice,
-  type CartType,
-  ItemRemoveButton,
-} from '~/components/Cart';
-import ButtonPrimary from '~/components/Button/ButtonPrimary';
-import clsx from 'clsx';
-import PageHeader from '~/components/PageHeader';
+import {Await, Link, type MetaFunction, useRouteLoaderData} from '@remix-run/react';
+import {Suspense} from 'react';
+import type {CartQueryDataReturn, OptimisticCartLine, OptimisticCart} from '@shopify/hydrogen';
+import {Image} from '@shopify/hydrogen';
+import {Analytics, CartForm, Money, useOptimisticCart} from '@shopify/hydrogen';
+import {json, LoaderFunctionArgs, type ActionFunctionArgs} from '@shopify/remix-oxygen';
+import {CartEmpty, CartMain} from '~/components/CartMain';
 import type {RootLoader} from '~/root';
-import {useVariantUrl} from '~/lib/variants';
-import { Suspense } from 'react';
+import { CartDiscountCode, CartLineUpdateInput } from '@shopify/hydrogen/storefront-api-types';
 import { CartApiQueryFragment } from 'storefrontapi.generated';
-import { useRootLoaderData } from '~/lib/root-data';
+import { useVariantUrl } from '~/lib/variants';
+import { CheckIcon } from '@heroicons/react/24/solid';
+import { FeaturedProducts } from '~/components/FeaturedProducts';
+import { CartLinePrice, CartLineRemoveButton } from '~/components/CartLineItem';
+import ButtonPrimary from '~/components/Button/ButtonPrimary';
+import PageHeader from '~/components/PageHeader';
+
+export const meta: MetaFunction = () => {
+  return [{title: `Hydrogen | Cart`}];
+};
 
 export async function action({request, context}: ActionFunctionArgs) {
   const {cart} = context;
@@ -44,7 +25,10 @@ export async function action({request, context}: ActionFunctionArgs) {
   const formData = await request.formData();
 
   const {action, inputs} = CartForm.getFormInput(formData);
-  invariant(action, 'No cartAction defined');
+
+  if (!action) {
+    throw new Error('No action provided');
+  }
 
   let status = 200;
   let result: CartQueryDataReturn;
@@ -60,68 +44,63 @@ export async function action({request, context}: ActionFunctionArgs) {
       result = await cart.removeLines(inputs.lineIds);
       break;
     case CartForm.ACTIONS.DiscountCodesUpdate: {
-        const formDiscountCode = inputs.discountCode;
-  
-        // User inputted discount code
-        const discountCodes = (
-          formDiscountCode ? [formDiscountCode] : []
-        ) as string[];
-  
-        // Combine discount codes already applied on cart
-        discountCodes.push(...inputs.discountCodes);
-  
-        result = await cart.updateDiscountCodes(discountCodes);
-        break;
-      }
+      const formDiscountCode = inputs.discountCode;
+
+      // User inputted discount code
+      const discountCodes = (
+        formDiscountCode ? [formDiscountCode] : []
+      ) as string[];
+
+      // Combine discount codes already applied on cart
+      discountCodes.push(...inputs.discountCodes);
+
+      result = await cart.updateDiscountCodes(discountCodes);
+      break;
+    }
     case CartForm.ACTIONS.BuyerIdentityUpdate: {
-        result = await cart.updateBuyerIdentity({
-          ...inputs.buyerIdentity,
-        });
-        break;
-      }
-      default:
-        throw new Error(`${action} cart action is not defined`);
+      result = await cart.updateBuyerIdentity({
+        ...inputs.buyerIdentity,
+      });
+      break;
+    }
+    default:
+      throw new Error(`${action} cart action is not defined`);
   }
 
-  /**
-   * The Cart ID may change after each mutation. We need to update it each time in the session.
-   */
   const cartId = result?.cart?.id;
-  const headers = cart.setCartId(cartId);
+  const headers = cartId ? cart.setCartId(result.cart.id) : new Headers();
+  const {cart: cartResult, errors} = result;
 
   const redirectTo = formData.get('redirectTo') ?? null;
-  if (typeof redirectTo === 'string' && isLocalPath(redirectTo)) {
+  if (typeof redirectTo === 'string') {
     status = 303;
     headers.set('Location', redirectTo);
   }
 
-  const {cart: cartResult, errors} = result;
   return json(
     {
       cart: cartResult,
       errors,
       analytics: {
-        cartId
-      }
+        cartId,
+      },
     },
     {status, headers},
   );
 }
-
-
 export async function loader({context}: LoaderFunctionArgs) {
   const {cart} = context;
   return json(await cart.get());
 }
+type CartLine = OptimisticCartLine<CartApiQueryFragment>;
 
 export default function Cart() {
   const rootData = useRouteLoaderData<RootLoader>('root');
-  // @todo: finish on a separate PR
-  if (!rootData) return null;
+
   return (
     <>
       <div className="nc-CartPage">
-        <main className="container py-10 lg:pb-28 lg:pt-20 ">
+        <div className="container py-10 lg:pb-28 lg:pt-20 ">
           <div className="mb-12 sm:mb-16">
             <PageHeader
               title={'Shopping Cart'}
@@ -132,70 +111,48 @@ export default function Cart() {
 
           <hr className="border-slate-200 dark:border-slate-700 my-10 xl:my-12" />
 
-        <Await
-          resolve={rootData?.cart}
-          errorElement={<div>An error occurred</div>}
-        >
-          {(cart) => {
-            return <Content cart={cart || null} />;
-          }}
-        </Await>
-        </main>
+          <Await resolve={rootData?.cart}>
+            {(cart) => <Content cart={cart || null} />}
+          </Await>
+        </div>
       </div>
 
       <Analytics.CartView />
     </>
   );
 }
-
-function Content({cart: originalCart}: {cart: CartApiQueryFragment  | null}) {
+function Content({cart: originalCart}: {cart: CartApiQueryFragment | null}) {
   const cart = useOptimisticCart(originalCart);
 
   const linesCount = Boolean(cart?.lines?.nodes?.length || 0);
   const cartHasItems = (cart?.totalQuantity || 0) > 0;
-  const currentLines = cart?.lines ? flattenConnection(cart?.lines) : [];
 
   return (
     <>
       {!!linesCount && (
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-[60%] xl:w-[55%] divide-y divide-slate-200 dark:divide-slate-700 grid">
-            {currentLines.map((line: OptimisticCartLine) => (
-              <CartLineItem key={line.id} line={line}  />
+            {(cart?.lines?.nodes ?? []).map((line) => (
+              <CartLineItem key={line.id} line={line} />
             ))}
           </div>
           <div className="border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:mx-16 2xl:mx-20 flex-shrink-0"></div>
           <div className="flex-1">
             <div className="sticky top-28">
               <CartSummary
-                cost={cart.cost}
-                discountCodes={cart.discountCodes}
-                checkoutUrl={cart.checkoutUrl}
+                cart={cart}
                 isSkeleton={!cartHasItems}
               />
             </div>
           </div>
         </div>
       )}
-
       <CartEmpty hidden={linesCount} />
-
-      <section className="grid gap-8 pt-16 sm:pt-24">
-        <hr className="border-slate-200 dark:border-slate-700 mb-10 xl:mb-12" />
-
-        <FeaturedProducts
-          className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 lg:gap-x-6 gap-y-8"
-          count={4}
-          heading="You may also like"
-          sortKey="BEST_SELLING"
-          headingClassName="text-xl sm:text-2xl font-semibold"
-        />
-      </section>
     </>
   );
 }
 
-function CartLineItem({line}: {line: OptimisticCartLine}) {
+function CartLineItem({line}: {line: CartLine}) {
   const {id, quantity, merchandise, isOptimistic} = line;
 
   const lineItemUrl = useVariantUrl(
@@ -286,7 +243,7 @@ function CartLineItem({line}: {line: OptimisticCartLine}) {
         <div className="flex mt-auto pt-4 items-end justify-between text-sm">
           {renderStatusInstock()}
 
-          <ItemRemoveButton disabled={!!isOptimistic} lineId={id}/>
+          <CartLineRemoveButton disabled={!!isOptimistic} lineId={id} />
         </div>
       </div>
     </div>
@@ -294,20 +251,16 @@ function CartLineItem({line}: {line: OptimisticCartLine}) {
 }
 
 function CartSummary({
-  cost,
-  children = null,
-  checkoutUrl,
-  discountCodes,
-  onClose,
+  cart,
   isSkeleton,
 }: {
-  children?: React.ReactNode;
-  cost?: CartType['cost'];
-  discountCodes?: CartDiscountCode[];
-  checkoutUrl?: string;
-  onClose?: () => void;
+  cart: OptimisticCart<CartApiQueryFragment | null>;
   isSkeleton?: boolean;
 }) {
+  const {
+    cost,
+    discountCodes,
+    checkoutUrl} = cart;
   return (
     <>
       <div className="flex justify-between">
@@ -379,7 +332,6 @@ function CartSummary({
             to="/policies/refund-policy"
             target="_blank"
             rel="noopener noreferrer"
-            href="##"
             className="text-slate-900 dark:text-slate-200 underline font-medium"
           >
             refund
@@ -411,7 +363,7 @@ function UpdateCartButton({
   );
 }
 
-function CartLineQuantityAdjust({line}: {line: OptimisticCartLine}) {
+function CartLineQuantityAdjust({line}: {line: CartLine}) {
   if (!line || typeof line?.quantity === 'undefined') return null;
   const {id: lineId, quantity, isOptimistic} = line;
   const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
@@ -449,27 +401,6 @@ function CartLineQuantityAdjust({line}: {line: OptimisticCartLine}) {
             <span>&#43;</span>
           </button>
         </UpdateCartButton>
-      </div>
-    </>
-  );
-}
-
-export function CartEmpty({hidden = false}: {hidden: boolean}) {
-  return (
-    <>
-      <div className={clsx('py-6')} hidden={hidden}>
-        <section className="grid gap-6">
-          <p>
-            Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you
-            started!
-          </p>
-          <div>
-            <ButtonPrimary href="/">
-              <ArrowLeftIcon className="w-4 h-4 me-2" />
-              <span>Continue shopping</span>
-            </ButtonPrimary>
-          </div>
-        </section>
       </div>
     </>
   );
