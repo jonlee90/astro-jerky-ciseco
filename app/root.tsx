@@ -37,7 +37,7 @@ import {COMMON_COLLECTION_ITEM_FRAGMENT} from './data/commonFragments';
 import { motion, AnimatePresence } from "framer-motion";
 import invariant from 'tiny-invariant';
 import { useIsHydrated } from './hooks/useIsHydrated';
-import {GoogleTagManager, GoogleTagManagerScript} from '~/components/GoogleTagManager'
+import {GoogleTagManager} from '~/components/GoogleTagManager'
 import { PageLayout } from './components/PageLayout';
 
 export type RootLoader = typeof loader;
@@ -179,13 +179,13 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
         <Meta />
         <Links />
-        {/*        <Script dangerouslySetInnerHTML={{
+        <Script dangerouslySetInnerHTML={{
          __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
                     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
                     })(window,document,'script','dataLayer','GTM-5BP4M9R5');`,
-        }}></Script>*/}
+        }}></Script>
       </head>
       <body className="bg-white">
           <noscript>
@@ -200,8 +200,8 @@ export function Layout({children}: {children?: React.ReactNode}) {
             </iframe>
           </noscript>
 
-        {isHydrated && (<AnimatePresence>
-          {isLoading && (
+        <AnimatePresence>
+          {isLoading && !isHydrated && (
               <motion.div
                 key="loading"
                 initial={{ opacity: 0 }}
@@ -219,7 +219,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
                 />
               </motion.div>
           )}
-        </AnimatePresence>)}
+        </AnimatePresence>
           {data ? (
             <Analytics.Provider
               cart={data.cart}

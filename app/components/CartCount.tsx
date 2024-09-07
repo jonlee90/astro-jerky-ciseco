@@ -26,7 +26,7 @@ const Badge: React.FC<BadgeProps> = ({ openCart, count }) => {
       <>
         <IconCart className="size-8" />
         <div
-          className='text-contrast bg-white color-logo-green absolute top-3 right-2.5 text-xs font-medium subpixel-antialiased size-4 flex items-center justify-center text-center rounded-full'
+          className='text-black bg-white absolute top-3 right-2.5 text-xs font-medium subpixel-antialiased size-4 flex items-center justify-center text-center rounded-full'
         >
           <span>{count || 0}</span>
         </div>
@@ -62,7 +62,7 @@ export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity}) 
         <Await resolve={rootData?.cart}>
           {(cart) => (
             <motion.div
-              className={`rounded-full bg-logo-green ${className} ${!cart?.totalQuantity && 'hidden'}`}
+              className={`rounded-full bg-logo-yellow ${className} ${!cart?.totalQuantity && 'hidden'}`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95, opacity: 0.6 }}
               onClick={() => open('cart')}

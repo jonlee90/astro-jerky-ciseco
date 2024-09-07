@@ -268,7 +268,7 @@ export const ProductBadge = ({
     return (
       <ProductStatus
         className={className}
-        color="logoRed"
+        color="logoGreen"
         status={status}
         icon="IconDiscount"
       />

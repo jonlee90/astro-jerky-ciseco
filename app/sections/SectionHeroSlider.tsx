@@ -9,6 +9,7 @@ import ButtonPrimary from '~/components/Button/ButtonPrimary';
 import useInterval from 'beautiful-react-hooks/useInterval';
 import useHorizontalSwipe from 'beautiful-react-hooks/useHorizontalSwipe';
 import clsx from 'clsx';
+import { IconArrowCircleRight } from '~/components/Icon';
 
 let TIME_OUT: NodeJS.Timeout | null = null;
 
@@ -238,20 +239,22 @@ const SectionItem = ({section}: {section: HeroItemFragment}) => {
 
             {!!item.cta_button?.href && (
               <ButtonPrimary
-                className="nc-SectionHeroSliderItem__button bg-logo-green hover:bg-primary-700 mb-12"
-                sizeClass="py-3 px-6 sm:py-5 sm:px-9"
+                className="nc-SectionHeroSliderItem__button text-white uppercase mb-12 gap-3"
+                sizeClass="py-3 px-6 sm:py-4"
                 fontSize="text-sm sm:text-base xl:text-lg font-medium"
                 href={item.cta_button?.href?.value}
                 targetBlank={item.cta_button?.target?.value === 'true'}
               >
                 <span>{item.cta_button?.text?.value}</span>
-                {!!item.cta_button?.icon_svg?.value && (
+                {!!item.cta_button?.icon_svg?.value ? (
                   <span
                     className="ms-2.5 *:!h-5 *:!w-5"
                     dangerouslySetInnerHTML={{
                       __html: item.cta_button?.icon_svg.value,
                     }}
                   />
+                ) : (
+                  <IconArrowCircleRight className='!size-6 md:!size-8' />
                 )}
               </ButtonPrimary>
             )}

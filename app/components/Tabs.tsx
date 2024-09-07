@@ -60,7 +60,7 @@ export function FilterTab({
   onTabChange,
   activeTab,
   className,
-  bgColor = 'bg-logo-green'
+  bgColor = 'bg-logo-yellow'
 }: FilterTabProps) {
   const buttonStyle = 'h-9 items-center text-center rounded-lg disabled:opacity-50 disabled:pointer-events-none w-full';
 

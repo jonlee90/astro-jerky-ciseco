@@ -111,9 +111,11 @@ export default function Cart() {
 
           <hr className="border-slate-200 dark:border-slate-700 my-10 xl:my-12" />
 
-          <Await resolve={rootData?.cart}>
-            {(cart) => <Content cart={cart || null} />}
-          </Await>
+          <Suspense fallback={<></>}>
+            <Await resolve={rootData?.cart}>
+              {(cart) => <Content cart={cart || null} />}
+            </Await>
+          </Suspense>
         </div>
       </div>
 

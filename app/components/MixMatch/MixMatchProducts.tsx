@@ -163,7 +163,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: 
     const bars = [];
     for (let i = 0; i < count; i++) {
       bars.push(
-        <motion.div key={i} className={`border border-gray-300 mix-match-progress-bar ${i < currentCount && 'bg-logo-green'}`}></motion.div>
+        <motion.div key={i} className={`border border-gray-300 mix-match-progress-bar ${i < currentCount && 'bg-logo-yellow'}`}></motion.div>
       );
     }
     return bars;

@@ -49,6 +49,7 @@ import NavItem from '~/components/NavItem';
 import useWindowScroll from '~/components/Header/useWindowScroll';
 import { Popover, Transition } from '@headlessui/react';
 import { CartCount } from '~/components/CartCount';
+import { useIsHydrated } from '~/hooks/useIsHydrated';
 
 export const headers = routeHeaders;
 
@@ -209,9 +210,8 @@ export default function Product() {
   const selectedVariant = useOptimisticVariant(product.selectedVariant, variants);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
   const prevScrollY = useRef<number>(0);
-  const [opacity, setOpacity] = useState<number>(1);
   const { y } = useWindowScroll();
-
+  const isHydrated = useIsHydrated();
   
   const location = useLocation(); // Get the current location
 
@@ -251,11 +251,6 @@ export default function Product() {
 
   
     useEffect(() => {
-      if (y > prevScrollY.current && y > 150) {
-        setOpacity(0.8);
-      } else {
-        setOpacity(1);
-      }
 
       if(y > 150 && !isButtonVisible) {
         setIsButtonVisible(true);
@@ -263,7 +258,7 @@ export default function Product() {
 
       
       prevScrollY.current = y;
-    }, [y]);
+    }, [y, isButtonVisible]);
 
   return (
     <div
@@ -271,21 +266,21 @@ export default function Product() {
         'product-page mt-5 mb-20 lg:mt-10 pb-28 ',
       )}
     >
-      <motion.div
-        initial={{ y: '100%' }}
-        animate={isButtonVisible ? { y: 0 } : { y: '100%' }}
-        transition={{ duration: 0.3, ease: 'easeOut' }}
-        className={`fixed w-full lg:hidden z-50 ${isBackButton ? 'bottom-0' : 'bottom-16'}`}
-        style={{opacity}}
-      >
-        <BottomAddToCartButton
-          selectedVariant={selectedVariant}
-          currentQuantity={currentQuantity}
-          selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
-          selectedVariantPrice={selectedVariantPrice}
-          setCurrentQuantity={setCurrentQuantity}
-        />
-      </motion.div>
+      {isHydrated && (
+        <motion.div
+          initial={{ y: '100%' }}
+          animate={isButtonVisible ? { y: 0 } : { y: '100%' }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className={`fixed w-full lg:hidden z-50 ${isBackButton ? 'bottom-0' : 'bottom-16'}`}
+        >
+          <BottomAddToCartButton
+            selectedVariant={selectedVariant}
+            currentQuantity={currentQuantity}
+            selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
+            selectedVariantPrice={selectedVariantPrice}
+            setCurrentQuantity={setCurrentQuantity}
+          />
+        </motion.div>)}
       <main className="2xl:max-w-screen-xl container">
         <div className="lg:flex">
           {/* Galleries */}
@@ -305,7 +300,7 @@ export default function Product() {
           {/* Product Details */}
           <div className="w-full lg:w-[45%] pt-10 lg:pt-0 lg:pl-7 xl:pl-9 2xl:pl-10">
             <div className="sticky top-10 grid gap-7 2xl:gap-8">
-                    <Suspense fallback={<ProductForm />}>
+                    <Suspense fallback={<></>}>
                       <Await
                         errorElement="There was a problem loading related products"
                         resolve={variants}
@@ -758,7 +753,7 @@ const BottomAddToCartButtons = ({ selectedVariant, currentQuantity, selectedVari
               </div>
             ))}
           </Nav>
-          <div className='w-full bg-logo-green p-5 hover:bg-primary-400  border-color-logo border-y'>
+          <div className='w-full bg-logo-yellow p-5 hover:bg-primary-500  border-color-logo border-y'>
             <AddToCartButton
               lines={[
                 {
@@ -784,128 +779,6 @@ const BottomAddToCartButtons = ({ selectedVariant, currentQuantity, selectedVari
           </div>
         </>
       )}
-    </div>
-  );
-};
-
-const ProductOtherOption = ({option}: {option: VariantOption}) => {
-  if (!option.values.length) {
-    return null;
-  }
-
-  return (
-    <div>
-      <div className="font-medium text-sm">{option.name}</div>
-      <div className="flex flex-wrap gap-3 mt-3">
-        {option.values.map(({isActive, isAvailable, value, to}, index) => {
-          return (
-            <Link
-              key={option.name + value}
-              to={to}
-              preventScrollReset
-              prefetch="intent"
-              replace
-              className={clsx(
-                'relative flex items-center justify-center rounded-md border py-3 px-5 sm:px-3 text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none border-gray-200 ',
-                !isAvailable
-                  ? isActive
-                    ? 'opacity-90 text-opacity-80 cursor-not-allowed'
-                    : 'text-opacity-20 cursor-not-allowed'
-                  : 'cursor-pointer',
-                isActive
-                  ? 'bg-slate-900 border-slate-900 text-slate-100'
-                  : 'border-slate-300 text-slate-900 hover:bg-neutral-50 ',
-              )}
-            >
-              {!isAvailable && (
-                <span
-                  className={clsx(
-                    'absolute inset-[1px]',
-                    isActive ? 'text-slate-100/60' : 'text-slate-300/60',
-                  )}
-                >
-                  <svg
-                    className="absolute inset-0 h-full w-full stroke-1"
-                    viewBox="0 0 100 100"
-                    preserveAspectRatio="none"
-                    stroke="currentColor"
-                  >
-                    <line
-                      x1="0"
-                      y1="100"
-                      x2="100"
-                      y2="0"
-                      vectorEffect="non-scaling-stroke"
-                    ></line>
-                  </svg>
-                </span>
-              )}
-              {/* {!isAvailable && (
-                <div
-                  className={clsx(
-                    'absolute -inset-x-0.5 border-t top-1/2 z-10 rotate-[28deg]',
-                    isActive ? 'border-slate-400' : '',
-                  )}
-                />
-              )} */}
-              {value}
-            </Link>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
-
-const ProductColorOption = ({option}: {option: VariantOption}) => {
-  const {getImageWithCdnUrlByName} =
-    useGetPublicStoreCdnStaticUrlFromRootLoaderData();
-
-  if (!option.values.length) {
-    return null;
-  }
-
-  return (
-    <div>
-      <div className="text-sm font-medium">{option.name}</div>
-      <div className="flex flex-wrap gap-3 mt-3">
-        {option.values.map(({value, to, isActive, isAvailable}) => (
-          <Link
-            key={option.name + value}
-            to={to}
-            preventScrollReset
-            prefetch="intent"
-            replace
-            className={clsx(
-              'relative w-8 h-8 md:w-9 md:h-9 rounded-full',
-              isActive ? 'ring ring-offset-1 ring-primary-500/60' : '',
-              !isAvailable && 'opacity-50 cursor-not-allowed',
-            )}
-            title={value}
-          >
-            <span className="sr-only">{value}</span>
-
-            <div className="absolute inset-0.5 rounded-full overflow-hidden z-0">
-              <Image
-                data={{
-                  url: getImageWithCdnUrlByName(value.replaceAll(/ /g, '_')),
-                  altText: value,
-                  width: 36,
-                  height: 36,
-                }}
-                width={36}
-                height={36}
-                sizes="(max-width: 640px) 36px, 40px"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            </div>
-
-            {!isAvailable && (
-              <div className="absolute inset-x-1 border-t border-dashed top-1/2 rotate-[-30deg]" />
-            )}
-          </Link>
-        ))}
-      </div>
     </div>
   );
 };

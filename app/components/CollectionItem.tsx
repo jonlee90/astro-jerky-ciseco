@@ -5,6 +5,7 @@ import {Image} from '@shopify/hydrogen';
 import ButtonSecondary from './Button/ButtonSecondary';
 import {type FilterValue} from '@shopify/hydrogen/storefront-api-types';
 import clsx from 'clsx';
+import ButtonPrimary from './Button/ButtonPrimary';
 
 export type TMyCommonCollectionItem = Partial<CommonCollectionItemFragment> & {
   products?: {
@@ -74,13 +75,13 @@ const CollectionItem: FC<CollectionItemProps> = ({
               </div>
                */}
             <div className="mt-auto">
-              <ButtonSecondary
+              <ButtonPrimary
                 sizeClass="py-3 px-4 sm:py-3.5 sm:px-6"
                 fontSize="text-sm font-medium"
-                className="nc-shadow-lg bg-logo-green text-white hover:bg-primary-700 min-w-24"
+                className="uppercase  min-w-24"
               >
                 {button_text || 'Enter'}
-              </ButtonSecondary>
+              </ButtonPrimary>
             </div>
           </div>
         </div>

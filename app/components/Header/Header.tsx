@@ -39,9 +39,9 @@ export function Header({
   const prevScrollY = useRef<number>(0);
   const { y } = useWindowScroll();
   useEffect(() => {
-    if (y > prevScrollY.current && y > 150) {
+    if (y > prevScrollY.current && y > 150 && opacity !== 0.4) {
       setOpacity(0.4);
-    } else {
+    } else if (y <= prevScrollY.current && opacity !== 1) {
       setOpacity(1);
     }
     prevScrollY.current = y;
@@ -53,7 +53,7 @@ export function Header({
       {/*
         <MainNav openMenu={openMenu} openCart={openCart} isHome={isHome} />
       */}
-      {isBackButton && isHydrated ?
+      {isBackButton ?
         <>
           {/*<motion.button
             onClick={() => navigate(navLink)}
@@ -68,23 +68,25 @@ export function Header({
             />
           </motion.button>*/}
 
-          {isCartButton ? <CartCount opacity={opacity} className={`pdp-nav-button right-5 ${isDesktop ? 'top-10' : 'bottom-5'}`} /> : <></> }
+          {isCartButton && (<CartCount opacity={opacity} className={`pdp-nav-button right-5 ${isDesktop ? 'top-10' : 'bottom-5'}`} />) }
         </>
       :
-      <>
-        <DesktopHeader 
-          isLoggedIn={isLoggedIn}
-          headerMenu={headerMenu}
-          publicStoreDomain={publicStoreDomain}
-          primaryDomainUrl={primaryDomainUrl}
-        />
-        <MobileHeader />
-        <NavMobileBottom 
-          opacity={opacity} 
-          isLoggedIn={isLoggedIn}
-          cart={cart}
-        />
-      </>
+      (isHydrated && (
+        <>
+          <DesktopHeader 
+            isLoggedIn={isLoggedIn}
+            headerMenu={headerMenu}
+            publicStoreDomain={publicStoreDomain}
+            primaryDomainUrl={primaryDomainUrl}
+          />
+          <MobileHeader />
+          <NavMobileBottom 
+            opacity={opacity} 
+            isLoggedIn={isLoggedIn}
+            cart={cart}
+          />
+        </>
+      ))
       }
     </>
   );

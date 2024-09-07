@@ -7,27 +7,11 @@ import type {
   HeaderMenuQuery,
 } from 'storefrontapi.generated';
 import {type EnhancedMenu, parseMenu, useIsHomePath} from '~/lib/utils';
-import {useCartFetchers} from '~/hooks/useCartFetchers';
-import MainNav from './Header/MainNav';
-import NavMobile from './Header/NavMobile';
-import Logo from './Logo';
 import Footer from './Footer';
-import {Drawer, useDrawer} from './Drawer';
 import {CartLoading} from './CartLoading';
 import {CartMain} from './CartMain';
-import NavMobileBottom from './Header/NavMobileBottom';
-import { AnnouncementBar } from './AnnouncementBar';
-import { MobileHeader } from './Header/MobileHeader';
-import { DesktopHeader } from './Header/DesktopHeader';
-import { ButtonAnimation } from './Button/ButtonAnimation';
-import { IconCaret } from './Icon';
-import { CartCount } from './CartCount';
 import { Aside, useAside } from './Aside';
 import type { RootLoader } from '~/root';
-import { motion } from 'framer-motion';
-import { useIsHydrated } from '~/hooks/useIsHydrated';
-import useWindowScroll from './Header/useWindowScroll';
-import { useMediaQuery } from 'react-responsive';
 import { Header } from './Header/Header';
 
 
@@ -50,8 +34,8 @@ export function PageLayout({
   publicStoreDomain,
   layout
 }: LayoutProps) {
-  const { pathname, state } = useLocation();
-  const isBackButton = pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true);
+ // const { pathname, state } = useLocation();
+  //const isBackButton = pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true);
   const primaryDomainUrl = layout?.shop.primaryDomain.url;
   return (
     <Aside.Provider>
@@ -93,24 +77,16 @@ function CartAside({cart}: {cart: LayoutProps['cart']}) {
   return (
     <Aside heading="Shopping Cart" openFrom="right" type="cart">
       <Suspense fallback={<CartLoading />}>
-        <Await resolve={cart}>
-          {(cart) => {
-            return <CartMain layout='aside' cart={cart} />;
+        <Await resolve={cart} errorElement={<p>Error loading cart data</p>}>
+          {(cartData) => {
+            if (!cartData) return <CartLoading />;
+            return <CartMain layout='aside' cart={cartData} />;
           }}
         </Await>
       </Suspense>
     </Aside>
   );
 }
-function MobileMenuAside() {
-  const {close} = useAside();
-  return (
-    <Aside openFrom="left" renderHeading={() => <Logo />} type="mobile">
-      <NavMobile onClose={close} />
-    </Aside>
-  );
-}
-
 
 export function HeaderMenuDataWrap({
   children,

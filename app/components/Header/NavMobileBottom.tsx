@@ -51,7 +51,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
     >
       {activeItemIndex >= 0 && (
         <hr
-          className="absolute top-0 h-1 w-[13%] bg-logo-green transition-all duration-300 ease-in-out"
+          className="absolute top-0 h-1 w-[13%] bg-logo-yellow transition-all duration-300 ease-in-out"
           style={{ left: `${activeItemIndex * 20 + 3.5}%` }}
         />
       )}
@@ -99,7 +99,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
               <IconCart className="w-8 h-8" color="black" />
               <span className="text-xs">Cart</span>
               {cartData?.totalQuantity > 0 && (
-                <div className="left-1/2 transform -translate-x-1/2 top-0.5 text-contrast bg-logo-green absolute text-xs font-medium subpixel-antialiased size-4 flex items-center justify-center text-center rounded-full px-[0.125rem] pb-px">
+                <div className="left-1/2 transform -translate-x-1/2 top-0.5 text-contrast bg-logo-yellow absolute text-xs font-medium subpixel-antialiased size-4 flex items-center justify-center text-center rounded-full px-[0.125rem] pb-px">
                   <span>{cartData.totalQuantity}</span>
                 </div>
               )}

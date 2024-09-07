@@ -65,7 +65,7 @@ const Footer: React.FC<FooterProps> = ({
 
   return (
     <footer
-      className="bg-logo-green border-t border-neutral-900/10"
+      className="bg-logo-yellow border-t border-neutral-900/10"
       aria-labelledby="footer-heading"
     >
       <h2 id="footer-heading" className="sr-only">
@@ -90,7 +90,7 @@ const Footer: React.FC<FooterProps> = ({
             />
           </div>
           <div className="mt-16 flex flex-wrap justify-center gap-5">
-            <Suspense>
+          <Suspense fallback={<></>}>
               <Await resolve={footer}>
                 {(footer) => footer?.footerMenu?.items?.map(renderWidgetMenu)}
               </Await>
