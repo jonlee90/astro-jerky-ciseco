@@ -44,6 +44,7 @@
 
 :root {
   /*
+  // BLUE
   --c-primary-50: 240, 249, 255;
   --c-primary-100: 224, 242, 254;
   --c-primary-200: 186, 230, 253;
@@ -66,8 +67,8 @@
   --c-secondary-700: 21, 128, 61;
   --c-secondary-800: 22, 101, 52;
   --c-secondary-900: 20, 83, 45;
-*/
-  
+
+  // GREEN
 --c-primary-50: 235, 250, 245;
 --c-primary-100: 215, 245, 234;
 --c-primary-200: 180, 235, 213;
@@ -79,6 +80,17 @@
 --c-primary-800: 0, 93, 45;
 --c-primary-900: 0, 74, 36;
 
+*/
+--c-primary-50: 255, 241, 196;  /* Very light, nearly white with a hint of yellow */
+--c-primary-100: 255, 232, 163; /* Light yellow */
+--c-primary-200: 255, 219, 114; /* Slightly more saturated yellow */
+--c-primary-300: 255, 206, 65;  /* Medium yellow */
+--c-primary-400: 255, 194, 36;  /* Bright yellow, closer to the base */
+--c-primary-500: 255, 203, 8;   /* Base color (your provided color) */
+--c-primary-600: 230, 183, 7;   /* Slightly darker */
+--c-primary-700: 180, 143, 6;   /* Even darker */
+--c-primary-800: 140, 111, 4;   /* Darker, with reduced brightness */
+--c-primary-900: 100, 79, 3;    /* Very dark yellow, approaching brown */
 
 --c-secondary-50: 255, 240, 241;
 --c-secondary-100: 255, 224, 225;
@@ -636,8 +648,8 @@ shop-pay-button {
 .bg-logo-red {
   background-color: rgb(237, 28, 36);
 }
-.bg-logo-yellow {
-  background-color: rgb(255, 203, 8);
+.bg-logo-yellow, .bg-yellow-500 {
+  background-color: rgb(255, 195, 8);
 }
 .border-color-logo {
   border-color: rgb(0, 166, 81);
@@ -652,7 +664,7 @@ shop-pay-button {
   color: rgb(237, 28, 36);
 }
 .color-logo-yellow {
-  color: rgb(255, 203, 8);
+  color: rgb(255, 195, 8);
 }
 .bg-default-gray {
   background-color: #fafaf9;
@@ -708,14 +720,14 @@ shop-pay-button {
   touch-action: manipulation;
 }
 .variant-button-hover:hover {
-  background-color:rgb(0, 166, 81);
+  background-color:rgb(255, 203, 8);
   transition: background .1s;
 }
 
 .variant-button-pressed {
   box-shadow: none;
   transform: translate(1px, 1px);
-  background-color: rgb(0, 166, 81);
+  background-color: rgb(255, 203, 8);
   font-weight: bold;
   background-position: left;
   transition: transform .05s, box-shadow .05s;
@@ -774,5 +786,5 @@ a.disabled {
   opacity: .6;
 }
 .bg-primary {
-  background-color: black;
+  background-color: #101010;
 }

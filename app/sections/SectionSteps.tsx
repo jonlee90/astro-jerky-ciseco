@@ -1,7 +1,6 @@
 import {Image, type ParsedMetafields} from '@shopify/hydrogen';
 import {parseSection} from '~/utils/parseSection';
 import type {SectionStepsFragment} from 'storefrontapi.generated';
-import VectorImg from '@/assets/images/VectorHIW.svg?url';
 import {Badge, badgeColors} from '~/components/badge';
 
 export function SectionSteps(props: SectionStepsFragment) {
@@ -28,12 +27,6 @@ export function SectionSteps(props: SectionStepsFragment) {
         }
       >
         <div className="relative grid sm:grid-cols-3  gap-10 sm:gap-16 xl:gap-20">
-          <img
-            className="hidden md:block absolute inset-x-0 top-5"
-            src={VectorImg}
-            alt="vector"
-            sizes="max-width: 640px 100vw, max-width: 1024px 80vw, 50vw"
-          />
           {headings ? headings.parsedValue?.map((item, index) => (
             <div
               key={`${index + item}`}
@@ -66,7 +59,7 @@ export function SectionSteps(props: SectionStepsFragment) {
                 key={`${index}`}
                 className="relative flex flex-col items-center mx-auto"
               >
-                <div className="mb-4 sm:mb-10 mx-auto">
+                <div className="mb-4 sm:mb-10 mx-auto w-full">
                   <Image
                     className="rounded-3xl"
                     data={item.image || {}}

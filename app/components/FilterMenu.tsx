@@ -9,8 +9,6 @@ import { I18nLocale } from "~/lib/type";
 import { parseAsCurrency } from "~/lib/utils";
 import { IconSpicy, IconBbq, IconChicken, IconPepper } from "./Icon";
 import { MySortIcon } from "./Icons/MySortIcon";
-import { FILTER_URL_PREFIX, FiltersDrawer } from "./SortFilter";
-import SortMenu, { SortMenuProps } from "./SortMenu";
 import { useState } from "react";
 import { SwitchTab } from "./Tabs";
 

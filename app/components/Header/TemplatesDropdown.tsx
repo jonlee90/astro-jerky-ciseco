@@ -8,7 +8,7 @@ import {ChevronDownIcon} from '@heroicons/react/24/solid';
 import {Fragment} from 'react';
 import {Link, useRouteLoaderData} from '@remix-run/react';
 import CollectionItem from '../CollectionItem';
-import {HeaderMenuDataWrap} from '../Layout';
+import {HeaderMenuDataWrap} from '../PageLayout';
 import type {ChildEnhancedMenuItem, ParentEnhancedMenuItem} from '~/lib/utils';
 import type {RootLoader} from '~/root';
 

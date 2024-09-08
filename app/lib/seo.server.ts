@@ -30,10 +30,10 @@ function root({
   url: Request['url'];
 }): SeoConfig {
   return {
-    title: shop?.name,
+    title: shop?.name || 'Astro Fresh Jerky',
     titleTemplate: '%s | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
-    description: truncate(shop?.description ?? ''),
-    handle: '@shopify',
+    description: truncate(shop?.description ?? "Astro Fresh Jerky offers high-protein, grass-fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients."),
+    handle: '@AstroFreshJerky',
     url,
     robots: {
       noIndex: false,
@@ -42,14 +42,14 @@ function root({
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'Organization',
-      name: shop.name,
+      name: shop.name || 'Astro Fresh Jerky',
+      description: shop?.description || 'Astro Fresh Jerky offers high-protein, grass-fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients.',
       logo: shop.brand?.logo?.image?.url,
       sameAs: [
-        'https://twitter.com/shopify',
-        'https://facebook.com/shopify',
-        'https://instagram.com/shopify',
-        'https://youtube.com/shopify',
-        'https://tiktok.com/@shopify',
+        'https://twitter.com/astrofreshjerky',
+        'https://facebook.com/astrofreshjerky',
+        'https://instagram.com/astrofreshjerky',
+        'https://pinterest.com/astrofreshjerky',
       ],
       url,
       potentialAction: {
@@ -65,7 +65,7 @@ function home(): SeoConfig {
   return {
     title: 'Home',
     titleTemplate: 'Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
-    description: 'The best place to buy snowboarding products',
+    description: "Astro Fresh Jerky offers high-protein, grass-fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients.",
     robots: {
       noIndex: false,
       noFollow: false,
@@ -73,7 +73,16 @@ function home(): SeoConfig {
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'WebPage',
-      name: 'Home page',
+      name: 'Astro Fresh Jerky Home Page',
+      description: 'Astro Fresh Jerky offers high-protein, grass-fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients.',
+      publisher: {
+        '@type': 'Organization',
+        name: 'Astro Fresh Jerky',
+        logo: {
+          '@type': 'ImageObject',
+          url: 'https://cdn.shopify.com/s/files/1/0641/9742/7365/files/astro-logo.png', // Your website logo URL
+        }
+      }
     },
   };
 }

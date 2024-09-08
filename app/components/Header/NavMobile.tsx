@@ -5,7 +5,7 @@ import SocialsList from '../SocialsList';
 import {Disclosure} from '@headlessui/react';
 import {Form, Link, useRouteLoaderData} from '@remix-run/react';
 import LangDropdown from './LangDropdown';
-import {HeaderMenuDataWrap} from '../Layout';
+import {HeaderMenuDataWrap} from '../PageLayout';
 import { RootLoader } from '~/root';
 
 export interface NavMobileProps {

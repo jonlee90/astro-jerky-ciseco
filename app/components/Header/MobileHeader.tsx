@@ -1,10 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from '../Link';
 import { motion } from 'framer-motion';
-import useWindowScroll from './useWindowScroll';
 import Logo from '../Logo';
-
-
+import useWindowScroll from './useWindowScroll';
 
 export function MobileHeader() {
   const [isVisible, setIsVisible] = useState(true);
@@ -12,31 +9,41 @@ export function MobileHeader() {
   const prevScrollY = useRef(0);
 
   useEffect(() => {
-    if (y > prevScrollY.current && y > 150) {
+    if (y > prevScrollY.current && y > 150 && isVisible) {
       setIsVisible(false); // Scrolling down
-    } else {
+    } else if (y < prevScrollY.current && !isVisible) {
       setIsVisible(true); // Scrolling up
     }
     prevScrollY.current = y;
-  }, [y]);
+  }, [y, isVisible]);
 
   return (
     <motion.header
       role="banner"
-      className={`bg-contrast text-primary h-full shadow-md flex md:hidden items-center sticky backdrop-blur-lg z-40 top-0 justify-center w-full leading-none px-4 md:px-8`}
+      aria-label="Mobile Header"
+      className="bg-contrast text-primary h-16 shadow-md flex md:hidden items-center sticky backdrop-blur-lg z-40 top-0 justify-center w-full leading-none px-4 md:px-8"
       initial={{ y: 0 }}
       animate={{ y: isVisible ? 0 : -100 }}
       transition={{ duration: 0.3 }}
     >
-      <div className='w-full py-3'>
-        <img src={'/images/header-text-1-orange.png'} alt="ASTRO" />
-      </div>
-      <div className="flex items-center justify-center w-full gap-4">
-        <Logo className='w-16 ' />
+      <a href="#mainContent" className="sr-only focus:not-sr-only">
+        Skip to content
+      </a>
+      
+      <div className="w-full py-3">
+        <picture>
+          <img src={'/images/header-text-1-orange.png'} alt="ASTRO" />
+        </picture>
       </div>
 
-      <div className='w-full py-3'>
-        <img src={'/images/header-text-2-orange.png'} alt="JERKY" />
+      <div className="flex items-center justify-center w-full gap-4">
+        <Logo className="w-16" aria-hidden="true" />
+      </div>
+
+      <div className="w-full py-3">
+        <picture>
+          <img src={'/images/header-text-2-orange.png'} alt="JERKY" />
+        </picture>
       </div>
     </motion.header>
   );

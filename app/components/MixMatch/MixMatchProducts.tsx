@@ -163,7 +163,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: 
     const bars = [];
     for (let i = 0; i < count; i++) {
       bars.push(
-        <motion.div key={i} className={`border border-gray-300 mix-match-progress-bar ${i < currentCount && 'bg-logo-green'}`}></motion.div>
+        <motion.div key={i} className={`border border-gray-300 mix-match-progress-bar ${i < currentCount && 'bg-logo-yellow'}`}></motion.div>
       );
     }
     return bars;
@@ -202,7 +202,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: 
                   Add To Cart
                 </AddToCartButton>
               ) : (
-                <SwitchTab isSmall={isSmall} onToggle={(val) => onToggle(val)} bgColor='bg-logo-red' className="!ml-auto !mr-0 h-11" />
+                <SwitchTab isSmall={isSmall} onToggle={(val) => onToggle(val)} className="!ml-auto !mr-0 h-11" />
               )}
             </div>
           </div>

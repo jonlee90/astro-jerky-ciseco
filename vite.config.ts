@@ -31,7 +31,7 @@ export default defineConfig({
   },
   ssr: {
     optimizeDeps: {
-      include: ['typographic-base/index', 'textr', '@material-tailwind/react','react-responsive', 'react-use/esm/useScroll',
+      include: ['typographic-base', 'textr', '@material-tailwind/react','react-responsive', 'react-use/esm/useScroll',
         'react-circular-progressbar'],
     },
   },
@@ -39,11 +39,10 @@ export default defineConfig({
     include: [
       'clsx',
       '@headlessui/react',
-      'typographic-base/index',
+      'typographic-base',
       'react-intersection-observer',
-      'react-use/esm/useScroll',
-      'react-use/esm/useDebounce',
-      'react-use/esm/useWindowScroll',
+      'beautiful-react-hooks/useInterval',
+      'beautiful-react-hooks/useHorizontalSwipe',
       '@material-tailwind/react',
       'react-responsive',
       'react-circular-progressbar'

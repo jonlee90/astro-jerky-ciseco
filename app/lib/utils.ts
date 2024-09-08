@@ -61,6 +61,22 @@ export function isDiscounted(price: MoneyV2, compareAtPrice: MoneyV2) {
   return false;
 }
 
+export function getUrlAndCheckIfExternal(
+  url: string,
+  publicStoreDomain: string,
+  primaryDomainUrl: string
+) {
+  const itemUrl =
+    url.includes('myshopify.com') ||
+    url.includes(publicStoreDomain) ||
+    url.includes(primaryDomainUrl)
+      ? new URL(url).pathname
+      : url;
+
+
+  return itemUrl;
+}
+
 function resolveToFromType(
   {
     customPrefixes,

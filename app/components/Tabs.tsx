@@ -14,7 +14,7 @@ export function SwitchTab({
   isSmall,
   onToggle,
   className,
-  bgColor = 'bg-primary-600',
+  bgColor = 'bg-neutral-900',
   width = 'w-24',
 }: SwitchTabProps) {
   const buttonStyle = 'py-1 items-center rounded-full disabled:opacity-50 disabled:pointer-events-none';
@@ -60,7 +60,7 @@ export function FilterTab({
   onTabChange,
   activeTab,
   className,
-  bgColor = 'bg-logo-green'
+  bgColor = 'bg-logo-yellow'
 }: FilterTabProps) {
   const buttonStyle = 'h-9 items-center text-center rounded-lg disabled:opacity-50 disabled:pointer-events-none w-full';
 
