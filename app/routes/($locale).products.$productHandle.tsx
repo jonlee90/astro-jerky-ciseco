@@ -7,8 +7,6 @@ import {
 } from '@shopify/remix-oxygen';
 import {useLoaderData, Await, useLocation} from '@remix-run/react';
 import {
-  type VariantOption,
-  Image,
   getSelectedProductOptions,
   Analytics,
   useOptimisticVariant,
@@ -29,7 +27,6 @@ import {MEDIA_FRAGMENT} from '~/data/fragments';
 import Prices from '~/components/Prices';
 import {NoSymbolIcon} from '@heroicons/react/24/outline';
 import {getProductStatus, ProductBadge} from '~/components/ProductCard';
-import {useGetPublicStoreCdnStaticUrlFromRootLoaderData} from '~/hooks/useGetPublicStoreCdnStaticUrlFromRootLoaderData';
 import ButtonSecondary from '~/components/Button/ButtonSecondary';
 import {COMMON_PRODUCT_CARD_FRAGMENT} from '~/data/commonFragments';
 import {SnapSliderProducts} from '~/components/SnapSliderProducts';
@@ -198,7 +195,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 };
 
 export default function Product() {
-  const {product, shop, recommended, variants, routePromise} =
+  const {product, recommended, variants, routePromise} =
     useLoaderData<typeof loader>();
   const {media, outstanding_features, descriptionHtml, id} =
     product;
@@ -220,9 +217,9 @@ export default function Product() {
     setIsButtonVisible(false);
   }, [location]);
 
-  let variantPrice = parseFloat(selectedVariant.price.amount);
+  let variantPrice = parseFloat(selectedVariant.price.amount) * currentQuantity;
   let discountAmount = 0;
-  let setPrice = 20;
+  let setPrice = 1;
   const setQuantity = 3;
   const sets = Math.floor(currentQuantity / setQuantity);
   const remainingItems = currentQuantity % setQuantity;
@@ -230,9 +227,9 @@ export default function Product() {
   // Buy 3 for $33 discount logic
   if(selectedVariant.title == '3oz') {
     setPrice = 33;
+    discountAmount = (sets * setQuantity * variantPrice - sets * setPrice);
+    variantPrice = (sets * setPrice) + (remainingItems * variantPrice);
   }
-  discountAmount = (sets * setQuantity * variantPrice - sets * setPrice);
-  variantPrice = (sets * setPrice) + (remainingItems * variantPrice);
 
   const selectedVariantPrice = {
     amount: variantPrice.toString(),
@@ -260,27 +257,31 @@ export default function Product() {
       prevScrollY.current = y;
     }, [y, isButtonVisible]);
 
+if(!isHydrated) {
+  return null;
+}
+    
   return (
     <div
       className={clsx(
         'product-page mt-5 mb-20 lg:mt-10 pb-28 ',
       )}
     >
-      {isHydrated && (
-        <motion.div
-          initial={{ y: '100%' }}
-          animate={isButtonVisible ? { y: 0 } : { y: '100%' }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
-          className={`fixed w-full lg:hidden z-50 ${isBackButton ? 'bottom-0' : 'bottom-16'}`}
-        >
-          <BottomAddToCartButton
-            selectedVariant={selectedVariant}
-            currentQuantity={currentQuantity}
-            selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
-            selectedVariantPrice={selectedVariantPrice}
-            setCurrentQuantity={setCurrentQuantity}
-          />
-        </motion.div>)}
+     
+      <motion.div
+        initial={{ y: '100%' }}
+        animate={isButtonVisible ? { y: 0 } : { y: '100%' }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+        className={`fixed w-full lg:hidden z-50 ${isBackButton ? 'bottom-0' : 'bottom-16'}`}
+      >
+        <BottomAddToCartButton
+          selectedVariant={selectedVariant}
+          currentQuantity={currentQuantity}
+          selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
+          selectedVariantPrice={selectedVariantPrice}
+          setCurrentQuantity={setCurrentQuantity}
+        />
+      </motion.div>
       <main className="2xl:max-w-screen-xl container">
         <div className="lg:flex">
           {/* Galleries */}

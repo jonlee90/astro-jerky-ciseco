@@ -202,7 +202,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: 
                   Add To Cart
                 </AddToCartButton>
               ) : (
-                <SwitchTab isSmall={isSmall} onToggle={(val) => onToggle(val)} bgColor='bg-logo-red' className="!ml-auto !mr-0 h-11" />
+                <SwitchTab isSmall={isSmall} onToggle={(val) => onToggle(val)} className="!ml-auto !mr-0 h-11" />
               )}
             </div>
           </div>

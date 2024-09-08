@@ -1,6 +1,5 @@
 import {Await, useLoaderData, useLocation,useNavigate, useRouteLoaderData} from '@remix-run/react';
 import {Suspense, useEffect, useRef, useState} from 'react';
-import {CartForm} from '@shopify/hydrogen';
 import type {
   CartApiQueryFragment,
   FooterMenuQuery,

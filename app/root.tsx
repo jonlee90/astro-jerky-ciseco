@@ -27,8 +27,6 @@ import {
 } from '@shopify/hydrogen';
 import {seoPayload} from '~/lib/seo.server';
 import favicon from '@/assets/favicon.ico';
-import {GenericError} from './components/GenericError';
-import {NotFound} from './components/NotFound';
 import styles from './styles/app.css?url';
 import stylesFont from './styles/custom-font.css?url';
 import {DEFAULT_LOCALE} from './lib/utils';
@@ -39,6 +37,7 @@ import invariant from 'tiny-invariant';
 import { useIsHydrated } from './hooks/useIsHydrated';
 import {GoogleTagManager} from '~/components/GoogleTagManager'
 import { PageLayout } from './components/PageLayout';
+import { useEffect, useState } from 'react';
 
 export type RootLoader = typeof loader;
 
@@ -67,7 +66,7 @@ export const links: LinksFunction = () => {
     {rel: 'stylesheet', href: stylesFont},
     {rel: 'stylesheet', href: rcSliderStyle},
     {rel: 'preconnect', href: 'https://cdn.shopify.com'},
-    {rel: 'preconnect', href: 'https://shop.app'},
+    {rel: 'preconnect', href: 'https://astrofreshjerky.com'},
     {rel: 'icon', type: 'image/svg+xml', href: favicon},
   ];
 };
@@ -179,15 +178,19 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
         <Meta />
         <Links />
-        <Script dangerouslySetInnerHTML={{
-         __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                    })(window,document,'script','dataLayer','GTM-5BP4M9R5');`,
-        }}></Script>
+        {isHydrated && (
+          <Script dangerouslySetInnerHTML={{
+          __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                      })(window,document,'script','dataLayer','GTM-5BP4M9R5');`,
+          }} />
+        )}
+        
       </head>
       <body className="bg-white">
+        {isHydrated && (
           <noscript>
             <iframe 
               src="https://www.googletagmanager.com/ns.html?id=GTM-5BP4M9R5"
@@ -199,9 +202,9 @@ export function Layout({children}: {children?: React.ReactNode}) {
               }}>
             </iframe>
           </noscript>
-
+        )}
         <AnimatePresence>
-          {isLoading && !isHydrated && (
+          {isLoading  && (
               <motion.div
                 key="loading"
                 initial={{ opacity: 0 }}

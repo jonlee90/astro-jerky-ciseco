@@ -14,7 +14,7 @@ export function SwitchTab({
   isSmall,
   onToggle,
   className,
-  bgColor = 'bg-primary-600',
+  bgColor = 'bg-neutral-900',
   width = 'w-24',
 }: SwitchTabProps) {
   const buttonStyle = 'py-1 items-center rounded-full disabled:opacity-50 disabled:pointer-events-none';

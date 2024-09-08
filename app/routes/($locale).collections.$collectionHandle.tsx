@@ -25,6 +25,9 @@ import {ProductsGrid} from '~/components/ProductsGrid';
 import clsx from 'clsx';
 import { Suspense, useState } from 'react';
 import { FilterMenu } from '~/components/FilterMenu';
+import ProductFilterHiddenScrollBar from '~/components/ProductFilterHiddenScrollBar';
+import { SwitchTab } from '~/components/Tabs';
+import { IconBbq, IconChicken, IconPepper, IconSpicy } from '~/components/Icon';
 
 export const headers = routeHeaders;
 
@@ -85,6 +88,33 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
+const categoryData = [
+  {
+    label: "All Flavors",
+    value: "all"
+  },
+  {
+    label: "Spicy",
+    value: "hot-spicy",
+    icon: IconSpicy
+  },
+  {
+    label: "BBQ",
+    value: "bbq",
+    icon: IconBbq
+  },
+  {
+    label: "Chicken",
+    value: "chicken",
+    icon: IconChicken
+  },
+  {
+    label: "Pepppered",
+    value: "peppered",
+    icon: IconPepper
+  }
+];
+
 export default function Collection() {
   const {collection, routePromise} =
     useLoaderData<typeof loader>();
@@ -106,6 +136,10 @@ export default function Collection() {
   const totalProducts = noResults
     ? 0
     : currentProducts.length;
+
+  const filterCategory = categoryData.filter((item) =>
+    item.value === 'all' ? true : products.some((product) => product.tags.includes(item.value)) 
+  );
   return (
     <div
       className={clsx(
@@ -117,11 +151,16 @@ export default function Collection() {
         <div className="space-y-14 lg:space-y-24">
           {/* HEADING */}
           <div>
-            <div className="flex items-center text-sm font-medium gap-2 text-neutral-500 mb-2">
-              <FireIcon className="w-5 h-5" />
-              <span className="text-neutral-700 ">
-                {totalProducts} Jerkies
-              </span>
+            <div className="grid grid-cols-6 items-center text-sm font-medium gap-2 text-neutral-500 mb-2">
+              <div className='col-span-2 flex'>
+                <FireIcon className="w-5 h-5" />
+                <span className="text-neutral-700 ml-1">
+                  {totalProducts} Jerkies
+                </span>
+              </div>
+              <div className="flex col-span-4 ml-auto">
+                <SwitchTab isSmall={isSmall} onToggle={(val: string) => onToggle(val)}  className='justify-self-end'/>
+              </div>
             </div>
             <PageHeader
               // remove the html tags on title
@@ -133,14 +172,20 @@ export default function Collection() {
           </div>
 
           <main className='!mt-8 !lg:mt-14'>
-            {/* TABS FILTER */}
+            {/* TABS FILTER 
             <FilterMenu
               onTabChange={onTabChange}
               onToggle={onToggle}
               isSmall={isSmall}
             />
+            */}
+            <hr className="mt-8 mb-8 lg:mb-12" /> 
 
-            <hr className="mt-8 mb-8 lg:mb-12" />
+            <ProductFilterHiddenScrollBar 
+              onTabChange={onTabChange}
+              filterCategory={filterCategory}
+            />
+
             {/* LOOP ITEMS */}
             <>
               {!noResults ? (

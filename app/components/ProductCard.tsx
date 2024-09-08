@@ -348,10 +348,10 @@ export const getProductStatus = ({
   if (tags?.includes('label:3-for-33') && size == '3oz') {
     return '3 FOR $33';
   }
-
+/*
   if (tags?.includes('label:3-for-33') && size == '2oz') {
     return '3 FOR $20';
-  }
+  }*/
   if (isSale && tags?.includes('on-sale') && availableForSale) {
     return 'Sale';
   }

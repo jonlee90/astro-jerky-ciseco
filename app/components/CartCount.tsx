@@ -62,7 +62,7 @@ export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity}) 
         <Await resolve={rootData?.cart}>
           {(cart) => (
             <motion.div
-              className={`rounded-full bg-logo-yellow ${className} ${!cart?.totalQuantity && 'hidden'}`}
+              className={`rounded-full bg-neutral-900 ${className} ${!cart?.totalQuantity && 'hidden'}`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95, opacity: 0.6 }}
               onClick={() => open('cart')}
