@@ -94,17 +94,13 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
           type="button"
           className="inline-flex flex-col relative items-center justify-center w-full col-span-1"
         >
-          {cartData && (
-            <>
               <IconCart className="w-8 h-8" color="black" />
               <span className="text-xs">Cart</span>
-              {cartData?.totalQuantity > 0 && (
+              {cartData && cartData?.totalQuantity > 0 && (
                 <div className="left-1/2 transform -translate-x-1/2 top-0.5 bg-primary-600 text-black bg-logo-yellow absolute text-xs font-medium subpixel-antialiased size-4 flex items-center justify-center text-center rounded-full px-[0.125rem] pb-px">
                   <span>{cartData.totalQuantity}</span>
                 </div>
               )}
-            </>
-          )}
         </motion.button>
       </div>
     </div>
