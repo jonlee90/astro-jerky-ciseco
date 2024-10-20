@@ -157,7 +157,7 @@ export default function Collection() {
   // Add scroll event listener
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-  }, []);
+  }, [isSticky]);
 
   const filterCategory = categoryData.filter((item) =>
     item.value === 'all' ? true : products.some((product) => product.tags.includes(item.value)) 
