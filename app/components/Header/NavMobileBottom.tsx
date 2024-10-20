@@ -35,7 +35,9 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
   const activeItemIndex = navItems.findIndex((item) => {
     if (isAuthenticated && pathname === '/rewards' && item.path === '/rewards') {
       return true;
-    } else if (item.path === pathname && pathname.includes(item.path)) {
+    } else if (item.path === '/rewards' && pathname.includes('/account')) {
+      return true;
+    }  else if (item.path === pathname && pathname.includes(item.path)) {
       return true;
     } else if (item.path === '/collections' && pathname.includes(item.path)) {
       return true;

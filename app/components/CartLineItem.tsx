@@ -23,7 +23,7 @@ export function CartLineItem({
   layout: CartLayout;
   line: CartLine;
 }) {
-
+console.log(line, "LINE")
   if (!line?.id) return null;
 
   const {id, merchandise, isOptimistic} = line;
@@ -51,10 +51,10 @@ export function CartLineItem({
               }
             }}>
             <Image
-              width={100}
-              height={100}
+              width={96}
+              height={130}
               data={image}
-              className="object-cover object-center w-24 h-24 border rounded md:w-28 md:h-28"
+              className="object-cover object-center w-24 border rounded md:w-28"
               alt={title}
             />
           </Link>
@@ -82,6 +82,7 @@ export function CartLineItem({
         </div>
         <span>
           <CartLinePrice line={line} as="span" />
+          {(<CartLinePrice contentClass='inline-block line-through opacity-50 py-1 px-2 md:py-1.5 md:px-2.5 !text-base justify-end' priceType='compareAt' line={line} as="span" />)}
         </span>
       </div>
     </li>
@@ -199,22 +200,28 @@ export function CartLinePrice({
   withoutTrailingZeros?: boolean;
 }) {
   if (!line?.cost?.amountPerQuantity || !line?.cost?.totalAmount) return null;
-
+  const compareAtPriceTotal = (parseFloat(line?.cost?.compareAtAmountPerQuantity?.amount || '0') * line.quantity).toFixed(2);
+  const totalAmount = parseFloat(line.cost.totalAmount.amount).toFixed(2);
   const moneyV2 =
     priceType === 'regular'
       ? line.cost.totalAmount
-      : line.cost.compareAtAmountPerQuantity;
+      : {
+        currencyCode: line?.cost?.compareAtAmountPerQuantity?.currencyCode || 'USD',
+        amount: compareAtPriceTotal
+      };
 
   if (moneyV2 == null) {
     return null;
   }
 
   return (
-    <Prices
-      {...passthroughProps}
-      withoutTrailingZeros={withoutTrailingZeros}
-      price={moneyV2}
-    />
+    !(priceType === 'compareAt' && compareAtPriceTotal == totalAmount) && (
+      <Prices
+        {...passthroughProps}
+        withoutTrailingZeros={withoutTrailingZeros}
+        price={moneyV2}
+      />
+    )
   );
 
   // return <Money withoutTrailingZeros {...passthroughProps} data={moneyV2} />;

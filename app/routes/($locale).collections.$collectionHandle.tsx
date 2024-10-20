@@ -23,8 +23,7 @@ import {getPaginationAndFiltersFromRequest} from '~/utils/getPaginationAndFilter
 import {getLoaderRouteFromMetaobject} from '~/utils/getLoaderRouteFromMetaobject';
 import {ProductsGrid} from '~/components/ProductsGrid';
 import clsx from 'clsx';
-import { Suspense, useState } from 'react';
-import { FilterMenu } from '~/components/FilterMenu';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import ProductFilterHiddenScrollBar from '~/components/ProductFilterHiddenScrollBar';
 import { SwitchTab } from '~/components/Tabs';
 import { IconBbq, IconChicken, IconPepper, IconSpicy } from '~/components/Icon';
@@ -120,11 +119,15 @@ export default function Collection() {
     useLoaderData<typeof loader>();
 
   const noResults = !collection.products.nodes.length;
-
   const [isSmall, setIsSmall] = useState(false);
-
   const [currentProducts, setCurrentProducts] = useState(flattenConnection(collection.products));
   const products = flattenConnection(collection.products);
+
+  const [isSticky, setIsSticky] = useState(false); // State to manage sticky behavior
+
+  const filterRef = useRef<HTMLDivElement>(null); // Ref for the filter component
+
+
   const onTabChange = (value: string) => {
     const filtedProducts = value == 'all' ? products : products.filter((e) => e.tags.includes(value));
     setCurrentProducts(filtedProducts);
@@ -137,6 +140,27 @@ export default function Collection() {
     ? 0
     : currentProducts.length;
 
+  // Function to handle scroll event and check when the filter should stick
+  const handleScroll = () => {
+    const filterElement = filterRef.current;
+    if (filterElement) {
+      const filterPosition = filterElement.getBoundingClientRect().top;
+      if (filterPosition <= 0) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
+    }
+  };
+
+  // Add scroll event listener
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   const filterCategory = categoryData.filter((item) =>
     item.value === 'all' ? true : products.some((product) => product.tags.includes(item.value)) 
   );
@@ -147,10 +171,10 @@ export default function Collection() {
         'space-y-20 sm:space-y-24 lg:space-y-28',
       )}
     >
-      <div className="container">
+      <div className="md:container">
         <div className="space-y-14 lg:space-y-24">
           {/* HEADING */}
-          <div>
+          <div className='container'>
             <div className="grid grid-cols-6 items-center text-sm font-medium gap-2 text-neutral-500 mb-2">
               <div className='col-span-2 flex'>
                 <FireIcon className="w-5 h-5" />
@@ -179,12 +203,13 @@ export default function Collection() {
               isSmall={isSmall}
             />
             */}
-            <hr className="mt-8 mb-8 lg:mb-12" /> 
 
-            <ProductFilterHiddenScrollBar 
-              onTabChange={onTabChange}
-              filterCategory={filterCategory}
-            />
+            <div ref={filterRef} className={clsx(isSticky ? 'sticky-filter' : '')}>
+              <ProductFilterHiddenScrollBar 
+                onTabChange={onTabChange}
+                filterCategory={filterCategory}
+              />
+            </div>
 
             {/* LOOP ITEMS */}
             <>

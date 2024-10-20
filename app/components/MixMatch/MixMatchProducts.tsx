@@ -198,6 +198,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: 
                   analytics={analyticsData}
                   disabled={!done}
                   onClick={() => open('cart')}
+                  discountCode={currentBundle.title.replace(/\s+/g, '').toUpperCase()}
                 >
                   Add To Cart
                 </AddToCartButton>

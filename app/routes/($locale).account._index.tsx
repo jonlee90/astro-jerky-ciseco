@@ -106,13 +106,14 @@ function Account({customer}: AccountType) {
                   {(cart: any) => {
                     const loyalty5 = cart ? cart.discountCodes.find(({ code, applicable }: any) => applicable && code === 'LOYALTY5OFF') : '';
                     const loyalty10 = cart ? cart.discountCodes.find(({ code, applicable }: any) => applicable && code === 'LOYALTY10OFF') : '';
+                    const cartQuantity = cart?.totalQuantity;
                     return (
                     <>
                       <UpdateDiscountForm discountCodes={['LOYALTY5OFF']} loyalty={loyalty5}>
-                        <motion.button className={clsx(rewardsButtonStyle, loyalty5 && invertedRewardsButtonStyle)} disabled={loyalty_points_current_value < 100}>{loyalty5 ? 'Remove $5 Reward' : 'Apply $5 Reward'}</motion.button>
+                        <motion.button className={clsx(rewardsButtonStyle, loyalty5 && invertedRewardsButtonStyle)} disabled={loyalty_points_current_value < 100 || cartQuantity == 0}>{loyalty5 ? 'Remove $5 Reward' : 'Apply $5 Reward'}</motion.button>
                       </UpdateDiscountForm>
                       <UpdateDiscountForm discountCodes={['LOYALTY10OFF']} loyalty={loyalty10}>
-                        <motion.button className={clsx(rewardsButtonStyle, loyalty10 && invertedRewardsButtonStyle)} disabled={loyalty_points_current_value < 200}>{loyalty10 ? 'Remove $10 Reward' : 'Apply $10 Reward'}</motion.button>
+                        <motion.button className={clsx(rewardsButtonStyle, loyalty10 && invertedRewardsButtonStyle)} disabled={loyalty_points_current_value < 200 || cartQuantity == 0}>{loyalty10 ? 'Remove $10 Reward' : 'Apply $10 Reward'}</motion.button>
                       </UpdateDiscountForm>
                     </>
                   )}}

@@ -180,6 +180,9 @@ const ProductCard: FC<ProductCardProps> = ({
             />
           </motion.div>
           <div className="grid gap-1">
+            <span className='items -mt-1'>
+              {getProductIcon(product.tags)} {/* Render the icon based on tags */}
+            </span>
             <h2 className="w-full uppercase text-xl text-left">
               {product.title + ' (' + selectedOptions[0].value + ')'}
             </h2>
@@ -195,9 +198,6 @@ const ProductCard: FC<ProductCardProps> = ({
                     Number(product.priceRange.minVariantPrice.amount || 1) > 99
                   }
                 />
-              </span>
-              <span className='text-right items -mt-1'>
-                {getProductIcon(product.tags)} {/* Render the icon based on tags */}
               </span>
             </div>
           </div>
@@ -235,7 +235,8 @@ const ProductCard: FC<ProductCardProps> = ({
     </motion.div>
   );
 }
-const getProductIcon = (tags) => {
+export const getProductIcon = (tags) => {
+  
   if (tags.includes('hot-spicy')) return <IconSpicy size={30} />;
   if (tags.includes('bbq')) return <IconBbq size={30} />;
   if (tags.includes('chicken')) return <IconChicken size={30} />;

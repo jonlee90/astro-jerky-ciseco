@@ -31,7 +31,7 @@ export function ProductGallery({
   return (
     <>
       <div
-        className={`swimlane p-0 lg:grid-flow-row hiddenScroll md:px-8 md:overflow-x-auto md:grid-cols-1 ${className}`}
+        className={`swimlane p-0 lg:grid-flow-row hiddenScroll lg:px-8 lg:overflow-x-auto lg:grid-cols-1 ${className}`}
       >
         {media.map((med, i) => {
 
@@ -54,7 +54,7 @@ export function ProductGallery({
               aria-hidden
             >
               <button
-                className="absolute z-10 top-3 left-3 w-8 h-8 text-neutral-900 dark:text-neutral-100 rounded-full border bg-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute z-10 top-3 left-3 w-8 h-8 text-neutral-900 dark:text-neutral-100 rounded-full border bg-white flex items-center justify-center group-hover:opacity-100 transition-opacity"
                 type="button"
               >
                 <span className="sr-only">View image</span>

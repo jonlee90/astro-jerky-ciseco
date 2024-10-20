@@ -29,14 +29,27 @@ export async function action({request, context}: ActionFunctionArgs) {
   if (!action) {
     throw new Error('No action provided');
   }
-
   let status = 200;
   let result: CartQueryDataReturn;
-
+  
   switch (action) {
-    case CartForm.ACTIONS.LinesAdd:
+    case CartForm.ACTIONS.LinesAdd:{
       result = await cart.addLines(inputs.lines);
+      const formDiscountCode = inputs.discountCode;
+      if(result && formDiscountCode) {
+        // User inputted discount code
+        const discountCodes = (
+          formDiscountCode ? [formDiscountCode] : []
+        ) as string[];
+
+        // Combine discount codes already applied on cart
+        if(inputs.discountCodes) {
+          discountCodes.push(...inputs.discountCodes);
+        }
+        result = await cart.updateDiscountCodes(discountCodes);
+      }
       break;
+    }
     case CartForm.ACTIONS.LinesUpdate:
       result = await cart.updateLines(inputs.lines);
       break;
