@@ -145,6 +145,7 @@ export default function Collection() {
     const filterElement = filterRef.current;
     if (filterElement) {
       const filterPosition = filterElement.getBoundingClientRect().top;
+      console.log(filterPosition);
       if (filterPosition <= 0) {
         setIsSticky(true);
       } else {
@@ -156,9 +157,6 @@ export default function Collection() {
   // Add scroll event listener
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
   }, []);
 
   const filterCategory = categoryData.filter((item) =>
