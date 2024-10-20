@@ -6,6 +6,7 @@ import { Card, CardHeader, CardBody } from "@material-tailwind/react";
 import { BundlePacks } from '~/data/bundleData';
 import { motion } from 'framer-motion';
 import PageHeader from '~/components/PageHeader';
+import { MoneyV2 } from '@shopify/hydrogen/storefront-api-types';
 
 interface BundlePack {
   id: string;
@@ -78,7 +79,7 @@ export default function AllBundle() {
 }
 
 interface CompareAtPriceProps {
-  data: Money;
+  data: MoneyV2;
   className?: string;
 }
 

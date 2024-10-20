@@ -10,6 +10,7 @@ import {
   getSelectedProductOptions,
   Analytics,
   useOptimisticVariant,
+  Image
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 import clsx from 'clsx';
@@ -26,7 +27,7 @@ import {routeHeaders} from '~/data/cache';
 import {MEDIA_FRAGMENT} from '~/data/fragments';
 import Prices from '~/components/Prices';
 import {NoSymbolIcon} from '@heroicons/react/24/outline';
-import {getProductStatus, ProductBadge} from '~/components/ProductCard';
+import {getProductIcon, getProductStatus, ProductBadge} from '~/components/ProductCard';
 import ButtonSecondary from '~/components/Button/ButtonSecondary';
 import {COMMON_PRODUCT_CARD_FRAGMENT} from '~/data/commonFragments';
 import {SnapSliderProducts} from '~/components/SnapSliderProducts';
@@ -197,7 +198,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 export default function Product() {
   const {product, recommended, variants, routePromise} =
     useLoaderData<typeof loader>();
-  const {media, outstanding_features, descriptionHtml, id} =
+  const {media, outstanding_features, descriptionHtml, tags} =
     product;
 
   const { pathname, state } = useLocation();
@@ -282,7 +283,7 @@ if(!isHydrated) {
           setCurrentQuantity={setCurrentQuantity}
         />
       </motion.div>
-      <main className="2xl:max-w-screen-xl container">
+      <main className="2xl:max-w-screen-xl container sm-max:max-w-[640px]">
         <div className="lg:flex">
           {/* Galleries */}
           <div className="w-full lg:w-[55%] relative">
@@ -301,21 +302,30 @@ if(!isHydrated) {
           {/* Product Details */}
           <div className="w-full lg:w-[45%] pt-10 lg:pt-0 lg:pl-7 xl:pl-9 2xl:pl-10">
             <div className="sticky top-10 grid gap-7 2xl:gap-8">
-                    <Suspense fallback={<></>}>
-                      <Await
-                        errorElement="There was a problem loading related products"
-                        resolve={variants}
-                      >
-                        {(resp) => (
-                          <ProductForm
-                            currentQuantity={currentQuantity}
-                            selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
-                            selectedVariantPrice={selectedVariantPrice}
-                            setCurrentQuantity={setCurrentQuantity}
-                          />
-                        )}
-                      </Await>
-                    </Suspense>
+              <Suspense fallback={<></>}>
+                <Await
+                  errorElement="There was a problem loading related products"
+                  resolve={variants}
+                >
+                  {(resp) => (
+                    <ProductForm
+                      currentQuantity={currentQuantity}
+                      selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
+                      selectedVariantPrice={selectedVariantPrice}
+                      setCurrentQuantity={setCurrentQuantity}
+                    />
+                  )}
+                </Await>
+              </Suspense>
+                
+              <Prices
+                contentClass="!text-2xl font-semibold"
+                price={selectedVariant.price}
+                compareAtPrice={selectedVariant.compareAtPrice}
+              />
+
+              
+            {getProductIcon(tags)} {/* Render the icon based on tags */}
               {/*  */}
               <hr className=" border-slate-200 dark:border-slate-700 mt-3"></hr>
               {/*  */}
@@ -355,9 +365,57 @@ if(!isHydrated) {
                       __html: descriptionHtml || '',
                     }}
                   />
+                  <div>
+                    <Image
+                      loading={'lazy'}
+                      data={{
+                        url: 'https://cdn.shopify.com/s/files/1/0641/9742/7365/files/pdp-1.jpg',
+                        altText: 'Beef Jerky Juicy'
+                      }}
+                      aspectRatio={undefined}
+                      sizes='(min-width: 48em) 60vw, 90vw'
+                      className="object-cover rounded-2xl w-full h-full aspect-square fadeIn"
+                    />
+                  </div>
                 </div>
               )}
+
               <SocialSharing selectedVariant={selectedVariant} />
+
+              
+              {/*  */}
+              <hr className=" border-slate-200 dark:border-slate-700 mt-3"></hr>
+              {/*  */}
+              
+                <div 
+                  className="grid gap-7 2xl:gap-8 description-container">
+                  <h2 className="text-2xl font-semibold">NUTRITIONS</h2>
+                  <div>
+                    <Image
+                      loading={'lazy'}
+                      data={{
+                        url: 'https://cdn.shopify.com/s/files/1/0641/9742/7365/files/nutrition.jpg',
+                        altText: 'Beef Jerky Nutrition'
+                      }}
+                      aspectRatio={undefined}
+                      sizes='(min-width: 48em) 60vw, 90vw'
+                      className="object-cover rounded-2xl w-full h-full aspect-square fadeIn"
+                    />
+                  </div>
+                  <div>
+                    <Image
+                      loading={'lazy'}
+                      data={{
+                        url: 'https://cdn.shopify.com/s/files/1/0641/9742/7365/files/pdp-2.jpg',
+                        altText: 'Beef Jerky Ingredients'
+                      }}
+                      aspectRatio={undefined}
+                      sizes='(min-width: 48em) 60vw, 90vw'
+                      className="object-cover rounded-2xl w-full h-full aspect-square fadeIn"
+                    />
+                  </div>
+                </div>
+              
 
             </div>
           </div>
@@ -872,6 +930,7 @@ export const PRODUCT_QUERY = `#graphql
       descriptionHtml
       description
       publishedAt
+      tags
       collections(first: 1) {
         nodes {
           title

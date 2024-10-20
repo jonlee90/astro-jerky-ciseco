@@ -8,6 +8,7 @@ export function AddToCartButton({
   disabled,
   lines,
   onClick,
+  discountCode = ''
 }: {
   className: string;
   analytics?: unknown;
@@ -15,9 +16,10 @@ export function AddToCartButton({
   disabled?: boolean;
   lines: Array<OptimisticCartLineInput>;
   onClick?: () => void;
+  discountCode?: string;
 }) {
   return (
-    <CartForm route="/cart" inputs={{lines}} action={CartForm.ACTIONS.LinesAdd}>
+    <CartForm route="/cart" inputs={{lines, discountCode}} action={CartForm.ACTIONS.LinesAdd}>
       {(fetcher: FetcherWithComponents<any>) => (
         <>
           <input

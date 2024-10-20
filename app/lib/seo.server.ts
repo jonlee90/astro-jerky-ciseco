@@ -31,7 +31,7 @@ function root({
 }): SeoConfig {
   return {
     title: shop?.name || 'Astro Fresh Jerky',
-    titleTemplate: '%s | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
+    titleTemplate: '%s | Beef Jerky, Protein Snacks, Grass Fed Jerky',
     description: truncate(shop?.description ?? "Astro Fresh Jerky offers high-protein, grass-fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients."),
     handle: '@AstroFreshJerky',
     url,

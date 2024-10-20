@@ -11,7 +11,7 @@ export function MobileHeader() {
   useEffect(() => {
     if (y > prevScrollY.current && y > 150 && isVisible) {
       setIsVisible(false); // Scrolling down
-    } else if (y < prevScrollY.current && !isVisible) {
+    } else if (y <= 150 && !isVisible) {
       setIsVisible(true); // Scrolling up
     }
     prevScrollY.current = y;

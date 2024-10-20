@@ -788,3 +788,16 @@ a.disabled {
 .bg-primary {
   background-color: #101010;
 }
+
+.productFilterHiddenScrollBar {
+  background-color: rgb(245, 245, 245);
+}
+.sticky-filter {
+  position: sticky;
+  top: 0;
+  z-index: 100; /* Adjust if you need the filter to stay above other content */
+}
+
+.pdp-container {
+  padding: 0 1rem;
+}

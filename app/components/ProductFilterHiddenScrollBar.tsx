@@ -9,7 +9,7 @@ const ProductFilterHiddenScrollBar = ({onTabChange, filterCategory}: any) => {
 
   return (
       <Nav
-        className="p-1 bg-white rounded-full shadow-lg overflow-x-auto hiddenScrollbar"
+        className="p-1 productFilterHiddenScrollBar overflow-x-auto hiddenScrollbar w-full justify-evenly md:w-auto md:rounded-full"
         containerClassName="mb-12 lg:mb-14 relative flex justify-center w-full text-sm md:text-base"
       >
         {filterCategory.map((item, index) => (
