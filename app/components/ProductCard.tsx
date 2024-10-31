@@ -179,10 +179,7 @@ const ProductCard: FC<ProductCardProps> = ({
               }}
             />
           </motion.div>
-          <div className="grid gap-1">
-            <span className='items -mt-1'>
-              {getProductIcon(product.tags)} {/* Render the icon based on tags */}
-            </span>
+          <div className="grid gap-2">
             <h2 className="w-full uppercase text-xl text-left">
               {product.title + ' (' + selectedOptions[0].value + ')'}
             </h2>
@@ -200,6 +197,9 @@ const ProductCard: FC<ProductCardProps> = ({
                 />
               </span>
             </div>
+            <span className='items -mt-1'>
+              {getProductIcon(product)} {/* Render the icon based on tags */}
+            </span>
           </div>
         </div>
       </Link>
@@ -235,13 +235,19 @@ const ProductCard: FC<ProductCardProps> = ({
     </motion.div>
   );
 }
-export const getProductIcon = (tags) => {
-  
-  if (tags.includes('hot-spicy')) return <IconSpicy size={30} />;
-  if (tags.includes('bbq')) return <IconBbq size={30} />;
-  if (tags.includes('chicken')) return <IconChicken size={30} />;
-  if (tags.includes('peppered')) return <IconPepper size={30} />;
-  return null;
+export const getProductIcon = (product: CommonProductCardFragment) => {
+  const { tags, flavor_level } = product;
+  const count = flavor_level ? parseInt(flavor_level.value) : 1;
+
+  const getIconComponent = (index: number) => {
+    if (tags.includes('hot-spicy')) return <IconSpicy key={index} size={30} />;
+    if (tags.includes('bbq')) return <IconBbq key={index} size={30} />;
+    if (tags.includes('chicken')) return <IconChicken key={index} size={30} />;
+    if (tags.includes('peppered')) return <IconPepper key={index} size={30} />;
+    return null;
+  };
+
+  return Array.from({ length: count }, (_, index) => getIconComponent(index));
 };
 export const ProductBadge = ({
   status,

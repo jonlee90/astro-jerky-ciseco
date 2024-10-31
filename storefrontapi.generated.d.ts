@@ -125,18 +125,7 @@ export type CommonProductCardFragment = Pick<
     minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
     maxVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
   };
-  reviews_rating_count?: StorefrontAPI.Maybe<
-    Pick<StorefrontAPI.Metafield, 'type' | 'id' | 'value' | 'namespace' | 'key'>
-  >;
-  reviews_rating?: StorefrontAPI.Maybe<
-    Pick<StorefrontAPI.Metafield, 'type' | 'id' | 'value' | 'namespace' | 'key'>
-  >;
-  outstanding_features?: StorefrontAPI.Maybe<
-    Pick<StorefrontAPI.Metafield, 'type' | 'id' | 'value' | 'namespace' | 'key'>
-  >;
-  okendoStarRatingSnippet?: StorefrontAPI.Maybe<
-    Pick<StorefrontAPI.Metafield, 'value'>
-  >;
+  flavor_level?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
 };
 
 export type CommonCollectionItemFragment = Pick<
@@ -347,6 +336,7 @@ export type ProductMixFragment = Pick<
           })
     >;
   };
+  flavor_level?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
   variants: {
     nodes: Array<
       Pick<StorefrontAPI.ProductVariant, 'id' | 'availableForSale'> & {
@@ -638,25 +628,7 @@ export type ApiAllProductsQuery = {
             'amount' | 'currencyCode'
           >;
         };
-        reviews_rating_count?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        reviews_rating?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        outstanding_features?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        okendoStarRatingSnippet?: StorefrontAPI.Maybe<
+        flavor_level?: StorefrontAPI.Maybe<
           Pick<StorefrontAPI.Metafield, 'value'>
         >;
       }
@@ -721,6 +693,9 @@ export type MixAllProductsQuery = {
                 })
           >;
         };
+        flavor_level?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.Metafield, 'value'>
+        >;
         variants: {
           nodes: Array<
             Pick<StorefrontAPI.ProductVariant, 'id' | 'availableForSale'> & {
@@ -858,25 +833,7 @@ export type CollectionDetailsQuery = {
                 'amount' | 'currencyCode'
               >;
             };
-            reviews_rating_count?: StorefrontAPI.Maybe<
-              Pick<
-                StorefrontAPI.Metafield,
-                'type' | 'id' | 'value' | 'namespace' | 'key'
-              >
-            >;
-            reviews_rating?: StorefrontAPI.Maybe<
-              Pick<
-                StorefrontAPI.Metafield,
-                'type' | 'id' | 'value' | 'namespace' | 'key'
-              >
-            >;
-            outstanding_features?: StorefrontAPI.Maybe<
-              Pick<
-                StorefrontAPI.Metafield,
-                'type' | 'id' | 'value' | 'namespace' | 'key'
-              >
-            >;
-            okendoStarRatingSnippet?: StorefrontAPI.Maybe<
+            flavor_level?: StorefrontAPI.Maybe<
               Pick<StorefrontAPI.Metafield, 'value'>
             >;
           }
@@ -1037,25 +994,7 @@ export type FeaturedItemsQuery = {
             'amount' | 'currencyCode'
           >;
         };
-        reviews_rating_count?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        reviews_rating?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        outstanding_features?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        okendoStarRatingSnippet?: StorefrontAPI.Maybe<
+        flavor_level?: StorefrontAPI.Maybe<
           Pick<StorefrontAPI.Metafield, 'value'>
         >;
       }
@@ -1276,8 +1215,8 @@ export type ProductQuery = {
       collections: {
         nodes: Array<Pick<StorefrontAPI.Collection, 'title' | 'handle'>>;
       };
-      outstanding_features?: StorefrontAPI.Maybe<
-        Pick<StorefrontAPI.Metafield, 'id' | 'value' | 'namespace' | 'key'>
+      flavor_level?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Metafield, 'value'>
       >;
       options: Array<Pick<StorefrontAPI.ProductOption, 'name' | 'values'>>;
       selectedVariant?: StorefrontAPI.Maybe<
@@ -1500,25 +1439,7 @@ export type ProductRecommendationsQuery = {
             'amount' | 'currencyCode'
           >;
         };
-        reviews_rating_count?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        reviews_rating?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        outstanding_features?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        okendoStarRatingSnippet?: StorefrontAPI.Maybe<
+        flavor_level?: StorefrontAPI.Maybe<
           Pick<StorefrontAPI.Metafield, 'value'>
         >;
       }
@@ -1587,25 +1508,7 @@ export type ProductRecommendationsQuery = {
             'amount' | 'currencyCode'
           >;
         };
-        reviews_rating_count?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        reviews_rating?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        outstanding_features?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        okendoStarRatingSnippet?: StorefrontAPI.Maybe<
+        flavor_level?: StorefrontAPI.Maybe<
           Pick<StorefrontAPI.Metafield, 'value'>
         >;
       }
@@ -1690,25 +1593,7 @@ export type AllProductsQuery = {
             'amount' | 'currencyCode'
           >;
         };
-        reviews_rating_count?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        reviews_rating?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        outstanding_features?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        okendoStarRatingSnippet?: StorefrontAPI.Maybe<
+        flavor_level?: StorefrontAPI.Maybe<
           Pick<StorefrontAPI.Metafield, 'value'>
         >;
       }
@@ -1810,25 +1695,7 @@ export type PaginatedProductsSearchQuery = {
             'amount' | 'currencyCode'
           >;
         };
-        reviews_rating_count?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        reviews_rating?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        outstanding_features?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        okendoStarRatingSnippet?: StorefrontAPI.Maybe<
+        flavor_level?: StorefrontAPI.Maybe<
           Pick<StorefrontAPI.Metafield, 'value'>
         >;
       }
@@ -1937,25 +1804,7 @@ export type ProductsByHandlesQuery = {
             'amount' | 'currencyCode'
           >;
         };
-        reviews_rating_count?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        reviews_rating?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        outstanding_features?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Metafield,
-            'type' | 'id' | 'value' | 'namespace' | 'key'
-          >
-        >;
-        okendoStarRatingSnippet?: StorefrontAPI.Maybe<
+        flavor_level?: StorefrontAPI.Maybe<
           Pick<StorefrontAPI.Metafield, 'value'>
         >;
       }
@@ -1963,36 +1812,6 @@ export type ProductsByHandlesQuery = {
     pageInfo: Pick<
       StorefrontAPI.PageInfo,
       'hasPreviousPage' | 'hasNextPage' | 'startCursor' | 'endCursor'
-    >;
-  };
-};
-
-export type SitemapsQueryVariables = StorefrontAPI.Exact<{
-  urlLimits?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['Int']['input']>;
-  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
-}>;
-
-export type SitemapsQuery = {
-  products: {
-    nodes: Array<
-      Pick<
-        StorefrontAPI.Product,
-        'updatedAt' | 'handle' | 'onlineStoreUrl' | 'title'
-      > & {
-        featuredImage?: StorefrontAPI.Maybe<
-          Pick<StorefrontAPI.Image, 'url' | 'altText'>
-        >;
-      }
-    >;
-  };
-  collections: {
-    nodes: Array<
-      Pick<StorefrontAPI.Collection, 'updatedAt' | 'handle' | 'onlineStoreUrl'>
-    >;
-  };
-  pages: {
-    nodes: Array<
-      Pick<StorefrontAPI.Page, 'updatedAt' | 'handle' | 'onlineStoreUrl'>
     >;
   };
 };
@@ -2273,25 +2092,7 @@ export type RouteContentQuery = {
                                 'amount' | 'currencyCode'
                               >;
                             };
-                            reviews_rating_count?: StorefrontAPI.Maybe<
-                              Pick<
-                                StorefrontAPI.Metafield,
-                                'type' | 'id' | 'value' | 'namespace' | 'key'
-                              >
-                            >;
-                            reviews_rating?: StorefrontAPI.Maybe<
-                              Pick<
-                                StorefrontAPI.Metafield,
-                                'type' | 'id' | 'value' | 'namespace' | 'key'
-                              >
-                            >;
-                            outstanding_features?: StorefrontAPI.Maybe<
-                              Pick<
-                                StorefrontAPI.Metafield,
-                                'type' | 'id' | 'value' | 'namespace' | 'key'
-                              >
-                            >;
-                            okendoStarRatingSnippet?: StorefrontAPI.Maybe<
+                            flavor_level?: StorefrontAPI.Maybe<
                               Pick<StorefrontAPI.Metafield, 'value'>
                             >;
                           }
@@ -2402,25 +2203,7 @@ export type RouteContentQuery = {
                                 'amount' | 'currencyCode'
                               >;
                             };
-                            reviews_rating_count?: StorefrontAPI.Maybe<
-                              Pick<
-                                StorefrontAPI.Metafield,
-                                'type' | 'id' | 'value' | 'namespace' | 'key'
-                              >
-                            >;
-                            reviews_rating?: StorefrontAPI.Maybe<
-                              Pick<
-                                StorefrontAPI.Metafield,
-                                'type' | 'id' | 'value' | 'namespace' | 'key'
-                              >
-                            >;
-                            outstanding_features?: StorefrontAPI.Maybe<
-                              Pick<
-                                StorefrontAPI.Metafield,
-                                'type' | 'id' | 'value' | 'namespace' | 'key'
-                              >
-                            >;
-                            okendoStarRatingSnippet?: StorefrontAPI.Maybe<
+                            flavor_level?: StorefrontAPI.Maybe<
                               Pick<StorefrontAPI.Metafield, 'value'>
                             >;
                           }
@@ -2907,25 +2690,7 @@ export type SectionGridProductsAndFilterFragment = Pick<
                     'amount' | 'currencyCode'
                   >;
                 };
-                reviews_rating_count?: StorefrontAPI.Maybe<
-                  Pick<
-                    StorefrontAPI.Metafield,
-                    'type' | 'id' | 'value' | 'namespace' | 'key'
-                  >
-                >;
-                reviews_rating?: StorefrontAPI.Maybe<
-                  Pick<
-                    StorefrontAPI.Metafield,
-                    'type' | 'id' | 'value' | 'namespace' | 'key'
-                  >
-                >;
-                outstanding_features?: StorefrontAPI.Maybe<
-                  Pick<
-                    StorefrontAPI.Metafield,
-                    'type' | 'id' | 'value' | 'namespace' | 'key'
-                  >
-                >;
-                okendoStarRatingSnippet?: StorefrontAPI.Maybe<
+                flavor_level?: StorefrontAPI.Maybe<
                   Pick<StorefrontAPI.Metafield, 'value'>
                 >;
               }
@@ -3289,25 +3054,7 @@ export type SectionProductsSliderFragment = Pick<
                     'amount' | 'currencyCode'
                   >;
                 };
-                reviews_rating_count?: StorefrontAPI.Maybe<
-                  Pick<
-                    StorefrontAPI.Metafield,
-                    'type' | 'id' | 'value' | 'namespace' | 'key'
-                  >
-                >;
-                reviews_rating?: StorefrontAPI.Maybe<
-                  Pick<
-                    StorefrontAPI.Metafield,
-                    'type' | 'id' | 'value' | 'namespace' | 'key'
-                  >
-                >;
-                outstanding_features?: StorefrontAPI.Maybe<
-                  Pick<
-                    StorefrontAPI.Metafield,
-                    'type' | 'id' | 'value' | 'namespace' | 'key'
-                  >
-                >;
-                okendoStarRatingSnippet?: StorefrontAPI.Maybe<
+                flavor_level?: StorefrontAPI.Maybe<
                   Pick<StorefrontAPI.Metafield, 'value'>
                 >;
               }
@@ -3740,25 +3487,7 @@ export type SectionsFragment = {
                           'amount' | 'currencyCode'
                         >;
                       };
-                      reviews_rating_count?: StorefrontAPI.Maybe<
-                        Pick<
-                          StorefrontAPI.Metafield,
-                          'type' | 'id' | 'value' | 'namespace' | 'key'
-                        >
-                      >;
-                      reviews_rating?: StorefrontAPI.Maybe<
-                        Pick<
-                          StorefrontAPI.Metafield,
-                          'type' | 'id' | 'value' | 'namespace' | 'key'
-                        >
-                      >;
-                      outstanding_features?: StorefrontAPI.Maybe<
-                        Pick<
-                          StorefrontAPI.Metafield,
-                          'type' | 'id' | 'value' | 'namespace' | 'key'
-                        >
-                      >;
-                      okendoStarRatingSnippet?: StorefrontAPI.Maybe<
+                      flavor_level?: StorefrontAPI.Maybe<
                         Pick<StorefrontAPI.Metafield, 'value'>
                       >;
                     }
@@ -3860,25 +3589,7 @@ export type SectionsFragment = {
                           'amount' | 'currencyCode'
                         >;
                       };
-                      reviews_rating_count?: StorefrontAPI.Maybe<
-                        Pick<
-                          StorefrontAPI.Metafield,
-                          'type' | 'id' | 'value' | 'namespace' | 'key'
-                        >
-                      >;
-                      reviews_rating?: StorefrontAPI.Maybe<
-                        Pick<
-                          StorefrontAPI.Metafield,
-                          'type' | 'id' | 'value' | 'namespace' | 'key'
-                        >
-                      >;
-                      outstanding_features?: StorefrontAPI.Maybe<
-                        Pick<
-                          StorefrontAPI.Metafield,
-                          'type' | 'id' | 'value' | 'namespace' | 'key'
-                        >
-                      >;
-                      okendoStarRatingSnippet?: StorefrontAPI.Maybe<
+                      flavor_level?: StorefrontAPI.Maybe<
                         Pick<StorefrontAPI.Metafield, 'value'>
                       >;
                     }
@@ -4126,15 +3837,15 @@ interface GeneratedQueryTypes {
     return: SeoCollectionContentQuery;
     variables: SeoCollectionContentQueryVariables;
   };
-  '#graphql\n  query ApiAllProducts(\n    $query: String\n    $count: Int\n    $reverse: Boolean\n    $country: CountryCode\n    $language: LanguageCode\n    $sortKey: ProductSortKeys\n  ) @inContext(country: $country, language: $language) {\n    products(first: $count, sortKey: $sortKey, reverse: $reverse, query: $query) {\n      nodes {\n        ...CommonProductCard\n      }\n    }\n  }\n  #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    tags\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    reviews_rating_count: metafield(namespace: "reviews", key:"rating_count") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    reviews_rating: metafield(namespace: "reviews", key:"rating") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    outstanding_features: metafield(namespace: "ciseco--product", key:"outstanding_features") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    okendoStarRatingSnippet: metafield(\n\t\t\tnamespace: "okendo"\n\t\t\tkey: "StarRatingSnippet"\n\t\t) {\n\t\t\tvalue\n\t\t}\n  } \n\n': {
+  '#graphql\n  query ApiAllProducts(\n    $query: String\n    $count: Int\n    $reverse: Boolean\n    $country: CountryCode\n    $language: LanguageCode\n    $sortKey: ProductSortKeys\n  ) @inContext(country: $country, language: $language) {\n    products(first: $count, sortKey: $sortKey, reverse: $reverse, query: $query) {\n      nodes {\n        ...CommonProductCard\n      }\n    }\n  }\n  #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    tags\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    flavor_level: metafield(namespace: "custom", key:"flavor_level") {\n      value\n    }\n  } \n\n': {
     return: ApiAllProductsQuery;
     variables: ApiAllProductsQueryVariables;
   };
-  '#graphql\n  query MixAllProducts(\n    $count: Int\n    $country: CountryCode\n    $language: LanguageCode\n    $sortKey: ProductSortKeys\n    $query: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: $count, sortKey: $sortKey, query: $query) {\n      nodes {\n        ...ProductMix\n      }\n    }\n  }\n  #graphql\n  fragment ProductMix on Product {\n    id\n    title\n    tags\n    description\n    media(first: 7) {\n      nodes {\n        ...Media\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n      }\n    }\n  }\n  #graphql\n  fragment Media on Media {\n    __typename\n    mediaContentType\n    alt\n    previewImage {\n      url\n    }\n    ... on MediaImage {\n      id\n      image {\n        id\n        url\n        width\n        height\n      }\n    }\n    ... on Video {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on Model3d {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on ExternalVideo {\n      id\n      embedUrl\n      host\n    }\n  }\n\n\n': {
+  '#graphql\n  query MixAllProducts(\n    $count: Int\n    $country: CountryCode\n    $language: LanguageCode\n    $sortKey: ProductSortKeys\n    $query: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: $count, sortKey: $sortKey, query: $query) {\n      nodes {\n        ...ProductMix\n      }\n    }\n  }\n  #graphql\n  fragment ProductMix on Product {\n    id\n    title\n    tags\n    description\n    media(first: 7) {\n      nodes {\n        ...Media\n      }\n    }\n    flavor_level: metafield(namespace: "custom", key:"flavor_level") {\n      value\n    }\n    variants(first: 2) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n      }\n    }\n  }\n  #graphql\n  fragment Media on Media {\n    __typename\n    mediaContentType\n    alt\n    previewImage {\n      url\n    }\n    ... on MediaImage {\n      id\n      image {\n        id\n        url\n        width\n        height\n      }\n    }\n    ... on Video {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on Model3d {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on ExternalVideo {\n      id\n      embedUrl\n      host\n    }\n  }\n\n\n': {
     return: MixAllProductsQuery;
     variables: MixAllProductsQueryVariables;
   };
-  '#graphql\n  query CollectionDetails(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $filters: [ProductFilter!]\n    $sortKey: ProductCollectionSortKeys!\n    $reverse: Boolean\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      description\n      seo {\n        description\n        title\n      }\n      image {\n        id\n        url\n        width\n        height\n        altText\n      }\n      productsWithDefaultFilter:products(\n        first: 0,\n        filters: {},\n      ) {\n        filters {\n          id\n          label\n          type\n          values {\n            id\n            label\n            count\n            input\n          }\n        }\n      }\n      products(\n        first: $first,\n        last: $last,\n        before: $startCursor,\n        after: $endCursor,\n        filters: $filters,\n        sortKey: $sortKey,\n        reverse: $reverse\n      ) {\n        filters {\n          id\n          label\n          type\n          values {\n            id\n            label\n            count\n            input\n          }\n        }\n        nodes {\n          ...CommonProductCard\n        }\n        pageInfo {\n          hasPreviousPage\n          hasNextPage\n          endCursor\n          startCursor\n        }\n      }\n    }\n  }\n   # All common fragments\n   #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    tags\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    reviews_rating_count: metafield(namespace: "reviews", key:"rating_count") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    reviews_rating: metafield(namespace: "reviews", key:"rating") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    outstanding_features: metafield(namespace: "ciseco--product", key:"outstanding_features") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    okendoStarRatingSnippet: metafield(\n\t\t\tnamespace: "okendo"\n\t\t\tkey: "StarRatingSnippet"\n\t\t) {\n\t\t\tvalue\n\t\t}\n  } \n\n': {
+  '#graphql\n  query CollectionDetails(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $filters: [ProductFilter!]\n    $sortKey: ProductCollectionSortKeys!\n    $reverse: Boolean\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      description\n      seo {\n        description\n        title\n      }\n      image {\n        id\n        url\n        width\n        height\n        altText\n      }\n      productsWithDefaultFilter:products(\n        first: 0,\n        filters: {},\n      ) {\n        filters {\n          id\n          label\n          type\n          values {\n            id\n            label\n            count\n            input\n          }\n        }\n      }\n      products(\n        first: $first,\n        last: $last,\n        before: $startCursor,\n        after: $endCursor,\n        filters: $filters,\n        sortKey: $sortKey,\n        reverse: $reverse\n      ) {\n        filters {\n          id\n          label\n          type\n          values {\n            id\n            label\n            count\n            input\n          }\n        }\n        nodes {\n          ...CommonProductCard\n        }\n        pageInfo {\n          hasPreviousPage\n          hasNextPage\n          endCursor\n          startCursor\n        }\n      }\n    }\n  }\n   # All common fragments\n   #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    tags\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    flavor_level: metafield(namespace: "custom", key:"flavor_level") {\n      value\n    }\n  } \n\n': {
     return: CollectionDetailsQuery;
     variables: CollectionDetailsQueryVariables;
   };
@@ -4142,7 +3853,7 @@ interface GeneratedQueryTypes {
     return: CollectionsQuery;
     variables: CollectionsQueryVariables;
   };
-  '#graphql\n  query FeaturedItems(\n    $country: CountryCode\n    $language: LanguageCode\n    $pageBy: Int = 12\n  ) @inContext(country: $country, language: $language) {\n    featuredCollections: collections(first: 3, sortKey: UPDATED_AT) {\n      nodes {\n        ...CommonCollectionItem\n      }\n    }\n    featuredProducts: products(first: $pageBy) {\n      nodes {\n        ...CommonProductCard\n      }\n    }\n  }\n\n  #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    tags\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    reviews_rating_count: metafield(namespace: "reviews", key:"rating_count") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    reviews_rating: metafield(namespace: "reviews", key:"rating") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    outstanding_features: metafield(namespace: "ciseco--product", key:"outstanding_features") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    okendoStarRatingSnippet: metafield(\n\t\t\tnamespace: "okendo"\n\t\t\tkey: "StarRatingSnippet"\n\t\t) {\n\t\t\tvalue\n\t\t}\n  } \n\n  #graphql\n  fragment CommonCollectionItem on Collection {\n    id\n    title\n    updatedAt\n    description\n    handle\n    image {\n      altText\n      width\n      height\n      url\n    }\n    horizontal_image: metafield(key: "horizontal_image", namespace: "ciseco--collection") {\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            altText\n            height\n            width\n            url\n          }\n        }\n      }\n    }\n    seo {\n      description\n      title\n    }\n  }\n\n': {
+  '#graphql\n  query FeaturedItems(\n    $country: CountryCode\n    $language: LanguageCode\n    $pageBy: Int = 12\n  ) @inContext(country: $country, language: $language) {\n    featuredCollections: collections(first: 3, sortKey: UPDATED_AT) {\n      nodes {\n        ...CommonCollectionItem\n      }\n    }\n    featuredProducts: products(first: $pageBy) {\n      nodes {\n        ...CommonProductCard\n      }\n    }\n  }\n\n  #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    tags\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    flavor_level: metafield(namespace: "custom", key:"flavor_level") {\n      value\n    }\n  } \n\n  #graphql\n  fragment CommonCollectionItem on Collection {\n    id\n    title\n    updatedAt\n    description\n    handle\n    image {\n      altText\n      width\n      height\n      url\n    }\n    horizontal_image: metafield(key: "horizontal_image", namespace: "ciseco--collection") {\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            altText\n            height\n            width\n            url\n          }\n        }\n      }\n    }\n    seo {\n      description\n      title\n    }\n  }\n\n': {
     return: FeaturedItemsQuery;
     variables: FeaturedItemsQueryVariables;
   };
@@ -4166,7 +3877,7 @@ interface GeneratedQueryTypes {
     return: PoliciesIndexQuery;
     variables: PoliciesIndexQueryVariables;
   };
-  '#graphql\n  query Product(\n    $country: CountryCode\n    $language: LanguageCode\n    $handle: String!\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id\n      title\n      vendor\n      handle\n      descriptionHtml\n      description\n      publishedAt\n      tags\n      collections(first: 1) {\n        nodes {\n          title\n          handle\n        }\n      }\n      outstanding_features: metafield(namespace: "ciseco--product", key:"outstanding_features") {\n        id\n        value\n        namespace\n        key\n      }\n      options {\n        name\n        values\n      }\n      selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {\n        ...ProductVariantFragment\n      }\n      media(first: 7) {\n        nodes {\n          ...Media\n        }\n      }\n      variants(first: 1) {\n        nodes {\n          ...ProductVariantFragment\n        }\n      }\n      seo {\n        description\n        title\n      }\n    }\n    shop {\n      name\n      primaryDomain {\n        url\n      }\n      shippingPolicy {\n        handle\n      }\n      refundPolicy {\n        handle\n      }\n      subscriptionPolicy {\n        handle\n      }\n    }\n  }\n  #graphql\n  fragment Media on Media {\n    __typename\n    mediaContentType\n    alt\n    previewImage {\n      url\n    }\n    ... on MediaImage {\n      id\n      image {\n        id\n        url\n        width\n        height\n      }\n    }\n    ... on Video {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on Model3d {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on ExternalVideo {\n      id\n      embedUrl\n      host\n    }\n  }\n\n  #graphql\n  fragment ProductVariantFragment on ProductVariant {\n    id\n    availableForSale\n    selectedOptions {\n      name\n      value\n    }\n    image {\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n  }\n\n': {
+  '#graphql\n  query Product(\n    $country: CountryCode\n    $language: LanguageCode\n    $handle: String!\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id\n      title\n      vendor\n      handle\n      descriptionHtml\n      description\n      publishedAt\n      tags\n      collections(first: 1) {\n        nodes {\n          title\n          handle\n        }\n      }\n      flavor_level: metafield(namespace: "custom", key:"flavor_level") {\n        value\n      }\n      options {\n        name\n        values\n      }\n      selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {\n        ...ProductVariantFragment\n      }\n      media(first: 7) {\n        nodes {\n          ...Media\n        }\n      }\n      variants(first: 1) {\n        nodes {\n          ...ProductVariantFragment\n        }\n      }\n      seo {\n        description\n        title\n      }\n    }\n    shop {\n      name\n      primaryDomain {\n        url\n      }\n      shippingPolicy {\n        handle\n      }\n      refundPolicy {\n        handle\n      }\n      subscriptionPolicy {\n        handle\n      }\n    }\n  }\n  #graphql\n  fragment Media on Media {\n    __typename\n    mediaContentType\n    alt\n    previewImage {\n      url\n    }\n    ... on MediaImage {\n      id\n      image {\n        id\n        url\n        width\n        height\n      }\n    }\n    ... on Video {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on Model3d {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on ExternalVideo {\n      id\n      embedUrl\n      host\n    }\n  }\n\n  #graphql\n  fragment ProductVariantFragment on ProductVariant {\n    id\n    availableForSale\n    selectedOptions {\n      name\n      value\n    }\n    image {\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n  }\n\n': {
     return: ProductQuery;
     variables: ProductQueryVariables;
   };
@@ -4174,15 +3885,15 @@ interface GeneratedQueryTypes {
     return: VariantsQuery;
     variables: VariantsQueryVariables;
   };
-  '#graphql\n  query productRecommendations(\n    $productId: ID!\n    $count: Int\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    recommended: productRecommendations(productId: $productId) {\n      ...CommonProductCard\n    }\n    additional: products(first: $count, sortKey: BEST_SELLING) {\n      nodes {\n        ...CommonProductCard\n      }\n    }\n  }\n  #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    tags\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    reviews_rating_count: metafield(namespace: "reviews", key:"rating_count") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    reviews_rating: metafield(namespace: "reviews", key:"rating") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    outstanding_features: metafield(namespace: "ciseco--product", key:"outstanding_features") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    okendoStarRatingSnippet: metafield(\n\t\t\tnamespace: "okendo"\n\t\t\tkey: "StarRatingSnippet"\n\t\t) {\n\t\t\tvalue\n\t\t}\n  } \n\n': {
+  '#graphql\n  query productRecommendations(\n    $productId: ID!\n    $count: Int\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    recommended: productRecommendations(productId: $productId) {\n      ...CommonProductCard\n    }\n    additional: products(first: $count, sortKey: BEST_SELLING) {\n      nodes {\n        ...CommonProductCard\n      }\n    }\n  }\n  #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    tags\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    flavor_level: metafield(namespace: "custom", key:"flavor_level") {\n      value\n    }\n  } \n\n': {
     return: ProductRecommendationsQuery;
     variables: ProductRecommendationsQueryVariables;
   };
-  '#graphql\n  query AllProducts(\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: $first, last: $last, before: $startCursor, after: $endCursor) {\n      nodes {\n        ...CommonProductCard\n      }\n      pageInfo {\n        hasPreviousPage\n        hasNextPage\n        startCursor\n        endCursor\n      }\n    }\n  }\n  #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    tags\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    reviews_rating_count: metafield(namespace: "reviews", key:"rating_count") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    reviews_rating: metafield(namespace: "reviews", key:"rating") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    outstanding_features: metafield(namespace: "ciseco--product", key:"outstanding_features") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    okendoStarRatingSnippet: metafield(\n\t\t\tnamespace: "okendo"\n\t\t\tkey: "StarRatingSnippet"\n\t\t) {\n\t\t\tvalue\n\t\t}\n  } \n\n': {
+  '#graphql\n  query AllProducts(\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: $first, last: $last, before: $startCursor, after: $endCursor) {\n      nodes {\n        ...CommonProductCard\n      }\n      pageInfo {\n        hasPreviousPage\n        hasNextPage\n        startCursor\n        endCursor\n      }\n    }\n  }\n  #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    tags\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    flavor_level: metafield(namespace: "custom", key:"flavor_level") {\n      value\n    }\n  } \n\n': {
     return: AllProductsQuery;
     variables: AllProductsQueryVariables;
   };
-  '#graphql\n  query PaginatedProductsSearch(\n    $country: CountryCode\n    $endCursor: String\n    $first: Int\n    $language: LanguageCode\n    $last: Int\n    $searchTerm: String!\n    $filters: [ProductFilter!]\n    $reverse: Boolean\n    $startCursor: String\n    $sortKey: SearchSortKeys!\n  ) @inContext(country: $country, language: $language) {\n    search(\n      first: $first,\n      last: $last,\n      before: $startCursor,\n      after: $endCursor,\n      # sortKey: RELEVANCE,\n      types: PRODUCT,\n      query: $searchTerm,\n      productFilters: $filters,\n      sortKey: $sortKey,  \n      reverse: $reverse  \n    ) {\n      productFilters {\n        id\n        label\n        type\n        values {\n          id\n          label\n          count\n          input\n        }\n      }\n      nodes {\n        ... on Product {\n          ...CommonProductCard\n        }\n      }\n      pageInfo {\n        startCursor\n        endCursor\n        hasNextPage\n        hasPreviousPage\n      }\n    }\n  }\n\n  #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    tags\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    reviews_rating_count: metafield(namespace: "reviews", key:"rating_count") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    reviews_rating: metafield(namespace: "reviews", key:"rating") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    outstanding_features: metafield(namespace: "ciseco--product", key:"outstanding_features") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    okendoStarRatingSnippet: metafield(\n\t\t\tnamespace: "okendo"\n\t\t\tkey: "StarRatingSnippet"\n\t\t) {\n\t\t\tvalue\n\t\t}\n  } \n\n\n': {
+  '#graphql\n  query PaginatedProductsSearch(\n    $country: CountryCode\n    $endCursor: String\n    $first: Int\n    $language: LanguageCode\n    $last: Int\n    $searchTerm: String!\n    $filters: [ProductFilter!]\n    $reverse: Boolean\n    $startCursor: String\n    $sortKey: SearchSortKeys!\n  ) @inContext(country: $country, language: $language) {\n    search(\n      first: $first,\n      last: $last,\n      before: $startCursor,\n      after: $endCursor,\n      # sortKey: RELEVANCE,\n      types: PRODUCT,\n      query: $searchTerm,\n      productFilters: $filters,\n      sortKey: $sortKey,  \n      reverse: $reverse  \n    ) {\n      productFilters {\n        id\n        label\n        type\n        values {\n          id\n          label\n          count\n          input\n        }\n      }\n      nodes {\n        ... on Product {\n          ...CommonProductCard\n        }\n      }\n      pageInfo {\n        startCursor\n        endCursor\n        hasNextPage\n        hasPreviousPage\n      }\n    }\n  }\n\n  #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    tags\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    flavor_level: metafield(namespace: "custom", key:"flavor_level") {\n      value\n    }\n  } \n\n\n': {
     return: PaginatedProductsSearchQuery;
     variables: PaginatedProductsSearchQueryVariables;
   };
@@ -4190,15 +3901,11 @@ interface GeneratedQueryTypes {
     return: PaginatedProductsSearchForGetDefaultPriceFilterQuery;
     variables: PaginatedProductsSearchForGetDefaultPriceFilterQueryVariables;
   };
-  '#graphql\n  query ProductsByHandles(\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n    $query: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: $first, last: $last, before: $startCursor, after: $endCursor, query: $query) {\n      nodes {\n        ...CommonProductCard\n      }\n      pageInfo {\n        hasPreviousPage\n        hasNextPage\n        startCursor\n        endCursor\n      }\n    }\n  }\n  #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    tags\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    reviews_rating_count: metafield(namespace: "reviews", key:"rating_count") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    reviews_rating: metafield(namespace: "reviews", key:"rating") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    outstanding_features: metafield(namespace: "ciseco--product", key:"outstanding_features") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    okendoStarRatingSnippet: metafield(\n\t\t\tnamespace: "okendo"\n\t\t\tkey: "StarRatingSnippet"\n\t\t) {\n\t\t\tvalue\n\t\t}\n  } \n\n': {
+  '#graphql\n  query ProductsByHandles(\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n    $query: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: $first, last: $last, before: $startCursor, after: $endCursor, query: $query) {\n      nodes {\n        ...CommonProductCard\n      }\n      pageInfo {\n        hasPreviousPage\n        hasNextPage\n        startCursor\n        endCursor\n      }\n    }\n  }\n  #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    tags\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    flavor_level: metafield(namespace: "custom", key:"flavor_level") {\n      value\n    }\n  } \n\n': {
     return: ProductsByHandlesQuery;
     variables: ProductsByHandlesQueryVariables;
   };
-  '#graphql\n  query sitemaps($urlLimits: Int, $language: LanguageCode)\n  @inContext(language: $language) {\n    products(\n      first: $urlLimits\n      query: "published_status:\'online_store:visible\'"\n    ) {\n      nodes {\n        updatedAt\n        handle\n        onlineStoreUrl\n        title\n        featuredImage {\n          url\n          altText\n        }\n      }\n    }\n    collections(\n      first: $urlLimits\n      query: "published_status:\'online_store:visible\'"\n    ) {\n      nodes {\n        updatedAt\n        handle\n        onlineStoreUrl\n      }\n    }\n    pages(first: $urlLimits, query: "published_status:\'published\'") {\n      nodes {\n        updatedAt\n        handle\n        onlineStoreUrl\n      }\n    }\n  }\n': {
-    return: SitemapsQuery;
-    variables: SitemapsQueryVariables;
-  };
-  '#graphql\n  query RouteContent($handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $filters: [ProductFilter!]\n    $sortKey: ProductCollectionSortKeys!\n    $reverse: Boolean\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n    )\n    @inContext(country: $country, language: $language)\n     {\n    route: metaobject(handle: {type: "ciseco--route", handle: $handle}) {\n      type\n      id\n      title: field(key: "title") {\n        key\n        value\n      }\n      padding_top_px: field(key: "padding_top_px") {\n        type\n        key\n        value\n      }\n      firt_line_on_top: field(key: "firt_line_on_top") {\n        type\n        key\n        value\n      }\n      separation_line_between_sections: field(key: "separation_line_between_sections") {\n        type\n        key\n        value\n      }\n      sections: field(key: "sections") {\n        ...Sections\n      }\n    }\n  }\n  #graphql\n  fragment Sections on MetaobjectField {\n    ... on MetaobjectField {\n      references(first: 20) {\n        nodes {\n          ... on Metaobject {\n            id\n            type\n            ...SectionHero\n            ...SectionHeroSlider\n            ...SectionCollectionsSlider\n            ...SectionProductsSlider\n            ...SectionSteps\n            ...SectionImageWithText\n            ...SectionTabsCollectionsByGroup\n            ...SectionGridProductsAndFilter\n            ...SectionLatestBlog\n            ...SectionClientsSay\n          }\n        }\n      }\n    }\n  }\n  # All section fragments\n  #graphql\n  fragment SectionHero on Metaobject {\n    type\n    hero_item: field(key: "hero_item") {\n      reference {\n          ... on Metaobject {\n            ...HeroItem\n          }\n      }\n    }\n  }\n \n  #graphql\n  fragment SectionHeroSlider on Metaobject {\n    type\n    hero_items: field(key: "hero_items") {\n      references(first: 10) {\n        nodes {\n          ... on Metaobject {\n            ...HeroItem\n          }\n        }\n      }\n    }\n  }\n \n  #graphql\n  fragment SectionCollectionsSlider on Metaobject {\n    type\n    id\n    heading_bold: field(key: "heading_bold") {\n      type\n      key\n      value\n    }\n    heading_light: field(key: "heading_light") {\n      type\n      key\n      value\n    }\n    sub_heading: field(key: "sub_heading") {\n      type\n      key\n      value\n    }\n    button_text: field(key: "button_text") {\n      type\n      key\n      value\n    }\n    collections: field(key: "collections") {\n      references(first: 10) {\n        nodes {\n          ... on Collection {\n            ...CommonCollectionItem\n          }\n        }\n      }\n    }\n  } \n\n  #graphql\n  fragment SectionProductsSlider on Metaobject {\n    type\n    heading_bold: field(key: "heading_bold") {\n      key\n      value\n    }\n    heading_light: field(key: "heading_light") {\n      key\n      value\n    }\n    sub_heading: field(key: "sub_heading") {\n      key\n      value\n    }\n    body: field(key: "body") {\n      key\n      value\n    }\n    style: field(key: "style") {\n      key\n      value\n    }\n\n    collection: field(key: "collection") {\n      type\n      key\n      reference {\n        ... on Collection {\n          id\n          handle\n          title\n          description\n          products(\n            first: 10, \n          ) {\n            nodes {\n              ...CommonProductCard\n            }\n          }\n        }\n      }\n    }\n  }\n\n  #graphql\n  fragment SectionSteps on Metaobject {\n    type\n    title: field(key: "title") {\n      type\n      key\n      value\n    }\n    headings: field(key: "headings") {\n      type\n      key\n      value\n    }\n    labels: field(key: "labels") {\n      type\n      key\n      value\n    }\n    contents: field(key: "contents") {\n      type\n      key\n      value\n    }\n    icons: field(key: "icons") {\n      key\n      type\n      value\n      references(first: 10) {\n        nodes {\n              ...MediaImage\n            }\n        }\n    }\n    style: field(key: "style") {\n      key\n      value\n    }\n  }\n\n  #graphql\n  fragment SectionImageWithText on Metaobject {\n    type\n    title: field(key: "title") {\n      key\n      value\n    }\n    heading: field(key: "heading") {\n      key\n      value\n    }\n    content: field(key: "content") {\n      key\n      value\n    }\n    hide_logo: field(key: "hide_logo") {\n      key\n      value\n    }\n    background_color: field(key: "background_color") {\n      key\n      value\n    }\n    button_1: field(key: "button_1") {\n      ...Link\n    }\n    button_2: field(key: "button_2") {\n      ...Link\n    }\n    image: field(key: "image") {\n      key\n      reference {\n        ... on MediaImage {\n          ...MediaImage\n        }\n      }\n    }\n    features: field(key: "features") {\n      key\n      type\n      value\n    }\n    show_subscribers_input: field(key: "show_subscribers_input") {\n      key\n      value\n    }\n    style: field(key: "style") {\n      key\n      value\n    }\n  }\n\n  #graphql\n  fragment SectionTabsCollectionsByGroup on Metaobject {\n    type\n    heading: field(key: "heading") {\n     type\n     key\n     value\n    }\n    card_style: field(key: "card_style") {\n     type\n     key\n     value\n    }\n    sub_heading: field(key: "sub_heading") {\n     type\n     key\n     value\n    }\n    number_collections_to_show: field(key: "number_collections_to_show") {\n     type\n     key\n     value\n    }\n    background_color: field(key: "background_color") {\n     type\n     key\n     value\n    }\n    collection_groups: field(key: "collection_groups") {\n      references(first: 20) {\n        nodes {\n          ...CollectionGroupItem\n        }\n      }\n    }\n  }\n  #graphql\nfragment CollectionOnGroupItem on Collection {\n    ...CommonCollectionItem\n    products(first: 0) {\n      filters {\n        values {\n          input\n          count\n          label\n        }\n      }\n    }\n  }\n\n  fragment CollectionGroupItem on Metaobject {\n    type\n    id\n    handle\n    title: field(key: "title") {\n     type\n     key\n     value\n    }\n    name: field(key: "name") {\n     type\n     key\n     value\n    }\n    icon_svg: field(key: "icon_svg") {\n     type\n     key\n     value\n    }\n    \n    collections: field(key: "collections") {\n      references(first: 12) {\n        nodes {\n          ... on Collection {\n            ...CollectionOnGroupItem\n          }\n        }\n      }\n    }\n}\n \n  #graphql\n  fragment SectionGridProductsAndFilter on Metaobject {\n    type\n    heading: field(key: "heading") {\n      key\n      value\n    }\n    sub_heading: field(key: "sub_heading") {\n      key\n      value\n    }\n    collection: field(key: "collection") {\n      type\n      key\n      reference {\n\n        ... on Collection {\n          id\n          handle\n          title\n          description\n          sectionGridProductsAndFilterProductsDefaultFilter :products(first: 0, filters : {}) {\n            filters {\n              id\n              label\n              type\n              values {\n                id\n                label\n                count\n                input\n              }\n            }\n          }\n          sectionGridProductsAndFilterProducts :products(\n            first: $first,\n            last: $last,\n            before: $startCursor,\n            after: $endCursor,\n            filters: $filters,\n            sortKey: $sortKey,\n            reverse: $reverse\n          ) {\n            filters {\n              id\n              label\n              type\n              values {\n                id\n                label\n                count\n                input\n              }\n            }\n            nodes {\n              ...CommonProductCard\n            }\n            pageInfo {\n              hasPreviousPage\n              hasNextPage\n              endCursor\n              startCursor\n            }\n          }\n        }\n      }\n    }\n  }\n\n  #graphql\n  fragment SectionLatestBlog on Metaobject {\n    type\n    heading: field(key: "heading") {\n      key\n      value\n    }\n    heading_bold: field(key: "heading_bold") {\n      key\n      value\n    }\n    heading_light: field(key: "heading_light") {\n      key\n      value\n    }\n    background_color: field(key: "background_color") {\n      key\n      value\n    }\n    button_view_all: field(key: "button_view_all") {\n      ...Link\n    }\n\n    number_of_items: field(key: "number_of_items") {\n      key\n      value\n    }\n    blog_slug: field(key: "blog_slug") {\n      key\n      value\n    }\n  }\n\n  #graphql\n  fragment ClientSay on Metaobject {\n    type\n    id\n    handle\n    title: field(key: "title") {\n      type\n      key\n      value\n    }\n    name: field(key: "name") {\n     type\n      key\n      value\n    }\n    stars: field(key: "stars") {\n     type\n      key\n      value\n    }\n    content: field(key: "content") {\n     type\n      key\n      value\n    }\n    image: field(key: "image") {\n      type\n      key\n      reference {\n        ... on MediaImage {\n          image {\n            altText\n            url\n            width\n            height\n          }\n        }\n      }\n    }\n  }\n\n  fragment SectionClientsSay on Metaobject {\n    type\n    heading: field(key: "heading") {\n      key\n      value\n    }\n    sub_heading: field(key: "sub_heading") {\n      key\n      value\n    }\n    clients_say: field(key: "clients_say") {\n      references(first: 10) {\n          nodes {\n            ...on Metaobject {\n              ...ClientSay\n            }\n        }\n       }\n    }\n  }\n\n\n  # All common fragments\n  #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    tags\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    reviews_rating_count: metafield(namespace: "reviews", key:"rating_count") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    reviews_rating: metafield(namespace: "reviews", key:"rating") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    outstanding_features: metafield(namespace: "ciseco--product", key:"outstanding_features") {\n      type\n      id\n      value\n      namespace\n      key\n    }\n    okendoStarRatingSnippet: metafield(\n\t\t\tnamespace: "okendo"\n\t\t\tkey: "StarRatingSnippet"\n\t\t) {\n\t\t\tvalue\n\t\t}\n  } \n\n  #graphql\n  fragment MediaImage on MediaImage {\n    image {\n      altText\n      url\n      width\n      height\n    }\n  }\n\n  #graphql\n  fragment Link on MetaobjectField {\n    ... on MetaobjectField {\n      reference {\n        ...on Metaobject {\n          ...LinkContent\n        }\n      }\n    }\n  }\n\n  fragment LinkContent on Metaobject {\n      href: field(key: "href") {\n        value\n      }\n      target: field(key: "target") {\n        value\n      }\n      text: field(key: "text") {\n        value\n      }\n      icon_svg: field(key: "icon_svg") {\n        value\n      }\n    }\n\n  #graphql\n  fragment CommonCollectionItem on Collection {\n    id\n    title\n    updatedAt\n    description\n    handle\n    image {\n      altText\n      width\n      height\n      url\n    }\n    horizontal_image: metafield(key: "horizontal_image", namespace: "ciseco--collection") {\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            altText\n            height\n            width\n            url\n          }\n        }\n      }\n    }\n    seo {\n      description\n      title\n    }\n  }\n\n  #graphql\n    fragment HeroItem on Metaobject {\n      type\n      heading: field(key: "heading") {\n        value\n      }\n      sub_heading: field(key: "sub_heading") {\n        value\n      }\n      cta_button: field(key: "cta_button") {\n        ...Link\n      }\n      vertical_image: field(key: "vertical_image") {\n        key\n        reference {\n          ... on MediaImage {\n            ...MediaImage\n          }\n        }\n      }\n      horizontal_image: field(key: "horizontal_image") {\n        key\n        reference {\n          ... on MediaImage {\n            ...MediaImage\n          }\n        }\n      }\n  }\n\n\n': {
+  '#graphql\n  query RouteContent($handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $filters: [ProductFilter!]\n    $sortKey: ProductCollectionSortKeys!\n    $reverse: Boolean\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n    )\n    @inContext(country: $country, language: $language)\n     {\n    route: metaobject(handle: {type: "ciseco--route", handle: $handle}) {\n      type\n      id\n      title: field(key: "title") {\n        key\n        value\n      }\n      padding_top_px: field(key: "padding_top_px") {\n        type\n        key\n        value\n      }\n      firt_line_on_top: field(key: "firt_line_on_top") {\n        type\n        key\n        value\n      }\n      separation_line_between_sections: field(key: "separation_line_between_sections") {\n        type\n        key\n        value\n      }\n      sections: field(key: "sections") {\n        ...Sections\n      }\n    }\n  }\n  #graphql\n  fragment Sections on MetaobjectField {\n    ... on MetaobjectField {\n      references(first: 20) {\n        nodes {\n          ... on Metaobject {\n            id\n            type\n            ...SectionHero\n            ...SectionHeroSlider\n            ...SectionCollectionsSlider\n            ...SectionProductsSlider\n            ...SectionSteps\n            ...SectionImageWithText\n            ...SectionTabsCollectionsByGroup\n            ...SectionGridProductsAndFilter\n            ...SectionLatestBlog\n            ...SectionClientsSay\n          }\n        }\n      }\n    }\n  }\n  # All section fragments\n  #graphql\n  fragment SectionHero on Metaobject {\n    type\n    hero_item: field(key: "hero_item") {\n      reference {\n          ... on Metaobject {\n            ...HeroItem\n          }\n      }\n    }\n  }\n \n  #graphql\n  fragment SectionHeroSlider on Metaobject {\n    type\n    hero_items: field(key: "hero_items") {\n      references(first: 10) {\n        nodes {\n          ... on Metaobject {\n            ...HeroItem\n          }\n        }\n      }\n    }\n  }\n \n  #graphql\n  fragment SectionCollectionsSlider on Metaobject {\n    type\n    id\n    heading_bold: field(key: "heading_bold") {\n      type\n      key\n      value\n    }\n    heading_light: field(key: "heading_light") {\n      type\n      key\n      value\n    }\n    sub_heading: field(key: "sub_heading") {\n      type\n      key\n      value\n    }\n    button_text: field(key: "button_text") {\n      type\n      key\n      value\n    }\n    collections: field(key: "collections") {\n      references(first: 10) {\n        nodes {\n          ... on Collection {\n            ...CommonCollectionItem\n          }\n        }\n      }\n    }\n  } \n\n  #graphql\n  fragment SectionProductsSlider on Metaobject {\n    type\n    heading_bold: field(key: "heading_bold") {\n      key\n      value\n    }\n    heading_light: field(key: "heading_light") {\n      key\n      value\n    }\n    sub_heading: field(key: "sub_heading") {\n      key\n      value\n    }\n    body: field(key: "body") {\n      key\n      value\n    }\n    style: field(key: "style") {\n      key\n      value\n    }\n\n    collection: field(key: "collection") {\n      type\n      key\n      reference {\n        ... on Collection {\n          id\n          handle\n          title\n          description\n          products(\n            first: 10, \n          ) {\n            nodes {\n              ...CommonProductCard\n            }\n          }\n        }\n      }\n    }\n  }\n\n  #graphql\n  fragment SectionSteps on Metaobject {\n    type\n    title: field(key: "title") {\n      type\n      key\n      value\n    }\n    headings: field(key: "headings") {\n      type\n      key\n      value\n    }\n    labels: field(key: "labels") {\n      type\n      key\n      value\n    }\n    contents: field(key: "contents") {\n      type\n      key\n      value\n    }\n    icons: field(key: "icons") {\n      key\n      type\n      value\n      references(first: 10) {\n        nodes {\n              ...MediaImage\n            }\n        }\n    }\n    style: field(key: "style") {\n      key\n      value\n    }\n  }\n\n  #graphql\n  fragment SectionImageWithText on Metaobject {\n    type\n    title: field(key: "title") {\n      key\n      value\n    }\n    heading: field(key: "heading") {\n      key\n      value\n    }\n    content: field(key: "content") {\n      key\n      value\n    }\n    hide_logo: field(key: "hide_logo") {\n      key\n      value\n    }\n    background_color: field(key: "background_color") {\n      key\n      value\n    }\n    button_1: field(key: "button_1") {\n      ...Link\n    }\n    button_2: field(key: "button_2") {\n      ...Link\n    }\n    image: field(key: "image") {\n      key\n      reference {\n        ... on MediaImage {\n          ...MediaImage\n        }\n      }\n    }\n    features: field(key: "features") {\n      key\n      type\n      value\n    }\n    show_subscribers_input: field(key: "show_subscribers_input") {\n      key\n      value\n    }\n    style: field(key: "style") {\n      key\n      value\n    }\n  }\n\n  #graphql\n  fragment SectionTabsCollectionsByGroup on Metaobject {\n    type\n    heading: field(key: "heading") {\n     type\n     key\n     value\n    }\n    card_style: field(key: "card_style") {\n     type\n     key\n     value\n    }\n    sub_heading: field(key: "sub_heading") {\n     type\n     key\n     value\n    }\n    number_collections_to_show: field(key: "number_collections_to_show") {\n     type\n     key\n     value\n    }\n    background_color: field(key: "background_color") {\n     type\n     key\n     value\n    }\n    collection_groups: field(key: "collection_groups") {\n      references(first: 20) {\n        nodes {\n          ...CollectionGroupItem\n        }\n      }\n    }\n  }\n  #graphql\nfragment CollectionOnGroupItem on Collection {\n    ...CommonCollectionItem\n    products(first: 0) {\n      filters {\n        values {\n          input\n          count\n          label\n        }\n      }\n    }\n  }\n\n  fragment CollectionGroupItem on Metaobject {\n    type\n    id\n    handle\n    title: field(key: "title") {\n     type\n     key\n     value\n    }\n    name: field(key: "name") {\n     type\n     key\n     value\n    }\n    icon_svg: field(key: "icon_svg") {\n     type\n     key\n     value\n    }\n    \n    collections: field(key: "collections") {\n      references(first: 12) {\n        nodes {\n          ... on Collection {\n            ...CollectionOnGroupItem\n          }\n        }\n      }\n    }\n}\n \n  #graphql\n  fragment SectionGridProductsAndFilter on Metaobject {\n    type\n    heading: field(key: "heading") {\n      key\n      value\n    }\n    sub_heading: field(key: "sub_heading") {\n      key\n      value\n    }\n    collection: field(key: "collection") {\n      type\n      key\n      reference {\n\n        ... on Collection {\n          id\n          handle\n          title\n          description\n          sectionGridProductsAndFilterProductsDefaultFilter :products(first: 0, filters : {}) {\n            filters {\n              id\n              label\n              type\n              values {\n                id\n                label\n                count\n                input\n              }\n            }\n          }\n          sectionGridProductsAndFilterProducts :products(\n            first: $first,\n            last: $last,\n            before: $startCursor,\n            after: $endCursor,\n            filters: $filters,\n            sortKey: $sortKey,\n            reverse: $reverse\n          ) {\n            filters {\n              id\n              label\n              type\n              values {\n                id\n                label\n                count\n                input\n              }\n            }\n            nodes {\n              ...CommonProductCard\n            }\n            pageInfo {\n              hasPreviousPage\n              hasNextPage\n              endCursor\n              startCursor\n            }\n          }\n        }\n      }\n    }\n  }\n\n  #graphql\n  fragment SectionLatestBlog on Metaobject {\n    type\n    heading: field(key: "heading") {\n      key\n      value\n    }\n    heading_bold: field(key: "heading_bold") {\n      key\n      value\n    }\n    heading_light: field(key: "heading_light") {\n      key\n      value\n    }\n    background_color: field(key: "background_color") {\n      key\n      value\n    }\n    button_view_all: field(key: "button_view_all") {\n      ...Link\n    }\n\n    number_of_items: field(key: "number_of_items") {\n      key\n      value\n    }\n    blog_slug: field(key: "blog_slug") {\n      key\n      value\n    }\n  }\n\n  #graphql\n  fragment ClientSay on Metaobject {\n    type\n    id\n    handle\n    title: field(key: "title") {\n      type\n      key\n      value\n    }\n    name: field(key: "name") {\n     type\n      key\n      value\n    }\n    stars: field(key: "stars") {\n     type\n      key\n      value\n    }\n    content: field(key: "content") {\n     type\n      key\n      value\n    }\n    image: field(key: "image") {\n      type\n      key\n      reference {\n        ... on MediaImage {\n          image {\n            altText\n            url\n            width\n            height\n          }\n        }\n      }\n    }\n  }\n\n  fragment SectionClientsSay on Metaobject {\n    type\n    heading: field(key: "heading") {\n      key\n      value\n    }\n    sub_heading: field(key: "sub_heading") {\n      key\n      value\n    }\n    clients_say: field(key: "clients_say") {\n      references(first: 10) {\n          nodes {\n            ...on Metaobject {\n              ...ClientSay\n            }\n        }\n       }\n    }\n  }\n\n\n  # All common fragments\n  #graphql\n  fragment CommonProductCardVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    selectedOptions {\n      name\n      value\n    }\n  }\n\n  fragment CommonProductCard on Product {\n    id\n    title\n    handle\n    publishedAt\n    availableForSale\n    vendor\n    tags\n    options {\n      name\n      values\n    }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images\n    images(first: 4) {\n      edges {\n        node {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        ...CommonProductCardVariant\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    flavor_level: metafield(namespace: "custom", key:"flavor_level") {\n      value\n    }\n  } \n\n  #graphql\n  fragment MediaImage on MediaImage {\n    image {\n      altText\n      url\n      width\n      height\n    }\n  }\n\n  #graphql\n  fragment Link on MetaobjectField {\n    ... on MetaobjectField {\n      reference {\n        ...on Metaobject {\n          ...LinkContent\n        }\n      }\n    }\n  }\n\n  fragment LinkContent on Metaobject {\n      href: field(key: "href") {\n        value\n      }\n      target: field(key: "target") {\n        value\n      }\n      text: field(key: "text") {\n        value\n      }\n      icon_svg: field(key: "icon_svg") {\n        value\n      }\n    }\n\n  #graphql\n  fragment CommonCollectionItem on Collection {\n    id\n    title\n    updatedAt\n    description\n    handle\n    image {\n      altText\n      width\n      height\n      url\n    }\n    horizontal_image: metafield(key: "horizontal_image", namespace: "ciseco--collection") {\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            altText\n            height\n            width\n            url\n          }\n        }\n      }\n    }\n    seo {\n      description\n      title\n    }\n  }\n\n  #graphql\n    fragment HeroItem on Metaobject {\n      type\n      heading: field(key: "heading") {\n        value\n      }\n      sub_heading: field(key: "sub_heading") {\n        value\n      }\n      cta_button: field(key: "cta_button") {\n        ...Link\n      }\n      vertical_image: field(key: "vertical_image") {\n        key\n        reference {\n          ... on MediaImage {\n            ...MediaImage\n          }\n        }\n      }\n      horizontal_image: field(key: "horizontal_image") {\n        key\n        reference {\n          ... on MediaImage {\n            ...MediaImage\n          }\n        }\n      }\n  }\n\n\n': {
     return: RouteContentQuery;
     variables: RouteContentQueryVariables;
   };

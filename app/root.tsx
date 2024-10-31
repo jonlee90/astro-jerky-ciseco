@@ -29,7 +29,6 @@ import {seoPayload} from '~/lib/seo.server';
 import favicon from '@/assets/favicon.ico';
 import styles from './styles/app.css?url';
 import stylesFont from './styles/custom-font.css?url';
-import {DEFAULT_LOCALE} from './lib/utils';
 import rcSliderStyle from 'rc-slider/assets/index.css?url';
 import {COMMON_COLLECTION_ITEM_FRAGMENT} from './data/commonFragments';
 import { motion, AnimatePresence } from "framer-motion";
@@ -37,7 +36,8 @@ import invariant from 'tiny-invariant';
 import { useIsHydrated } from './hooks/useIsHydrated';
 import {GoogleTagManager} from '~/components/GoogleTagManager'
 import { PageLayout } from './components/PageLayout';
-import { useEffect, useState } from 'react';
+
+import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
 
 export type RootLoader = typeof loader;
 
@@ -46,15 +46,18 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
   formMethod,
   currentUrl,
   nextUrl,
-  defaultShouldRevalidate,
 }) => {
   // revalidate when a mutation is performed e.g add to cart, login...
-  if (formMethod && formMethod !== 'GET') return true;
+  if (formMethod && formMethod !== 'GET') {
+    return true;
+  }
 
   // revalidate when manually revalidating via useRevalidator
-  if (currentUrl.toString() === nextUrl.toString()) return true;
+  if (currentUrl.toString() === nextUrl.toString()) {
+    return true;
+  }
 
-  return defaultShouldRevalidate;
+  return false;
 };
 
 
@@ -75,24 +78,10 @@ export async function loader(args: LoaderFunctionArgs) {
    // Await the critical data required to render initial state of the page
    const criticalData = await loadCriticalData(args);
 
-   const {storefront, env} = args.context;
  
    return defer({
      ...deferredData,
-     ...criticalData,
-     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
-     shop: getShopAnalytics({
-       storefront,
-       publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
-     }),
-     consent: {
-       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
-       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
-       withPrivacyBanner: true,
-       // localize the privacy banner
-       country: args.context.storefront.i18n.country,
-       language: args.context.storefront.i18n.language,
-     },
+     ...criticalData
    });
 }
 
@@ -101,7 +90,7 @@ export async function loader(args: LoaderFunctionArgs) {
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
 async function loadCriticalData({request, context}: LoaderFunctionArgs) {
-  const {storefront} = context;
+  const {storefront, env} = context;
   const {language, country} = storefront.i18n;
 
   const [header, layout] = await Promise.all([
@@ -122,6 +111,19 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
   return {
     layout,
     seo,
+    shop: getShopAnalytics({
+      storefront,
+      publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
+    }),
+    consent: {
+      checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
+      storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
+      withPrivacyBanner: true,
+      // localize the privacy banner
+      country: country,
+      language:language,
+    },
+    publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
     selectedLocale: storefront.i18n,
     header
   };
@@ -148,8 +150,7 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
   });
 
   return {
-    isLoggedIn: isLoggedInPromise,
-    isLoggedInPromise,
+    isLoggedIn: customerAccount.isLoggedIn(),
     cart: cart.get(),
     footer,
   };

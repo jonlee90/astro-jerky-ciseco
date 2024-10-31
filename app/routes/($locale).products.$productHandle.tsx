@@ -324,8 +324,9 @@ if(!isHydrated) {
                 compareAtPrice={selectedVariant.compareAtPrice}
               />
 
-              
-            {getProductIcon(tags)} {/* Render the icon based on tags */}
+              <div>
+                {getProductIcon(product)} {/* Render the icon based on tags */}
+              </div>
               {/*  */}
               <hr className=" border-slate-200 dark:border-slate-700 mt-3"></hr>
               {/*  */}
@@ -937,11 +938,8 @@ export const PRODUCT_QUERY = `#graphql
           handle
         }
       }
-      outstanding_features: metafield(namespace: "ciseco--product", key:"outstanding_features") {
-        id
+      flavor_level: metafield(namespace: "custom", key:"flavor_level") {
         value
-        namespace
-        key
       }
       options {
         name

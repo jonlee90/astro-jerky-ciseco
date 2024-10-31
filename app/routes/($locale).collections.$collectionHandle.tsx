@@ -141,22 +141,24 @@ export default function Collection() {
     : currentProducts.length;
 
   // Function to handle scroll event and check when the filter should stick
-  const handleScroll = () => {
-    const filterElement = filterRef.current;
-    if (filterElement) {
-      const filterPosition = filterElement.getBoundingClientRect().top;
-      console.log(filterPosition);
-      if (filterPosition <= 0) {
-        setIsSticky(true);
-      } else {
-        setIsSticky(false);
-      }
+const handleScroll = () => {
+  const filterElement = filterRef.current;
+  if (filterElement) {
+    const filterPosition = filterElement.getBoundingClientRect().top;
+    const shouldStick = filterPosition <= 0;
+
+    // Only update isSticky when there's an actual change
+    if (shouldStick !== isSticky) {
+      setIsSticky(shouldStick);
     }
-  };
+  }
+};
 
   // Add scroll event listener
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
+    // Cleanup on unmount
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [isSticky]);
 
   const filterCategory = categoryData.filter((item) =>
@@ -202,7 +204,7 @@ export default function Collection() {
             />
             */}
 
-            <div ref={filterRef} className={clsx(isSticky ? 'sticky-filter' : '')}>
+            <div ref={filterRef} className={clsx(isSticky ? 'sticky-filter md:relative' : '')}>
               <ProductFilterHiddenScrollBar 
                 onTabChange={onTabChange}
                 filterCategory={filterCategory}

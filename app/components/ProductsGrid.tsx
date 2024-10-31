@@ -3,6 +3,7 @@ import ProductCard from './ProductCard';
 import {getImageLoadingPriority} from '~/lib/const';
 import {CommonProductCardFragment} from 'storefrontapi.generated';
 import { Collection } from '@shopify/hydrogen/storefront-api-types';
+import { motion, useInView, Variants } from 'framer-motion';
 
 export function ProductsGrid({
   nodes,
@@ -28,13 +29,30 @@ export function ProductsGrid({
 
       {nodes?.map((product, i) => {
           return (
-            <ProductCard
-              key={product.id}
-              product={product}
-              loading={getImageLoadingPriority(i)}
-              variantKey={variantKey}
-              collection={collection}
-            />
+            <motion.div
+              key={i}
+              initial={{ 
+                opacity: 0, 
+                y: 200 
+              }}
+              whileInView={{ 
+                opacity: 1,
+                y: 0,
+                transition: {
+                  type: "spring",
+                  bounce: 0.3,
+                  duration: 0.7
+                }
+              }}
+              viewport={{ once: true, amount: 0.1 }}
+            >
+              <ProductCard
+                product={product}
+                loading={getImageLoadingPriority(i)}
+                variantKey={variantKey}
+                collection={collection}
+              />
+            </motion.div>
           );
         })}
     </div>

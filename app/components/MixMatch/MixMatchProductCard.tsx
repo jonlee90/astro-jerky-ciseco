@@ -7,6 +7,7 @@ import { IconAdd } from '../Icon';
 import { isDiscounted, isNewArrival } from '~/lib/utils';
 import { getProductPlaceholder } from '~/lib/placeholders';
 import { motion } from 'framer-motion';
+import { getProductIcon } from '../ProductCard';
 
 interface Product {
   id: string;
@@ -92,6 +93,9 @@ export function MixMatchProductCard({
           >
             {cardProduct.title + ' (' + cardProduct.size + ')'}
           </h2>
+          <div className='text-left'>
+            {getProductIcon(cardProduct)} {/* Render the icon based on tags */}
+          </div>
         </div>
         <div className="grid">
           <div className="flex gap-8 justify-center items-center">

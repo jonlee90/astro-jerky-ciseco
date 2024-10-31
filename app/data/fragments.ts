@@ -47,6 +47,9 @@ export const PRODUCT_MIX_FRAGMENT = `#graphql
         ...Media
       }
     }
+    flavor_level: metafield(namespace: "custom", key:"flavor_level") {
+      value
+    }
     variants(first: 2) {
       nodes {
         id

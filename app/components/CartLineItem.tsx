@@ -23,7 +23,6 @@ export function CartLineItem({
   layout: CartLayout;
   line: CartLine;
 }) {
-console.log(line, "LINE")
   if (!line?.id) return null;
 
   const {id, merchandise, isOptimistic} = line;
@@ -54,7 +53,7 @@ console.log(line, "LINE")
               width={96}
               height={130}
               data={image}
-              className="object-cover object-center w-24 border rounded md:w-28"
+              className="object-cover object-center w-24 md:w-28"
               alt={title}
             />
           </Link>
@@ -73,7 +72,7 @@ console.log(line, "LINE")
             )}
           </span>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 text-r">
             <div className="flex justify-start text-fine">
               <CartLineQuantityAdjust line={line} />
             </div>
