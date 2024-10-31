@@ -18,7 +18,7 @@ export default async function handleRequest(
     },
     defaultSrc: [
       "'self'",
-      'http://localhost:*',
+      ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
       'https://cdn.shopify.com',
       'https://d3hw6dc1ow8pp2.cloudfront.net',
       'https://d3g5hqndtiniji.cloudfront.net',
@@ -47,7 +47,7 @@ export default async function handleRequest(
       'https://*.google-analytics.com',
       'https://*.analytics.google.com',
       'https://*.googletagmanager.com',
-    ],
+    ]
   });
   const body = await renderToReadableStream(
     <NonceProvider>

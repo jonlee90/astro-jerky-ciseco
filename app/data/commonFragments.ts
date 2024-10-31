@@ -150,33 +150,9 @@ export const COMMON_PRODUCT_CARD_FRAGMENT = `#graphql
         currencyCode
       }
     }
-    reviews_rating_count: metafield(namespace: "reviews", key:"rating_count") {
-      type
-      id
+    flavor_level: metafield(namespace: "custom", key:"flavor_level") {
       value
-      namespace
-      key
     }
-    reviews_rating: metafield(namespace: "reviews", key:"rating") {
-      type
-      id
-      value
-      namespace
-      key
-    }
-    outstanding_features: metafield(namespace: "ciseco--product", key:"outstanding_features") {
-      type
-      id
-      value
-      namespace
-      key
-    }
-    okendoStarRatingSnippet: metafield(
-			namespace: "okendo"
-			key: "StarRatingSnippet"
-		) {
-			value
-		}
   } 
 `;
 //

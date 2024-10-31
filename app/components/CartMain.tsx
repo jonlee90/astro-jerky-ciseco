@@ -36,7 +36,7 @@ export function CartMain({
         <FreeShippingProgressBar totalAmount={parseFloat(cart?.cost?.totalAmount?.amount || '0')} />
           <section
             aria-labelledby="cart-contents"
-            className={'border-t px-3 pb-6 sm-max:pt-2 overflow-auto transition mb-[165px]'}
+            className={'border-t px-3 pb-6 pt-2 sm-max:pt-2 overflow-auto transition mb-[165px]'}
           >
             <ul className="grid gap-6 md:gap-10">
               {(cart?.lines?.nodes ?? []).map((line) => (

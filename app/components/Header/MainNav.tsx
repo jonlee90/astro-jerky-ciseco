@@ -1,6 +1,5 @@
 import React, {type FC} from 'react';
 import LangDropdown from './LangDropdown';
-import AvatarDropdown from './AvatarDropdown';
 import TemplatesDropdown from './TemplatesDropdown';
 import Logo from '../Logo';
 import CartBtn from './CartBtn';
@@ -61,7 +60,6 @@ const MainNav: FC<Props> = ({className = '', openCart, isHome, openMenu}) => {
             >
               <MagnifyingGlassIcon />
             </Link>
-            <AvatarDropdown />
             <CartBtn openCart={openCart} />
           </div>
         </div>

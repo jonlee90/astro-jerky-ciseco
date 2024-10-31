@@ -30,7 +30,7 @@ export function MobileHeader() {
         Skip to content
       </a>
       
-      <div className="w-full py-3">
+      <div className="py-3 xs:ml-5 sm:!ml-10">
         <picture>
           <img src={'/images/header-text-1-orange.png'} alt="ASTRO" />
         </picture>
@@ -40,7 +40,7 @@ export function MobileHeader() {
         <Logo className="w-16" aria-hidden="true" />
       </div>
 
-      <div className="w-full py-3">
+      <div className="py-3 xs:mr-5 sm:!mr-10">
         <picture>
           <img src={'/images/header-text-2-orange.png'} alt="JERKY" />
         </picture>

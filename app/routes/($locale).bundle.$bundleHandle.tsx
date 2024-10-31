@@ -20,6 +20,7 @@ interface ProductVariant {
   description: string;
   media: any[];
   size: string;
+  flavor_level: string;
 }
 
 interface LoaderData {
@@ -58,7 +59,8 @@ export async function loader({ params, context: { storefront } }: { params: any,
         tags: product.tags,
         description: product.description,
         media: flattenConnection(product.media),
-        size
+        size,
+        flavor_level: product.flavor_level
       }
       if (size === '3oz') {
         bigProducts.push(prod);

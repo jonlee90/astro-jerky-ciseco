@@ -57,11 +57,10 @@ export function SectionSteps(props: SectionStepsFragment) {
             {icons?.nodes?.map((item, index) => (
               <div
                 key={`${index}`}
-                className="relative flex flex-col items-center mx-auto"
+                className="relative flex flex-col items-center mx-auto w-full"
               >
                 <div className="mb-4 sm:mb-10 mx-auto w-full">
                   <Image
-                    className="rounded-3xl"
                     data={item.image || {}}
                     sizes="350px"
                   />
