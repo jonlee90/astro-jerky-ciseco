@@ -175,7 +175,10 @@ export type CartLineFragment = Pick<
     image?: StorefrontAPI.Maybe<
       Pick<StorefrontAPI.Image, 'id' | 'url' | 'altText' | 'width' | 'height'>
     >;
-    product: Pick<StorefrontAPI.Product, 'handle' | 'title' | 'id' | 'vendor'>;
+    product: Pick<
+      StorefrontAPI.Product,
+      'handle' | 'title' | 'id' | 'vendor' | 'tags'
+    >;
     selectedOptions: Array<
       Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
     >;
@@ -227,7 +230,7 @@ export type CartApiQueryFragment = Pick<
           >;
           product: Pick<
             StorefrontAPI.Product,
-            'handle' | 'title' | 'id' | 'vendor'
+            'handle' | 'title' | 'id' | 'vendor' | 'tags'
           >;
           selectedOptions: Array<
             Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
@@ -291,7 +294,7 @@ export type MediaFragment =
 
 export type ProductMixFragment = Pick<
   StorefrontAPI.Product,
-  'id' | 'title' | 'tags' | 'description'
+  'id' | 'title' | 'tags' | 'handle' | 'description'
 > & {
   media: {
     nodes: Array<
@@ -337,6 +340,20 @@ export type ProductMixFragment = Pick<
     >;
   };
   flavor_level?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+  small_bag_quantity?: StorefrontAPI.Maybe<
+    Pick<StorefrontAPI.Metafield, 'value'>
+  >;
+  big_bag_quantity?: StorefrontAPI.Maybe<
+    Pick<StorefrontAPI.Metafield, 'value'>
+  >;
+  priceRange: {
+    minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+    maxVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+  };
+  compareAtPriceRange: {
+    minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+    maxVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+  };
   variants: {
     nodes: Array<
       Pick<StorefrontAPI.ProductVariant, 'id' | 'availableForSale'> & {
@@ -647,7 +664,10 @@ export type MixAllProductsQueryVariables = StorefrontAPI.Exact<{
 export type MixAllProductsQuery = {
   products: {
     nodes: Array<
-      Pick<StorefrontAPI.Product, 'id' | 'title' | 'tags' | 'description'> & {
+      Pick<
+        StorefrontAPI.Product,
+        'id' | 'title' | 'tags' | 'handle' | 'description'
+      > & {
         media: {
           nodes: Array<
             | ({__typename: 'ExternalVideo'} & Pick<
@@ -696,6 +716,32 @@ export type MixAllProductsQuery = {
         flavor_level?: StorefrontAPI.Maybe<
           Pick<StorefrontAPI.Metafield, 'value'>
         >;
+        small_bag_quantity?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.Metafield, 'value'>
+        >;
+        big_bag_quantity?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.Metafield, 'value'>
+        >;
+        priceRange: {
+          minVariantPrice: Pick<
+            StorefrontAPI.MoneyV2,
+            'amount' | 'currencyCode'
+          >;
+          maxVariantPrice: Pick<
+            StorefrontAPI.MoneyV2,
+            'amount' | 'currencyCode'
+          >;
+        };
+        compareAtPriceRange: {
+          minVariantPrice: Pick<
+            StorefrontAPI.MoneyV2,
+            'amount' | 'currencyCode'
+          >;
+          maxVariantPrice: Pick<
+            StorefrontAPI.MoneyV2,
+            'amount' | 'currencyCode'
+          >;
+        };
         variants: {
           nodes: Array<
             Pick<StorefrontAPI.ProductVariant, 'id' | 'availableForSale'> & {
@@ -3841,7 +3887,7 @@ interface GeneratedQueryTypes {
     return: ApiAllProductsQuery;
     variables: ApiAllProductsQueryVariables;
   };
-  '#graphql\n  query MixAllProducts(\n    $count: Int\n    $country: CountryCode\n    $language: LanguageCode\n    $sortKey: ProductSortKeys\n    $query: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: $count, sortKey: $sortKey, query: $query) {\n      nodes {\n        ...ProductMix\n      }\n    }\n  }\n  #graphql\n  fragment ProductMix on Product {\n    id\n    title\n    tags\n    description\n    media(first: 7) {\n      nodes {\n        ...Media\n      }\n    }\n    flavor_level: metafield(namespace: "custom", key:"flavor_level") {\n      value\n    }\n    variants(first: 2) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n      }\n    }\n  }\n  #graphql\n  fragment Media on Media {\n    __typename\n    mediaContentType\n    alt\n    previewImage {\n      url\n    }\n    ... on MediaImage {\n      id\n      image {\n        id\n        url\n        width\n        height\n      }\n    }\n    ... on Video {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on Model3d {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on ExternalVideo {\n      id\n      embedUrl\n      host\n    }\n  }\n\n\n': {
+  '#graphql\n  query MixAllProducts(\n    $count: Int\n    $country: CountryCode\n    $language: LanguageCode\n    $sortKey: ProductSortKeys\n    $query: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: $count, sortKey: $sortKey, query: $query) {\n      nodes {\n        ...ProductMix\n      }\n    }\n  }\n  #graphql\n  fragment ProductMix on Product {\n    id\n    title\n    tags\n    handle\n    description\n    media(first: 7) {\n      nodes {\n        ...Media\n      }\n    }\n    flavor_level: metafield(namespace: "custom", key:"flavor_level") {\n      value\n    }\n    small_bag_quantity: metafield(namespace: "custom", key:"small_bag_quantity") {\n      value\n    }\n    big_bag_quantity: metafield(namespace: "custom", key:"big_bag_quantity") {\n      value\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    variants(first: 2) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n      }\n    }\n  }\n  #graphql\n  fragment Media on Media {\n    __typename\n    mediaContentType\n    alt\n    previewImage {\n      url\n    }\n    ... on MediaImage {\n      id\n      image {\n        id\n        url\n        width\n        height\n      }\n    }\n    ... on Video {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on Model3d {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on ExternalVideo {\n      id\n      embedUrl\n      host\n    }\n  }\n\n\n': {
     return: MixAllProductsQuery;
     variables: MixAllProductsQueryVariables;
   };

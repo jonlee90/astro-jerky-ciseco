@@ -24,8 +24,7 @@ export function CartLineItem({
   line: CartLine;
 }) {
   if (!line?.id) return null;
-
-  const {id, merchandise, isOptimistic} = line;
+  const {id, merchandise, isOptimistic, attributes} = line;
   const {product, title, image, selectedOptions} = merchandise;
 
   const {close: closeCartAside} = useAside();
@@ -34,7 +33,7 @@ export function CartLineItem({
   }
   const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
 
-
+  const isBundle = product.tags.includes('bundle');
   return (
     <li
       key={id}
@@ -43,7 +42,7 @@ export function CartLineItem({
       <div className="flex-shrink min-w-24">
         {image && (
           <Link 
-            to={lineItemUrl}  
+            to={isBundle ? '/bundle/' + product.handle :lineItemUrl}  
             onClick={() => {
               if(layout === 'aside') {
                 closeCartAside();
@@ -64,14 +63,14 @@ export function CartLineItem({
         <div className="grid gap-2">
           <span className='text-lead'>
             {product?.handle ? (
-              <Link to={lineItemUrl}  onClick={closeCartAside}>
-                {product?.title + ' (' + title + ')' || ''}
+              <Link to={isBundle ? '/bundle/' + product.handle :lineItemUrl}  onClick={closeCartAside}>
+                {product?.title + (isBundle ? '' : ' (' + title + ')')}
               </Link>
             ) : (
               <span>{product?.title + ' (' + title + ')' || ''}</span>
             )}
           </span>
-
+          <CartLineAttributes attributes={attributes} />
           <div className="flex items-center gap-2 text-r">
             <div className="flex justify-start text-fine">
               <CartLineQuantityAdjust line={line} />
@@ -137,6 +136,17 @@ function CartLineQuantityAdjust({ line }: {line: CartLine}) {
   );
 }
 
+function CartLineAttributes({ attributes }: {attributes: CartLine['attributes']}) {
+  return (
+    <div className='text-xs'>
+      {attributes.map((attribute, index) => (
+        <div key={index}>
+          {attribute.key}: {attribute.value}
+        </div>
+      ))}
+    </div>
+  );
+}
 /**
  * A button that removes a line item from the cart. It is disabled
  * when the line item is new, and the server hasn't yet responded

@@ -1,22 +1,59 @@
 import React from 'react';
 import { Link } from '~/components/Link';
-import { Money, useMoney } from '@shopify/hydrogen';
+import { flattenConnection, Money, useMoney } from '@shopify/hydrogen';
 import clsx from 'clsx';
 import { Card, CardHeader, CardBody } from "@material-tailwind/react";
-import { BundlePacks } from '~/data/bundleData';
 import { motion } from 'framer-motion';
 import PageHeader from '~/components/PageHeader';
 import { MoneyV2 } from '@shopify/hydrogen/storefront-api-types';
+import { json, useLoaderData } from '@remix-run/react';
+import { ProductMixFragment } from 'storefrontapi.generated';
+import { PRODUCT_MIX_FRAGMENT } from '~/data/fragments';
 
-interface BundlePack {
+// Type Definitions
+interface ProductVariant {
   id: string;
+  availableForSale: boolean;
+  image: any;
+  handle: string;
+  quantity: number;
   title: string;
+  tags: string[];
   description: string;
+  media: any[];
+  size: string;
+  flavor_level: string;
   price: string;
-  msrp: string;
+  compareAtPrice: string;
+}
+
+interface LoaderData {
+  bundleProducts: ProductMixFragment[];
+}
+
+export async function loader({ context: { storefront } }: { context: any }) {
+  const { products } = await storefront.query(API_ALL_PRODUCTS_QUERY, {
+    variables: {
+      count: 12,
+      query: 'tag:bundle',
+      sortKey: "PRICE",
+      country: storefront.i18n.country,
+      language: storefront.i18n.language,
+    },
+    cache: storefront.CacheLong(),
+  });
+
+  const flattenedProducts = flattenConnection(products);
+
+  
+
+  return json({
+    bundleProducts: flattenedProducts
+  });
 }
 
 export default function AllBundle() {
+  const { bundleProducts } = useLoaderData<LoaderData>();
   return (
     <div
       className={clsx(
@@ -33,12 +70,12 @@ export default function AllBundle() {
           hasBreadcrumb={false}
         />
         <div  data-test="product-grid" className="sm-only:p-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid gap-6 border-black">
-          {BundlePacks.map((pack) => (
+          {bundleProducts.map(({id, title, handle, description, priceRange, compareAtPriceRange}) => (
             <Link 
-              key={pack.id} 
-              to={`/bundle/${pack.id}`} 
+              key={id} 
+              to={`/bundle/${handle}`} 
               prefetch="intent" 
-              state={{ pack: pack.id }}
+              state={{ pack: handle }}
             >
               <motion.div 
                 whileHover={{ scale: 1.02 }}
@@ -54,16 +91,16 @@ export default function AllBundle() {
                   </CardHeader>
                   <CardBody className="grid grid-cols-1 gap-2 p-4">
                     <span className="">
-                      {pack.title}
+                      {title}
                     </span>
                     <span className="opacity-70">
-                      {pack.description} of Premium Jerky
+                      {description}
                     </span>
                     <span className="flex gap-4 text-lead">
-                      <Money withoutTrailingZeros data={{ amount: pack.price, currencyCode: 'USD' }} className="text-red-600" />
+                      <Money withoutTrailingZeros data={{ amount: priceRange.minVariantPrice.amount, currencyCode: 'USD' }} className="text-red-600" />
                       <CompareAtPrice
                         className="opacity-50"
-                        data={{ amount: pack.msrp, currencyCode: 'USD' }}
+                        data={{ amount: compareAtPriceRange.minVariantPrice.amount, currencyCode: 'USD' }}
                       />
                     </span>
                   </CardBody>
@@ -95,3 +132,19 @@ function CompareAtPrice({ data, className }: CompareAtPriceProps) {
     </span>
   );
 }
+const API_ALL_PRODUCTS_QUERY = `#graphql
+  query MixAllProducts(
+    $count: Int
+    $country: CountryCode
+    $language: LanguageCode
+    $sortKey: ProductSortKeys
+    $query: String
+  ) @inContext(country: $country, language: $language) {
+    products(first: $count, sortKey: $sortKey, query: $query) {
+      nodes {
+        ...ProductMix
+      }
+    }
+  }
+  ${PRODUCT_MIX_FRAGMENT}
+`;

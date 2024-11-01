@@ -23,13 +23,21 @@ interface Product {
 }
 
 interface BundlePack {
-  id: number;
+  id: string;
+  availableForSale: boolean;
+  image: any;
+  handle: string;
+  quantity: number;
   title: string;
+  tags: string[];
   description: string;
-  bigQuantity: number;
-  smallQuantity: number;
+  media: any[];
+  size: string;
+  flavor_level: string;
   price: string;
-  msrp: string;
+  compareAtPrice: string;
+  small_bag_quantity: any;
+  big_bag_quantity: any;
 }
 
 interface MixMatchProductCardProps {
@@ -52,8 +60,8 @@ export function MixMatchProductCard({
   currentBundle,
 }: MixMatchProductCardProps) {
   const cardProduct = product || getProductPlaceholder();
-  const { bigQuantity, smallQuantity } = currentBundle;
-  const currentQuantity = isSmall ? smallQuantity : bigQuantity;
+  const { big_bag_quantity, small_bag_quantity } = currentBundle;
+  const currentQuantity = isSmall ? small_bag_quantity : big_bag_quantity;
   const productsArr = isSmall ? smallBags : bigBags;
   const { image } = cardProduct;
   const { quantity } = productsArr.find((item) => item.id === cardProduct.id) || { quantity: 0 };
@@ -71,7 +79,6 @@ export function MixMatchProductCard({
     whileTap: { scale: 0.95 },
     onClick: () => clickButton(cardProduct, true, isSmall)
   } : { className: "cursor-not-allowed opacity-50" };
-
   return (
     <motion.div className={clsx('flex flex-col gap-2 w-40 md:w-52', { 'cursor-not-allowed opacity-50': !isAvailable })}>
       <div className='grid gap-2'>

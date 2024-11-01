@@ -41,6 +41,7 @@ export const PRODUCT_MIX_FRAGMENT = `#graphql
     id
     title
     tags
+    handle
     description
     media(first: 7) {
       nodes {
@@ -49,6 +50,32 @@ export const PRODUCT_MIX_FRAGMENT = `#graphql
     }
     flavor_level: metafield(namespace: "custom", key:"flavor_level") {
       value
+    }
+    small_bag_quantity: metafield(namespace: "custom", key:"small_bag_quantity") {
+      value
+    }
+    big_bag_quantity: metafield(namespace: "custom", key:"big_bag_quantity") {
+      value
+    }
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    compareAtPriceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
     }
     variants(first: 2) {
       nodes {

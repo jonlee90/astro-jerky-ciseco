@@ -16,13 +16,21 @@ interface Product {
 }
 
 interface BundlePack {
-  id: number;
+  id: string;
+  availableForSale: boolean;
+  image: any;
+  handle: string;
+  quantity: number;
   title: string;
+  tags: string[];
   description: string;
-  bigQuantity: number;
-  smallQuantity: number;
+  media: any[];
+  size: string;
+  flavor_level: string;
   price: string;
-  msrp: string;
+  compareAtPrice: string;
+  small_bag_quantity: any;
+  big_bag_quantity: any;
 }
 
 interface MixMatchProductsSliderProps {

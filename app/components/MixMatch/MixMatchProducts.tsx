@@ -5,6 +5,7 @@ import { SwitchTab } from '../Tabs';
 import { AddToCartButton } from '../AddToCartButton';
 import { MixMatchProductsSlider } from './MixMatchProductsSlider';
 import { useAside } from '../Aside';
+import { ProductVariant } from '@shopify/hydrogen/storefront-api-types';
 const progressClass: { [key: number]: string } = {
   1: `grid-cols-1`,
   2: `grid-cols-2`,
@@ -34,46 +35,71 @@ interface Product {
 }
 
 interface BundlePack {
-  id: number;
+  id: string;
+  availableForSale: boolean;
+  image: any;
+  handle: string;
+  quantity: number;
   title: string;
+  tags: string[];
   description: string;
-  bigQuantity: number;
-  smallQuantity: number;
+  media: any[];
+  size: string;
+  flavor_level: string;
   price: string;
-  msrp: string;
+  compareAtPrice: string;
+  small_bag_quantity: any;
+  big_bag_quantity: any;
 }
 
 interface MixMatchProductsProps {
   bigProducts: Product[];
   smallProducts: Product[];
   currentBundle: BundlePack;
+  bundleProducts: Product[];
 }
 
-export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: MixMatchProductsProps) {
+export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bundleProducts }: MixMatchProductsProps) {
   const {open} = useAside();
   const [bigBags, setBigBags] = useState(bigProducts);
   const [smallBags, setSmallBags] = useState(smallProducts);
-  const { bigQuantity, smallQuantity } = currentBundle;
-  const [isSmall, setIsSmall] = useState(bigQuantity === 0);
+  const { big_bag_quantity, small_bag_quantity, id} = currentBundle;
+  const [isSmall, setIsSmall] = useState(big_bag_quantity === 0);
   const sumBigBags = bigBags.reduce((acc, o) => acc + o.quantity, 0);
   const sumSmallBags = smallBags.reduce((acc, o) => acc + o.quantity, 0);
-  const done = bigQuantity === sumBigBags && smallQuantity === sumSmallBags;
+  const done = big_bag_quantity === sumBigBags && small_bag_quantity === sumSmallBags;
 
-  const cartArray: { merchandiseId: string; quantity: number; selectedVariant: Product}[] = [];
+
+  const cartArray: { merchandiseId: string; quantity: number; selectedVariant: Product; attributes: Array<Object>}[] = [];
   if (done) {
+    /*
     bigBags.forEach((item) => {
       cartArray.push({
         merchandiseId: item.id,
         quantity: item.quantity,
         selectedVariant: item,
+        attributes: []
       });
     });
     smallBags.forEach((item) => {
       cartArray.push({
         merchandiseId: item.id,
         quantity: item.quantity,
-        selectedVariant: item
+        selectedVariant: item,
+        attributes: []
       });
+    });
+*/
+    const allBags = [...smallBags, ...bigBags];
+    cartArray.push({
+      merchandiseId: id,
+      quantity: 1,
+      selectedVariant: bundleProducts[0],
+      attributes: allBags.filter((item) => item.quantity) // Filter out items with no quantity
+                          .map((item) => ({
+                            key: item.title + ' ' + item.size,
+                            value: item.quantity.toString()
+                          }))
     });
   }
 
@@ -103,7 +129,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: 
   ];
 
   const onToggle = (value: string) => {
-    if (bigQuantity && smallQuantity) {
+    if (big_bag_quantity && small_bag_quantity) {
       setIsSmall(value === 'small');
     }
   };
@@ -121,7 +147,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: 
           })
         );
       } else {
-        if (sumBigBags + 1 === bigQuantity && smallQuantity) {
+        if (sumBigBags + 1 === big_bag_quantity && small_bag_quantity) {
           setIsSmall(true);
         }
         setBigBags(
@@ -189,7 +215,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: 
               <h1 className="text-xl font-bold">{currentBundle.title}</h1>
             </div>
             <div className="text-right self-center justify-end flex-row-reverse">
-              {done || !(bigQuantity && smallQuantity) ? (
+              {done || !(big_bag_quantity && small_bag_quantity) ? (
                 <AddToCartButton
                   className="px-4 py-3 rounded-full w-[188px] relative bg-logo-red text-white text-sm shadow-2xl transition duration-200 border-red-500 disabled:opacity-50 disabled:pointer-events-none"
                   lines={cartArray}
@@ -198,7 +224,6 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: 
                   analytics={analyticsData}
                   disabled={!done}
                   onClick={() => open('cart')}
-                  discountCode={currentBundle.title.replace(/\s+/g, '').toUpperCase()}
                 >
                   Add To Cart
                 </AddToCartButton>
@@ -208,21 +233,21 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle }: 
             </div>
           </div>
           <div className="text-left text-xs">
-            {bigQuantity ? (
+            {big_bag_quantity ? (
               <div className={isSmall ? 'opacity-70' : 'font-bold'}>
-                <motion.div>{bigQuantity} BIG BAGS</motion.div>
-                <motion.div className={clsx('grid h-2 rounded-full', progressClass[bigQuantity])}>
-                  {getProgressBar(bigQuantity, sumBigBags)}
+                <motion.div>{big_bag_quantity} BIG BAGS</motion.div>
+                <motion.div className={clsx('grid h-2 rounded-full', progressClass[big_bag_quantity])}>
+                  {getProgressBar(big_bag_quantity, sumBigBags)}
                 </motion.div>
               </div>
             ) : (
               ''
             )}
-            {smallQuantity ? (
+            {small_bag_quantity ? (
               <div className={`${isSmall ? 'font-bold' : 'opacity-70'} mt-2`}>
-                <motion.div>{smallQuantity} SMALL BAGS</motion.div>
-                <motion.div className={clsx('grid h-2 rounded-full', progressClass[smallQuantity])}>
-                  {getProgressBar(smallQuantity, sumSmallBags)}
+                <motion.div>{small_bag_quantity} SMALL BAGS</motion.div>
+                <motion.div className={clsx('grid h-2 rounded-full', progressClass[small_bag_quantity])}>
+                  {getProgressBar(small_bag_quantity, sumSmallBags)}
                 </motion.div>
               </div>
             ) : (

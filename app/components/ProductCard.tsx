@@ -235,7 +235,7 @@ const ProductCard: FC<ProductCardProps> = ({
     </motion.div>
   );
 }
-export const getProductIcon = (product: CommonProductCardFragment) => {
+export const getProductIcon = (product: any) => {
   const { tags, flavor_level } = product;
   const count = flavor_level ? parseInt(flavor_level.value) : 1;
 
