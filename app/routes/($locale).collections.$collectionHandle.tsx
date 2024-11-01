@@ -145,8 +145,7 @@ const handleScroll = () => {
   const filterElement = filterRef.current;
   if (filterElement) {
     const filterPosition = filterElement.getBoundingClientRect().top;
-    const shouldStick = filterPosition <= 0;
-
+    const shouldStick = filterPosition <= 10;
     // Only update isSticky when there's an actual change
     if (shouldStick !== isSticky) {
       setIsSticky(shouldStick);
