@@ -217,7 +217,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
             <div className="text-right self-center justify-end flex-row-reverse">
               {done || !(big_bag_quantity && small_bag_quantity) ? (
                 <AddToCartButton
-                  className="px-4 py-3 rounded-full w-[188px] relative bg-logo-red text-white text-sm shadow-2xl transition duration-200 border-red-500 disabled:opacity-50 disabled:pointer-events-none"
+                  className="px-4 py-3 rounded-full w-[188px] relative bg-neutral-900 text-slate-50 shadow-xl hover:bg-neutral-700 transition duration-200 disabled:opacity-50 disabled:pointer-events-none"
                   lines={cartArray}
                   variant="primary"
                   data-test="add-to-cart"

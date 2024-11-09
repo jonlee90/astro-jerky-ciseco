@@ -198,7 +198,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 export default function Product() {
   const {product, recommended, variants, routePromise} =
     useLoaderData<typeof loader>();
-  const {media, outstanding_features, descriptionHtml, tags} =
+  const {media, descriptionHtml, tags} =
     product;
 
   const { pathname, state } = useLocation();
@@ -273,9 +273,10 @@ if(!isHydrated) {
         initial={{ y: '100%' }}
         animate={isButtonVisible ? { y: 0 } : { y: '100%' }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
-        className={`fixed w-full lg:hidden z-50 ${isBackButton ? 'bottom-0' : 'bottom-16'}`}
+        className={`fixed w-full lg:hidden z-20 ${isBackButton ? 'bottom-0' : 'bottom-16'}`}
       >
         <BottomAddToCartButton
+          isBackButton={isBackButton}
           selectedVariant={selectedVariant}
           currentQuantity={currentQuantity}
           selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
@@ -331,29 +332,6 @@ if(!isHydrated) {
               <hr className=" border-slate-200 dark:border-slate-700 mt-3"></hr>
               {/*  */}
 
-              {!!outstanding_features?.value && (
-                <div>
-                  <h2 className="text-sm font-medium text-gray-900">
-                    Outstanding Features
-                  </h2>
-                  <div>
-                    <div
-                      className="prose prose-sm mt-4 text-gray-600"
-                      dangerouslySetInnerHTML={{
-                        __html: `<ul role="list"> 
-                    ${(
-                      JSON.parse(
-                        outstanding_features?.value || '[]',
-                      ) as string[]
-                    )
-                      .map((item: string) => `<li>${item}</li>`)
-                      .join('')} 
-                    </ul>`,
-                      }}
-                    ></div>
-                  </div>
-                </div>
-              )}
 
           {/* Product description */}
               {!!descriptionHtml && (
@@ -617,7 +595,7 @@ export function ProductForm({currentQuantity, selectedVariantPrice, selectedVari
     </>
   );
 }
-const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity }) => {
+const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity, isBackButton }) => {
   const variantsByQuantity = [];
   const isOutOfStock = !selectedVariant?.availableForSale;
 
@@ -701,6 +679,7 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
             </div>
           </div>
           <AddToCartButton3d
+            isBackButton={isBackButton}
             selectedVariant={selectedVariant}
             currentQuantity={currentQuantity}
             selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
@@ -712,7 +691,7 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
   );
 };
 
-const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, isSmallButton = true}) => {
+const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, isSmallButton = true, isBackButton}) => {
   const {open} = useAside();
   return (
     <div className='col-span-4 ml-2 flex flex-row'>
@@ -741,7 +720,7 @@ const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPri
             <IconArrowRight className='absolute right-3 top-1/2 transform -translate-y-1/2' />
           </AddToCartButton>
         </div>
-        <CartCount opacity={1} className={`cursor-pointer ml-2 h-14 w-14`} />
+        {isBackButton && (<CartCount opacity={1} className={`cursor-pointer ml-2 h-14 w-14`} />)}
     </div>
   )
 }

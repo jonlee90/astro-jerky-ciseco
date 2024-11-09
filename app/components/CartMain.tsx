@@ -68,9 +68,9 @@ export function CartEmpty({
           started!
         </p>
         <div>
-          <ButtonPrimary onClick={close} className='bg-black'>
+          <ButtonPrimary onClick={close} className='!bg-neutral-900 hover:!bg-neutral-700 focus:!ring-neutral-600'>
             <ArrowLeftIcon className="w-4 h-4 me-2" />
-            <span>Continue shopping</span>
+            <span>Continue Shopping</span>
           </ButtonPrimary>
         </div>
       </section>

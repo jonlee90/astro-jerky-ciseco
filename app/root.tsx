@@ -24,6 +24,7 @@ import {
   Analytics,
   getShopAnalytics,
   Script,
+  useLoadScript,
 } from '@shopify/hydrogen';
 import {seoPayload} from '~/lib/seo.server';
 import favicon from '@/assets/favicon.ico';
@@ -77,7 +78,6 @@ export async function loader(args: LoaderFunctionArgs) {
   const deferredData = loadDeferredData(args);
    // Await the critical data required to render initial state of the page
    const criticalData = await loadCriticalData(args);
-
  
    return defer({
      ...deferredData,
@@ -136,7 +136,6 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
  */
 function loadDeferredData({context}: LoaderFunctionArgs) {
   const {cart, customerAccount, storefront} = context;
-  const isLoggedInPromise = customerAccount.isLoggedIn();
   const {language, country} = storefront.i18n;
 
  
@@ -181,19 +180,17 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
         <Meta />
         <Links />
-        {isHydrated && (
-          <Script dangerouslySetInnerHTML={{
+        <Script 
+          dangerouslySetInnerHTML={{
           __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
                       new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                       j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                       'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                      })(window,document,'script','dataLayer','GTM-5BP4M9R5');`,
-          }} />
-        )}
+                      })(window,document,'script','dataLayer','GTM-5BP4M9R5');`
+          }}></Script>
         
       </head>
       <body className="bg-white">
-        {isHydrated && (
           <noscript>
             <iframe 
               src="https://www.googletagmanager.com/ns.html?id=GTM-5BP4M9R5"
@@ -205,7 +202,6 @@ export function Layout({children}: {children?: React.ReactNode}) {
               }}>
             </iframe>
           </noscript>
-        )}
         <AnimatePresence>
           {isLoading  && (
               <motion.div
@@ -238,11 +234,11 @@ export function Layout({children}: {children?: React.ReactNode}) {
               >
                 {children}
               </PageLayout>
-              <GoogleTagManager />
             </Analytics.Provider>
         ) : (
           children
         )}
+         <GoogleTagManager />
        
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />

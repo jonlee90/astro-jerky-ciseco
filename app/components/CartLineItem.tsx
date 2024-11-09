@@ -32,8 +32,7 @@ export function CartLineItem({
     return;
   }
   const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
-
-  const isBundle = product.tags.includes('bundle');
+  const isBundle = product.tags && product.tags.includes('bundle');
   return (
     <li
       key={id}
@@ -70,7 +69,7 @@ export function CartLineItem({
               <span>{product?.title + ' (' + title + ')' || ''}</span>
             )}
           </span>
-          <CartLineAttributes attributes={attributes} />
+          {attributes && <CartLineAttributes attributes={attributes} />}
           <div className="flex items-center gap-2 text-r">
             <div className="flex justify-start text-fine">
               <CartLineQuantityAdjust line={line} />

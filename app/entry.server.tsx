@@ -16,7 +16,7 @@ export default async function handleRequest(
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
-    defaultSrc: [
+    scriptSrc: [
       "'self'",
       ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
       'https://cdn.shopify.com',

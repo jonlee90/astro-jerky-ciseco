@@ -33,7 +33,7 @@ const Footer: React.FC<FooterProps> = ({
     return (
       <div key={index + menu.id} className="text-sm">
         <NavLink key={index} to={getUrlAndCheckIfExternal(menu.url, publicStoreDomain, primaryDomainUrl)}  prefetch="intent">
-          <h2 className="font-semibold  text-white">
+          <h2 className="font-semibold  hover:text-neutral-700">
             {menu.title}
           </h2>
         </NavLink>
@@ -41,7 +41,7 @@ const Footer: React.FC<FooterProps> = ({
           {menu.items?.map((item: ChildEnhancedMenuItem, i) => (
             <li
               key={`${i + item.id}`}
-              className="text-neutral-600 hover:text-black "
+              className="text-neutral-600"
             >
               {item.to.startsWith('http') ? (
                 <a
@@ -96,7 +96,7 @@ const Footer: React.FC<FooterProps> = ({
               </Await>
             </Suspense>
           </div>
-          <p className="mt-8 text-[13px] leading-5 text-white md:order-1 md:mt-0">
+          <p className="mt-8 text-[13px] leading-5 md:order-1 md:mt-0">
             © {new Date().getFullYear()} Astro Fresh Jerky, LLC. All rights reserved.
           </p>
         </div>

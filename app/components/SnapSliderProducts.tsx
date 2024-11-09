@@ -53,7 +53,7 @@ export function SnapSliderProducts(props: Props) {
       </Heading>
       <div
         ref={sliderRef}
-        className="relative flex snap-x snap-mandatory overflow-x-auto -mx-2 lg:-mx-4 hiddenScrollbar"
+        className="relative flex snap-x snap-mandatory overflow-x-auto -mx-2 lg:-mx-4 hiddenScrollbar py-2"
       >
         {isSkeleton &&
           [1, 1, 1, 1, 1].map((_, index) => (

@@ -6,6 +6,7 @@ import ButtonSecondary from './Button/ButtonSecondary';
 import {type FilterValue} from '@shopify/hydrogen/storefront-api-types';
 import clsx from 'clsx';
 import ButtonPrimary from './Button/ButtonPrimary';
+import { IconArrowCircleRight } from './Icon';
 
 export type TMyCommonCollectionItem = Partial<CommonCollectionItemFragment> & {
   products?: {
@@ -76,11 +77,12 @@ const CollectionItem: FC<CollectionItemProps> = ({
                */}
             <div className="mt-auto">
               <ButtonPrimary
-                sizeClass="py-3 px-4 sm:py-3.5 sm:px-6"
-                fontSize="text-sm font-medium"
-                className="uppercase  min-w-24"
+                sizeClass="py-2 px-3"
+                fontSize="text-xs font-medium"
+                className="uppercase  min-w-24 !text-black !font-bold gap-2"
               >
                 {button_text || 'Enter'}
+                <IconArrowCircleRight className='!size-6 md:!size-8' />
               </ButtonPrimary>
             </div>
           </div>

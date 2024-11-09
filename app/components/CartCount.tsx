@@ -11,6 +11,7 @@ import { useMediaQuery } from 'react-responsive';
 interface CartCountProps {
   className?: string;
   opacity: number;
+  showCart?: boolean;
 }
 
 interface BadgeProps {
@@ -52,7 +53,7 @@ const Badge: React.FC<BadgeProps> = ({ openCart, count }) => {
   );
 };
 
-export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity}) => {
+export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity, showCart = false}) => {
   const rootData = useRouteLoaderData<RootLoader>('root');
 //  const isMobile = useMediaQuery({maxWidth: 767});
   const {open} = useAside();
@@ -62,7 +63,7 @@ export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity}) 
         <Await resolve={rootData?.cart}>
           {(cart) => (
             <motion.div
-              className={`rounded-full bg-neutral-900 ${className} ${!cart?.totalQuantity && 'hidden'}`}
+              className={`rounded-full bg-neutral-900 ${className} ${cart?.totalQuantity || showCart ? '' : 'hidden'}`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95, opacity: 0.6 }}
               onClick={() => open('cart')}

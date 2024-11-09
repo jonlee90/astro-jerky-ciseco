@@ -239,9 +239,9 @@ const SectionItem = ({section}: {section: HeroItemFragment}) => {
 
             {!!item.cta_button?.href && (
               <ButtonPrimary
-                className="nc-SectionHeroSliderItem__button text-white uppercase mb-12 gap-3"
+                className="nc-SectionHeroSliderItem__button !text-black uppercase mb-12 gap-3"
                 sizeClass="py-3 px-6 sm:py-4"
-                fontSize="text-sm sm:text-base xl:text-lg font-medium"
+                fontSize="text-sm sm:text-base xl:text-lg font-bold"
                 href={item.cta_button?.href?.value}
                 targetBlank={item.cta_button?.target?.value === 'true'}
               >

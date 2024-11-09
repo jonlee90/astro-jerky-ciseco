@@ -53,6 +53,14 @@ export function Header({
       {/*
         <MainNav openMenu={openMenu} openCart={openCart} isHome={isHome} />
       */}
+      
+      <DesktopHeader 
+            isLoggedIn={isLoggedIn}
+            headerMenu={headerMenu}
+            publicStoreDomain={publicStoreDomain}
+            primaryDomainUrl={primaryDomainUrl}
+          />
+      <MobileHeader />
       {isBackButton ?
         <>
           {/*<motion.button
@@ -72,20 +80,11 @@ export function Header({
         </>
       :
       (isHydrated && (
-        <>
-          <DesktopHeader 
-            isLoggedIn={isLoggedIn}
-            headerMenu={headerMenu}
-            publicStoreDomain={publicStoreDomain}
-            primaryDomainUrl={primaryDomainUrl}
-          />
-          <MobileHeader />
-          <NavMobileBottom 
-            opacity={opacity} 
-            isLoggedIn={isLoggedIn}
-            cart={cart}
-          />
-        </>
+        <NavMobileBottom 
+          opacity={opacity} 
+          isLoggedIn={isLoggedIn}
+          cart={cart}
+        />
       ))
       }
     </>

@@ -75,4 +75,10 @@ export default defineConfig({
     // withtout inlining assets as base64:
     assetsInlineLimit: 0,
   },
+  server: {
+    watch: {
+      usePolling: true,
+    },
+    hmr: true,
+  }
 });
