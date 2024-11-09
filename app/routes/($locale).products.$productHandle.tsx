@@ -204,19 +204,13 @@ export default function Product() {
   const { pathname, state } = useLocation();
   const isBackButton = pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true);
 
+  const [showBottomAddToCartButton, setShowBottomAddToCartButton] = useState(false);
+  const addToCartButtonRef = useRef<HTMLDivElement>(null); 
+
   const [currentQuantity, setCurrentQuantity] = useState(3);
   const selectedVariant = useOptimisticVariant(product.selectedVariant, variants);
-  const [isButtonVisible, setIsButtonVisible] = useState(false);
-  const prevScrollY = useRef<number>(0);
-  const { y } = useWindowScroll();
   const isHydrated = useIsHydrated();
-  
-  const location = useLocation(); // Get the current location
 
-  // Reset isButtonVisible when the route changes
-  useEffect(() => {
-    setIsButtonVisible(false);
-  }, [location]);
 
   let variantPrice = parseFloat(selectedVariant.price.amount) * currentQuantity;
   let discountAmount = 0;
@@ -242,21 +236,24 @@ export default function Product() {
   };
 
   
-  const isOnSale =
-    selectedVariantPrice?.amount &&
-    selectedVariantCompareAtPrice?.amount &&
-    selectedVariantPrice?.amount < selectedVariantCompareAtPrice?.amount;
-
-  
-    useEffect(() => {
-
-      if(y > 150 && !isButtonVisible) {
-        setIsButtonVisible(true);
+  const handleScroll = () => {
+    const addToCartButtonElement = addToCartButtonRef.current;
+    if (addToCartButtonElement) {
+      const addToCartButtonPosition = addToCartButtonElement.getBoundingClientRect().top;
+      const shouldShow = addToCartButtonPosition <= 10;
+      // Only update isSticky when there's an actual change
+      if (shouldShow !== showBottomAddToCartButton) {
+        setShowBottomAddToCartButton(shouldShow);
       }
-
-      
-      prevScrollY.current = y;
-    }, [y, isButtonVisible]);
+    }
+  };
+  
+    // Add scroll event listener
+    useEffect(() => {
+      window.addEventListener('scroll', handleScroll);
+      // Cleanup on unmount
+      return () => window.removeEventListener('scroll', handleScroll);
+    }, [showBottomAddToCartButton]);
 
 if(!isHydrated) {
   return null;
@@ -271,7 +268,7 @@ if(!isHydrated) {
      
       <motion.div
         initial={{ y: '100%' }}
-        animate={isButtonVisible ? { y: 0 } : { y: '100%' }}
+        animate={showBottomAddToCartButton ? { y: 0, opacity: 1 } : { y: '100%', opacity: 0 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
         className={`fixed w-full lg:hidden z-20 ${isBackButton ? 'bottom-0' : 'bottom-16'}`}
       >
@@ -303,6 +300,7 @@ if(!isHydrated) {
           {/* Product Details */}
           <div className="w-full lg:w-[45%] pt-10 lg:pt-0 lg:pl-7 xl:pl-9 2xl:pl-10">
             <div className="sticky top-10 grid gap-7 2xl:gap-8">
+              
               <Suspense fallback={<></>}>
                 <Await
                   errorElement="There was a problem loading related products"
@@ -310,6 +308,7 @@ if(!isHydrated) {
                 >
                   {(resp) => (
                     <ProductForm
+                      addToCartButtonRef={addToCartButtonRef}
                       currentQuantity={currentQuantity}
                       selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
                       selectedVariantPrice={selectedVariantPrice}
@@ -319,18 +318,7 @@ if(!isHydrated) {
                 </Await>
               </Suspense>
                 
-              <Prices
-                contentClass="!text-2xl font-semibold"
-                price={selectedVariant.price}
-                compareAtPrice={selectedVariant.compareAtPrice}
-              />
 
-              <div>
-                {getProductIcon(product)} {/* Render the icon based on tags */}
-              </div>
-              {/*  */}
-              <hr className=" border-slate-200 dark:border-slate-700 mt-3"></hr>
-              {/*  */}
 
 
           {/* Product description */}
@@ -476,7 +464,7 @@ if(!isHydrated) {
   );
 }
 
-export function ProductForm({currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity }) {
+export function ProductForm({currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity, addToCartButtonRef }) {
 
   const {product} = useLoaderData<typeof loader>();
 
@@ -548,9 +536,19 @@ export function ProductForm({currentQuantity, selectedVariantPrice, selectedVari
         </h1>
       </div>
 
-      <div className='hidden lg:grid gap-7 2xl:gap-8'>
+      
+      <Prices
+        contentClass="!text-2xl font-semibold"
+        price={selectedVariant.price}
+        compareAtPrice={selectedVariant.compareAtPrice}
+      />
+
+      <div>
+        {getProductIcon(product)} {/* Render the icon based on tags */}
+      </div>
+
+      <div className='grid gap-7 2xl:gap-8'>
         
-        <hr className=" border-slate-200 dark:border-slate-700 mt-3"></hr>
         <div className="grid grid-cols-3 items-center gap-1 mb-4 xs:gap-3">
           {
             variantsByQuantity.map(({quantity, title}) => (
@@ -575,7 +573,9 @@ export function ProductForm({currentQuantity, selectedVariantPrice, selectedVari
                 <span className="ms-2">Sold out</span>
               </ButtonSecondary>
             ) : (
-              <div className="grid items-stretch gap-4">
+              <div 
+                ref={addToCartButtonRef}
+                className="grid items-stretch gap-4">
                 <AddToCartButton3d
                     isSmallButton={false}
                     selectedVariant={selectedVariant}
@@ -694,7 +694,7 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
 const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, isSmallButton = true, isBackButton}) => {
   const {open} = useAside();
   return (
-    <div className='col-span-4 ml-2 flex flex-row'>
+    <div className='col-span-4 flex flex-row'>
         <div className={`text-sm border-black border w-full`}>
           <AddToCartButton
             lines={[
@@ -724,104 +724,6 @@ const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPri
     </div>
   )
 }
-
-const BottomAddToCartButtons = ({ selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity }) => {
-  const variantsByQuantity = [];
-  const isOutOfStock = !selectedVariant?.availableForSale;
-  
-  const {open} = useAside();
-  const [opacity, setOpacity] = useState<number>(1);
-  const prevScrollY = useRef<number>(0);
-  const { y } = useWindowScroll();
-  useEffect(() => {
-    if (y > prevScrollY.current && y > 150) {
-      setOpacity(0.3);
-    } else {
-      setOpacity(1);
-    }
-    prevScrollY.current = y;
-  }, [y]);
-
-  for (let i = 1; i < 4; i++) {
-    const quantity = i > 1 ? 3 * (i - 1) : i;
-    variantsByQuantity.push({
-      quantity: quantity,
-      title: quantity + ' BAG' + (i > 1 ? 'S' : ''),
-      icon_svg: ''
-    });
-  }
-
-  if (!selectedVariant) {
-    return null;
-  }
-
-  return (
-    <div 
-      className='fixed bottom-0 w-full z-50 grid lg:grid-cols-2 '
-    >
-      {isOutOfStock ? (
-        <ButtonSecondary disabled>
-          <NoSymbolIcon className="w-5 h-5" />
-          <span className="ms-2">Sold out</span>
-        </ButtonSecondary>
-      ) : (
-        <>
-          <Nav
-            className="bg-white w-full justify-end"
-            containerClassName="relative flex justify-center w-full text-sm md:text-base border-black border-y"
-            opacity={opacity}
-          >
-            {variantsByQuantity.map((item, index) => (
-              <div className='basis-1/3 lg:border-r border-black' key={index}>
-                <NavItem
-                  isActive={item.quantity === currentQuantity}
-                  onClick={() => setCurrentQuantity(item.quantity)}
-                  className={`w-full h-11 lg:h-16 ${item.quantity !== currentQuantity ?  'hover:bg-slate-200' : '' }`}
-                  radius='rounded-none'
-                >
-                  <div className="flex items-center justify-center space-x-1.5 sm:space-x-2.5 text-sm">
-                    {item.icon_svg && (
-                      <span
-                        className="inline-block *:w-full *:h-full w-4 h-4 sm:w-5 sm:h-5"
-                        dangerouslySetInnerHTML={{ __html: item.icon_svg }}
-                      ></span>
-                    )}
-                    <span>{item.title}</span>
-                  </div>
-                </NavItem>
-              </div>
-            ))}
-          </Nav>
-          <div className='w-full bg-logo-yellow p-5 hover:bg-primary-500  border-color-logo border-y'>
-            <AddToCartButton
-              lines={[
-                {
-                  merchandiseId: selectedVariant.id,
-                  quantity: currentQuantity,
-                  selectedVariant: selectedVariant
-                },
-              ]}
-              className="w-full flex-1"
-              data-test="add-to-cart"
-              onClick={() => open('cart')}
-            >
-              <span className="flex items-center justify-center gap-2 uppercase font-bold">
-                <span>Add to Cart - </span>
-                <Prices
-                  contentClass="inline"
-                  price={selectedVariantPrice}
-                  compareAtPrice={selectedVariantCompareAtPrice}
-                  compareAtPriceClass={'text-slate-600'}
-                />
-              </span>
-            </AddToCartButton>
-          </div>
-        </>
-      )}
-    </div>
-  );
-};
-
 
 const SocialSharing = ({selectedVariant}: {selectedVariant: any}) => {
   const location = useLocation();
