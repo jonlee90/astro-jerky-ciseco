@@ -53,7 +53,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
     >
       {activeItemIndex >= 0 && (
         <hr
-          className="absolute top-0 h-1 w-[13%] bg-primary-600 transition-all duration-300 ease-in-out"
+          className="absolute top-0 h-[5px] w-[13%] bg-primary-600 transition-all duration-300 ease-in-out"
           style={{ left: `${activeItemIndex * 20 + 3.5}%` }}
         />
       )}

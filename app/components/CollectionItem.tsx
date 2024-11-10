@@ -39,13 +39,7 @@ const CollectionItem: FC<CollectionItemProps> = ({
       to={'/collections/' + handle}
       className={clsx(`block w-full`, className)}
       onClick={onClick}
-    ><div className="max-w-[18rem] mx-auto">
-          <h2
-            className="text-lg lg:text-2xl  font-semibold mt-0.5 sm:mt-2 p-1 opacity-80 rounded-2xl text-center"
-           >
-            {productTitle} 
-          </h2>
-         </div>
+    >
       <div className={`relative w-full aspect-w-16 ${image ? 'aspect-h-16' : 'aspect-h-12 sm:aspect-h-9'} rounded-2xl overflow-hidden bg-slate-100 group`}>
         {hImage && (
           <Image
@@ -75,19 +69,15 @@ const CollectionItem: FC<CollectionItemProps> = ({
                 )}
               </div>
                */}
-            <div className="mt-auto">
-              <ButtonPrimary
-                sizeClass="py-2 px-3"
-                fontSize="text-xs font-medium"
-                className="uppercase  min-w-24 !text-black !font-bold gap-2"
-              >
-                {button_text || 'Enter'}
-                <IconArrowCircleRight className='!size-6 md:!size-8' />
-              </ButtonPrimary>
-            </div>
           </div>
         </div>
       </div>
+      <h2
+        className="text-lg lg:text-2xl  font-semibold mt-0.5 sm:mt-2 p-1 opacity-80 rounded-2xl"
+        >
+        {productTitle} 
+      </h2>
+
     </Link>
   );
 };

@@ -42,7 +42,7 @@ export function SnapSliderProducts(props: Props) {
   return (
     <div className={`nc-SectionSliderProductCard ` + className}>
       <Heading
-        className={'mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 '}
+        className={'mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 px-4'}
         fontClass={headingFontClass}
         rightDescText={heading_light}
         hasNextPrev
@@ -60,7 +60,7 @@ export function SnapSliderProducts(props: Props) {
             <div
               key={index}
               className={clsx(
-                `mySnapItem snap-start shrink-0 px-2 lg:px-4`,
+                `mySnapItem snap-start shrink-0 px-5`,
                 cardStyle !== '2'
                   ? 'w-[17rem] lg:w-80 xl:w-[25%]'
                   : 'w-full sm:w-96 lg:w-[50%] xl:w-[33.33%]', // card style 2 large
@@ -75,7 +75,7 @@ export function SnapSliderProducts(props: Props) {
             <div
               key={item.id}
               className={clsx(
-                `mySnapItem snap-start shrink-0 px-2 lg:px-4`,
+                `mySnapItem snap-start shrink-0 px-5`,
                 cardStyle !== '2'
                   ? 'w-[17rem] lg:w-80 xl:w-[25%]'
                   : 'w-full sm:w-96 lg:w-[50%] xl:w-[33.33%]', // card style 2 large

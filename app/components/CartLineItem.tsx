@@ -7,6 +7,7 @@ import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import { IconRemove } from './Icon';
 import Prices from './Prices';
 import type {CartLayout} from '~/components/CartMain';
+import clsx from 'clsx';
 
 type CartLine = OptimisticCartLine<CartApiQueryFragment>;
 
@@ -24,7 +25,7 @@ export function CartLineItem({
   line: CartLine;
 }) {
   if (!line?.id) return null;
-  const {id, merchandise, isOptimistic, attributes} = line;
+  const {id, merchandise, isOptimistic, attributes, cost, quantity} = line;
   const {product, title, image, selectedOptions} = merchandise;
 
   const {close: closeCartAside} = useAside();
@@ -33,6 +34,11 @@ export function CartLineItem({
   }
   const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
   const isBundle = product.tags && product.tags.includes('bundle');
+
+  
+  const originalAmount = parseFloat(cost?.amountPerQuantity?.amount || '0') * quantity;
+  const totalAmount = parseFloat(cost?.totalAmount?.amount || '0');
+  const onSale = totalAmount < originalAmount;
   return (
     <li
       key={id}
@@ -78,7 +84,7 @@ export function CartLineItem({
           </div>
         </div>
         <span>
-          <CartLinePrice line={line} as="span" />
+          <CartLinePrice line={line} as="span" contentClass={clsx(onSale && '!text-red-600', 'py-1 px-2 md:py-1.5 md:px-2.5')} />
           {(<CartLinePrice contentClass='inline-block line-through opacity-50 py-1 px-2 md:py-1.5 md:px-2.5 !text-base justify-end' priceType='compareAt' line={line} as="span" />)}
         </span>
       </div>

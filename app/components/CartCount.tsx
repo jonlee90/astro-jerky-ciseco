@@ -63,16 +63,20 @@ export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity, s
         <Await resolve={rootData?.cart}>
           {(cart) => (
             <motion.div
-              className={`rounded-full bg-neutral-900 ${className} ${cart?.totalQuantity || showCart ? '' : 'hidden'}`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95, opacity: 0.6 }}
+              className={`border-black border rounded-full size-14  ${className} ${cart?.totalQuantity || showCart ? '' : 'hidden'}`}
               onClick={() => open('cart')}
               style={{opacity}}
             >
-              <Badge
-                openCart={() => open('cart')}
-                count={cart?.totalQuantity || 0}
-              />
+              <motion.div
+                className={`rounded-full bg-neutral-900`}
+                whileTap={{ x: 0, y: 0 }}
+                animate={{ x: -3, y: -3 }}
+              >
+                <Badge
+                  openCart={() => open('cart')}
+                  count={cart?.totalQuantity || 0}
+                />
+              </motion.div>
             </motion.div>
           )}
         </Await>

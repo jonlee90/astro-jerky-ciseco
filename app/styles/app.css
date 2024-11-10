@@ -202,7 +202,7 @@ shop-pay-button {
 
   .swimlane {
     /* @apply grid w-full snap-x snap-mandatory scroll-px-6 grid-flow-col justify-start gap-4 overflow-x-scroll px-6 pb-4; */
-    @apply grid w-full snap-x snap-mandatory scroll-px-6 grid-flow-col justify-start gap-4 overflow-x-scroll;
+    @apply grid w-full snap-x snap-mandatory scroll-px-6 grid-flow-col justify-start gap-8 overflow-x-scroll;
   }
 
   [type='checkbox']:checked {
@@ -705,7 +705,6 @@ shop-pay-button {
   width: 100%;
 }
 .variant-button {
-  background-color: white;
   border: 2px solid black;
   border-radius: 30px;
   box-shadow: black 4px 4px 0 0;
@@ -732,6 +731,7 @@ shop-pay-button {
   background-position: left;
   transition: transform .05s, box-shadow .05s;
 }
+
 
 .add-to-cart-button {
   background-color: white;
@@ -795,7 +795,7 @@ a.disabled {
 .sticky-filter {
   position: sticky;
   top: 0;
-  z-index: 100; /* Adjust if you need the filter to stay above other content */
+  z-index: 99; /* Adjust if you need the filter to stay above other content */
 }
 
 .pdp-container {

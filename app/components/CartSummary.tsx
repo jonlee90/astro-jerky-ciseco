@@ -18,16 +18,27 @@ export function CartSummary({cart}: CartSummaryProps) {
     discountCodes,
     checkoutUrl
   } = cart;
-
+    console.log(cart, 'cart');
    // Calculate the total amount from amountPerQuantity
-   const cartTotal = lines?.nodes ? lines.nodes.reduce((total, {cost: lineCost, quantity}) => {
-    return total  + (lineCost?.compareAtAmountPerQuantity ? (parseFloat(lineCost?.compareAtAmountPerQuantity.amount) * quantity) : 0);
-}, 0) : 0;
+   const cartTotal = lines?.nodes
+   ? lines.nodes.reduce((total, { cost: lineCost, quantity }) => {
+       return total + (lineCost?.compareAtAmountPerQuantity ? (parseFloat(lineCost.compareAtAmountPerQuantity.amount) * quantity) : 0);
+     }, 0)
+   : 0;
 
-  const saleAmount = parseFloat(cost?.subtotalAmount?.amount || '0') - parseFloat(cost?.totalAmount?.amount || '0');
-  const onSale = cartTotal > parseFloat(cost?.subtotalAmount?.amount || '0');
+   const shippingPrice = 9;
+
+   const subtotalAmount = parseFloat(cost?.subtotalAmount?.amount || '0');
+   const totalAmount = parseFloat(cost?.totalAmount?.amount || '0');
+   const saleAmount = subtotalAmount >= totalAmount ? subtotalAmount - totalAmount : (Math.round((subtotalAmount + shippingPrice) * 100)/100) - totalAmount;
+   const onSale = cartTotal > subtotalAmount;
+   
   const comparePriceObj = {
     amount: (Math.round(cartTotal * 100) / 100).toFixed(2),
+    currencyCode: cost?.subtotalAmount?.currencyCode,
+  };
+  const subTotalObj = {
+    amount: (subtotalAmount - saleAmount).toFixed(2),
     currencyCode: cost?.subtotalAmount?.currencyCode,
   };
   return (
@@ -40,7 +51,7 @@ export function CartSummary({cart}: CartSummaryProps) {
           <div className="flex items-center justify-between">
             <span >Rewards</span>
             <span  data-test="subtotal">
-              {cost?.subtotalAmount?.amount ? (
+              {saleAmount  ? (
                 <Money data={{ currencyCode: cost?.subtotalAmount?.currencyCode, amount: '-' + saleAmount.toString() }} />
               ) : (
                 '-'
@@ -51,9 +62,9 @@ export function CartSummary({cart}: CartSummaryProps) {
         <div className="flex items-center justify-between font-bold">
           <span>Subtotal</span>
           <span data-test="subtotal">
-            {cost?.totalAmount?.amount ? (
+            {subtotalAmount ? (
               <>
-                <Money data={cost?.totalAmount} className={`inline-block ${comparePriceObj && onSale && 'text-red-600'}`} />
+                <Money data={subTotalObj} className={`inline-block ${comparePriceObj && onSale && 'text-red-600'}`} />
                 {comparePriceObj && onSale && <Money withoutTrailingZeros data={comparePriceObj} className="inline-block line-through opacity-50 ml-1" />}
               </>
             ) : (

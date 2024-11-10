@@ -54,8 +54,8 @@ export function MixMatchProductsSlider({
 }: MixMatchProductsSliderProps) {
   return (
     <div className='mb-10'>
-      <h2 className='text-xl md:text-2xl font-semibold'>{title}</h2>
-      <div className="swimlane hiddenScroll gap-12 md:pb-8 md:scroll-px-8 lg:scroll-px-12 pt-4 text-center">
+      <h2 className='text-xl md:text-2xl font-semibold px-5'>{title}</h2>
+      <div className="swimlane hiddenScroll  md:pb-8 md:scroll-px-8 lg:scroll-px-12 pt-4 text-center px-5">
         {products.map((product, i) => (
           <MixMatchProductCard
             key={i}

@@ -406,7 +406,7 @@ if(!isHydrated) {
                 <>
                   <SnapSliderProducts
                     heading_bold={'YOU MIGHT ALSO LIKE'}
-                    products={products.nodes}
+                    products={products.nodes.filter(node => !node.tags.includes('bundle'))}
                     className=""
                     headingFontClass="text-2xl font-semibold"
                   />
@@ -691,10 +691,10 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
   );
 };
 
-const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, isSmallButton = true, isBackButton}) => {
+const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, isSmallButton = true, isBackButton = true}) => {
   const {open} = useAside();
   return (
-    <div className='col-span-4 flex flex-row'>
+    <div className='col-span-4 flex flex-row gap-3'>
         <div className={`text-sm border-black border w-full`}>
           <AddToCartButton
             lines={[
@@ -720,7 +720,7 @@ const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPri
             <IconArrowRight className='absolute right-3 top-1/2 transform -translate-y-1/2' />
           </AddToCartButton>
         </div>
-        {isBackButton && (<CartCount opacity={1} className={`cursor-pointer ml-2 h-14 w-14`} />)}
+        {isBackButton && (<CartCount opacity={1} className={`cursor-pointer size-14 md:hidden`} />)}
     </div>
   )
 }

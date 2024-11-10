@@ -15,6 +15,7 @@ export function SectionProductsSlider(props: SectionProductsSliderFragment) {
         products={products?.nodes}
         cardStyle={style?.value as '1' | '2'}
         isSkeleton={!collection}
+        className={'w-full mx-auto'}
       />
     </section>
   );
