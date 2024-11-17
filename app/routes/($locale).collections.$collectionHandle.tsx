@@ -120,7 +120,7 @@ export default function Collection() {
 
   const noResults = !collection.products.nodes.length;
   const [isSmall, setIsSmall] = useState(false);
-  const [currentProducts, setCurrentProducts] = useState(flattenConnection(collection.products));
+  const [currentProducts, setCurrentProducts] = useState(() => flattenConnection(collection.products));
   const products = flattenConnection(collection.products);
 
   const [isSticky, setIsSticky] = useState(false); // State to manage sticky behavior
@@ -152,6 +152,10 @@ const handleScroll = () => {
     }
   }
 };
+  // Update currentProducts whenever collection.products changes
+  useEffect(() => {
+    setCurrentProducts(flattenConnection(collection.products));
+  }, [collection.products]);
 
   // Add scroll event listener
   useEffect(() => {
@@ -163,6 +167,7 @@ const handleScroll = () => {
   const filterCategory = categoryData.filter((item) =>
     item.value === 'all' ? true : products.some((product) => product.tags.includes(item.value)) 
   );
+
   return (
     <div
       className={clsx(
