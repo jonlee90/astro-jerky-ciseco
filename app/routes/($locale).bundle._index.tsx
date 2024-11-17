@@ -1,14 +1,19 @@
-import React from 'react';
+import {
+  json,
+  type LoaderFunctionArgs,
+  type MetaArgs,
+} from '@shopify/remix-oxygen';
 import { Link } from '~/components/Link';
-import { flattenConnection, Money, useMoney } from '@shopify/hydrogen';
+import { flattenConnection, Money, useMoney, getSeoMeta } from '@shopify/hydrogen';
 import clsx from 'clsx';
 import { Card, CardHeader, CardBody } from "@material-tailwind/react";
 import { motion } from 'framer-motion';
 import PageHeader from '~/components/PageHeader';
 import { MoneyV2 } from '@shopify/hydrogen/storefront-api-types';
-import { json, useLoaderData } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 import { ProductMixFragment } from 'storefrontapi.generated';
 import { PRODUCT_MIX_FRAGMENT } from '~/data/fragments';
+import {seoPayload} from '~/lib/seo.server';
 
 // Type Definitions
 interface ProductVariant {
@@ -31,7 +36,7 @@ interface LoaderData {
   bundleProducts: ProductMixFragment[];
 }
 
-export async function loader({ context: { storefront } }: { context: any }) {
+export async function loader({ request, context: { storefront } }: LoaderFunctionArgs) {
   const { products } = await storefront.query(API_ALL_PRODUCTS_QUERY, {
     variables: {
       count: 12,
@@ -43,14 +48,22 @@ export async function loader({ context: { storefront } }: { context: any }) {
     cache: storefront.CacheLong(),
   });
 
-  const flattenedProducts = flattenConnection(products);
+  const bundleProducts = flattenConnection(products);
 
-  
+  const seo = seoPayload.bundle({
+    bundleProducts,
+    url: request.url,
+  });
 
   return json({
-    bundleProducts: flattenedProducts
+    bundleProducts
   });
 }
+
+export const meta = ({matches}: MetaArgs<typeof loader>) => {
+  return getSeoMeta(...matches.map((match) => (match.data as any).seo));
+};
+
 
 export default function AllBundle() {
   const { bundleProducts } = useLoaderData<LoaderData>();

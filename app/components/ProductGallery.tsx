@@ -77,7 +77,7 @@ export function ProductGallery({
         <Transition show={isOpenModal} as={'div'}>
           <Dialog
             as="div"
-            className="fixed inset-0 z-50 overflow-y-auto"
+            className="fixed inset-0 z-100 overflow-y-auto"
             onClose={closeModal}
           >
             <>

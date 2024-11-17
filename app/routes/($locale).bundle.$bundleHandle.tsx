@@ -35,7 +35,7 @@ export async function loader({ params, context: { storefront } }: { params: any,
   const { bundleHandle } = params;
   const { products } = await storefront.query(API_ALL_PRODUCTS_QUERY, {
     variables: {
-      count: 12,
+      count: 20,
       sortKey: "BEST_SELLING",
       country: storefront.i18n.country,
       language: storefront.i18n.language,
@@ -51,6 +51,9 @@ export async function loader({ params, context: { storefront } }: { params: any,
   flattenedProducts.map((product: any) => {
     flattenConnection(product.variants).map((variant: any) => {
       const size = variant.selectedOptions[0].value;
+      if(product.title == 'Buffalo Chicken Wing Jerky') {
+        console.log(size, product)
+      }
       const prod: ProductVariant = {
         id: variant.id,
         availableForSale: variant.availableForSale,

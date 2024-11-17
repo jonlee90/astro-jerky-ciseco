@@ -90,27 +90,27 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 const categoryData = [
   {
     label: "All Flavors",
-    value: "all"
+    value: "all",
   },
   {
     label: "Spicy",
     value: "hot-spicy",
-    icon: IconSpicy
+    icon: IconSpicy,
   },
   {
     label: "BBQ",
     value: "bbq",
-    icon: IconBbq
+    icon: IconBbq,
   },
   {
     label: "Chicken",
-    value: "chicken",
-    icon: IconChicken
+    value: "chicken-jerky",
+    icon: IconChicken,
   },
   {
     label: "Pepppered",
     value: "peppered",
-    icon: IconPepper
+    icon: IconPepper,
   }
 ];
 
@@ -206,7 +206,8 @@ const handleScroll = () => {
             <div ref={filterRef} className={clsx(isSticky ? 'sticky-filter md:relative' : '')}>
               <ProductFilterHiddenScrollBar 
                 onTabChange={onTabChange}
-                filterCategory={filterCategory}
+                categoryData={categoryData}
+                collectionHandle={collection.handle}
               />
             </div>
 

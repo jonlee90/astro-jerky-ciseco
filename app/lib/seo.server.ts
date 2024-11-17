@@ -20,7 +20,7 @@ import type {
   WebPage,
 } from 'schema-dts';
 
-import type {ShopFragment} from 'storefrontapi.generated';
+import type {ShopFragment, ProductMixFragment} from 'storefrontapi.generated';
 
 function root({
   shop,
@@ -31,7 +31,7 @@ function root({
 }): SeoConfig {
   return {
     title: shop?.name || 'Astro Fresh Jerky',
-    titleTemplate: '%s | Beef Jerky, Protein Snacks, Grass Fed Jerky',
+    titleTemplate: '%s | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
     description: truncate(shop?.description ?? "Astro Fresh Jerky offers high-protein, grass-fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients."),
     handle: '@AstroFreshJerky',
     url,
@@ -203,7 +203,9 @@ function product({
   );
   return {
     title: product?.seo?.title ?? product?.title,
+    titleTemplate: '%s: Beef Jerky, Protein Snacks, Grass Fed Jerky',
     description,
+    url,
     media: selectedVariant?.image,
     jsonLd: productJsonLd({product, selectedVariant, url}),
   };
@@ -345,7 +347,32 @@ function listCollections({
     jsonLd: collectionsJsonLd({collections, url}),
   };
 }
-
+/*
+function bundle({
+  bundleProducts,
+  url
+}: {
+  bundleProducts: ProductMixFragment[];
+  url: Request['url'];
+}): SeoConfig {
+const selectedVariant = bundleProducts[0]?.variants?.nodes[0];
+const product = bundleProducts[0];
+  return {
+    title: 'Bundle Pack',
+    titleTemplate: '%s: Beef Jerky, Protein Snacks, Grass Fed Jerky',
+    description: 'Mix & Match between 12 different Beef Jerky flavors to create a custom order.',
+    url,
+    media: {
+      type: 'image',
+      url: bundleProducts[0]?.variants?.nodes[0]?.image?.url,
+      height: bundleProducts[0]?.variants?.nodes[0]?.image?.height,
+      width: bundleProducts[0]?.variants?.nodes[0]?.image?.width,
+      altText: bundleProducts[0]?.variants?.nodes[0]?.image?.altText,
+    },
+    jsonLd: productJsonLd({product, selectedVariant, url}),
+  };
+}
+*/
 function article({
   article,
   url,

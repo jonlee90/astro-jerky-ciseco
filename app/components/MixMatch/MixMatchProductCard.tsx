@@ -83,7 +83,7 @@ export function MixMatchProductCard({
     <motion.div className={clsx('flex flex-col gap-2 w-40 md:w-52', { 'cursor-not-allowed opacity-50': !isAvailable })}>
       <div className='grid gap-2'>
         <div className='grid gap-2'>
-          <div className="card-image aspect-[4/5] bg-primary/5">
+          <div className="card-image aspect-[4/5] bg-primary/5 rounded-2xl">
             {image && (
               <Image
                 className="object-cover w-full fadeIn"

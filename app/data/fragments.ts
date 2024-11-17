@@ -43,6 +43,11 @@ export const PRODUCT_MIX_FRAGMENT = `#graphql
     tags
     handle
     description
+    seo {
+      description
+      title
+    }
+    vendor
     media(first: 7) {
       nodes {
         ...Media
@@ -94,6 +99,10 @@ export const PRODUCT_MIX_FRAGMENT = `#graphql
         product {
           handle
           title
+        }
+        price {
+          amount
+          currencyCode
         }
       }
     }
