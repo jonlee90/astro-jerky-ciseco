@@ -90,7 +90,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 const categoryData = [
   {
     label: "All Flavors",
-    value: "all",
+    value: "classic-flavors",
   },
   {
     label: "Spicy",
