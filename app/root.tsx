@@ -178,6 +178,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
+        <meta name="google-site-verification" content="25YtPW1Ho9GeTDGAmb7ERIzVTKDKWaCkNnpXAs8tlH4" />
         <Meta />
         <Links />
         <Script 
@@ -269,7 +270,7 @@ export function ErrorBoundary() {
   return (
     <div className="route-error">
       <h1>Oops</h1>
-      <h2>{errorStatus}</h2>
+      <h1>{errorStatus}</h1>
       {errorMessage && (
         <fieldset>
           <pre>{errorMessage}</pre>

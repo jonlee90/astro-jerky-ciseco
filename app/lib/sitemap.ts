@@ -20,7 +20,6 @@ type SITEMAP_INDEX_TYPE =
   | 'collections'
   | 'blogs'
   | 'articles'
-  | 'metaObjects';
 
 /**
  * Generate a sitemap index that links to separate sitemaps for each resource type.
@@ -28,7 +27,7 @@ type SITEMAP_INDEX_TYPE =
 export async function getSitemapIndex({
   storefront,
   request,
-  types = ['products', 'pages', 'collections', 'metaObjects', 'articles'],
+  types = ['products', 'pages', 'collections', 'articles'],
   customUrls = [],
 }: {
   storefront: LoaderFunctionArgs['context']['storefront'];
@@ -272,21 +271,6 @@ const BLOG_SITEMAP_QUERY = `#graphql
     }
 ` as const;
 
-const METAOBJECT_SITEMAP_QUERY = `#graphql
-    query SitemapMetaobjects($page: Int!) {
-      sitemap(type: METAOBJECT_PAGE) {
-        resources(page: $page) {
-          items {
-            handle
-            updatedAt
-            ... on SitemapResourceMetaobject {
-              type
-            }
-          }
-        }
-      }
-    }
-` as const;
 
 const SITEMAP_INDEX_QUERY = `#graphql
 query SitemapIndex {
@@ -315,11 +299,6 @@ query SitemapIndex {
       count
     }
   }
-  metaObjects: sitemap(type: METAOBJECT_PAGE) {
-    pagesCount {
-      count
-    }
-  }
 }
 ` as const;
 
@@ -329,5 +308,4 @@ const QUERIES = {
   collections: COLLECTION_SITEMAP_QUERY,
   pages: PAGE_SITEMAP_QUERY,
   blogs: BLOG_SITEMAP_QUERY,
-  metaObjects: METAOBJECT_SITEMAP_QUERY,
 };

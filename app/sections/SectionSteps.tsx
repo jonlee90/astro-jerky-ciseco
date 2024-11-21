@@ -37,15 +37,12 @@ export function SectionSteps(props: SectionStepsFragment) {
                   <Image
                     className="rounded-3xl"
                     data={icons?.nodes[index].image || {}}
-                    sizes="150px"
+                    sizes="250px"
                   />
                 )}
               </div>
-              <div className="text-center mt-auto space-y-5">
-                <Badge color={badgeColors[index]}>
-                  {labels?.parsedValue?.[index]}
-                </Badge>
-                <h5 className="text-base font-semibold">{item}</h5>
+              <div className="text-center space-y-5">
+                <h3 className="text-base font-semibold">{item}</h3>
                 <span className="block text-slate-600 dark:text-slate-400 text-sm leading-6">
                   {contents?.parsedValue?.[index]}
                 </span>

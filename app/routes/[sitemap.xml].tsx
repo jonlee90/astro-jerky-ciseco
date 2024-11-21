@@ -12,7 +12,7 @@ export async function loader({
   const response = await getSitemapIndex({
     storefront,
     request,
-    types: ['products', 'pages', 'collections', 'articles', 'metaObjects'],
+    types: ['products', 'pages', 'collections', 'articles'],
     customUrls: [`${baseUrl}/sitemap-empty.xml`],
   });
 

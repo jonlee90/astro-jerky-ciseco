@@ -121,17 +121,12 @@ export default function Collection() {
   const noResults = !collection.products.nodes.length;
   const [isSmall, setIsSmall] = useState(false);
   const [currentProducts, setCurrentProducts] = useState(() => flattenConnection(collection.products));
-  const products = flattenConnection(collection.products);
 
   const [isSticky, setIsSticky] = useState(false); // State to manage sticky behavior
 
   const filterRef = useRef<HTMLDivElement>(null); // Ref for the filter component
 
 
-  const onTabChange = (value: string) => {
-    const filtedProducts = value == 'all' ? products : products.filter((e) => e.tags.includes(value));
-    setCurrentProducts(filtedProducts);
-  }
   const onToggle = (value: string) => {
     setIsSmall(value == 'small' ? true : false);
   }
@@ -164,9 +159,6 @@ const handleScroll = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isSticky]);
 
-  const filterCategory = categoryData.filter((item) =>
-    item.value === 'all' ? true : products.some((product) => product.tags.includes(item.value)) 
-  );
 
   return (
     <div
@@ -210,7 +202,6 @@ const handleScroll = () => {
 
             <div ref={filterRef} className={clsx(isSticky ? 'sticky-filter md:relative' : '')}>
               <ProductFilterHiddenScrollBar 
-                onTabChange={onTabChange}
                 categoryData={categoryData}
                 collectionHandle={collection.handle}
               />
