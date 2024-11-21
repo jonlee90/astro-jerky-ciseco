@@ -12,6 +12,7 @@ import { FREE_SHIPPING_THRESHOLD } from '~/lib/const';
 import { useIsHydrated } from '~/hooks/useIsHydrated';
 import { useMediaQuery } from 'react-responsive';
 import useWindowScroll from './useWindowScroll';
+import BackButton from './BackButton';
 
 interface HeaderProps {
   header: HeaderMenuQuery;
@@ -32,7 +33,7 @@ export function Header({
   const { pathname, state } = useLocation();
   const isHydrated = useIsHydrated();
   const isBackButton = isHydrated && (pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true));
-  const isCartButton = isHydrated && !!state && pathname.includes('/bundle/') && true;
+  const isBundlePage = isHydrated && !!state && pathname.includes('/bundle/') && true;
   const isDesktop = useMediaQuery({minWidth: 767});
 
   const [opacity, setOpacity] = useState<number>(1);
@@ -60,33 +61,30 @@ export function Header({
             publicStoreDomain={publicStoreDomain}
             primaryDomainUrl={primaryDomainUrl}
           />
-      <MobileHeader />
-      {isBackButton ?
+          
+    
+      {!isBundlePage && (<MobileHeader isBackButton={isBackButton} />)}
+      {isHydrated && (
         <>
-          {/*<motion.button
-            onClick={() => navigate(navLink)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95, opacity: 0.6 }}
-            style={{opacity}}
-            className={`pdp-nav-button transform left-5 ${navLink === '/bundle' ? 'bottom-5' : pathname.includes('/products/') && isDesktop ? 'top-10' : 'bottom-24'}`}
-          >
-            <IconCaret
-              direction='right' 
-              className="!size-14 z-50 rounded-full bg-black text-white font-bold p-2"
-            />
-          </motion.button>*/}
-
-          {isCartButton && (<CartCount opacity={opacity} className={`pdp-nav-button right-5 ${isDesktop ? 'top-10' : 'bottom-5'}`} />) }
+          {isBackButton || isBundlePage  ? (
+            <>
+            {isBundlePage && (
+              <>
+                <CartCount
+                  opacity={opacity}
+                  className={`pdp-nav-button right-5 ${isDesktop ? 'top-10' : 'bottom-5'}`}
+                />
+                {isBackButton && (
+                  <BackButton isVisible={!isBackButton} />
+                )}
+              </>
+            )}
+            </>
+          ) : (
+            <NavMobileBottom opacity={opacity} isLoggedIn={isLoggedIn} cart={cart} />
+          )}
         </>
-      :
-      (isHydrated && (
-        <NavMobileBottom 
-          opacity={opacity} 
-          isLoggedIn={isLoggedIn}
-          cart={cart}
-        />
-      ))
-      }
+      )}
     </>
   );
 }

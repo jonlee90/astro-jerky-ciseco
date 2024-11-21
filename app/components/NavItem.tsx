@@ -19,10 +19,10 @@ const NavItem: FC<NavItemProps> = ({
   renderX,
 }) => {
   return (
-    <li className="nc-NavItem relative">
+    <li className="nc-NavItem relative h-full">
       {renderX && renderX}
       <button
-        className={`block font-medium whitespace-nowrap h-full ${className} ${radius} ${
+        className={`block font-medium whitespace-nowrap h-full min-w-11 ${className} ${radius} ${
           isActive
             ? 'bg-primary-600 text-white'
             : 'text-black-600  hover:text-black-900 '

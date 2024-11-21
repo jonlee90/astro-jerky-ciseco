@@ -18,7 +18,6 @@ export function CartSummary({cart}: CartSummaryProps) {
     discountCodes,
     checkoutUrl
   } = cart;
-    console.log(cart, 'cart');
    // Calculate the total amount from amountPerQuantity
    const cartTotal = lines?.nodes
    ? lines.nodes.reduce((total, { cost: lineCost, quantity }) => {

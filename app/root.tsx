@@ -39,6 +39,7 @@ import {GoogleTagManager} from '~/components/GoogleTagManager'
 import { PageLayout } from './components/PageLayout';
 
 import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
+import LoadingScreen from './components/LoadingScreen';
 
 export type RootLoader = typeof loader;
 
@@ -162,7 +163,6 @@ export const meta: MetaFunction<RootLoader> = ({data, matches}) => {
   return getSeoMeta(...matches.map((match) => (match?.data as any)?.seo));
 };
 
-const NAVBAR_LOGO = 'https://cdn.shopify.com/s/files/1/0641/9742/7365/files/astro-logo.png?v=1708205146';
 
 
 export function Layout({children}: {children?: React.ReactNode}) {
@@ -205,26 +205,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
               }}>
             </iframe>
           </noscript>
-        <AnimatePresence>
-          {isLoading  && (
-              <motion.div
-                key="loading"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 flex items-center justify-center bg-white z-50"
-              >
-                <motion.img
-                  src={NAVBAR_LOGO}
-                  alt="Loading"
-                  initial={{ scale: 0.9 }}
-                  animate={{ scale: [0.9, 1.1, 0.9] }}
-                  transition={{ duration: 1, repeat: Infinity }}
-                  className="size-20"
-                />
-              </motion.div>
-          )}
-        </AnimatePresence>
+          <LoadingScreen isLoading={isLoading} />
           {data ? (
             <Analytics.Provider
               cart={data.cart}

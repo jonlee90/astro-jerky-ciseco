@@ -33,8 +33,6 @@ export function PageLayout({
   publicStoreDomain,
   layout
 }: LayoutProps) {
- // const { pathname, state } = useLocation();
-  //const isBackButton = pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true);
   const primaryDomainUrl = layout?.shop.primaryDomain.url;
   return (
     <Aside.Provider>

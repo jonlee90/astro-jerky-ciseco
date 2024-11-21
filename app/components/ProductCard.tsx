@@ -134,7 +134,7 @@ const ProductCard: FC<ProductCardProps> = ({
         <div className={clsx('grid gap-4', className)}>
           <motion.div
             ref={cardRef}
-            className="card-image aspect-[4/5] pb-1  rounded-2xl"
+            className="card-image aspect-[4/5] pb-1 rounded-2xl"
             onMouseEnter={() => {
               if (isDesktop) {
                 setIsHovered(true);

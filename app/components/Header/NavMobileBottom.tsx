@@ -13,12 +13,6 @@ interface NavMobileBottomProps {
   isLoggedIn: Promise<boolean>;
 }
 
-const navItems = [
-  { path: '/', label: 'Home', icon: IconHome },
-  { path: '/collections', link: '/collections/classic-flavors', label: 'Jerky', icon: IconJerky },
-  { path: '/bundle', label: 'Bundle', icon: IconBundle },
-  { path: '/rewards', label: 'Rewards', icon: IconReward, needsAuth: false },
-];
 
 const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, cart }) => {
   const { open } = useAside();
@@ -32,6 +26,12 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
     cart.then(setCartData);
   }, [isLoggedIn, cart]);
 
+  const navItems = [
+  { path: '/', label: 'Home', icon: IconHome },
+  { path: '/collections', link: '/collections/classic-flavors', label: 'Jerky', icon: IconJerky },
+  { path: '/bundle', label: 'Bundle', icon: IconBundle },
+  { path: '/rewards', label: 'Rewards', icon: IconReward, needsAuth: false },
+];
   const activeItemIndex = navItems.findIndex((item) => {
     if (isAuthenticated && pathname === '/rewards' && item.path === '/rewards') {
       return true;

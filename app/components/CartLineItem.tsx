@@ -57,7 +57,7 @@ export function CartLineItem({
               width={96}
               height={130}
               data={image}
-              className="object-cover object-center w-24 md:w-28"
+              className="object-cover object-center w-24 md:w-28 rounded-lg"
               alt={title}
             />
           </Link>

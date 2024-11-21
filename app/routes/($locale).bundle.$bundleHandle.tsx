@@ -51,9 +51,6 @@ export async function loader({ params, context: { storefront } }: { params: any,
   flattenedProducts.map((product: any) => {
     flattenConnection(product.variants).map((variant: any) => {
       const size = variant.selectedOptions[0].value;
-      if(product.title == 'Buffalo Chicken Wing Jerky') {
-        console.log(size, product)
-      }
       const prod: ProductVariant = {
         id: variant.id,
         availableForSale: variant.availableForSale,

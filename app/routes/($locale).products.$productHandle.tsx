@@ -42,9 +42,7 @@ import { IconPinterest } from '~/components/Icon';
 import { convertToNumber } from '~/lib/utils';
 import { useAside } from '~/components/Aside';
 import { SlashIcon } from '@heroicons/react/24/solid';
-import Nav from '~/components/Nav';
-import NavItem from '~/components/NavItem';
-import useWindowScroll from '~/components/Header/useWindowScroll';
+import LoadingScreen from '../components/LoadingScreen';
 import { Popover, Transition } from '@headlessui/react';
 import { CartCount } from '~/components/CartCount';
 import { useIsHydrated } from '~/hooks/useIsHydrated';
@@ -256,7 +254,7 @@ export default function Product() {
     }, [showBottomAddToCartButton]);
 
 if(!isHydrated) {
-  return null;
+  return <LoadingScreen isLoading={true} />; // Avoid mismatches during hydration
 }
     
   return (
@@ -285,10 +283,14 @@ if(!isHydrated) {
         <div className="lg:flex">
           {/* Galleries */}
           <div className="w-full lg:w-[55%] relative">
+            {media?.nodes?.length > 0 ? (
             <ProductGallery
               media={media.nodes}
               className="w-full lg:col-span-2 lg:gap-7"
             />
+            ) : (
+              <Skeleton className="h-32" />
+            )}
             {/* LIKE BUTTON WISHLIST
             <LikeButton
               id={id}
@@ -301,13 +303,14 @@ if(!isHydrated) {
           <div className="w-full lg:w-[45%] pt-10 lg:pt-0 lg:pl-7 xl:pl-9 2xl:pl-10">
             <div className="sticky top-10 grid gap-7 2xl:gap-8">
               
-              <Suspense fallback={<></>}>
+              <Suspense fallback={<div>Loading...</div>}>
                 <Await
                   errorElement="There was a problem loading related products"
-                  resolve={variants}
+                  resolve={product}
                 >
                   {(resp) => (
                     <ProductForm
+                      product={resp}
                       addToCartButtonRef={addToCartButtonRef}
                       currentQuantity={currentQuantity}
                       selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
@@ -428,7 +431,7 @@ if(!isHydrated) {
       </main>
 
       {/* 3. Render the route's content sections */}
-      <Suspense fallback={<div className="h-32" />}>
+      <Suspense fallback={<div>Loading...</div>}>
         <Await
           errorElement="There was a problem loading route's content sections"
           resolve={routePromise}
@@ -464,9 +467,8 @@ if(!isHydrated) {
   );
 }
 
-export function ProductForm({currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity, addToCartButtonRef }) {
+export function ProductForm({product, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity, addToCartButtonRef }) {
 
-  const {product} = useLoaderData<typeof loader>();
 
   const location = useLocation();
   const { collection } = location.state || {};
@@ -551,9 +553,9 @@ export function ProductForm({currentQuantity, selectedVariantPrice, selectedVari
         
         <div className="grid grid-cols-3 items-center gap-1 mb-4 xs:gap-3">
           {
-            variantsByQuantity.map(({quantity, title}) => (
+            variantsByQuantity.map(({quantity, title}, i) => (
               <motion.button
-                key={quantity}
+                key={i}
                 className={clsx(
                   'variant-button flex-auto text-[16px] xs:text-[18px]',
                   quantity === currentQuantity ? 'variant-button-pressed': '',

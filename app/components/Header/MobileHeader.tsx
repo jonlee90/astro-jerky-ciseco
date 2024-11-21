@@ -2,8 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Logo from '../Logo';
 import useWindowScroll from './useWindowScroll';
+import BackButton from './BackButton';
 
-export function MobileHeader() {
+
+export function MobileHeader({isBackButton}) {
   const [isVisible, setIsVisible] = useState(true);
   const { y } = useWindowScroll();
   const prevScrollY = useRef(0);
@@ -18,10 +20,11 @@ export function MobileHeader() {
   }, [y, isVisible]);
 
   return (
+    <>
     <motion.header
       role="banner"
       aria-label="Mobile Header"
-      className="bg-contrast text-primary h-16 shadow-md flex md:hidden items-center sticky backdrop-blur-lg z-40 top-0 justify-center w-full leading-none px-4 md:px-8"
+      className="bg-contrast text-primary h-16 shadow-md flex md:hidden items-center sticky backdrop-blur-lg z-[95] top-0 justify-center w-full leading-none px-4 md:px-8"
       initial={{ y: 0 }}
       animate={{ y: isVisible ? 0 : -100 }}
       transition={{ duration: 0.3 }}
@@ -46,5 +49,10 @@ export function MobileHeader() {
         </picture>
       </div>
     </motion.header>
+    
+    {isBackButton && (
+      <BackButton isVisible={isVisible} />
+    )}
+  </>
   );
 }
