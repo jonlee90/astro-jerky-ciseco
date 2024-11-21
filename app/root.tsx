@@ -78,10 +78,24 @@ export async function loader(args: LoaderFunctionArgs) {
   const deferredData = loadDeferredData(args);
    // Await the critical data required to render initial state of the page
    const criticalData = await loadCriticalData(args);
- 
+   const {storefront, env} = args.context;
+
    return defer({
      ...deferredData,
-     ...criticalData
+     ...criticalData,
+    shop: getShopAnalytics({
+      storefront,
+      publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
+    }),
+    publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
+     consent: {
+       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
+       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
+       withPrivacyBanner: true,
+      // localize the privacy banner
+      country: storefront.i18n.country,
+      language: storefront.i18n.language,
+     },
    });
 }
 
@@ -111,19 +125,6 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
   return {
     layout,
     seo,
-    shop: getShopAnalytics({
-      storefront,
-      publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
-    }),
-    consent: {
-      checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
-      storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
-      withPrivacyBanner: true,
-      // localize the privacy banner
-      country: country,
-      language:language,
-    },
-    publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
     selectedLocale: storefront.i18n,
     header
   };
