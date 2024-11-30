@@ -7,8 +7,7 @@ export async function loader({
   context: {storefront},
 }: LoaderFunctionArgs) {
   const url = new URL(request.url);
-  const baseUrl = url.origin;
-
+  const baseUrl = url.origin.replace("www.", "");
   const response = await getSitemapIndex({
     storefront,
     request,

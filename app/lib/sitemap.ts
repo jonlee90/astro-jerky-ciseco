@@ -43,7 +43,7 @@ export async function getSitemapIndex({
     throw new Response('No data found', {status: 404});
   }
 
-  const baseUrl = new URL(request.url).origin;
+  const baseUrl = new URL(request.url).origin.replace("www.", "");
 
   const body =
     SITEMAP_INDEX_PREFIX +
@@ -118,7 +118,7 @@ export async function getSitemap(options: GetSiteMapOptions) {
     throw new Response('Not found', {status: 404});
   }
 
-  const baseUrl = new URL(request.url).origin;
+  const baseUrl = new URL(request.url).origin.replace("www.", "");
 
   const body =
     SITEMAP_PREFIX +
