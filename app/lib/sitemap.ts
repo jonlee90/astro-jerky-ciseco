@@ -9,7 +9,7 @@ const SITEMAP_INDEX_PREFIX = `<?xml version="1.0" encoding="UTF-8"?>
 const SITEMAP_INDEX_SUFFIX = `</sitemapindex>`;
 
 const SITEMAP_PREFIX = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">`;
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">`;
 const SITEMAP_SUFFIX = `</urlset>`;
 
 type Locale = `${LanguageCode}-${CountryCode}`;
@@ -110,6 +110,10 @@ export async function getSitemap(options: GetSiteMapOptions) {
     storefrontApiVersion: 'unstable',
   });
 
+  const productImagesData = await storefront.query(PRODUCT_IMAGE_QUERY, {
+    variables: { first: 100 },
+  });
+
   if (!data?.sitemap?.resources?.items?.length) {
     throw new Response('Not found', {status: 404});
   }
@@ -120,6 +124,16 @@ export async function getSitemap(options: GetSiteMapOptions) {
     SITEMAP_PREFIX +
     data.sitemap.resources.items
       .map((item: {handle: string; updatedAt: string; type?: string}) => {
+        const imageNode = productImagesData.products.edges.find(
+          (edge: any) => edge.node.handle === item.handle,
+        )?.node.featuredImage;
+
+        const imageUrl = imageNode?.url;
+        const imageCaption = imageNode?.altText;
+        const imageTitle = item.handle.split('-')
+                              .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                              .join(' ');;
+
         return renderUrlTag({
           getChangeFreq: options.getChangeFreq,
           url: getLink({
@@ -134,11 +148,13 @@ export async function getSitemap(options: GetSiteMapOptions) {
           metaobjectType: item.type,
           locales,
           baseUrl,
+          imageUrl,
+          imageTitle,
+          imageCaption
         });
       })
       .join('\n') +
     SITEMAP_SUFFIX;
-
   return new Response(body, {
     headers: {
       'Content-Type': 'application/xml',
@@ -166,6 +182,9 @@ function renderUrlTag({
   handle,
   getChangeFreq,
   metaobjectType,
+  imageUrl,      // Add image parameters
+  imageTitle,
+  imageCaption
 }: {
   type: SITEMAP_INDEX_TYPE;
   baseUrl: string;
@@ -181,6 +200,9 @@ function renderUrlTag({
   updatedAt: string;
   locales: string[];
   getChangeFreq?: (options: {type: string; handle: string}) => string;
+  imageUrl?: string;    // Add optional image-related parameters
+  imageTitle?: string;
+  imageCaption?: string;
 }) {
   return `<url>
   <loc>${url}</loc>
@@ -190,14 +212,12 @@ function renderUrlTag({
       ? getChangeFreq({type: metaobjectType ?? type, handle})
       : 'daily'
   }</changefreq>
-${locales
-  .map((locale) =>
-    renderAlternateTag(
-      getLink({type: metaobjectType ?? type, baseUrl, handle, locale}),
-      locale,
-    ),
-  )
-  .join('\n')}
+  ${imageUrl && type == 'products' ? `
+  <image:image>
+    <image:loc>${imageUrl}</image:loc>
+    <image:title>${imageTitle ?? ''}</image:title>
+    <image:caption>Astro Fresh Jerky ${imageTitle ?? ''} front of bag</image:caption>
+  </image:image>` : ''}
 </url>
   `.trim();
 }
@@ -205,6 +225,20 @@ ${locales
 function renderAlternateTag(url: string, locale: string) {
   return `  <xhtml:link rel="alternate" hreflang="${locale}" href="${url}" />`;
 }
+const PRODUCT_IMAGE_QUERY = `#graphql
+    query ProductsWithImages($first: Int!) {
+      products(first: $first) {
+        edges {
+          node {
+            handle
+            featuredImage {
+                  url
+            }
+          }
+        }
+      }
+    }
+` as const;
 
 const PRODUCT_SITEMAP_QUERY = `#graphql
     query SitemapProducts($page: Int!) {

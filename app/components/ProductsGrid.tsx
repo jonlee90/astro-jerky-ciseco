@@ -18,7 +18,6 @@ export function ProductsGrid({
 }) {
   const variantKey = isSmall ? 1 : 0;
   // Sort products so that available products come first
-
   return (
     <div
       className={clsx(
@@ -32,8 +31,8 @@ export function ProductsGrid({
             <motion.div
               key={i}
               initial={{ 
-                opacity: 0, 
-                y: 200 
+                opacity: i == 0 ?  1 : 0 , 
+                y:  i == 0 ?  0 : 200
               }}
               whileInView={{ 
                 opacity: 1,
@@ -41,10 +40,10 @@ export function ProductsGrid({
                 transition: {
                   type: "spring",
                   bounce: 0.3,
-                  duration: 0.7
+                  duration: 0.5
                 }
               }}
-              viewport={{ once: true, amount: 0.1 }}
+              viewport={{ once: true, amount: 0 }}
             >
               <ProductCard
                 product={product}
@@ -55,6 +54,12 @@ export function ProductsGrid({
             </motion.div>
           );
         })}
+        <section aria-label="Collection Description" className=' sm:col-span-2 lg:col-span-3 mt-10'>
+          <h3>High Protein {collection.title}</h3>
+          <p className="block mt-4 text-neutral-500 dark:text-neutral-400 text-sm sm:text-base">
+            {collection.description}
+          </p>
+        </section>
     </div>
   );
 }

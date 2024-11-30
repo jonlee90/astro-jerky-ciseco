@@ -65,9 +65,9 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   if (!collection) {
     throw new Response('collection', {status: 404});
   }
-
+  
   const seo = seoPayload.collection({collection, url: request.url});
-
+  
   const defaultPriceFilter = collection.productsWithDefaultFilter.filters.find(
     (filter) => filter.id === 'filter.v.price',
   );
@@ -90,16 +90,16 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 const categoryData = [
   {
     label: "All Flavors",
-    value: "classic-flavors",
+    value: "frontpage",
   },
   {
     label: "Spicy",
-    value: "hot-spicy",
+    value: "hot-spicy-beef-jerky",
     icon: IconSpicy,
   },
   {
     label: "BBQ",
-    value: "bbq",
+    value: "bbq-beef-jerky",
     icon: IconBbq,
   },
   {
@@ -109,7 +109,7 @@ const categoryData = [
   },
   {
     label: "Pepppered",
-    value: "peppered",
+    value: "peppered-beef-jerky",
     icon: IconPepper,
   }
 ];
@@ -185,7 +185,6 @@ const handleScroll = () => {
             <PageHeader
               // remove the html tags on title
               title={collection.title.replace(/(<([^>]+)>)/gi, '')}
-              description={collection.description}
               hasBreadcrumb={false}
               breadcrumbText={collection.title}
             />

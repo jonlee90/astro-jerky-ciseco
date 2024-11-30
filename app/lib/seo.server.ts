@@ -31,8 +31,8 @@ function root({
 }): SeoConfig {
   return {
     title: shop?.name || 'Astro Fresh Jerky',
-    titleTemplate: '%s | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
-    description: truncate(shop?.description ?? "Astro Fresh Jerky offers high-protein, grass-fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients."),
+    titleTemplate: '%s | High Protein Snacks - Astro Fresh Jerky',
+    description: truncate(shop?.description ?? "Astro Fresh Jerky offers high-protein, Grass Fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients."),
     handle: '@AstroFreshJerky',
     url,
     robots: {
@@ -43,7 +43,7 @@ function root({
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: shop.name || 'Astro Fresh Jerky',
-      description: shop?.description || 'Astro Fresh Jerky offers high-protein, grass-fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients.',
+      description: shop?.description || 'Astro Fresh Jerky offers high-protein, Grass Fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients.',
       logo: shop.brand?.logo?.image?.url,
       sameAs: [
         'https://twitter.com/astrofreshjerky',
@@ -64,8 +64,8 @@ function root({
 function home(): SeoConfig {
   return {
     title: 'Home',
-    titleTemplate: 'Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
-    description: "Astro Fresh Jerky offers high-protein, grass-fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients.",
+    titleTemplate: 'Astro Fresh Jerky | High Protein Snacks | Grass Fed Beef',
+    description: "Astro Fresh Beef Jerky offers high-protein, Grass Fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients.",
     robots: {
       noIndex: false,
       noFollow: false,
@@ -73,8 +73,8 @@ function home(): SeoConfig {
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'WebPage',
-      name: 'Astro Fresh Jerky Home Page',
-      description: 'Astro Fresh Jerky offers high-protein, grass-fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients.',
+      name: 'Astro Fresh Beef Jerky',
+      description: 'Astro Fresh Beef Jerky offers high-protein, Grass Fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients.',
       publisher: {
         '@type': 'Organization',
         name: 'Astro Fresh Jerky',
@@ -90,7 +90,7 @@ function home(): SeoConfig {
 function stores(): SeoConfig {
   return {
     title: 'Stores',
-    titleTemplate: '%s | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
+    titleTemplate: '%s | Astro Fresh Jerky',
     description: 'All Astro Fresh Jerky stores',
     robots: {
       noIndex: false,
@@ -203,7 +203,7 @@ function product({
   );
   return {
     title: product?.seo?.title ?? product?.title,
-    titleTemplate: '%s: Beef Jerky, Protein Snacks, Grass Fed Jerky',
+    titleTemplate: '%s - Astro Fresh Jerky',
     description,
     url,
     media: selectedVariant?.image,
@@ -282,11 +282,11 @@ function collection({
   url: Request['url'];
 }): SeoConfig {
   return {
-    title: collection?.seo?.title,
+    title: collection?.seo?.title ?? collection?.title,
     description: truncate(
       collection?.seo?.description ?? collection?.description ?? '',
     ),
-    titleTemplate: '%s | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
+    titleTemplate: '%s | High Protein Snacks - Astro Fresh Jerky',
     media: {
       type: 'image',
       url: collection?.image?.url,
@@ -341,7 +341,7 @@ function listCollections({
 }): SeoConfig {
   return {
     title: 'Collections',
-    titleTemplate: '%s | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
+    titleTemplate: 'Best Beef Jerky Flavors | High Protein Snacks - Astro Fresh Jerky',
     description: 'All Astro Fresh Jerky collections',
     url,
     jsonLd: collectionsJsonLd({collections, url}),
@@ -391,7 +391,7 @@ function article({
   return {
     title: article?.seo?.title ?? article?.title,
     description: truncate(article?.seo?.description ?? ''),
-    titleTemplate: '%s | Journal | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
+    titleTemplate: '%s | Astro Fresh Jerky',
     url,
     media: {
       type: 'image',
@@ -426,7 +426,7 @@ function blog({
   return {
     title: blog?.seo?.title,
     description: truncate(blog?.seo?.description || ''),
-    titleTemplate: '%s | Blog | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
+    titleTemplate: '%s | Astro Fresh Jerky',
     url,
     jsonLd: {
       '@context': 'https://schema.org',
@@ -448,7 +448,7 @@ function page({
   return {
     description: truncate(page?.seo?.description || ''),
     title: page?.seo?.title ?? page?.title,
-    titleTemplate: '%s | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
+    titleTemplate: '%s | Astro Fresh Jerky',
     url,
     jsonLd: {
       '@context': 'https://schema.org',
@@ -468,7 +468,7 @@ function policy({
   return {
     description: truncate(policy?.body ?? ''),
     title: policy?.title,
-    titleTemplate: '%s | Policy | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
+    titleTemplate: '%s | Astro Fresh Jerky',
     url,
   };
 }
@@ -493,7 +493,7 @@ function policies({
     });
   return {
     title: 'Policies',
-    titleTemplate: '%s | Policies | Astro Fresh Jerky: Beef Jerky, Protein Snacks, Grass Fed Jerky',
+    titleTemplate: '%s | Astro Fresh Jerky',
     description: 'Astro Fresh Jerky store policies',
     jsonLd: [
       {

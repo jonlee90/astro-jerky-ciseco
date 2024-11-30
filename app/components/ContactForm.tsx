@@ -6,7 +6,7 @@ export function ContactForm() {
           Contact Us
         </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
           <div className="space-y-4">
             <h3 className="text-xl font-semibold text-gray-900">Customer Service</h3>
             <p className="text-gray-700">
