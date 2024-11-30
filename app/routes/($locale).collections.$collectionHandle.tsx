@@ -67,7 +67,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   }
   
   const seo = seoPayload.collection({collection, url: request.url});
-  
+
   const defaultPriceFilter = collection.productsWithDefaultFilter.filters.find(
     (filter) => filter.id === 'filter.v.price',
   );
@@ -90,7 +90,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 const categoryData = [
   {
     label: "All Flavors",
-    value: "frontpage",
+    value: "best-beef-jerky",
   },
   {
     label: "Spicy",
