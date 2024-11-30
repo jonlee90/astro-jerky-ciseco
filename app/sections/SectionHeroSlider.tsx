@@ -171,7 +171,7 @@ export function SectionHeroSlider(props: SectionHeroSliderFragment) {
           <div
             key={(index + 1).toString()}
             className={clsx(
-              'nc-SectionHeroSliderItem',
+              'nc-SectionHeroSliderItem rounded-2xl',
               isSlided && 'nc-SectionHeroSliderItem--animation',
             )}
           >
