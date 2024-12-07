@@ -182,7 +182,6 @@ export function Layout({children}: {children?: React.ReactNode}) {
         
       </head>
       <body className="bg-white">
-          <LoadingScreen isLoading={isLoading} />
           {data ? (
             <Analytics.Provider
               cart={data.cart}
