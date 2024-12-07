@@ -26,8 +26,8 @@ import {
 } from '@shopify/hydrogen';
 import {seoPayload} from '~/lib/seo.server';
 import favicon from '@/assets/favicon.ico';
-import styles from './styles/app.css?url';
-import stylesFont from './styles/custom-font.css?url';
+import styles from '~/styles/app.css?url';
+import stylesFont from '~/styles/custom-font.css?url';
 import rcSliderStyle from 'rc-slider/assets/index.css?url';
 import {COMMON_COLLECTION_ITEM_FRAGMENT} from './data/commonFragments';
 import invariant from 'tiny-invariant';

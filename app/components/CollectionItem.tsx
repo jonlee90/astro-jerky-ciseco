@@ -43,14 +43,14 @@ const CollectionItem: FC<CollectionItemProps> = ({
       <div className={`relative w-full aspect-w-16 ${image ? 'aspect-h-16' : 'aspect-h-12 sm:aspect-h-9'} rounded-2xl overflow-hidden bg-slate-100 group`}>
         {hImage && (
           <Image
-            className="absolute inset-0 w-full h-full object-cover rounded-2xl "
+            className="inset-0 w-full h-full object-cover rounded-2xl "
             data={hImage}
             sizes="(max-width: 640px) 90vw, (max-width: 1200px) 50vw, 40vw"
           />
         )}
         {image && (
           <Image
-            className="absolute inset-0 w-full h-full object-cover rounded-2xl opacity-85"
+            className="inset-0 w-full h-full object-cover rounded-2xl opacity-85"
             data={image}
             sizes="(max-width: 640px) 70vw, (max-width: 1200px) 50vw, 40vw"
           />
