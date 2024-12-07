@@ -12,7 +12,6 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
   useRouteError,
   type ShouldRevalidateFunction,
   useNavigation,
@@ -24,7 +23,6 @@ import {
   Analytics,
   getShopAnalytics,
   Script,
-  useLoadScript,
 } from '@shopify/hydrogen';
 import {seoPayload} from '~/lib/seo.server';
 import favicon from '@/assets/favicon.ico';
@@ -32,13 +30,12 @@ import styles from './styles/app.css?url';
 import stylesFont from './styles/custom-font.css?url';
 import rcSliderStyle from 'rc-slider/assets/index.css?url';
 import {COMMON_COLLECTION_ITEM_FRAGMENT} from './data/commonFragments';
-import { motion, AnimatePresence } from "framer-motion";
 import invariant from 'tiny-invariant';
 import { useIsHydrated } from './hooks/useIsHydrated';
 import {GoogleTagManager} from '~/components/GoogleTagManager'
 import { PageLayout } from './components/PageLayout';
 
-import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
+import {DEFAULT_LOCALE} from './lib/utils';
 import LoadingScreen from './components/LoadingScreen';
 
 export type RootLoader = typeof loader;
@@ -171,8 +168,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
   const locale = data?.selectedLocale ?? DEFAULT_LOCALE;
   const navigation = useNavigation();
   const isLoading = navigation.state === "loading";
-  const isHydrated = useIsHydrated();
-
+  
   return (
     <html lang={locale.language}>
       <head>
@@ -183,28 +179,9 @@ export function Layout({children}: {children?: React.ReactNode}) {
         
         <Meta />
         <Links />
-        <Script 
-          dangerouslySetInnerHTML={{
-          __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                      })(window,document,'script','dataLayer','GTM-5BP4M9R5');`
-          }}></Script>
         
       </head>
       <body className="bg-white">
-          <noscript>
-            <iframe 
-              src="https://www.googletagmanager.com/ns.html?id=GTM-5BP4M9R5"
-              height="0" 
-              width="0" 
-              style={{
-                display:'none',
-                visibility:'hidden'
-              }}>
-            </iframe>
-          </noscript>
           <LoadingScreen isLoading={isLoading} />
           {data ? (
             <Analytics.Provider
@@ -219,10 +196,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
                 {children}
               </PageLayout>
             </Analytics.Provider>
-        ) : (
-          children
-        )}
-         <GoogleTagManager />
+        ) : null}
        
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />

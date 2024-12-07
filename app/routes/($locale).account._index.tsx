@@ -82,7 +82,7 @@ function Account({customer}: AccountType) {
               </div>
               <div className='font-bold grid grid-rows-2 gap-2 items-center'>
                 <span className="text-lg">{100 - loyalty_points_points_until} points until your next $5 rewards!</span>
-                <Link to={'/collections/classic-flavors'}>
+                <Link to={'/collections/best-beef-jerky'}>
                   <motion.button className="bg-black text-white py-3 rounded-full font-normal w-40">SHOP NOW</motion.button>
                 </Link>
               </div>

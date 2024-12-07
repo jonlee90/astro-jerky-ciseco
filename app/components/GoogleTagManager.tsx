@@ -12,13 +12,17 @@ export function GoogleTagManager() {
   const {ready} = register('Google Tag Manager');
 
   useEffect(() => {
+    // Ensure `dataLayer` is defined
+    if (!window.dataLayer) {
+      window.dataLayer = [];
+    }
     subscribe('product_viewed', () => {
       // Triggering a custom event in GTM when a product is viewed
       window.dataLayer.push({'event': 'viewed-product'});
     });
 
     ready();
-  }, []);
+  }, [subscribe, ready]);
 
   return null;
 }
