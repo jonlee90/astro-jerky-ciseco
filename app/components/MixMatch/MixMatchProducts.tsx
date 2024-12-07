@@ -207,7 +207,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
     <div className="mb-36">
       <header
         role="banner"
-        className={`bg-[#fafaf9] sticky transition top-0 w-full justify-center px-5 py-2 text-center header-shadow rounded-b-lg z-[90]`}
+        className={`bg-[#fafaf9] sticky transition top-0 w-full justify-center px-5 py-2 text-center header-shadow rounded-b-lg z-[101]`}
       >
         <div className="max-w-screen-md mx-auto">
           <div className="grid grid-cols-2 my-3">

@@ -41,8 +41,7 @@ export default async function handleRequest(
     connectSrc: [
       "'self'",
       'https://monorail-edge.shopifysvc.com',
-      'http://localhost:*',
-      'ws ://localhost:*',
+      ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*', ''] : []),
       'ws://127.0.0.1:*',
       'https://*.google-analytics.com',
       'https://*.analytics.google.com',

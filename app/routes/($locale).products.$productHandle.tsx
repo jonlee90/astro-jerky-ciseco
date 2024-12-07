@@ -344,7 +344,7 @@ if(!isHydrated) {
                       }}
                       aspectRatio={undefined}
                       sizes='(min-width: 48em) 60vw, 90vw'
-                      className="object-cover rounded-2xl w-full h-full aspect-square fadeIn"
+                      className="object-cover rounded-2xl fadeIn"
                     />
                   </div>
                 </div>
@@ -369,19 +369,7 @@ if(!isHydrated) {
                       }}
                       aspectRatio={undefined}
                       sizes='(min-width: 48em) 60vw, 90vw'
-                      className="object-cover rounded-2xl w-full h-full aspect-square fadeIn"
-                    />
-                  </div>
-                  <div>
-                    <Image
-                      loading={'lazy'}
-                      data={{
-                        url: 'https://cdn.shopify.com/s/files/1/0641/9742/7365/files/pdp-2.jpg',
-                        altText: 'Beef Jerky Ingredients'
-                      }}
-                      aspectRatio={undefined}
-                      sizes='(min-width: 48em) 60vw, 90vw'
-                      className="object-cover rounded-2xl w-full h-full aspect-square fadeIn"
+                      className="object-cover rounded-2xl w-full h-full fadeIn"
                     />
                   </div>
                 </div>

@@ -66,7 +66,7 @@ export function ProductGallery({
                 data={image}
                 aspectRatio={undefined}
                 sizes='(min-width: 48em) 60vw, 90vw'
-                className="object-cover rounded-2xl w-full h-full aspect-square fadeIn"
+                className="object-cover rounded-2xl aspect-square fadeIn"
               />
             </div>
           );
