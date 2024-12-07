@@ -196,7 +196,9 @@ export function Layout({children}: {children?: React.ReactNode}) {
                 {children}
               </PageLayout>
             </Analytics.Provider>
-        ) : null}
+        ) : (
+          children
+        )}
        
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
