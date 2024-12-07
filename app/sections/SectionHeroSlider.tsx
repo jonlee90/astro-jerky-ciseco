@@ -219,7 +219,7 @@ const SectionItem = ({section}: {section: HeroItemFragment}) => {
       </div>
 
       {/* CONTENT */}
-      <div className="flex py-12 sm:py-14 lg:items-center lg:pb-20">
+      <div className="absolute inset-0 flex items-center justify-center py-12 sm:py-14 lg:pb-20">
         <div className="container relative self-center text-center">
           <div className="nc-SectionHeroSliderItem__left relative w-full lg:space-y-14">
             <div className="space-y-5 sm:space-y-6">
