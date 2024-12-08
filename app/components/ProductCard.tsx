@@ -17,6 +17,7 @@ import {useMediaQuery} from 'react-responsive';
 import { useAside } from './Aside';
 import { useVariantUrl } from '~/lib/variants';
 import { IconSpicy, IconBbq, IconChicken, IconPepper } from "./Icon";
+import { useIsHydrated } from '~/hooks/useIsHydrated';
 
 
 interface MoneyV2 {

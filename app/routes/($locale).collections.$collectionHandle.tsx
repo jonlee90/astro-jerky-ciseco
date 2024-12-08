@@ -87,32 +87,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
-const categoryData = [
-  {
-    label: "All Flavors",
-    value: "best-beef-jerky",
-  },
-  {
-    label: "Spicy",
-    value: "hot-spicy-beef-jerky",
-    icon: IconSpicy,
-  },
-  {
-    label: "BBQ",
-    value: "bbq-beef-jerky",
-    icon: IconBbq,
-  },
-  {
-    label: "Chicken",
-    value: "chicken-jerky",
-    icon: IconChicken,
-  },
-  {
-    label: "Pepppered",
-    value: "peppered-beef-jerky",
-    icon: IconPepper,
-  }
-];
+
 
 export default function Collection() {
   const {collection, routePromise} =
@@ -122,11 +97,6 @@ export default function Collection() {
   const [isSmall, setIsSmall] = useState(false);
   const [currentProducts, setCurrentProducts] = useState(() => flattenConnection(collection.products));
 
-  const [isSticky, setIsSticky] = useState(false); // State to manage sticky behavior
-
-  const filterRef = useRef<HTMLDivElement>(null); // Ref for the filter component
-
-
   const onToggle = (value: string) => {
     setIsSmall(value == 'small' ? true : false);
   }
@@ -135,30 +105,11 @@ export default function Collection() {
     ? 0
     : currentProducts.length;
 
-  // Function to handle scroll event and check when the filter should stick
-const handleScroll = () => {
-  const filterElement = filterRef.current;
-  if (filterElement) {
-    const filterPosition = filterElement.getBoundingClientRect().top;
-    const shouldStick = filterPosition <= 10;
-    // Only update isSticky when there's an actual change
-    if (shouldStick !== isSticky) {
-      setIsSticky(shouldStick);
-    }
-  }
-};
+
   // Update currentProducts whenever collection.products changes
   useEffect(() => {
     setCurrentProducts(flattenConnection(collection.products));
   }, [collection.products]);
-
-  // Add scroll event listener
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    // Cleanup on unmount
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isSticky]);
-
 
   return (
     <div
@@ -190,7 +141,7 @@ const handleScroll = () => {
             />
           </div>
 
-          <main className='!mt-8 !lg:mt-14'>
+          <div className='!mt-8 !lg:mt-14'>
             {/* TABS FILTER 
             <FilterMenu
               onTabChange={onTabChange}
@@ -199,12 +150,9 @@ const handleScroll = () => {
             />
             */}
 
-            <div ref={filterRef} className={clsx(isSticky ? 'sticky-filter md:relative' : '')}>
               <ProductFilterHiddenScrollBar 
-                categoryData={categoryData}
                 collectionHandle={collection.handle}
               />
-            </div>
 
             {/* LOOP ITEMS */}
             <>
@@ -214,7 +162,7 @@ const handleScroll = () => {
                 <Empty />
               )}
             </>
-          </main>
+          </div>
         </div>
       </div>
 

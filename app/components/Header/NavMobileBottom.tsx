@@ -28,7 +28,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
 
   const navItems = [
   { path: '/', label: 'Home', icon: IconHome },
-  { path: '/collections', link: '/collections/best-beef-jerky', label: 'Jerky', icon: IconJerky },
+  { path: '/collections', link: '/collections/best-beef-jerky-flavors', label: 'Jerky', icon: IconJerky },
   { path: '/bundle', label: 'Bundle', icon: IconBundle },
   { path: '/rewards', label: 'Rewards', icon: IconReward, needsAuth: false },
 ];
