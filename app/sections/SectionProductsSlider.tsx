@@ -1,4 +1,5 @@
 import type {SectionProductsSliderFragment} from 'storefrontapi.generated';
+import { SnapGridProducts } from '~/components/SnapGridProducts';
 import {SnapSliderProducts} from '~/components/SnapSliderProducts';
 
 export function SectionProductsSlider(props: SectionProductsSliderFragment) {
@@ -8,6 +9,14 @@ export function SectionProductsSlider(props: SectionProductsSliderFragment) {
 
   return (
     <section>
+    {heading_bold?.value == 'Best Sellers' ?
+     <SnapGridProducts
+      heading_bold={heading_bold?.value}
+      products={products?.nodes}
+      className={'w-full mx-auto'}
+
+     />
+     :
       <SnapSliderProducts
         heading_bold={heading_bold?.value}
         heading_light={heading_light?.value}
@@ -17,6 +26,8 @@ export function SectionProductsSlider(props: SectionProductsSliderFragment) {
         isSkeleton={!collection}
         className={'w-full mx-auto'}
       />
+    }
+      
     </section>
   );
 }

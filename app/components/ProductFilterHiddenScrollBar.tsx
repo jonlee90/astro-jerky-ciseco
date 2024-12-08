@@ -71,7 +71,7 @@ const ProductFilterHiddenScrollBar = ({collectionHandle}: any) => {
                 isActive={collectionHandle === item.value}
               >
                 <Link
-                    to={`/collections/${item.value}`}
+                    to={`/${item.value}`}
                     prefetch="intent"
                   >
                   <div className="flex items-center justify-center space-x-1.5 sm:space-x-2.5 text-xs sm:text-sm">

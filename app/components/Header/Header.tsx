@@ -32,7 +32,7 @@ export function Header({
   const {headerMenu} = header;
   const { pathname, state } = useLocation();
   const isHydrated = useIsHydrated();
-  const isBackButton = isHydrated && (pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true));
+  const isBackButton = isHydrated && (pathname.includes('/beef-jerky/') ? !!state : (pathname.includes('/bundle/') && true));
   const isBundlePage = isHydrated && !!state && pathname.includes('/bundle/') && true;
   const isDesktop = useMediaQuery({minWidth: 767});
 

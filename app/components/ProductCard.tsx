@@ -32,6 +32,7 @@ interface ProductCardProps {
   loading?: HTMLImageElement['loading'];
   quickAdd?: boolean;
   variantKey?: number;
+  transition?: boolean;
 }
 
 /**
@@ -41,6 +42,7 @@ interface ProductCardProps {
  *   className?: string;
  *   loading?: HTMLImageElement['loading'];
  *   quickAdd?: boolean;
+ *   transition?: boolean;
  * }}
  */
 const ProductCard: FC<ProductCardProps> = ({
@@ -50,6 +52,7 @@ const ProductCard: FC<ProductCardProps> = ({
   loading,
   quickAdd,
   variantKey = 0,
+  transition = true
 }: ProductCardProps) => {
 
   const {open} = useAside();
@@ -111,7 +114,7 @@ const ProductCard: FC<ProductCardProps> = ({
       return;
     }
 
-    if (!isHovered && isDesktop) {
+    if ((!isHovered && isDesktop) || !transition) {
       setCurrentImageIndex(0);
       return;
     }
@@ -137,13 +140,13 @@ const ProductCard: FC<ProductCardProps> = ({
             ref={cardRef}
             className="card-image aspect-[4/5] pb-1 rounded-2xl"
             onMouseEnter={() => {
-              if (isDesktop) {
+              if (isDesktop || !transition) {
                 setIsHovered(true);
                 setIsInView(true);
               }
             }}
             onMouseLeave={() => {
-              if (isDesktop) {
+              if (isDesktop || !transition) {
                 setIsHovered(false);
                 setIsInView(false);
               }
@@ -169,8 +172,8 @@ const ProductCard: FC<ProductCardProps> = ({
             />
             <motion.div
               className="h-0.5 w-0 bg-black absolute bottom-0 left-0"
-              initial={{width: isInView ? (isDesktop ? (isHovered ? '100%' : 0) : '100%') : 0}}
-              animate={{width: isInView && (isDesktop ? isHovered : true) ? '100%' : 0}}
+              initial={{width: isInView ? (isDesktop || !transition ? (isHovered ? '100%' : 0) : '100%') : 0}}
+              animate={{width: isInView && (isDesktop || !transition ? isHovered : true) ? '100%' : 0}}
               transition={{
                 duration: isInView ? totalDuration / 1000 : 0, // Total duration in seconds if in view, 0 otherwise
                 ease: 'linear',
@@ -326,7 +329,7 @@ export function getProductUrlWithSelectedOption({
 
   searchParams.set(optionSelected.name, optionSelected.value);
 
-  return `/products/${product.handle}?${searchParams.toString()}`;
+  return `/beef-jerky/${product.handle}?${searchParams.toString()}`;
 }
 
 export const getProductStatus = ({

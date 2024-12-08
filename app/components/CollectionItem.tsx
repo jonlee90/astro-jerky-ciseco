@@ -36,7 +36,7 @@ const CollectionItem: FC<CollectionItemProps> = ({
   const productTitle = title?.replace('Premium Cut Beef Jerky', '').replace('Premium Cut Chicken Jerky', '');
   return (
     <Link
-      to={'/collections/' + handle}
+      to={'/' + handle}
       className={clsx(`block w-full`, className)}
       onClick={onClick}
     >

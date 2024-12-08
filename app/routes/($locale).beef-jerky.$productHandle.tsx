@@ -36,7 +36,7 @@ import {RouteContent} from '~/sections/RouteContent';
 import {getSeoMeta} from '@shopify/hydrogen';
 import {getLoaderRouteFromMetaobject} from '~/utils/getLoaderRouteFromMetaobject';
 import { motion } from 'framer-motion';
-import { IconArrowRight, IconFacebook } from '~/components/Icon';
+import { IconArrowRight, IconBbq, IconDry, IconFacebook, IconPepper, IconSpicy } from '~/components/Icon';
 import { IconX } from '~/components/Icon';
 import { IconPinterest } from '~/components/Icon';
 import { convertToNumber } from '~/lib/utils';
@@ -46,6 +46,7 @@ import LoadingScreen from '../components/LoadingScreen';
 import { Popover, Transition } from '@headlessui/react';
 import { CartCount } from '~/components/CartCount';
 import { useIsHydrated } from '~/hooks/useIsHydrated';
+import LevelIndicator from '~/components/LevelIndicator';
 
 export const headers = routeHeaders;
 
@@ -79,16 +80,16 @@ async function loadCriticalData(args: LoaderFunctionArgs) {
       // Filter out third party tracking params
       !option.name.startsWith('fbclid'),
   );
-
-  if (!productHandle) {
-    throw new Error('Expected product handle to be defined');
-  }
+  const defaultOption = [{
+    name: 'Size',
+    value: '3oz'
+  }];
 
   const [{shop, product}] = await Promise.all([
     context.storefront.query(PRODUCT_QUERY, {
       variables: {
         handle: productHandle,
-        selectedOptions,
+        selectedOptions: selectedOptions.length > 0 ? selectedOptions : defaultOption,
         country: context.storefront.i18n.country,
         language: context.storefront.i18n.language,
       },
@@ -200,7 +201,7 @@ export default function Product() {
     product;
 
   const { pathname, state } = useLocation();
-  const isBackButton = pathname.includes('/products/') ? !!state : (pathname.includes('/bundle/') && true);
+  const isBackButton = pathname.includes('/beef-jerky/') ? !!state : (pathname.includes('/bundle/') && true);
 
   const [showBottomAddToCartButton, setShowBottomAddToCartButton] = useState(false);
   const addToCartButtonRef = useRef<HTMLDivElement>(null); 
@@ -301,7 +302,7 @@ if(!isHydrated) {
 
           {/* Product Details */}
           <div className="w-full lg:w-[45%] pt-10 lg:pt-0 lg:pl-7 xl:pl-9 2xl:pl-10">
-            <div className="sticky top-10 grid gap-7 2xl:gap-8">
+            <div className="sticky top-10 grid gap-8">
               
               <Suspense fallback={<div>Loading...</div>}>
                 <Await
@@ -484,7 +485,7 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
       title: 'Buy ' + quantity + ' Bag' + (i > 1 ? 's' : '')
     });
   }
-  const collectionObj = collection ? collection : product.collections.nodes[0];
+  const collectionObj = collection ? collection : {handle: 'best-beef-jerky-flavors', title: 'Our Best Beef Jerky Flavors'};
 
   return (
     <>
@@ -507,7 +508,7 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
               <li>
                 <div className="flex items-center text-sm">
                   <Link
-                    to={'/collections/' + collectionObj.handle}
+                    to={'/' + collectionObj.handle}
                     className="font-medium text-gray-500 hover:text-gray-900"
                   >
                     {/* romove html on title */}
@@ -534,7 +535,7 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
       />
 
       <div>
-        {getProductIcon(product)} {/* Render the icon based on tags */}
+        {getProductLevels(product)} {/* Render the icon based on tags */}
       </div>
 
       <div className='grid gap-7 2xl:gap-8'>
@@ -585,6 +586,31 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
     </>
   );
 }
+const getProductLevels = (product: any) => {
+  const { tags, flavor_level, dryness_level, sweetness_level, heat_level } = product;
+  const drynessLevel = dryness_level ? parseInt(dryness_level.value, 10) : 0;
+  const sweetnessLevel = sweetness_level ? parseInt(sweetness_level.value, 10) : 0;
+  const heatLevel = heat_level ? parseInt(heat_level.value, 10) : 0;
+
+  const indicators = [
+    { icon: IconSpicy, label: "Heat", level: heatLevel },
+    { icon: IconDry, label: "Dryness", level: drynessLevel },
+    { icon: IconBbq, label: "Sweetness", level: sweetnessLevel },
+  ];
+
+  return (
+    <ul className="grid grid-cols-3 gap-4 list-none max-w-lg">
+      {indicators.map(({ icon, label, level }, index) => (
+        <LevelIndicator
+          key={index}
+          icon={icon}
+          label={label}
+          level={level}
+        />
+      ))}
+    </ul>
+  );
+};
 const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity, isBackButton }) => {
   const variantsByQuantity = [];
   const isOutOfStock = !selectedVariant?.availableForSale;
@@ -597,11 +623,21 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
       title: quantity + ' Bag' + (i > 1 ? 's' : '')
     });
   }
-  const [activeItem, setActiveItem] = useState(variantsByQuantity?.find((item) => item.quantity == 3));
-
   if (!selectedVariant) {
     return null;
   }
+  const [activeItem, setActiveItem] = useState(variantsByQuantity?.find((item) => item.quantity == currentQuantity));
+
+  // Update `activeItem` whenever `currentQuantity` changes
+  useEffect(() => {
+    const foundItem = variantsByQuantity.find(
+      (item) => item.quantity === currentQuantity
+    );
+    if(foundItem != activeItem) {
+      setActiveItem(foundItem);
+    }
+  }, [currentQuantity]);
+
   return (
     <div 
       className='w-full z-50'
@@ -810,6 +846,15 @@ export const PRODUCT_QUERY = `#graphql
         }
       }
       flavor_level: metafield(namespace: "custom", key:"flavor_level") {
+        value
+      }
+      heat_level: metafield(namespace: "custom", key:"heat_level") {
+        value
+      }
+      sweetness_level: metafield(namespace: "custom", key:"sweetness_level") {
+        value
+      }
+      dryness_level: metafield(namespace: "custom", key:"dryness_level") {
         value
       }
       options {

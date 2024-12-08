@@ -235,7 +235,7 @@ function collectionJsonLd({
       return {
         '@type': 'ListItem',
         position: index + 1,
-        url: `/products/${product.handle}`,
+        url: `/beef-jerky/${product.handle}`,
       };
     });
 

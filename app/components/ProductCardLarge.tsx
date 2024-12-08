@@ -112,7 +112,7 @@ const ProductCardLarge: FC<ProductCardProps> = ({
           }
         />
       </div>
-      <Link to={'/products/' + handle} className="absolute inset-0 ">
+      <Link to={'/beef-jerky/' + handle} className="absolute inset-0 ">
         <span className="sr-only">{title}</span>
       </Link>
     </div>

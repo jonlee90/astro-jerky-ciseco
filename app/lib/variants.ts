@@ -33,8 +33,8 @@ export function getVariantUrl({
   const isLocalePathname = match && match.length > 0;
 
   const path = isLocalePathname
-    ? `${match![0]}products/${handle}`
-    : `/products/${handle}`;
+    ? `${match![0]}beef-jerky/${handle}`
+    : `/beef-jerky/${handle}`;
 
   selectedOptions.forEach((option) => {
     searchParams.set(option.name, option.value);
@@ -42,5 +42,5 @@ export function getVariantUrl({
 
   const searchString = searchParams.toString();
 
-  return path + (searchString ? '?' + searchParams.toString() : '');
+  return path + (searchString && searchString == 'Size=2oz' ? '?' + searchParams.toString() : '');
 }

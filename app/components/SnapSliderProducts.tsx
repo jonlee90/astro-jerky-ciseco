@@ -42,7 +42,7 @@ export function SnapSliderProducts(props: Props) {
   return (
     <div className={`nc-SectionSliderProductCard ` + className}>
       <Heading
-        className={'mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 px-4'}
+        className={'mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 px-4 container'}
         fontClass={headingFontClass}
         rightDescText={heading_light}
         hasNextPrev
@@ -53,14 +53,15 @@ export function SnapSliderProducts(props: Props) {
       </Heading>
       <div
         ref={sliderRef}
-        className="relative flex snap-x snap-mandatory overflow-x-auto -mx-2 lg:-mx-4 hiddenScrollbar py-2"
+        className="relative w-full flex gap-4 lg:gap-8 snap-x snap-mandatory overflow-x-auto scroll-p-l-container hiddenScrollbar"
       >
+        <div className="w-0 px-3"></div>
         {isSkeleton &&
           [1, 1, 1, 1, 1].map((_, index) => (
             <div
               key={index}
               className={clsx(
-                `mySnapItem snap-start shrink-0 px-5`,
+                `mySnapItem snap-start shrink-0 py-3`,
                 cardStyle !== '2'
                   ? 'w-[17rem] lg:w-80 xl:w-[25%]'
                   : 'w-full sm:w-96 lg:w-[50%] xl:w-[33.33%]', // card style 2 large
@@ -75,7 +76,7 @@ export function SnapSliderProducts(props: Props) {
             <div
               key={item.id}
               className={clsx(
-                `mySnapItem snap-start shrink-0 px-5`,
+                `mySnapItem snap-start shrink-0 py-3`,
                 cardStyle !== '2'
                   ? 'w-[17rem] lg:w-80 xl:w-[25%]'
                   : 'w-full sm:w-96 lg:w-[50%] xl:w-[33.33%]', // card style 2 large

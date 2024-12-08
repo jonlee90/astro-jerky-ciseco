@@ -30,15 +30,15 @@ Disallow: /64197427365/checkouts
 Disallow: /64197427365/orders
 Disallow: /carts
 Disallow: /account
-Disallow: /collections/*sort_by*
-Disallow: /*/collections/*sort_by*
-Disallow: /collections/*+*
-Disallow: /collections/*%2B*
-Disallow: /collections/*%2b*
-Disallow: /*/collections/*+*
-Disallow: /*/collections/*%2B*
-Disallow: /*/collections/*%2b*
-Disallow: */collections/*filter*&*filter*
+Disallow: /*sort_by*
+Disallow: /*/*sort_by*
+Disallow: /*+*
+Disallow: /*%2B*
+Disallow: /*%2b*
+Disallow: /*/*+*
+Disallow: /*/*%2B*
+Disallow: /*/*%2b*
+Disallow: */*filter*&*filter*
 Disallow: /blogs/*+*
 Disallow: /blogs/*%2B*
 Disallow: /blogs/*%2b*
@@ -57,8 +57,8 @@ Disallow: /search
 Disallow: /apple-app-site-association
 Disallow: /.well-known/shopify/monorail
 Disallow: /cdn/wpm/*.js
-Disallow: /recommendations/products
-Disallow: /*/recommendations/products
+Disallow: /recommendations/beef-jerky
+Disallow: /*/recommendations/beef-jerky
 ${sitemapUrl ? `Sitemap: ${sitemapUrl}` : ''}
 
 # Google adsbot ignores robots.txt unless specifically named!
@@ -89,15 +89,15 @@ Disallow: /64197427365/checkouts
 Disallow: /64197427365/orders
 Disallow: /carts
 Disallow: /account
-Disallow: /collections/*sort_by*
-Disallow: /*/collections/*sort_by*
-Disallow: /collections/*+*
-Disallow: /collections/*%2B*
-Disallow: /collections/*%2b*
-Disallow: /*/collections/*+*
-Disallow: /*/collections/*%2B*
-Disallow: /*/collections/*%2b*
-Disallow: */collections/*filter*&*filter*
+Disallow: /*sort_by*
+Disallow: /*/*sort_by*
+Disallow: /*+*
+Disallow: /*%2B*
+Disallow: /*%2b*
+Disallow: /*/*+*
+Disallow: /*/*%2B*
+Disallow: /*/*%2b*
+Disallow: */*filter*&*filter*
 Disallow: /blogs/*+*
 Disallow: /blogs/*%2B*
 Disallow: /blogs/*%2b*
@@ -116,8 +116,8 @@ Disallow: /search
 Disallow: /apple-app-site-association
 Disallow: /.well-known/shopify/monorail
 Disallow: /cdn/wpm/*.js
-Disallow: /recommendations/products
-Disallow: /*/recommendations/products
+Disallow: /recommendations/beef-jerky
+Disallow: /*/recommendations/beef-jerky
 ${sitemapUrl ? `Sitemap: ${sitemapUrl}` : ''}
 
 User-agent: AhrefsSiteAudit
@@ -132,15 +132,15 @@ Disallow: /64197427365/checkouts
 Disallow: /64197427365/orders
 Disallow: /carts
 Disallow: /account
-Disallow: /collections/*sort_by*
-Disallow: /*/collections/*sort_by*
-Disallow: /collections/*+*
-Disallow: /collections/*%2B*
-Disallow: /collections/*%2b*
-Disallow: /*/collections/*+*
-Disallow: /*/collections/*%2B*
-Disallow: /*/collections/*%2b*
-Disallow: */collections/*filter*&*filter*
+Disallow: /*sort_by*
+Disallow: /*/*sort_by*
+Disallow: /*+*
+Disallow: /*%2B*
+Disallow: /*%2b*
+Disallow: /*/*+*
+Disallow: /*/*%2B*
+Disallow: /*/*%2b*
+Disallow: */*filter*&*filter*
 Disallow: /blogs/*+*
 Disallow: /blogs/*%2B*
 Disallow: /blogs/*%2b*
@@ -159,8 +159,8 @@ Disallow: /search
 Disallow: /apple-app-site-association
 Disallow: /.well-known/shopify/monorail
 Disallow: /cdn/wpm/*.js
-Disallow: /recommendations/products
-Disallow: /*/recommendations/products
+Disallow: /recommendations/beef-jerky
+Disallow: /*/recommendations/beef-jerky
 ${sitemapUrl ? `Sitemap: ${sitemapUrl}` : ''}
 
 User-agent: MJ12bot

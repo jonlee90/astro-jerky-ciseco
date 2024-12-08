@@ -19,7 +19,7 @@ const BackButton: React.FC<BackButtonProps> = ({
   // Determine dynamic class based on navLink and pathname
   const buttonPosition = navLink === '/bundle'
     ? 'bottom-5'
-    : pathname.includes('/products/')
+    : pathname.includes('/beef-jerky/')
     ? 'top-5'
     : '';
 

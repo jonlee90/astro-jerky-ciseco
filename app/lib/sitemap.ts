@@ -137,10 +137,10 @@ export async function getSitemap(options: GetSiteMapOptions) {
         return renderUrlTag({
           getChangeFreq: options.getChangeFreq,
           url: getLink({
-            type: item.type ?? type,
+            type: item.type ?? type.replace('products', 'beef-jerky'),
             baseUrl,
             handle: item.handle,
-          }),
+          }).replace('/collections', ''),
           type,
           getLink,
           updatedAt: item.updatedAt,

@@ -28,7 +28,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
 
   const navItems = [
   { path: '/', label: 'Home', icon: IconHome },
-  { path: '/collections', link: '/collections/best-beef-jerky-flavors', label: 'Jerky', icon: IconJerky },
+  { path: '/collections', link: '/best-beef-jerky-flavors', label: 'Jerky', icon: IconJerky },
   { path: '/bundle', label: 'Bundle', icon: IconBundle },
   { path: '/rewards', label: 'Rewards', icon: IconReward, needsAuth: false },
 ];
@@ -39,7 +39,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
       return true;
     }  else if (item.path === pathname && pathname.includes(item.path)) {
       return true;
-    } else if (item.path === '/collections' && pathname.includes(item.path)) {
+    } else if (pathname.includes('jerky') && item.path != '/') {
       return true;
     } else {
       return false;
