@@ -48,10 +48,14 @@ export function Header({
     }
     prevScrollY.current = y;
   }, [y]);
+  const content = [
+    "FREE SHIPPING OVER $60",
+    "Buy 3 bags for $33",
+  ];
 
   return (
     <>
-      <AnnouncementBar content={`FREE SHIPPING ON $${FREE_SHIPPING_THRESHOLD} OR MORE`}/>
+      <AnnouncementBar content={content}/>
       {/*
         <MainNav openMenu={openMenu} openCart={openCart} isHome={isHome} />
       */}

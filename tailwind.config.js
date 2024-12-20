@@ -116,7 +116,16 @@ export default {
       },
       zIndex: {
         '100': '100',
-      }
+      },
+      keyframes: {
+        marqueeLeft: {
+          '0%': { transform: 'translate(0%)' },
+          '100%': { transform: 'translate(-50%)' },
+        }
+      },
+      animation: {
+        marqueeLeft: 'marqueeLeft 6.6s linear infinite forwards',
+      },
     },
   },
   plugins: [formsPlugin, typographyPlugin, aspectRatioPlugin],

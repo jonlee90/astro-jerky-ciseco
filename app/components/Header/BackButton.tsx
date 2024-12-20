@@ -20,7 +20,7 @@ const BackButton: React.FC<BackButtonProps> = ({
   const buttonPosition = navLink === '/bundle'
     ? 'bottom-5'
     : pathname.includes('/beef-jerky/')
-    ? 'top-5'
+    ? 'top-14'
     : '';
 
   return (

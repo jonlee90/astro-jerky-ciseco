@@ -46,7 +46,7 @@ export function ProductGallery({
 
           return (
             <div
-              className={`lg:col-span-1 aspect-square snap-center card-image w-[calc(100vw_-_2rem)] sm:w-[calc(80vw_-_2rem)] lg:w-full cursor-pointer relative group bg-gray-100 rounded-2xl`}
+              className={`lg:col-span-1 snap-center card-image w-[calc(100vw_-_2rem)] sm:w-[calc(80vw_-_2rem)] lg:w-full cursor-pointer relative group bg-gray-100 rounded-2xl`}
               key={med.id || image?.id}
               aria-hidden
             >
@@ -76,7 +76,7 @@ export function ProductGallery({
                 data={image}
                 aspectRatio="2/3"
                 sizes='(min-width: 48em) 60vw, 90vw'
-                className="object-cover rounded-2xl aspect-square fadeIn"
+                className="object-cover rounded-2xl fadeIn w-full"
               />
             </div>
           );
