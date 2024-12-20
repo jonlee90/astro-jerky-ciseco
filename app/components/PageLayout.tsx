@@ -37,27 +37,21 @@ export function PageLayout({
   return (
     <Aside.Provider>
       <CartAside cart={cart} />
-      <div className="flex flex-col min-h-screen">
-        <div className="">
-          <a href="#mainContent" className="sr-only">
-            Skip to content
-          </a>
-        </div>
+       
 
-        {header && (
-          <Header 
-            header={header}
-            cart={cart}
-            isLoggedIn={isLoggedIn} 
-            primaryDomainUrl={primaryDomainUrl}
-            publicStoreDomain={publicStoreDomain}
-          />
-        )}
+      {header && (
+        <Header 
+          header={header}
+          cart={cart}
+          isLoggedIn={isLoggedIn} 
+          primaryDomainUrl={primaryDomainUrl}
+          publicStoreDomain={publicStoreDomain}
+        />
+      )}
 
-        <main role="main" className="flex-grow">
-          {children}
-        </main>
-      </div>
+      <main role="main" className="flex-grow">
+        {children}
+      </main>
 
       <Footer 
         footer={footer}
@@ -76,7 +70,6 @@ function CartAside({cart}: {cart: LayoutProps['cart']}) {
       <Suspense fallback={<CartLoading />}>
         <Await resolve={cart} errorElement={<p>Error loading cart data</p>}>
           {(cartData) => {
-            if (!cartData) return <CartLoading />;
             return <CartMain layout='aside' cart={cartData} />;
           }}
         </Await>

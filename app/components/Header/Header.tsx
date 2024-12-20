@@ -13,6 +13,7 @@ import { useIsHydrated } from '~/hooks/useIsHydrated';
 import { useMediaQuery } from 'react-responsive';
 import useWindowScroll from './useWindowScroll';
 import BackButton from './BackButton';
+import { TopHeader } from './TopHeader';
 
 interface HeaderProps {
   header: HeaderMenuQuery;
@@ -55,15 +56,14 @@ export function Header({
         <MainNav openMenu={openMenu} openCart={openCart} isHome={isHome} />
       */}
       
-      <DesktopHeader 
+      <TopHeader 
             isLoggedIn={isLoggedIn}
             headerMenu={headerMenu}
             publicStoreDomain={publicStoreDomain}
             primaryDomainUrl={primaryDomainUrl}
-          />
-          
-    
-      {!isBundlePage && (<MobileHeader isBackButton={isBackButton} />)}
+            isBackButton={isBackButton} 
+            isBundlePage={isBundlePage}
+      />
       {isHydrated && (
         <>
           {isBackButton || isBundlePage  ? (

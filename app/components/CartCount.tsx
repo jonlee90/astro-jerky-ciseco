@@ -27,6 +27,7 @@ const Badge: React.FC<BadgeProps> = ({ openCart, count }) => {
       <>
         <IconCart className="size-8" />
         <div
+          aria-label={`Cart has ${count} item`}
           className='text-black bg-white absolute top-3 right-2.5 text-xs font-medium subpixel-antialiased size-4 flex items-center justify-center text-center rounded-full'
         >
           <span>{count || 0}</span>
@@ -40,6 +41,9 @@ const Badge: React.FC<BadgeProps> = ({ openCart, count }) => {
     <button
       onClick={openCart}
       className="relative flex items-center justify-center size-14 focus:ring-primary/5"
+      aria-controls="CartDrawer"
+      aria-label="View Cart"
+      role="button"
     >
       {BadgeCounter}
     </button>
@@ -64,7 +68,6 @@ export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity, s
           {(cart) => (
             <motion.div
               className={`border-black border rounded-full size-14  ${className} ${cart?.totalQuantity || showCart ? '' : 'hidden'}`}
-              onClick={() => open('cart')}
               style={{opacity}}
             >
               <motion.div

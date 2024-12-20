@@ -47,7 +47,9 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
   });
 
   return (
-    <div
+    <nav
+      role="navigation"
+      aria-label="Bottom Mobile Navigation"
       className="header-shadow overflow-hidden bottom-0 md:hidden fixed z-50 w-full h-[68px] bg-contrast/95 border-x border-b border-gray-300 pb-1 transform -translate-x-1/2 left-1/2"
       style={{ opacity }}
     >
@@ -62,12 +64,15 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
           // Skip rendering the fourth item since we handle it separately
           if (index === 3) return null;
           const urlPath = item.link ? item.link : item.path;
+          const isActive = index === activeItemIndex;
           return (
             <motion.div key={index} whileTap={{ scale: 0.95 }} className="col-span-1 relative">
               <Link
                 to={urlPath}
                 prefetch="intent"
                 className="inline-flex flex-col items-center justify-center w-full"
+                aria-label={`Navigate to ${item.label} page`}
+                aria-current={isActive ? 'page' : undefined}
               >
                 <item.icon />
                 <span className="text-xs">{item.label}</span>
@@ -83,6 +88,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
               to={isAuthenticated ? '/account' : '/rewards'}
               prefetch="none"
               className="inline-flex flex-col items-center justify-center"
+              aria-current={activeItemIndex == 3 ? 'page' : undefined}
             >
               <IconReward />
               <span className="text-xs">Rewards</span>
@@ -95,6 +101,9 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
           onClick={() => open('cart')}
           type="button"
           className="inline-flex flex-col relative items-center justify-center w-full col-span-1"
+          aria-controls="CartDrawer"
+          aria-label="View Cart"
+          role="button"
         >
               <IconCart className="w-8 h-8" color="black" />
               <span className="text-xs">Cart</span>
@@ -105,7 +114,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
               )}
         </motion.button>
       </div>
-    </div>
+    </nav>
   );
 };
 

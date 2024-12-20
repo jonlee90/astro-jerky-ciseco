@@ -18,6 +18,7 @@ const SocialsList: FC<SocialsListProps> = ({
   return (
     <nav
       className={`nc-SocialsList flex flex-wrap gap-2.5 text-2xl text-neutral-600 ${className}`}
+      aria-label='Footer Social Media links'
     >
       {data.map((item, i) => (
         <a
@@ -27,6 +28,7 @@ const SocialsList: FC<SocialsListProps> = ({
           target="_blank"
           rel="noopener noreferrer"
           title={item.name}
+          aria-label={`Follow us on ${item.name}`}
         >
           <span className="sr-only">{item.name}</span>
           {item.icon ? (

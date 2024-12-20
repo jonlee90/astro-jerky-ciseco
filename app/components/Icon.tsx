@@ -333,12 +333,12 @@ export function IconSpicyThree({size = 16}) {
 }
 export function IconDry({size = 16}) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24"><path fill="#000" d="M7 22a1 1 0 0 1-.117-1.993L7 20h2v-6a4 4 0 0 1-3.995-3.8L5 10V9a1 1 0 0 1 1.993-.117L7 9v1a2 2 0 0 0 1.85 1.995L9 12V5a3 3 0 0 1 5.995-.176L15 5v10a2 2 0 0 0 1.995-1.85L17 13V8a1 1 0 0 1 1.993-.117L19 8v5a4 4 0 0 1-3.8 3.995L15 17v3h2a1 1 0 0 1 .117 1.993L17 22z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Beef jerky dryness level" width={size} height={size} viewBox="0 0 24 24"><path fill="#000" d="M7 22a1 1 0 0 1-.117-1.993L7 20h2v-6a4 4 0 0 1-3.995-3.8L5 10V9a1 1 0 0 1 1.993-.117L7 9v1a2 2 0 0 0 1.85 1.995L9 12V5a3 3 0 0 1 5.995-.176L15 5v10a2 2 0 0 0 1.995-1.85L17 13V8a1 1 0 0 1 1.993-.117L19 8v5a4 4 0 0 1-3.8 3.995L15 17v3h2a1 1 0 0 1 .117 1.993L17 22z"/></svg>
    )
 }
 export function IconSpicy({size = 16}) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" className='inline-block' width={size} height={size} viewBox="0 0 256 256"><path fill="black" d="M167.27 40.42A40.06 40.06 0 0 0 128 8a8 8 0 0 0 0 16a24 24 0 0 1 22.85 16.66A64.08 64.08 0 0 0 96 104c0 46.75-25.75 78-76.53 93a16 16 0 0 0 1.77 31.13A265 265 0 0 0 66.75 232c40.78 0 86.16-9.15 117.53-35.46C210.64 174.44 224 143.3 224 104a64.07 64.07 0 0 0-56.73-63.58M192 95l-28.42-14.17a8 8 0 0 0-7.16 0L128 95l-13.37-6.68a48 48 0 0 1 90.74 0Z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Beef jerky spicy level" className='inline-block' width={size} height={size} viewBox="0 0 256 256"><path fill="black" d="M167.27 40.42A40.06 40.06 0 0 0 128 8a8 8 0 0 0 0 16a24 24 0 0 1 22.85 16.66A64.08 64.08 0 0 0 96 104c0 46.75-25.75 78-76.53 93a16 16 0 0 0 1.77 31.13A265 265 0 0 0 66.75 232c40.78 0 86.16-9.15 117.53-35.46C210.64 174.44 224 143.3 224 104a64.07 64.07 0 0 0-56.73-63.58M192 95l-28.42-14.17a8 8 0 0 0-7.16 0L128 95l-13.37-6.68a48 48 0 0 1 90.74 0Z"/></svg>
   )
 }
 export function IconChicken({size = 16}) {
@@ -374,6 +374,7 @@ export function IconPepper({size = 16}) {
 export function IconBbq({size = 16}) {
   return (
     <svg version="1.0" className='inline-block' xmlns="http://www.w3.org/2000/svg"
+       role="img" aria-label="Beef jerky sweetness level"
       width={size} height={size} viewBox="0 0 512.000000 512.000000"
       preserveAspectRatio="xMidYMid meet">
 

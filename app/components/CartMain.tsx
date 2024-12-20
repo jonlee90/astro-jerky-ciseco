@@ -32,7 +32,7 @@ export function CartMain({
       <CartEmpty hidden={linesCount}/>
 
 
-      <div className='grid grid-cols-1 h-screen-no-nav grid-rows-[auto_1fr_auto]'>
+      <div id="CartDrawer" className='grid grid-cols-1 h-screen-no-nav grid-rows-[auto_1fr_auto]'>
         <FreeShippingProgressBar totalAmount={parseFloat(cart?.cost?.totalAmount?.amount || '0')} />
           <section
             aria-labelledby="cart-contents"

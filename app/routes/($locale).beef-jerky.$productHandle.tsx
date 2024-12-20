@@ -36,7 +36,7 @@ import {RouteContent} from '~/sections/RouteContent';
 import {getSeoMeta} from '@shopify/hydrogen';
 import {getLoaderRouteFromMetaobject} from '~/utils/getLoaderRouteFromMetaobject';
 import { motion } from 'framer-motion';
-import { IconArrowRight, IconBbq, IconDry, IconFacebook, IconPepper, IconSpicy } from '~/components/Icon';
+import { IconArrowRight, IconBbq, IconCaret, IconDry, IconFacebook, IconPepper, IconSpicy } from '~/components/Icon';
 import { IconX } from '~/components/Icon';
 import { IconPinterest } from '~/components/Icon';
 import { convertToNumber } from '~/lib/utils';
@@ -280,7 +280,7 @@ if(!isHydrated) {
           setCurrentQuantity={setCurrentQuantity}
         />
       </motion.div>
-      <main className="2xl:max-w-screen-xl container sm-max:max-w-[640px]">
+      <div className="2xl:max-w-screen-xl container sm-max:max-w-[640px]">
         <div className="lg:flex">
           {/* Galleries */}
           <div className="w-full lg:w-[55%] relative">
@@ -341,7 +341,7 @@ if(!isHydrated) {
                       loading={'lazy'}
                       data={{
                         url: 'https://cdn.shopify.com/s/files/1/0641/9742/7365/files/pdp-1.jpg',
-                        altText: 'Beef Jerky Juicy'
+                        altText: 'Astro beef jerky next to ingredients like pepper, garlic, onion, and jalapeno'
                       }}
                       aspectRatio={undefined}
                       sizes='(min-width: 48em) 60vw, 90vw'
@@ -366,7 +366,7 @@ if(!isHydrated) {
                       loading={'lazy'}
                       data={{
                         url: 'https://cdn.shopify.com/s/files/1/0641/9742/7365/files/nutrition.jpg',
-                        altText: 'Beef Jerky Nutrition'
+                        altText: 'Astro Beef Jerky Nutrition Facts'
                       }}
                       aspectRatio={undefined}
                       sizes='(min-width: 48em) 60vw, 90vw'
@@ -417,7 +417,7 @@ if(!isHydrated) {
           />
         </div>
          */}
-      </main>
+      </div>
 
       {/* 3. Render the route's content sections */}
       <Suspense fallback={<div>Loading...</div>}>
@@ -493,28 +493,28 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
       <div className='mt-5  grid gap-7 2xl:gap-8'>
       {!!collectionObj && (
           <nav className="mb-4" aria-label="Breadcrumb">
-            <ol className="flex items-center space-x-2">
-              <li>
-                <div className="flex items-center text-sm">
-                  <Link
-                    to={'/'}
-                    className="font-medium text-gray-500 hover:text-gray-900"
-                  >
-                    Home
-                  </Link>
-                  <SlashIcon className="ml-2 h-5 w-5 flex-shrink-0 text-gray-300 " />
-                </div>
+            <ol className="flex items-center space-x-1">
+              <li className="flex items-center text-xs xl:text-sm">
+                <Link
+                  to={'/'}
+                  className="font-medium text-gray-500 hover:text-gray-900"
+                >
+                  Home
+                </Link>
+                <IconCaret direction='left' className="ml-2 h-5 w-5 flex-shrink-0 text-gray-300 " />
               </li>
-              <li>
-                <div className="flex items-center text-sm">
-                  <Link
-                    to={'/' + collectionObj.handle}
-                    className="font-medium text-gray-500 hover:text-gray-900"
-                  >
-                    {/* romove html on title */}
-                    {collectionObj.title.replace(/(<([^>]+)>)/gi, '')}
-                  </Link>
-                </div>
+              <li className="flex items-center text-xs xl:text-sm">
+                <Link
+                  to={'/' + collectionObj.handle}
+                  className="font-medium text-gray-500 hover:text-gray-900"
+                >
+                  {/* romove html on title */}
+                  {collectionObj.title.replace(/(<([^>]+)>)/gi, '')}
+                </Link>
+                <IconCaret direction='left' className="ml-2 h-5 w-5 flex-shrink-0 text-gray-300 " />
+              </li>
+              <li className="flex items-center text-xs xl:text-sm" aria-current="page">
+                {product.title}
               </li>
             </ol>
           </nav>

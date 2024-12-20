@@ -4,7 +4,8 @@ import {useEffect, useState} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import ButtonClose from './ButtonClose';
 import clsx from 'clsx';
-import {ViewfinderCircleIcon} from '@heroicons/react/24/outline';
+import {MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassPlusIcon, ViewfinderCircleIcon} from '@heroicons/react/24/outline';
+import { motion } from 'framer-motion';
 
 /**
  * A client component that defines a media gallery for hosting images, 3D models, and videos of products
@@ -47,24 +48,33 @@ export function ProductGallery({
             <div
               className={`lg:col-span-1 aspect-square snap-center card-image w-[calc(100vw_-_2rem)] sm:w-[calc(80vw_-_2rem)] lg:w-full cursor-pointer relative group bg-gray-100 rounded-2xl`}
               key={med.id || image?.id}
-              onClick={() => {
-                setOpenModal(true);
-                setActiveIndex(i);
-              }}
               aria-hidden
             >
-              <button
-                className="absolute z-10 top-3 left-3 w-8 h-8 text-neutral-900 dark:text-neutral-100 rounded-full border bg-white flex items-center justify-center group-hover:opacity-100 transition-opacity"
+              <motion.button
+                className="bg-white absolute z-10 bottom-5 right-5 size-10 variant-button flex text-center justify-center group-hover:opacity-100 transition-opacity"
                 type="button"
+                onClick={() => {
+                  setOpenModal(true);
+                  setActiveIndex(i);
+                }}
+                whileTap={{
+                  boxShadow: "none", // Removes box-shadow
+                  translateX: "1px", // Moves 1px to the right
+                  translateY: "1px", // Moves 1px down
+                  backgroundPosition: "left", // Changes background position to left
+                  transition: {
+                    duration: 0.05, // Applies a short transition
+                  },
+                }}
               >
                 <span className="sr-only">View image</span>
-                <ViewfinderCircleIcon className=" w-4 h-4" />
-              </button>
+                <MagnifyingGlassIcon className="mx-auto w-5 h-5" />
+              </motion.button>
 
               <Image
                 loading={i === 0 ? 'eager' : 'lazy'}
                 data={image}
-                aspectRatio={undefined}
+                aspectRatio="2/3"
                 sizes='(min-width: 48em) 60vw, 90vw'
                 className="object-cover rounded-2xl aspect-square fadeIn"
               />

@@ -32,33 +32,16 @@ const Footer: React.FC<FooterProps> = ({
   const renderWidgetMenu = (menu: ParentEnhancedMenuItem, index: number) => {
     return (
       <div key={index + menu.id} className="text-sm">
-        <NavLink key={index} to={getUrlAndCheckIfExternal(menu.url, publicStoreDomain, primaryDomainUrl)}  prefetch="intent">
-          <h2 className="font-semibold  hover:text-neutral-700">
+        <NavLink 
+          key={index} 
+          to={getUrlAndCheckIfExternal(menu.url, publicStoreDomain, primaryDomainUrl)}  
+          prefetch="intent"
+          aria-label={`Navigate to ${menu.title} page`}
+        >
+          <h2 className="font-semibold  hover:text-neutral-700  focus:ring-2 focus:ring-primary">
             {menu.title}
           </h2>
         </NavLink>
-        <ul className="mt-5 space-y-4">
-          {menu.items?.map((item: ChildEnhancedMenuItem, i) => (
-            <li
-              key={`${i + item.id}`}
-              className="text-neutral-600"
-            >
-              {item.to.startsWith('http') ? (
-                <a
-                  href={item.to}
-                  target={item.target}
-                  rel="noopener noreferrer"
-                >
-                  {item.title}
-                </a>
-              ) : (
-                <Link to={item.to} target={item.target} prefetch="intent">
-                  {item.title}
-                </Link>
-              )}
-            </li>
-          ))}
-        </ul>
       </div>
     );
   };
@@ -89,13 +72,13 @@ const Footer: React.FC<FooterProps> = ({
               className="!gap-5"
             />
           </div>
-          <div className="mt-16 flex flex-wrap justify-center gap-5">
-          <Suspense fallback={<></>}>
+          <nav role='navigation' aria-label='Footer Navigation' className="mt-16 flex flex-wrap justify-center gap-5">
+            <Suspense fallback={<></>}>
               <Await resolve={footer}>
                 {(footer) => footer?.footerMenu?.items?.map(renderWidgetMenu)}
               </Await>
             </Suspense>
-          </div>
+          </nav>
           <p className="mt-8 text-[13px] leading-5 md:order-1 md:mt-0">
             © {new Date().getFullYear()} Astro Fresh Jerky, LLC. All rights reserved.
           </p>
