@@ -22,7 +22,7 @@ const Logo: React.FC<LogoProps> = ({
   return (
     <Link
       to="/"
-      aria-label="Navigate to Astro Fresh Jerky Home page"
+      aria-label="Navigate to Home page"
       className={`ttnc-logo flex-shrink-0 inline-block text-slate-900 ${className}`}
     >
       {shop.brand?.logo?.image?.url ? (

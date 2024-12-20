@@ -8,6 +8,7 @@ import CollectionItem, {
   CollectionItemSkeleton,
   type TMyCommonCollectionItem,
 } from '~/components/CollectionItem';
+import NextPrev from '~/components/NextPrev/NextPrev';
 
 export function SectionCollectionsSlider(
   props: SectionCollectionsSliderFragment,
@@ -60,7 +61,7 @@ export const CollectionSlider = ({
   return (
     <div className={`nc-DiscoverMoreSlider `}>
       <Heading
-        className="mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 container"
+        className="mb-12 mx-3 lg:mb-14 text-neutral-900 dark:text-neutral-50"
         desc={sub_heading || ''}
         rightDescText={heading_light || ''}
         hasNextPrev
@@ -70,7 +71,8 @@ export const CollectionSlider = ({
       >
         {heading_bold || ''}
       </Heading>
-      <div className="">
+      <div className="relative">
+    
         <div
           ref={sliderRef}
           className="relative w-full flex gap-4 lg:gap-8 snap-x snap-mandatory overflow-x-auto scroll-p-l-container hiddenScrollbar"

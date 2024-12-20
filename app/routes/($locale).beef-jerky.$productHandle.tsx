@@ -269,6 +269,8 @@ if(!isHydrated) {
         initial={{ y: '100%' }}
         animate={showBottomAddToCartButton ? { y: 0, opacity: 1 } : { y: '100%', opacity: 0 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
+        tabIndex={-1} // Make it focusable
+        aria-hidden={!showBottomAddToCartButton} // Hide from screen readers when not visible
         className={`fixed w-full lg:hidden z-20 ${isBackButton ? 'bottom-0' : 'bottom-16'}`}
       >
         <BottomAddToCartButton
@@ -283,7 +285,9 @@ if(!isHydrated) {
       <div className="2xl:max-w-screen-xl container sm-max:max-w-[640px]">
         <div className="lg:flex">
           {/* Galleries */}
-          <div className="w-full lg:w-[55%] relative">
+          <section 
+            aria-label="Product images"
+            className="w-full lg:w-[55%] relative">
             {media?.nodes?.length > 0 ? (
             <ProductGallery
               media={media.nodes}
@@ -298,10 +302,12 @@ if(!isHydrated) {
               className="absolute top-3 end-3 z-10 !w-10 !h-10"
             />
             */}
-          </div>
+          </section>
 
           {/* Product Details */}
-          <div className="w-full lg:w-[45%] pt-10 lg:pt-0 lg:pl-7 xl:pl-9 2xl:pl-10">
+          <section 
+            aria-label="Product Details"
+            className="w-full lg:w-[45%] pt-10 lg:pt-0 lg:pl-7 xl:pl-9 2xl:pl-10">
             <div className="sticky top-10 grid gap-8">
               
               <Suspense fallback={<div>Loading...</div>}>
@@ -327,7 +333,8 @@ if(!isHydrated) {
 
           {/* Product description */}
               {!!descriptionHtml && (
-                <div 
+                <section 
+                  aria-label="Product description"
                   className="grid gap-7 2xl:gap-8 description-container">
                   <h2 className="text-2xl font-semibold">Product Details</h2>
                   <div
@@ -348,17 +355,22 @@ if(!isHydrated) {
                       className="object-cover rounded-2xl fadeIn"
                     />
                   </div>
-                </div>
+                </section>
               )}
 
-              <SocialSharing selectedVariant={selectedVariant} />
-
+              <section
+                  aria-label="Share this product in social media" >
+                <SocialSharing 
+                  selectedVariant={selectedVariant} 
+                />
+              </section>
               
               {/*  */}
               <hr className=" border-slate-200 dark:border-slate-700 mt-3"></hr>
               {/*  */}
               
-                <div 
+                <section 
+                  aria-label="Nutrition facts"
                   className="grid gap-7 2xl:gap-8 description-container">
                   <h2 className="text-2xl font-semibold">NUTRITIONS</h2>
                   <div>
@@ -373,11 +385,11 @@ if(!isHydrated) {
                       className="object-cover rounded-2xl w-full h-full fadeIn"
                     />
                   </div>
-                </div>
+                </section>
               
 
             </div>
-          </div>
+          </section>
         </div>
 
         <hr className="border-slate-200 dark:border-slate-700 my-8" />
@@ -395,14 +407,15 @@ if(!isHydrated) {
               resolve={recommended}
             >
               {(products) => (
-                <>
+                <section
+                    aria-label="You might also like these Beef Jerky">
                   <SnapSliderProducts
                     heading_bold={'YOU MIGHT ALSO LIKE'}
                     products={products.nodes.filter(node => !node.tags.includes('bundle'))}
                     className=""
                     headingFontClass="text-2xl font-semibold"
                   />
-                </>
+                </section>
               )}
             </Await>
           </Suspense>
@@ -498,6 +511,7 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
                 <Link
                   to={'/'}
                   className="font-medium text-gray-500 hover:text-gray-900"
+                  aria-label="Navigate to Home page"
                 >
                   Home
                 </Link>
@@ -507,6 +521,7 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
                 <Link
                   to={'/' + collectionObj.handle}
                   className="font-medium text-gray-500 hover:text-gray-900"
+                  aria-label={`Go to ${collectionObj.title.replace(/(<([^>]+)>)/gi, '')}`}
                 >
                   {/* romove html on title */}
                   {collectionObj.title.replace(/(<([^>]+)>)/gi, '')}
@@ -550,6 +565,7 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
                   quantity === currentQuantity ? 'variant-button-pressed': '',
                 )}
                 onClick={() => setCurrentQuantity(quantity)}
+                aria-label={`Select ${quantity} ${quantity === 1 ? 'bag' : 'bags'}`}
               >
                 {title}
               </motion.button>
@@ -657,6 +673,7 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
                 {({open, close}) => (
                   <div className="popover-container">
                     <Popover.Button
+                      aria-label="Quantity update"
                       className={clsx(
                         `flex gap-2 flex-shrink-0 items-center pdp-quantity-button justify-center  h-[56px] py-2 text-sm border border-black bg-white w-full outline-none`,
                          open

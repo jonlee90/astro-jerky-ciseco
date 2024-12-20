@@ -35,8 +35,9 @@ export function CollectionPage() {
       )}
     >
       <div className="md:container">
-        <div className="space-y-14 lg:space-y-24">
-          <div className="container">
+          <section 
+            aria-label={`Total ${totalProducts} jerkies in ${collection.title.replace(/(<([^>]+)>)/gi, "")}`}
+            className="container">
             <div className="grid grid-cols-6 items-center text-sm font-medium gap-2 text-neutral-500 mb-2">
               <div className="col-span-2 flex">
                 <span className="text-neutral-700 ml-1">
@@ -56,8 +57,10 @@ export function CollectionPage() {
               hasBreadcrumb={false}
               breadcrumbText={collection.title}
             />
-          </div>
-          <div className="!mt-8 !lg:mt-14">
+          </section>
+          <section 
+            aria-label={`Product filter and list of products`}
+            className="!mt-8 !lg:mt-14">
             <ProductFilterHiddenScrollBar
               collectionHandle={collection.handle}
             />
@@ -70,8 +73,7 @@ export function CollectionPage() {
             ) : (
               <Empty />
             )}
-          </div>
-        </div>
+          </section>
       </div>
 
       <Suspense fallback={<div className="h-32" />}>
