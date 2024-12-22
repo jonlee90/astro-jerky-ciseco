@@ -24,8 +24,13 @@ export function ProductsGrid({
         'grid sm:grid-cols-2 lg:grid-cols-3 gap-x-28 gap-y-10 mx-5',
         className,
       )}
+      id="product-grid"
+      tabIndex={-1}
+      aria-describedby="product-grid-description"
     >
-
+      <p id="product-grid-description" className="sr-only">
+        Use Tab to navigate through the products.
+      </p>
       {nodes?.map((product, i) => {
           return (
             <motion.div
@@ -46,6 +51,7 @@ export function ProductsGrid({
               viewport={{ once: true, amount: 0 }}
             >
               <ProductCard
+                tabIndex={-1}
                 product={product}
                 loading={getImageLoadingPriority(i)}
                 variantKey={variantKey}
@@ -54,12 +60,6 @@ export function ProductsGrid({
             </motion.div>
           );
         })}
-        <section aria-label="Collection Description" className=' sm:col-span-2 lg:col-span-3 mt-10'>
-          <h3>High Protein {collection.title}</h3>
-          <p className="block mt-4 text-neutral-500 dark:text-neutral-400 text-sm sm:text-base">
-            {collection.description}
-          </p>
-        </section>
     </div>
   );
 }

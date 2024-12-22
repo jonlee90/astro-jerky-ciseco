@@ -13,19 +13,21 @@ export function AnnouncementBar({ content = [] }: AnnouncementBarProps) {
     <div
       role="region"
       aria-label="Announcement Bar"
-      className="flex items-center header-shadow overflow-hidden bg-yellow-400 text-black h-12 sticky z-[96] top-0 mb-[3px]"
+      className="flex items-center header-shadow justify-center overflow-hidden bg-yellow-400 text-black h-12 sticky z-[96] top-0 mb-[3px]"
     >
-      <div className="flex whitespace-nowrap animate-marqueeLeft">
+      <div className="flex whitespace-nowrap sm-max:animate-marqueeLeft">
         {content.map((message, index) => (
-          <span key={index} className="px-10 font-bold uppercase text-sm">
+          index === 0 && <span key={index} className="px-10 font-bold uppercase text-sm">
             {message}
           </span>
         ))}
-        {/* Duplicate messages for seamless looping */}
-        {content.map((message, index) => (
+        {/* Loop messages 8 times for seamless looping */}
+      {Array.from({ length: 8 })
+        .flatMap(() => content)
+        .map((message, index) => (
           <span
-            key={`duplicate-${index}`}
-            className="px-10 font-bold uppercase text-sm"
+            key={`loop-${index + 1}`}
+            className="px-10 font-bold uppercase text-sm md:hidden"
             aria-hidden="true"
           >
             {message}

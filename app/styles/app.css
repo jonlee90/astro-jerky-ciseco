@@ -748,6 +748,12 @@ shop-pay-button {
 .font-RobotoSlabRegular {
   font-family: RobotoSlabRegular;
 }
+.font-JosefinSansRegular {
+  font-family: JosefinSansRegular;
+}
+.font-AlfaSlabOne {
+  font-family: AlfaSlabOne;
+}
 .pointer-bg {
   vertical-align: middle;
   display: inline-block;
@@ -800,4 +806,11 @@ a.disabled {
 
 .pdp-container {
   padding: 0 1rem;
+}
+
+.cursor-right {
+  cursor: url('https://cdn.shopify.com/s/files/1/0641/9742/7365/files/right-arrow-yellow.svg?v=1734812691') 38 38, auto;
+}
+.cursor-left {
+  cursor: url('https://cdn.shopify.com/s/files/1/0641/9742/7365/files/left-arrow-yellow.svg?v=1734812691') 38 38, auto;
 }

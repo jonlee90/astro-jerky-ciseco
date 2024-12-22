@@ -9,9 +9,10 @@ import { Empty } from "~/components/Empty";
 import { SwitchTab } from "~/components/Tabs";
 import ProductFilterHiddenScrollBar from "~/components/ProductFilterHiddenScrollBar";
 import { RouteContent } from "~/sections/RouteContent";
+import { loadCollectionData } from "~/utils/collectionLoader";
 
 export function CollectionPage() {
-  const { collection, routePromise } = useLoaderData<typeof loader>();
+  const { collection, routePromise } = useLoaderData<typeof loadCollectionData>();
 
   const noResults = !collection.products.nodes.length;
   const [isSmall, setIsSmall] = useState(false);
@@ -29,52 +30,68 @@ export function CollectionPage() {
 
   return (
     <div
-      className={clsx(
-        "nc-PageCollection pt-8 lg:pt-14 pb-20 lg:pb-28 xl:pb-32",
-        "space-y-20 sm:space-y-24 lg:space-y-28"
-      )}
+      className="nc-PageCollection pt-8 lg:pt-14 pb-20 lg:pb-28 md:container"
     >
-      <div className="md:container">
-          <section 
-            aria-label={`Total ${totalProducts} jerkies in ${collection.title.replace(/(<([^>]+)>)/gi, "")}`}
-            className="container">
-            <div className="grid grid-cols-6 items-center text-sm font-medium gap-2 text-neutral-500 mb-2">
-              <div className="col-span-2 flex">
-                <span className="text-neutral-700 ml-1">
-                  {totalProducts} Jerkies
-                </span>
-              </div>
-              <div className="flex col-span-4 ml-auto">
-                <SwitchTab
-                  isSmall={isSmall}
-                  onToggle={(val: string) => onToggle(val)}
-                  className="justify-self-end"
-                />
-              </div>
-            </div>
-            <PageHeader
-              title={collection.title.replace(/(<([^>]+)>)/gi, "")}
-              hasBreadcrumb={false}
-              breadcrumbText={collection.title}
+      <section 
+        aria-labelledby="collection-title"
+        className="container"
+      >
+        <p className="sr-only">{`Collection contains ${totalProducts} products.`}</p>
+        <div className="grid grid-cols-6 items-center text-sm font-medium gap-2 text-neutral-500 mb-8">
+          <div className="col-span-2 flex">
+            <span className="text-neutral-700 ml-1">
+              {totalProducts} Jerkies
+            </span>
+          </div>
+          <div className="flex col-span-4 ml-auto">
+            <SwitchTab
+              isSmall={isSmall}
+              onToggle={(val: string) => onToggle(val)}
+              className="justify-self-end"
             />
-          </section>
-          <section 
-            aria-label={`Product filter and list of products`}
-            className="!mt-8 !lg:mt-14">
-            <ProductFilterHiddenScrollBar
-              collectionHandle={collection.handle}
-            />
-            {!noResults ? (
-              <ProductsGrid
-                nodes={currentProducts}
-                isSmall={isSmall}
-                collection={collection}
-              />
-            ) : (
-              <Empty />
-            )}
-          </section>
-      </div>
+          </div>
+        </div>
+        <h1 
+          id="collection-title"
+          className="block text-3xl sm:text-4xl font-semibold capitalize"
+        >
+          {collection.title.replace(/(<([^>]+)>)/gi, "")}
+        </h1>
+      </section>
+
+      <ProductFilterHiddenScrollBar
+          collectionHandle={collection.handle}
+        />
+
+      <section 
+        aria-labelledby="product-list"
+        role="region"
+      >
+        <h2 id="product-list" className="sr-only">List of Products</h2>
+        <div aria-live="polite" aria-atomic="true" className="sr-only">
+          {noResults
+            ? "No products available."
+            : `Displaying ${totalProducts} products.`}
+        </div>
+        {!noResults ? (
+          <ProductsGrid
+            nodes={currentProducts}
+            isSmall={isSmall}
+            collection={collection}
+          />
+        ) : (
+          <Empty />
+        )}
+      </section>
+      
+      <section 
+        aria-labelledby="page-description"
+        className=' sm:col-span-2 lg:col-span-3 mx-5 mt-20 lg:mt-28'>
+        <h2 id="page-description">High Protein {collection.title}</h2>
+        <p className="block mt-4 text-neutral-500 dark:text-neutral-400 text-sm sm:text-base">
+          {collection.description}
+        </p>
+      </section>
 
       <Suspense fallback={<div className="h-32" />}>
         <Await

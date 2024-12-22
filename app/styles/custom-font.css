@@ -8,6 +8,11 @@
   font-weight: 400;
   src: url('./fonts/JosefinSans-Regular.ttf');
 }
+@font-face {
+  font-family: AlfaSlabOne;
+  font-weight: 400;
+  src: url('./fonts/AlfaSlabOne-Regular.ttf');
+}
 
 :root {
   --font-display: RobotoSlabRegular;

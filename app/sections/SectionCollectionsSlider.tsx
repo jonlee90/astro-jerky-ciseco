@@ -9,6 +9,7 @@ import CollectionItem, {
   type TMyCommonCollectionItem,
 } from '~/components/CollectionItem';
 import NextPrev from '~/components/NextPrev/NextPrev';
+import NextPrevDesktop from '~/components/NextPrev/NextPrevDesktop';
 
 export function SectionCollectionsSlider(
   props: SectionCollectionsSliderFragment,
@@ -64,9 +65,6 @@ export const CollectionSlider = ({
         className="mb-12 mx-3 lg:mb-14 text-neutral-900 dark:text-neutral-50"
         desc={sub_heading || ''}
         rightDescText={heading_light || ''}
-        hasNextPrev
-        onClickNext={scrollToNextSlide}
-        onClickPrev={scrollToPrevSlide}
         fontClass={headingFontClass}
       >
         {heading_bold || ''}
@@ -100,6 +98,7 @@ export const CollectionSlider = ({
                 </div>
               ))}
         </div>
+        <NextPrevDesktop onClickNext={scrollToNextSlide} onClickPrev={scrollToPrevSlide} />
       </div>
     </div>
   );

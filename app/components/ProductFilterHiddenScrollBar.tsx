@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IconBbq, IconChicken, IconPepper, IconSpicy } from './Icon';
+import { IconBbq, IconChicken, IconCow, IconPepper, IconSpicy, IconStar } from './Icon';
 import NavItem from './NavItem';
 import Nav from './Nav';
 import { Link } from './Link';
@@ -31,6 +31,11 @@ const ProductFilterHiddenScrollBar = ({collectionHandle}: any) => {
       label: "Pepppered",
       value: "peppered-beef-jerky",
       icon: IconPepper,
+    },
+    {
+      label: "Original",
+      value: "original-beef-jerky",
+      icon: IconCow,
     }
   ];
   const filterRef = useRef<HTMLDivElement>(null); // Ref for the filter component
@@ -57,10 +62,13 @@ const ProductFilterHiddenScrollBar = ({collectionHandle}: any) => {
   }, [isSticky]);
   
   return (
-      <div
-      ref={filterRef}
-      className={clsx(isSticky ? "sticky-filter md:relative" : "")}
-   >
+      <section
+        aria-labelledby="product-filter-section"
+        role='region'
+        ref={filterRef}
+        className={clsx(isSticky ? "sticky-filter md:relative" : "", 'mt-8 lg:mt-14 md:z-50')}
+      >
+        <h2 id="product-filter-section" className="sr-only">Product Filters</h2>
         <Nav
           className="p-1 productFilterHiddenScrollBar px-2 overflow-x-auto hiddenScrollbar w-full justify-start md:w-auto md:rounded-full"
           containerClassName="mb-12 lg:mb-14 relative flex w-full text-sm md:text-base md:justify-center"
@@ -86,7 +94,7 @@ const ProductFilterHiddenScrollBar = ({collectionHandle}: any) => {
               </NavItem>
           ))}
         </Nav>
-      </div>
+      </section>
   );
 };
 

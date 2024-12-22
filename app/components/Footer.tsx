@@ -79,7 +79,7 @@ const Footer: React.FC<FooterProps> = ({
               </Await>
             </Suspense>
           </nav>
-          <p className="mt-8 text-[13px] leading-5 md:order-1 md:mt-0">
+          <p className="mt-8 text-[13px] leading-5 md:order-1">
             © {new Date().getFullYear()} Astro Fresh Jerky, LLC. All rights reserved.
           </p>
         </div>

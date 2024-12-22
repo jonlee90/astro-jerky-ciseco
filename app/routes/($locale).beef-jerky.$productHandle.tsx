@@ -47,6 +47,7 @@ import { Popover, Transition } from '@headlessui/react';
 import { CartCount } from '~/components/CartCount';
 import { useIsHydrated } from '~/hooks/useIsHydrated';
 import LevelIndicator from '~/components/LevelIndicator';
+import HeroSlider from '~/components/HeroSlider';
 
 export const headers = routeHeaders;
 
@@ -99,6 +100,7 @@ async function loadCriticalData(args: LoaderFunctionArgs) {
   if (!product?.id) {
     throw new Response('product', {status: 404});
   }
+
 
   const firstVariant = product.variants.nodes[0];
   const firstVariantIsDefault = Boolean(
@@ -282,8 +284,10 @@ if(!isHydrated) {
           setCurrentQuantity={setCurrentQuantity}
         />
       </motion.div>
-      <div className="2xl:max-w-screen-xl container sm-max:max-w-[640px]">
-        <div className="lg:flex">
+        <div 
+          aria-label='Product section'
+          className="lg:flex 2xl:max-w-screen-xl mx-auto container sm-max:max-w-[640px]"
+          >
           {/* Galleries */}
           <section 
             aria-label="Product images"
@@ -334,7 +338,7 @@ if(!isHydrated) {
           {/* Product description */}
               {!!descriptionHtml && (
                 <section 
-                  aria-label="Product description"
+                  aria-label="Product Details"
                   className="grid gap-7 2xl:gap-8 description-container">
                   <h2 className="text-2xl font-semibold">Product Details</h2>
                   <div
@@ -343,18 +347,16 @@ if(!isHydrated) {
                       __html: descriptionHtml || '',
                     }}
                   />
-                  <div>
-                    <Image
-                      loading={'lazy'}
-                      data={{
-                        url: 'https://cdn.shopify.com/s/files/1/0641/9742/7365/files/pdp-1.jpg',
-                        altText: 'Astro beef jerky next to ingredients like pepper, garlic, onion, and jalapeno'
-                      }}
-                      aspectRatio={undefined}
-                      sizes='(min-width: 48em) 60vw, 90vw'
-                      className="object-cover rounded-2xl fadeIn"
-                    />
-                  </div>
+                  <Image
+                    loading={'lazy'}
+                    data={{
+                      url: 'https://cdn.shopify.com/s/files/1/0641/9742/7365/files/pdp-1.jpg',
+                      altText: 'Astro beef jerky next to ingredients like pepper, garlic, onion, and jalapeno'
+                    }}
+                    aspectRatio={undefined}
+                    sizes='(min-width: 48em) 60vw, 90vw'
+                    className="object-cover rounded-2xl fadeIn"
+                  />
                 </section>
               )}
 
@@ -366,9 +368,9 @@ if(!isHydrated) {
               </section>
               
               {/*  */}
-              <hr className=" border-slate-200 dark:border-slate-700 mt-3"></hr>
               {/*  */}
-              
+              {/*
+              <hr className=" border-slate-200 dark:border-slate-700 mt-3"></hr>
                 <section 
                   aria-label="Nutrition facts"
                   className="grid gap-7 2xl:gap-8 description-container">
@@ -386,7 +388,7 @@ if(!isHydrated) {
                     />
                   </div>
                 </section>
-              
+               */}
 
             </div>
           </section>
@@ -394,12 +396,13 @@ if(!isHydrated) {
 
         <hr className="border-slate-200 dark:border-slate-700 my-8" />
         {/* DETAIL AND REVIEW */}
-        <div className="space-y-12 sm:space-y-16">
 
 
           
 
 
+        <section
+          aria-label="You might also like these list of Beef Jerkies">
           {/* OTHER SECTION */}
           <Suspense fallback={<Skeleton className="h-32" />}>
             <Await
@@ -407,19 +410,16 @@ if(!isHydrated) {
               resolve={recommended}
             >
               {(products) => (
-                <section
-                    aria-label="You might also like these Beef Jerky">
                   <SnapSliderProducts
                     heading_bold={'YOU MIGHT ALSO LIKE'}
                     products={products.nodes.filter(node => !node.tags.includes('bundle'))}
-                    className=""
-                    headingFontClass="text-2xl font-semibold"
+                    className=''
+                    headingFontClass="text-2xl lg:text-4xl font-semibold"
                   />
-                </section>
               )}
             </Await>
           </Suspense>
-        </div>
+        </section>
         
         {/* ---------- 6 ---------- 
         <div>
@@ -430,7 +430,6 @@ if(!isHydrated) {
           />
         </div>
          */}
-      </div>
 
       {/* 3. Render the route's content sections */}
       <Suspense fallback={<div>Loading...</div>}>
@@ -473,7 +472,6 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
 
 
   const location = useLocation();
-  const { collection } = location.state || {};
   /**
    * Likewise, we're defaulting to the first variant for purposes
    * of add to cart if there is none returned from the loader.
@@ -481,7 +479,8 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
    */
   const selectedVariant = product.selectedVariant!;
   const isOutOfStock = !selectedVariant?.availableForSale;
-
+/*
+  const { collection } = location.state || {};
   const status = getProductStatus({
     availableForSale: selectedVariant.availableForSale,
     compareAtPriceRangeMinVariantPrice:
@@ -489,7 +488,7 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
     priceRangeMinVariantPrice: selectedVariant.price,
     size: selectedVariant.title
   });
-
+*/
   const variantsByQuantity = [];
   for(let i = 1; i < 4; i++) {
     const quantity = i > 1 ? 3 * (i - 1) : i;
@@ -498,13 +497,13 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
       title: 'Buy ' + quantity + ' Bag' + (i > 1 ? 's' : '')
     });
   }
-  const collectionObj = collection ? collection : {handle: 'best-beef-jerky-flavors', title: 'Our Best Beef Jerky Flavors'};
+  //const collectionObj = collection ? collection : {handle: 'best-beef-jerky-flavors', title: 'Our Best Beef Jerky Flavors'};
 
   return (
     <>
       {/* ---------- HEADING ----------  */}
       <div className='mt-5  grid gap-7 2xl:gap-8'>
-      {!!collectionObj && (
+      {/*!!collectionObj && (
           <nav className="mb-4" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-1">
               <li className="flex items-center text-xs xl:text-sm">
@@ -523,7 +522,6 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
                   className="font-medium text-gray-500 hover:text-gray-900"
                   aria-label={`Go to ${collectionObj.title.replace(/(<([^>]+)>)/gi, '')}`}
                 >
-                  {/* romove html on title */}
                   {collectionObj.title.replace(/(<([^>]+)>)/gi, '')}
                 </Link>
                 <IconCaret direction='left' className="ml-2 h-5 w-5 flex-shrink-0 text-gray-300 " />
@@ -533,10 +531,11 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
               </li>
             </ol>
           </nav>
-        )}
+        )*/}
         <h1
           className="text-4xl sm:text-5xl font-bold"
           title={product.title}
+          aria-label={`Product title: ${product.title} (${selectedVariant.title})`}
         >
             {product.title + ' (' + selectedVariant.title + ')'}
         </h1>
@@ -555,7 +554,11 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
 
       <div className='grid gap-7 2xl:gap-8'>
         
-        <div className="grid grid-cols-3 items-center gap-1 mb-4 xs:gap-3">
+        <div 
+          className="grid grid-cols-3 items-center gap-1 mb-4 xs:gap-3"
+          role="group"
+          aria-label="Select quantity"
+        >
           {
             variantsByQuantity.map(({quantity, title}, i) => (
               <motion.button
@@ -566,6 +569,7 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
                 )}
                 onClick={() => setCurrentQuantity(quantity)}
                 aria-label={`Select ${quantity} ${quantity === 1 ? 'bag' : 'bags'}`}
+                aria-pressed={quantity === currentQuantity}
               >
                 {title}
               </motion.button>
@@ -575,14 +579,16 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
         {selectedVariant && (
           <div className="items-stretch gap-4">
             {isOutOfStock ? (
-              <ButtonSecondary disabled>
+              <ButtonSecondary disabled aria-disabled="true" aria-label="Sold out">
                 <NoSymbolIcon className="w-5 h-5" />
                 <span className="ms-2">Sold out</span>
               </ButtonSecondary>
             ) : (
               <div 
                 ref={addToCartButtonRef}
-                className="grid items-stretch gap-4">
+                className="grid items-stretch gap-4"
+                role="region"
+                aria-label="Add to cart section">
                 <AddToCartButton3d
                     isSmallButton={false}
                     selectedVariant={selectedVariant}
@@ -659,7 +665,7 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
       className='w-full z-50'
     >
       {isOutOfStock ? (
-        <ButtonSecondary disabled>
+        <ButtonSecondary disabled aria-disabled="true" aria-label="Sold out">
           <NoSymbolIcon className="w-5 h-5" />
           <span className="ms-2">Sold out</span>
         </ButtonSecondary>
@@ -674,6 +680,8 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
                   <div className="popover-container">
                     <Popover.Button
                       aria-label="Quantity update"
+                      aria-expanded={open}
+                      aria-controls="quantity-menu"
                       className={clsx(
                         `flex gap-2 flex-shrink-0 items-center pdp-quantity-button justify-center  h-[56px] py-2 text-sm border border-black bg-white w-full outline-none`,
                          open
@@ -696,12 +704,18 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
                     >
                       <Popover.Panel 
                         className="popover-panel absolute z-40 mb-3 bottom-14 right-0 sm:px-0"
+                        id="quantity-menu"
+                        role="menu"
                       >
                         <div className="overflow-hidden">
                           <div className="relative flex flex-col">
                             {variantsByQuantity.map(({title, quantity}, key) => (
                                 <motion.button
                                   key={key}
+                                  role="menuitem"
+                                  aria-label={`Select ${quantity} ${
+                                    quantity === 1 ? 'bag' : 'bags'
+                                  }`}
                                   className='items-center justify-center  h-[50px] py-2 text-sm w-full border border-black mt-1 shadow-xl bg-white'
                                   onClick={() => {
                                     setCurrentQuantity(quantity);
@@ -782,21 +796,27 @@ const SocialSharing = ({selectedVariant}: {selectedVariant: any}) => {
       <Link 
         className={linkStyle}
         target="_blank"
+        rel="noopener noreferrer"
         to={`https://www.facebook.com/sharer.php?u=${productLink}`}
+        aria-label={`Share ${productTitle} on Facebook`}
         >
         <IconFacebook />
         <span>Share</span>
       </Link>
       <Link className={linkStyle}
         target="_blank"
+        rel="noopener noreferrer"
         to={`https://x.com/intent/post?text=${twitterText}`}
+        aria-label={`Tweet about ${productTitle} on X`}
       >
         <IconX />
         <span>Tweet</span>
       </Link>
       <Link className={linkStyle}
         target="_blank"
+        rel="noopener noreferrer"
         to={`https://pinterest.com/pin/create/button/?url=${pinText}`}
+        aria-label={`Pin ${productTitle} on Pinterest`}
       >
         <IconPinterest />
         <span>Pin it</span>

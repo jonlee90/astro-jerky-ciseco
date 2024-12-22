@@ -166,8 +166,6 @@ export function Layout({children}: {children?: React.ReactNode}) {
   const nonce = useNonce();
   const data = useRouteLoaderData<RootLoader>('root');
   const locale = data?.selectedLocale ?? DEFAULT_LOCALE;
-  const navigation = useNavigation();
-  const isLoading = navigation.state === "loading";
   
   return (
     <html lang={locale.language}>

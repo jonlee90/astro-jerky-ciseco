@@ -65,7 +65,7 @@ export type CisecoSectionType =
 
 export function Sections({
   sections,
-  className = 'space-y-20 sm:space-y-24 lg:space-y-28 xl:space-y-32',
+  className = 'space-y-20 sm:space-y-24 lg:space-y-28 xl:space-y-32 max-w-screen-xl mx-auto',
   paddingTopPx,
   ...args
 }: SectionProps) {

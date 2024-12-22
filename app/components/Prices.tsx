@@ -20,7 +20,9 @@ const Prices: FC<PricesProps> = ({
   withoutTrailingZeros,
 }) => {
   return (
-    <div className={`${className}`}>
+    <div
+      aria-label={`Price: ${price?.amount}`} 
+      className={`${className}`}>
       <div
         className={`flex text-lead items-center ${contentClass}`}
       >

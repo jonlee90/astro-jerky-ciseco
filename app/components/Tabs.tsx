@@ -20,7 +20,9 @@ export function SwitchTab({
   const buttonStyle = 'py-1 items-center rounded-full disabled:opacity-50 disabled:pointer-events-none';
 
   return (
-    <div className={`toggle-switch relative rounded-full w-48 grid-cols-2 text-sm ${className}`}>
+    <div 
+      aria-label='Toggle button for Big bags and Small Bags'
+      className={`toggle-switch relative rounded-full w-48 grid-cols-2 text-sm ${className}`}>
       <div className="absolute inset-0 flex">
         <motion.div
           className={clsx(bgColor, 'absolute top-0 bottom-0 rounded-full')}

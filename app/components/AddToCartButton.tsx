@@ -32,6 +32,7 @@ export function AddToCartButton({
             type="submit"
             onClick={onClick}
             disabled={disabled ?? fetcher.state !== 'idle'}
+            aria-label={`Add item to cart`}
           >
             {children}
           </button>

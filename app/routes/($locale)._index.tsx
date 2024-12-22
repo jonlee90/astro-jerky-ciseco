@@ -13,6 +13,7 @@ import {ADD_SUBSCRIBER_MUTATION} from '~/data/commonFragments';
 import {getLoaderRouteFromMetaobject} from '~/utils/getLoaderRouteFromMetaobject';
 import {RouteContent} from '~/sections/RouteContent';
 import clsx from 'clsx';
+import HeroSlider from '~/components/HeroSlider';
 
 export const headers = routeHeaders;
 
@@ -119,7 +120,8 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 export default function Homepage() {
   const {route} = useLoaderData<typeof loader>();
   return (
-    <div className={clsx('page-home', 'pb-20 lg:pb-28 xl:pb-32 max-w-screen-xl mx-auto')}>
+    <div className={clsx('page-home', 'pb-20 lg:pb-28 xl:pb-32')}>
+      <HeroSlider/>
       {/* 3. Render the route's content sections */}
       <RouteContent route={route} />
     </div>

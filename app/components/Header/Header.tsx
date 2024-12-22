@@ -76,7 +76,7 @@ export function Header({
               <>
                 <CartCount
                   opacity={opacity}
-                  className={`pdp-nav-button right-5 ${isDesktop ? 'top-10' : 'bottom-5'}`}
+                  className={`pdp-nav-button md:hidden right-5 ${isDesktop ? 'top-10' : 'bottom-5'}`}
                 />
                 {isBackButton && (
                   <BackButton isVisible={!isBackButton} />

@@ -2,6 +2,7 @@ import formsPlugin from '@tailwindcss/forms';
 import typographyPlugin from '@tailwindcss/typography';
 import aspectRatioPlugin from '@tailwindcss/aspect-ratio';
 import defaultTheme from 'tailwindcss/defaultTheme';
+import { transform } from 'typescript';
 
 // Custom color with css variable color in __theme_color.scss
 function customColors(cssVar) {
@@ -121,11 +122,22 @@ export default {
         marqueeLeft: {
           '0%': { transform: 'translate(0%)' },
           '100%': { transform: 'translate(-50%)' },
+        },
+        rotate: {
+          '0%': { transform: 'rotate(0)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        floating: {
+          '0%': { transform: 'translateY(0)' },
+          '65%': { transform: 'translateY(25px)' },
+          '100%': { transform: 'rotate(0)' },
         }
       },
       animation: {
-        marqueeLeft: 'marqueeLeft 6.6s linear infinite forwards',
-      },
+        marqueeLeft: 'marqueeLeft 24s linear infinite forwards',
+        rotate: 'rotate 26s linear infinite',
+        floating: 'floating 7s ease-in-out infinite',
+      }
     },
   },
   plugins: [formsPlugin, typographyPlugin, aspectRatioPlugin],

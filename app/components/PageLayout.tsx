@@ -37,7 +37,11 @@ export function PageLayout({
   return (
     <Aside.Provider>
       <CartAside cart={cart} />
-       
+        <div>
+          <a href="#mainContent" className="sr-only">
+            Skip to content
+          </a>
+        </div>
 
       {header && (
         <Header 
