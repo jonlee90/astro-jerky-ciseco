@@ -50,7 +50,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
     <nav
       role="navigation"
       aria-label="Bottom Mobile Navigation"
-      className="header-shadow overflow-hidden bottom-0 md:hidden fixed z-50 w-full h-[68px] bg-contrast/95 border-x border-b border-gray-300 pb-1 transform -translate-x-1/2 left-1/2"
+      className="header-shadow overflow-hidden bottom-0 md:hidden fixed z-50 w-full h-[75px] bg-contrast/95 border-x border-b border-gray-300 pb-1 transform -translate-x-1/2 left-1/2"
       style={{ opacity }}
     >
       {activeItemIndex >= 0 && (
@@ -75,8 +75,13 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
                 aria-current={isActive ? 'page' : undefined}
               >
                 <item.icon />
-                <span className="text-xs">{item.label}</span>
+                <span className="text-sm">{item.label}</span>
               </Link>
+              {isActive && 
+              <div
+                className="absolute size-16 -top-2 left-1/2 -translate-x-1/2 bg-[radial-gradient(ellipse,_rgba(230,183,7,0.9)_0%,_transparent_70%)] pointer-events-none opacity-70"
+              ></div>
+                }
             </motion.div>
           );
         })}
@@ -91,7 +96,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
               aria-current={activeItemIndex == 3 ? 'page' : undefined}
             >
               <IconReward />
-              <span className="text-xs">Rewards</span>
+              <span className="text-sm">Rewards</span>
             </Link>
           </motion.div>
         )}
@@ -106,9 +111,9 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
           role="button"
         >
               <IconCart className="w-8 h-8" color="black" />
-              <span className="text-xs">Cart</span>
+              <span className="text-sm">Cart</span>
               {cartData && cartData?.totalQuantity > 0 && (
-                <div className="left-1/2 transform -translate-x-1/2 top-0.5 bg-primary-600 text-black bg-logo-yellow absolute text-xs font-medium subpixel-antialiased size-4 flex items-center justify-center text-center rounded-full px-[0.125rem] pb-px">
+                <div className="left-1/2 transform -translate-x-1/2 top-0.5 bg-primary-600 text-black bg-logo-yellow absolute text-sm font-medium subpixel-antialiased size-4 flex items-center justify-center text-center rounded-full px-[0.125rem] pb-px">
                   <span>{cartData.totalQuantity}</span>
                 </div>
               )}
@@ -117,5 +122,11 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
     </nav>
   );
 };
+
+const spotlightEffect = () => (
+  <div
+    className="absolute size-16 -top-2 left-1/2 -translate-x-1/2 bg-[radial-gradient(ellipse,_rgba(230,183,7,0.9)_0%,_transparent_70%)] pointer-events-none opacity-70"
+  ></div>
+)
 
 export default NavMobileBottom;

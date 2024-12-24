@@ -46,8 +46,8 @@ import LoadingScreen from '../components/LoadingScreen';
 import { Popover, Transition } from '@headlessui/react';
 import { CartCount } from '~/components/CartCount';
 import { useIsHydrated } from '~/hooks/useIsHydrated';
-import LevelIndicator from '~/components/LevelIndicator';
 import HeroSlider from '~/components/HeroSlider';
+import ProductLevelIndicator from '~/components/ProductLevelIndicator';
 
 export const headers = routeHeaders;
 
@@ -549,7 +549,7 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
       />
 
       <div>
-        {getProductLevels(product)} {/* Render the icon based on tags */}
+        <ProductLevelIndicator product={product} /> {/* Render the icon based on tags */}
       </div>
 
       <div className='grid gap-7 2xl:gap-8'>
@@ -608,31 +608,6 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
     </>
   );
 }
-const getProductLevels = (product: any) => {
-  const { tags, flavor_level, dryness_level, sweetness_level, heat_level } = product;
-  const drynessLevel = dryness_level ? parseInt(dryness_level.value, 10) : 0;
-  const sweetnessLevel = sweetness_level ? parseInt(sweetness_level.value, 10) : 0;
-  const heatLevel = heat_level ? parseInt(heat_level.value, 10) : 0;
-
-  const indicators = [
-    { icon: IconSpicy, label: "Heat", level: heatLevel },
-    { icon: IconDry, label: "Dryness", level: drynessLevel },
-    { icon: IconBbq, label: "Sweetness", level: sweetnessLevel },
-  ];
-
-  return (
-    <ul className="grid grid-cols-3 gap-4 list-none max-w-lg">
-      {indicators.map(({ icon, label, level }, index) => (
-        <LevelIndicator
-          key={index}
-          icon={icon}
-          label={label}
-          level={level}
-        />
-      ))}
-    </ul>
-  );
-};
 const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity, isBackButton }) => {
   const variantsByQuantity = [];
   const isOutOfStock = !selectedVariant?.availableForSale;

@@ -47,7 +47,7 @@ export async function loader({ params, context: { storefront } }: { params: any,
   const smallProducts: ProductVariant[] = [];
   const bigProducts: ProductVariant[] = [];
   const bundleProducts: ProductVariant[] = [];
-
+ 
   flattenedProducts.map((product: any) => {
     flattenConnection(product.variants).map((variant: any) => {
       const size = variant.selectedOptions[0].value;

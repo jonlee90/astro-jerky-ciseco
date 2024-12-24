@@ -75,7 +75,7 @@ export const CollectionSlider = ({
           ref={sliderRef}
           className="relative w-full flex gap-4 lg:gap-8 snap-x snap-mandatory overflow-x-auto scroll-p-l-container hiddenScrollbar"
         >
-          <div className="w-0 px-3"></div>
+          <div className="w-0 px-3 xl:hidden"></div>
           {isSkeleton
             ? [1, 1, 1, 1, 1].map((_, index) => (
                 <div

@@ -7,7 +7,7 @@ const HeroSlider = () => {
     {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/BigBangHotBeef_B-removebg-preview.png",
       alt: "Big Bang Hot Beef Jerky",
-      css: 'top-[30%] -rotate-1 right-[20%] z-[1] w-[60%]',
+      css: 'top-[30%] -rotate-1 left-1/2 transform -translate-x-1/2 z-[1] w-[60%]',
     },
     {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/SuperNovaHotBeef.png",
@@ -25,19 +25,19 @@ const HeroSlider = () => {
     {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/red-chili-isolated-white.png",
       alt: "Red Chili Pepper",
-      css: 'top-[20%] sm:top-[4%] left-[0%] z-[4] animate-rotate',
+      css: 'top-[25%] sm:top-[4%] left-[0%] lg:left-[-15%] z-[4] animate-rotate',
       imageCss: ''
     },
     {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/chili-pepper-isolated.png",
       alt: "Green Chili Pepper",
-      css: 'top-[70%] sm:top-[80%] right-[1%] z-[4] animate-floating',
+      css: 'top-[70%] sm:top-[80%] right-[1%] lg:right-[-8%] z-[4] animate-floating',
       imageCss: 'transform rotate-[120deg]'
     },
     {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/onion.png",
       alt: "Onion",
-      css: 'top-[70%] left-0 z-[4] animate-rotate',
+      css: 'top-[70%] left-0 lg:left-[-15%] z-[4] animate-rotate',
       imageCss: ''
     },
     {
@@ -49,7 +49,7 @@ const HeroSlider = () => {
     {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/SuperNovaHotBeef_J-removebg-preview.png",
       alt: "Supernova Hot Beef Jerky",
-      css: 'top-[20%] right-0 sm:top-0 sm:right-5 z-[4] animate-floating',
+      css: 'top-[20%] right-0 sm:top-0 sm:right-5 lg:right-[-8%] z-[4] animate-floating',
       imageCss: ''
     },
   ];
@@ -98,7 +98,7 @@ const HeroSlider = () => {
             {products.map((product, i) => (
               <div
                 key={i}
-                className={`absolute transform w-1/2 ${product.css}`}
+                className={`absolute transform w-1/2 sm:w-80 ${product.css}`}
               >
                 <img
                   src={product.src}

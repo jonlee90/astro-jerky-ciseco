@@ -120,7 +120,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
     },
     {
       title: 'CHICKEN',
-      productsArr: filterArrByTag('chicken'),
+      productsArr: filterArrByTag('chicken-jerky'),
     },
     {
       title: 'PEPPERED',
@@ -269,11 +269,6 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
             currentBundle={currentBundle}
           />
         ))}
-        {/*<motion.button
-          className="sticky bottom-5 left-1/2 transform -translate-x-1/2 z-50 border border-black "
-        >
-          Add Small Bags
-              </motion.button>*/}
       </div>
     </div>
   );
