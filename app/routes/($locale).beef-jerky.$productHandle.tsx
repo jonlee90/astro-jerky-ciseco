@@ -340,7 +340,7 @@ if(!isHydrated) {
                 <section 
                   aria-label="Product Details"
                   className="grid gap-7 2xl:gap-8 description-container">
-                  <h2 className="text-2xl font-semibold">Product Details</h2>
+                  <h1 className="text-2xl font-semibold">Product Details</h1>
                   <div
                     className="prose prose-sm sm:prose dark:prose-invert sm:max-w-4xl"
                     dangerouslySetInnerHTML={{

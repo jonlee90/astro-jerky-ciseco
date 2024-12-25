@@ -86,7 +86,7 @@ export async function loader(args: LoaderFunctionArgs) {
     return redirect('/bundle/' + productHandle, 301);
   }
 
-  if (url.pathname.includes('collections')) {
+  if (url.pathname.includes('/collections') && !url.pathname.includes('/collections/all')) {
     return redirect('/' + collectionHandle, 301);
   }
    return defer({

@@ -39,7 +39,7 @@ const Heading: React.FC<HeadingProps> = ({
   rightPopoverOptions = solutions,
   onClickNext,
   onClickPrev,
-  as: HeadingTag = 'h2',
+  as: HeadingTag = 'h1',
   ...args
 }) => {
   return (
