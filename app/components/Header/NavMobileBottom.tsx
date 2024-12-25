@@ -6,6 +6,7 @@ import useWindowScroll from './useWindowScroll';
 import { Link } from '../Link';
 import { useAside } from '../Aside';
 import { CartApiQueryFragment } from 'storefrontapi.generated';
+import { CartCount } from '../CartCount';
 
 interface NavMobileBottomProps {
   opacity: number; // corrected type from `Number` to `number`
@@ -100,23 +101,11 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
           </motion.div>
         )}
 
-        <motion.button
-          whileTap={{ scale: 0.95 }}
-          onClick={() => open('cart')}
-          type="button"
-          className="inline-flex flex-col relative items-center justify-center w-full col-span-1"
-          aria-controls="CartDrawer"
-          aria-label="View Cart"
-          role="button"
+        <div
+          className='justify-items-center'
         >
-              <IconCart className="w-8 h-8" color="black" />
-              <span className="text-sm">Cart</span>
-              {cartData && cartData?.totalQuantity > 0 && (
-                <div className="left-1/2 transform -translate-x-1/2 top-0.5 bg-primary-600 text-black bg-logo-yellow absolute text-sm font-medium subpixel-antialiased size-4 flex items-center justify-center text-center rounded-full px-[0.125rem] pb-px">
-                  <span>{cartData.totalQuantity}</span>
-                </div>
-              )}
-        </motion.button>
+          <CartCount opacity={1} className={`cursor-pointer md:hidden`} showCart={true} />
+        </div>
       </div>
     </nav>
   );

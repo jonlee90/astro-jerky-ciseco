@@ -3,6 +3,7 @@ import {
   defer,
   type LinksFunction,
   type LoaderFunctionArgs,
+  redirect,
 } from '@shopify/remix-oxygen';
 import {
   isRouteErrorResponse,
@@ -77,7 +78,17 @@ export async function loader(args: LoaderFunctionArgs) {
    // Await the critical data required to render initial state of the page
    const criticalData = await loadCriticalData(args);
    const {storefront, env} = args.context;
+   const url = new URL(args.request.url);
+  
+   const productHandle = url.href.split('/products/')[1];
+   const collectionHandle = url.href.split('/collections/')[1];
+   if (url.pathname.includes('pack') && url.pathname.includes('products')) {
+    return redirect('/bundle/' + productHandle, 301);
+  }
 
+  if (url.pathname.includes('collections')) {
+    return redirect('/' + collectionHandle, 301);
+  }
    return defer({
      ...deferredData,
      ...criticalData,
@@ -166,7 +177,6 @@ export function Layout({children}: {children?: React.ReactNode}) {
   const nonce = useNonce();
   const data = useRouteLoaderData<RootLoader>('root');
   const locale = data?.selectedLocale ?? DEFAULT_LOCALE;
-  
   return (
     <html lang={locale.language}>
       <head>

@@ -51,13 +51,13 @@ const HeroSlider = () => {
     {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/MilkyWayBBQBeef_J-removebg-preview.png",
       alt: "Milky Way BBQ Beef Jerky",
-      css: 'top-[30%] sm:top-[25%] left-[0%] z-[4] animate-floating',
+      css: 'justify-self-center z-[4] animate-floating',
       imageCss: 'transform rotate-[5deg]'
     },
     {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/SuperNovaHotBeef_J-removebg-preview.png",
       alt: "Supernova Hot Beef Jerky",
-      css: 'top-[20%] right-0 sm:top-0 sm:right-5 lg:right-[-8%] z-[4] animate-floating',
+      css: 'justify-self-center z-[4] animate-floating',
       imageCss: ''
     }
   ];
@@ -92,17 +92,7 @@ const HeroSlider = () => {
 
           {/* Product Lineup */}
           <div className="h-[120vw] min-h-[30rem] sm:h-full relative">
-            <div
-              className='absolute left-1/2 top-16 sm:top-10 transform -translate-x-1/2 z-[4]'
-            >
-              <Link
-                to="/best-beef-jerky-flavors"
-              >
-              <h1 className="text-sm md:text-lg font-extrabold uppercase tracking-wider animate-floating bg-black text-white p-3">
-                  Buy 3 for $33!
-              </h1>
-              </Link>
-            </div>
+            
             {products.map((product, i) => (
               <div
                 key={i}
@@ -128,6 +118,34 @@ const HeroSlider = () => {
                 />
               </div>
             ))}
+
+            <div
+              className='absolute left-1/2 bottom-0 md:-bottom-5 transform -translate-x-1/2 z-[4] w-full grid grid-cols-3'
+            >
+              
+              {jerkyImage.map((illustration, i) => (
+              <>
+                <div
+                  key={i}
+                  className={`w-20 md:w-32 ${illustration.css}`}
+                >
+                  <img
+                    className={illustration.imageCss}
+                    src={illustration.src}
+                    alt={illustration.alt}
+                  />
+                </div>
+                {i === 0 && 
+                  <Link
+                    to="/best-beef-jerky-flavors"
+                  >
+                  <h1 className="text-sm font-extrabold uppercase tracking-wider animate-floating bg-black text-white hover:bg-gray-600 p-3 w-36 justify-self-center text-center">
+                      Buy 3 for $33!
+                  </h1>
+                  </Link>}
+              </>
+            ))}
+            </div>
           </div>
         </div>
       </div>
