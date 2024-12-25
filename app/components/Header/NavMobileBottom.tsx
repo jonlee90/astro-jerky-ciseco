@@ -77,18 +77,16 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
                 <item.icon />
                 <span className="text-sm">{item.label}</span>
               </Link>
-              {isActive && 
-              <div
-                className="absolute size-16 -top-2 left-1/2 -translate-x-1/2 bg-[radial-gradient(ellipse,_rgba(230,183,7,0.9)_0%,_transparent_70%)] pointer-events-none opacity-70"
-              ></div>
-                }
+              {isActive && <SpotlightEffect />}
             </motion.div>
           );
         })}
 
         {/* Handle the fourth nav item separately */}
         {isAuthenticated !== null && (
-          <motion.div whileTap={{ scale: 0.95 }}>
+          <motion.div 
+            className='relative'
+            whileTap={{ scale: 0.95 }}>
             <Link
               to={isAuthenticated ? '/account' : '/rewards'}
               prefetch="none"
@@ -98,6 +96,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
               <IconReward />
               <span className="text-sm">Rewards</span>
             </Link>
+            {activeItemIndex == 3 && <SpotlightEffect />}
           </motion.div>
         )}
 
@@ -123,10 +122,12 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
   );
 };
 
-const spotlightEffect = () => (
-  <div
-    className="absolute size-16 -top-2 left-1/2 -translate-x-1/2 bg-[radial-gradient(ellipse,_rgba(230,183,7,0.9)_0%,_transparent_70%)] pointer-events-none opacity-70"
-  ></div>
-)
+function SpotlightEffect() {
+  return (
+    <div
+      className="absolute size-16 -top-2 left-1/2 -translate-x-1/2 bg-[radial-gradient(ellipse,_rgba(230,183,7,0.9)_0%,_transparent_70%)] pointer-events-none opacity-70"
+    ></div>
+    )
+}
 
 export default NavMobileBottom;

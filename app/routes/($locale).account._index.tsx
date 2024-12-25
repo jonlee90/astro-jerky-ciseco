@@ -67,8 +67,8 @@ function Account({customer}: AccountType) {
   return (
     <div className="container py-10 sm:py-20">
       <div className="max-w-5xl mx-auto">
-        <div className="max-w-2xl mx-auto">
-          <h1 className="text-3xl xl:text-4xl font-semibold">{'My Rewards'}</h1>
+        <section aria-labelledby="rewards-heading" className="max-w-2xl mx-auto">
+          <h1 id="rewards-heading" className="text-3xl xl:text-4xl font-semibold">{'My Rewards'}</h1>
           <div className='bg-light-gray rounded-lg max-w-xl mx-auto'>
             <div className='grid grid-cols-2 gap-5 items-center p-5'>
               <div className='mr-5'>
@@ -78,11 +78,13 @@ function Account({customer}: AccountType) {
                     pathColor: 'rgb(237, 28, 36)',
                     textColor: 'rgb(0, 0, 0)',
                     pathTransitionDuration: 0.5,
-                  })} text={`${loyalty_points_points_until}/100`}  />
+                  })} text={`${loyalty_points_points_until}/100`} 
+                  aria-label={`You have earned ${loyalty_points_points_until} points out of 100 for your next reward.`}
+                  />
               </div>
               <div className='font-bold grid grid-rows-2 gap-2 items-center'>
                 <span className="text-lg">{100 - loyalty_points_points_until} points until your next $5 rewards!</span>
-                <Link to={'/collections/best-beef-jerky-flavors'}>
+                <Link to={'/best-beef-jerky-flavors'} aria-label="Shop now to earn points">
                   <motion.button className="bg-black text-white py-3 rounded-full font-normal w-40">SHOP NOW</motion.button>
                 </Link>
               </div>
@@ -121,10 +123,13 @@ function Account({customer}: AccountType) {
               </Suspense>
             </div>
           </div>
-        </div>
+        </section>
 
         {/*  */}
-        <div className="my-10 sm:my-16 grid sm:grid-cols-3 gap-4">
+        <section aria-labelledby="account-actions-heading" className="my-10 sm:my-16 grid sm:grid-cols-3 gap-4">
+          <h2 id="account-actions-heading" className="sr-only">
+            Account Actions
+          </h2>
           {actions.map((action, actionIdx) => (
             <div
               key={action.title}
@@ -133,7 +138,10 @@ function Account({customer}: AccountType) {
               )}
             >
               <div>
-                <action.icon className="h-8 w-8" aria-hidden="true" />
+                <action.icon 
+                  className="h-8 w-8"
+                  role="img"
+                  aria-label={action.title} />
               </div>
               <div className="mt-8">
                 <h3 className="text-base font-semibold leading-6 text-gray-900">
@@ -160,7 +168,7 @@ function Account({customer}: AccountType) {
               </span>
             </div>
           ))}
-        </div>
+        </section>
       </div>
     </div>
   );

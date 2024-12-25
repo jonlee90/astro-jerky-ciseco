@@ -137,7 +137,7 @@ export async function getSitemap(options: GetSiteMapOptions) {
         return renderUrlTag({
           getChangeFreq: options.getChangeFreq,
           url: getLink({
-            type: item.type ?? type.replace('products', 'beef-jerky'),
+            type: item.type ?? (type == 'products' && item.handle.includes('pack') ? type.replace('products', 'bundle') : type.replace('products', 'beef-jerky')),
             baseUrl,
             handle: item.handle,
           }).replace('/collections', ''),
@@ -216,7 +216,7 @@ function renderUrlTag({
   <image:image>
     <image:loc>${imageUrl}</image:loc>
     <image:title>${imageTitle ?? ''}</image:title>
-    <image:caption>Astro Fresh Jerky ${imageTitle ?? ''} front of bag</image:caption>
+    <image:caption>${imageTitle ?? ''} - Astro Fresh Jerky</image:caption>
   </image:image>` : ''}
 </url>
   `.trim();

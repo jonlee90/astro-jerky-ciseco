@@ -3,11 +3,11 @@ import {
   type CustomerDetailsFragment,
   type OrderCardFragment,
 } from 'customer-accountapi.generated';
-import {OrderCard} from '~/components/OrderCard';
-import {usePrefixPathWithLocale} from '~/lib/utils';
-import {flattenConnection} from '@shopify/hydrogen';
-import {useAccoutRootLoaderData} from '~/lib/account-data';
-import {PageAccoutLayout} from '~/components/PageAccountLayout';
+import { OrderCard } from '~/components/OrderCard';
+import { usePrefixPathWithLocale } from '~/lib/utils';
+import { flattenConnection } from '@shopify/hydrogen';
+import { useAccoutRootLoaderData } from '~/lib/account-data';
+import { PageAccoutLayout } from '~/components/PageAccountLayout';
 
 const Page = () => {
   const data = useAccoutRootLoaderData();
@@ -16,11 +16,14 @@ const Page = () => {
 
   return (
     <PageAccoutLayout breadcrumbText="Order history">
-      <div>
+      <section aria-labelledby="order-history-section">
+        <h2 id="order-history-section" className="sr-only">
+          Order History
+        </h2>
         <div className="grid w-full gap-4 md:gap-8">
           {orders?.length ? <Orders orders={orders} /> : <EmptyOrders />}
         </div>
-      </div>
+      </section>
     </PageAccoutLayout>
   );
 };
@@ -31,10 +34,16 @@ type OrderCardsProps = {
 
 function EmptyOrders() {
   return (
-    <div>
-      <p className="">You haven&apos;t placed any orders yet.</p>
+    <div aria-labelledby="empty-orders-section">
+      <h3 id="empty-orders-section" className="text-lg font-semibold">
+        No Orders Found
+      </h3>
+      <p className="mt-2">You haven&apos;t placed any orders yet.</p>
       <div className="mt-5">
-        <ButtonPrimary href={usePrefixPathWithLocale('/')}>
+        <ButtonPrimary
+          href={usePrefixPathWithLocale('/')}
+          aria-label="Start shopping and place your first order"
+        >
           Start Shopping
         </ButtonPrimary>
       </div>
@@ -42,13 +51,22 @@ function EmptyOrders() {
   );
 }
 
-function Orders({orders}: OrderCardsProps) {
+function Orders({ orders }: OrderCardsProps) {
   return (
-    <div className="grid grid-flow-row grid-cols-1 gap-2 gap-y-6 md:gap-4 lg:gap-6 false sm:grid-cols-2">
-      {orders.map((order) => (
-        <OrderCard order={order} key={order.id} />
-      ))}
-    </div>
+    <section aria-labelledby="orders-section" className="mt-6">
+      <h3 id="orders-section" className="text-lg font-semibold">
+        Your Orders
+      </h3>
+      <div className="grid grid-flow-row grid-cols-1 gap-2 gap-y-6 md:gap-4 lg:gap-6 sm:grid-cols-2">
+        {orders.map((order) => (
+          <OrderCard
+            order={order}
+            key={order.id}
+            aria-labelledby={`order-card-${order.id}`}
+          />
+        ))}
+      </div>
+    </section>
   );
 }
 
