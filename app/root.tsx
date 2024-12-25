@@ -80,13 +80,13 @@ export async function loader(args: LoaderFunctionArgs) {
    const {storefront, env} = args.context;
    const url = new URL(args.request.url);
   
-   const productHandle = url.href.split('/products/')[1];
    const collectionHandle = url.href.split('/collections/')[1];
-   if (url.pathname.includes('pack') && url.pathname.includes('products')) {
-    return redirect('/bundle/' + productHandle, 301);
+   if (url.pathname.includes('pack') && !url.pathname.includes('bundle')) {
+    const urlPathname = url.pathname.includes('beef-jerky') ? url.pathname.replace('beef-jerky', 'bundle') : url.pathname.replace('products', 'bundle');
+    return redirect(urlPathname, 301);
   }
 
-  if (url.pathname.includes('/collections') && !url.pathname.includes('/collections/all')) {
+  if (url.pathname.includes('/collections/') && !url.pathname.includes('/collections/all')) {
     return redirect('/' + collectionHandle, 301);
   }
    return defer({
