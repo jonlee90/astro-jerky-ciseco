@@ -139,7 +139,7 @@ const HeroSlider = () => {
                   <Link
                     to="/best-beef-jerky-flavors"
                   >
-                  <h1 className="text-sm font-extrabold uppercase tracking-wider animate-floating bg-black text-white hover:bg-gray-600 p-3 w-36 justify-self-center text-center">
+                  <h1 className="text-sm font-extrabold uppercase tracking-wider animate-floating bg-black text-white hover:bg-gray-600 p-2 w-full max-w-36 justify-self-center text-center">
                       Buy 3 for $33!
                   </h1>
                   </Link>}
