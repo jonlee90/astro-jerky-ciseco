@@ -189,7 +189,14 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
     const bars = [];
     for (let i = 0; i < count; i++) {
       bars.push(
-        <motion.div key={i} className={`border border-gray-300 mix-match-progress-bar ${i < currentCount && 'bg-logo-yellow'}`}></motion.div>
+        <motion.div 
+          key={i} 
+          className={`border border-gray-300 mix-match-progress-bar ${i < currentCount && 'bg-logo-yellow'}`}
+          role="progressbar"
+          aria-valuenow={i < currentCount ? i + 1 : 0}
+          aria-valuemin={0}
+          aria-valuemax={count}
+          ></motion.div>
       );
     }
     return bars;
@@ -207,7 +214,8 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
     <div className="mb-36">
       <header
         role="banner"
-        className={`bg-[#fafaf9] sticky transition top-0 w-full justify-center px-5 py-2 text-center header-shadow rounded-b-lg z-100`}
+        className={`bg-[#fafaf9] sticky transition top-0 w-full justify-center px-5 py-2 text-center shadow-lightHeader rounded-b-lg z-100`}
+        aria-label="Mix and Match Product Selection"
       >
         <div className="max-w-screen-md mx-auto">
           <div className="grid grid-cols-2 my-3">
@@ -224,18 +232,24 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
                   analytics={analyticsData}
                   disabled={!done}
                   onClick={() => open('cart')}
+                  aria-label="Add completed bundle to cart"
                 >
                   Add To Cart
                 </AddToCartButton>
               ) : (
-                <SwitchTab isSmall={isSmall} onToggle={(val) => onToggle(val)} className="!ml-auto !mr-0 h-11" />
+                <SwitchTab 
+                  isSmall={isSmall} 
+                  onToggle={(val) => onToggle(val)} 
+                  className="!ml-auto !mr-0 h-11"
+                  aria-label="Switch between big bags and small bags"
+                />
               )}
             </div>
           </div>
           <div className="text-left text-xs">
             {big_bag_quantity ? (
               <div className={isSmall ? 'opacity-70' : 'font-bold'}>
-                <motion.div>{big_bag_quantity} BIG BAGS</motion.div>
+                <motion.div aria-live="polite">{big_bag_quantity} BIG BAGS</motion.div>
                 <motion.div className={clsx('grid h-2 rounded-full', progressClass[big_bag_quantity])}>
                   {getProgressBar(big_bag_quantity, sumBigBags)}
                 </motion.div>
@@ -245,7 +259,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
             )}
             {small_bag_quantity ? (
               <div className={`${isSmall ? 'font-bold' : 'opacity-70'} mt-2`}>
-                <motion.div>{small_bag_quantity} SMALL BAGS</motion.div>
+                <motion.div aria-live="polite">{small_bag_quantity} SMALL BAGS</motion.div>
                 <motion.div className={clsx('grid h-2 rounded-full', progressClass[small_bag_quantity])}>
                   {getProgressBar(small_bag_quantity, sumSmallBags)}
                 </motion.div>
@@ -256,7 +270,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
           </div>
         </div>
       </header>
-      <div className="max-w-screen-lg mx-auto mt-8 w-full">
+      <div className="max-w-screen-lg mx-auto mt-8 w-full" role="main">
         {bundleInfoProducts.map(({ title, productsArr }, i) => (
           <MixMatchProductsSlider
             key={i}

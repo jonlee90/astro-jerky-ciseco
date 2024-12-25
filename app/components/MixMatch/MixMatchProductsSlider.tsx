@@ -53,12 +53,25 @@ export function MixMatchProductsSlider({
   currentBundle,
 }: MixMatchProductsSliderProps) {
   return (
-    <div className='mb-10'>
-      <h2 className='text-xl md:text-2xl font-semibold px-5'>{title}</h2>
-      <div className="swimlane hiddenScroll  md:pb-8 md:scroll-px-8 lg:scroll-px-12 pt-4 text-center px-5">
+    <section 
+      className='mb-10'
+      aria-labelledby={`slider-title-${title.replace(/\s+/g, '-').toLowerCase()}`}
+    >
+      <h2 
+        id={`slider-title-${title.replace(/\s+/g, '-').toLowerCase()}`}
+        className='text-xl md:text-2xl font-semibold px-5'
+      >
+        {title}
+      </h2>
+      <div 
+        className="swimlane hiddenScroll  md:pb-8 md:scroll-px-8 lg:scroll-px-12 pt-4 text-center px-5"
+        role="region"
+        aria-label={`Product slider for ${title}`}
+        tabIndex={0} // Makes the scrollable area keyboard focusable
+      >
         {products.map((product, i) => (
           <MixMatchProductCard
-            key={i}
+            key={product.id || i}
             product={product}
             bigBags={bigBags}
             isSmall={isSmall}
@@ -68,6 +81,6 @@ export function MixMatchProductsSlider({
           />
         ))}
       </div>
-    </div>
+    </section>
   );
 }

@@ -16,7 +16,7 @@ import ProductStatus from './ProductStatus';
 import {useMediaQuery} from 'react-responsive';
 import { useAside } from './Aside';
 import { useVariantUrl } from '~/lib/variants';
-import { IconSpicy, IconBbq, IconChicken, IconPepper } from "./Icon";
+import { IconSpicy, IconBbq, IconChicken, IconPepper, IconCow } from "./Icon";
 import { useIsHydrated } from '~/hooks/useIsHydrated';
 
 
@@ -249,7 +249,7 @@ export const getProductIcon = (product: any) => {
     if (tags.includes('bbq')) return <IconBbq key={index} size={30} />;
     if (tags.includes('chicken')) return <IconChicken key={index} size={30} />;
     if (tags.includes('peppered')) return <IconPepper key={index} size={30} />;
-    return null;
+    return <IconCow key={index}  />;
   };
 
   return Array.from({ length: count }, (_, index) => getIconComponent(index));

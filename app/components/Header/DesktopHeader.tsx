@@ -25,7 +25,7 @@ export const DesktopHeader = ({
   return (
     <header
       role="banner"
-      className="header-shadow bg-contrast/80 text-primary shadow-lightHeader hidden h-24 md:flex sticky transition backdrop-blur-lg z-100 top-0 w-full px-12 py-8 justify-center"
+      className="bg-contrast/80 text-primary shadow-lightHeader hidden h-24 md:flex sticky transition backdrop-blur-lg z-100 top-0 w-full px-12 py-8 justify-center"
     >
       <div className="max-w-screen-lg w-full items-center md:flex justify-between leading-none gap-8">
         <Logo className="w-20" />

@@ -13,7 +13,7 @@ export function AnnouncementBar({ content = [] }: AnnouncementBarProps) {
     <div
       role="region"
       aria-label="Announcement Bar"
-      className="flex items-center header-shadow justify-center overflow-hidden bg-yellow-400 text-black h-12 sticky z-[96] top-0 mb-[3px]"
+      className="flex items-center shadow-lightHeader justify-center overflow-hidden bg-yellow-400 text-black h-12 sticky z-[96] top-0 mb-[3px]"
     >
       <div className="flex whitespace-nowrap sm-max:animate-marqueeLeft">
         {content.map((message, index) => (

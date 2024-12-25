@@ -12,12 +12,12 @@ const HeroSlider = () => {
     {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/SuperNovaHotBeef.png",
       alt: "Supernova Hot Beef Jerky",
-      css: 'right-[-5%] top-[25%] sm:top-[10%] sm:right-[-10%] rotate-[15deg]',
+      css: 'right-[-5%] top-[25%] sm:top-[10%] sm:right-[-10%] 2xl:right-[0%] rotate-[15deg]',
     },
     {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/SweetnSpicyBeef.png",
       alt: "Sweet and Spicy Beef Jerky",
-      css: 'left-[-5%] top-[30%] sm:top-[10%] sm:left-[-10%] rotate-[-15deg]',
+      css: 'left-[-5%] top-[30%] sm:top-[10%] sm:left-[-10%] 2xl:left-[0%] rotate-[-15deg]',
     },
   ];
 
@@ -41,9 +41,17 @@ const HeroSlider = () => {
       imageCss: ''
     },
     {
+      src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/garlic.png",
+      alt: "Garlic",
+      css: 'top-[20%] right-0 sm:top-0 sm:right-5 lg:right-[-8%] z-[4] animate-floating',
+      imageCss: ''
+    }
+  ];
+  const jerkyImage = [
+    {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/MilkyWayBBQBeef_J-removebg-preview.png",
       alt: "Milky Way BBQ Beef Jerky",
-      css: 'top-[30%] sm:top-[25%] left-[35%] z-[4] animate-floating',
+      css: 'top-[30%] sm:top-[25%] left-[0%] z-[4] animate-floating',
       imageCss: 'transform rotate-[5deg]'
     },
     {
@@ -51,7 +59,7 @@ const HeroSlider = () => {
       alt: "Supernova Hot Beef Jerky",
       css: 'top-[20%] right-0 sm:top-0 sm:right-5 lg:right-[-8%] z-[4] animate-floating',
       imageCss: ''
-    },
+    }
   ];
 
 
@@ -111,7 +119,7 @@ const HeroSlider = () => {
             {illustrations.map((illustration, i) => (
               <div
                 key={i}
-                className={`absolute w-20 md:w-36 ${illustration.css}`}
+                className={`absolute w-20 md:w-32 ${illustration.css}`}
               >
                 <img
                   className={illustration.imageCss}

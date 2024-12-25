@@ -25,9 +25,6 @@ export function Modal({
             onClick={(e) => {
               e.stopPropagation();
             }}
-            onKeyPress={(e) => {
-              e.stopPropagation();
-            }}
             tabIndex={0}
           >
             <div className="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">

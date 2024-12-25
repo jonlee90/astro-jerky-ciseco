@@ -82,33 +82,47 @@ export default function AllBundle() {
           description={'MIX & MATCH BETWEEN 12 DIFFERENT FLAVORS TO CREATE A CUSTOM ORDER.'}
           hasBreadcrumb={false}
         />
-        <div  data-test="product-grid" className="sm-only:p-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid gap-6 border-black">
+        <div  
+          data-test="product-grid" 
+          className="sm-only:p-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid gap-6 border-black"
+          aria-label="Bundle products"
+        >
           {bundleProducts.map(({id, title, handle, description, priceRange, compareAtPriceRange}) => (
             <Link 
               key={id} 
               to={`/bundle/${handle}`} 
               prefetch="intent" 
               state={{ pack: handle }}
+              aria-label={`Get ${title} bundle`}
             >
               <motion.div 
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.95 }}
                 className='border-2 rounded-full'
               >
-                <Card className="grid grid-cols-1 text-black">
-                  <CardHeader floated={false} 
+                <Card 
+                  className="grid grid-cols-1 text-black"
+                  role="article"
+                  aria-labelledby={`product-title-${id}`}
+                >
+                  <CardHeader 
+                    floated={false} 
                     shadow={false}
                     color="transparent"
                     className="m-0">
-                    <div className="cow-card h-36"></div>
+                    <div 
+                      className="cow-card h-36"
+                      role="img"
+                      aria-label={`Image for ${title}`}
+                    ></div>
                   </CardHeader>
                   <CardBody className="grid grid-cols-1 gap-2 p-4">
-                    <span className="">
+                    <h2 id={`product-title-${id}`} className="font-bold">
                       {title}
-                    </span>
-                    <span className="opacity-70">
+                    </h2>
+                    <p className="opacity-70">
                       {description}
-                    </span>
+                    </p>
                     <span className="flex gap-4 text-lead">
                       <Money withoutTrailingZeros data={{ amount: priceRange.minVariantPrice.amount, currencyCode: 'USD' }} className="text-red-600" />
                       <CompareAtPrice
