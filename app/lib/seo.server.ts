@@ -64,7 +64,7 @@ function root({
 function home(): SeoConfig {
   return {
     title: 'Home',
-    titleTemplate: 'Astro Fresh Jerky | High Protein Snacks | Grass Fed Beef',
+    titleTemplate: 'Astro Fresh Jerky | High Protein Snacks | Grass Fed Beef Jerky',
     description: "Astro Fresh Beef Jerky offers high-protein, Grass Fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients.",
     robots: {
       noIndex: false,
