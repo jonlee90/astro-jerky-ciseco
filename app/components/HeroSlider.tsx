@@ -7,17 +7,17 @@ const HeroSlider = () => {
     {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/BigBangHotBeef_B-removebg-preview.png",
       alt: "Big Bang Hot Beef Jerky",
-      css: 'top-[30%] -rotate-1 left-1/2 transform -translate-x-1/2 z-[1] w-[60%]',
+      css: 'top-[20%] -rotate-1 left-1/2 transform -translate-x-1/2 z-[1] w-[60%]',
     },
     {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/SuperNovaHotBeef.png",
       alt: "Supernova Hot Beef Jerky",
-      css: 'right-[-5%] top-[25%] sm:top-[10%] sm:right-[-10%] 2xl:right-[0%] rotate-[15deg]',
+      css: 'right-[-5%] top-[15%] sm:top-[10%] sm:right-[-10%] 2xl:right-[0%] rotate-[15deg]',
     },
     {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/SweetnSpicyBeef.png",
       alt: "Sweet and Spicy Beef Jerky",
-      css: 'left-[-5%] top-[30%] sm:top-[10%] sm:left-[-10%] 2xl:left-[0%] rotate-[-15deg]',
+      css: 'left-[-5%] top-[15%] sm:top-[10%] sm:left-[-10%] 2xl:left-[0%] rotate-[-15deg]',
     },
   ];
 
@@ -25,25 +25,25 @@ const HeroSlider = () => {
     {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/red-chili-isolated-white.png",
       alt: "Red Chili Pepper",
-      css: 'top-[25%] sm:top-[4%] left-[0%] lg:left-[-15%] z-[4] animate-rotate',
+      css: 'top-[60%] left-0 lg:left-[-15%] z-[4] animate-rotate',
       imageCss: ''
     },
     {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/chili-pepper-isolated.png",
       alt: "Green Chili Pepper",
-      css: 'top-[70%] sm:top-[80%] right-[1%] lg:right-[-8%] z-[4] animate-floating',
+      css: 'top-[60%] sm:top-[80%] right-[1%] lg:right-[-8%] z-[4] animate-rotate',
       imageCss: 'transform rotate-[120deg]'
     },
     {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/onion.png",
       alt: "Onion",
-      css: 'top-[70%] left-0 lg:left-[-15%] z-[4] animate-rotate',
+      css: 'top-[10%] sm:top-[4%] left-[0%] lg:left-[-15%] z-[4] animate-floating',
       imageCss: ''
     },
     {
       src: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/garlic.png",
       alt: "Garlic",
-      css: 'top-[20%] right-0 sm:top-0 sm:right-5 lg:right-[-8%] z-[4] animate-floating',
+      css: 'top-[5%] right-0 sm:top-0 sm:right-5 lg:right-[-8%] z-[4] animate-floating',
       imageCss: ''
     }
   ];
@@ -120,7 +120,7 @@ const HeroSlider = () => {
             ))}
 
             <div
-              className='absolute left-1/2 bottom-0 md:-bottom-5 transform -translate-x-1/2 z-[4] w-full grid grid-cols-3'
+              className='absolute left-1/2 bottom-10 sm:-bottom-5 xl:bottom-0 transform -translate-x-1/2 z-[4] w-full grid grid-cols-3'
             >
               
               {jerkyImage.map((illustration, i) => (
