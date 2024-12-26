@@ -2,7 +2,7 @@ import type {SectionCollectionsSliderFragment} from 'storefrontapi.generated';
 import {parseSection} from '~/utils/parseSection';
 import type {ParsedMetafields} from '@shopify/hydrogen';
 import Heading from '~/components/Heading/Heading';
-import {useRef} from 'react';
+import {useEffect, useRef} from 'react';
 import useSnapSlider from '~/hooks/useSnapSlider';
 import CollectionItem, {
   CollectionItemSkeleton,
@@ -26,7 +26,11 @@ export function SectionCollectionsSlider(
   const {id, heading_bold, heading_light, button_text, sub_heading} = section;
 
   return (
-    <section className="featured-collection" key={id}>
+    <section 
+      className="featured-collection" 
+      key={id} 
+      aria-labelledby={`slider-heading-${id}`}
+    >
       <CollectionSlider
         isSkeleton={!props.collections}
         heading_bold={heading_bold?.parsedValue || ''}
@@ -34,6 +38,7 @@ export function SectionCollectionsSlider(
         sub_heading={sub_heading?.parsedValue || ''}
         collections={props.collections?.references?.nodes || []}
         button_text={button_text?.value}
+        sectionId={id}
       />
     </section>
   );
@@ -47,6 +52,7 @@ export const CollectionSlider = ({
   collections = [],
   headingFontClass,
   isSkeleton,
+  sectionId,
 }: {
   heading_bold?: string;
   heading_light?: string;
@@ -55,13 +61,20 @@ export const CollectionSlider = ({
   button_text?: string;
   headingFontClass?: string;
   isSkeleton?: boolean;
+  sectionId: string;
 }) => {
   const sliderRef = useRef<HTMLDivElement>(null);
   const {scrollToNextSlide, scrollToPrevSlide} = useSnapSlider({sliderRef});
-
+  useEffect(() => {
+    // Ensure slider is focusable
+    if (sliderRef.current) {
+      sliderRef.current.setAttribute('tabindex', '0');
+    }
+  }, []);
   return (
     <div className={`nc-DiscoverMoreSlider `}>
       <Heading
+        id={`slider-heading-${sectionId}`}
         className="mb-12 mx-3 lg:mb-14 text-neutral-900 dark:text-neutral-50"
         desc={sub_heading || ''}
         rightDescText={heading_light || ''}
@@ -74,6 +87,8 @@ export const CollectionSlider = ({
         <div
           ref={sliderRef}
           className="relative w-full flex gap-4 lg:gap-8 snap-x snap-mandatory overflow-x-auto scroll-p-l-container hiddenScrollbar"
+          role="list"
+          aria-label="Collection slider"
         >
           <div className="w-0 px-3 xl:hidden"></div>
           {isSkeleton
@@ -81,9 +96,12 @@ export const CollectionSlider = ({
                 <div
                   key={index}
                   className="mySnapItem snap-start shrink-0 last:pr-4 lg:last:pr-10"
+                  role="listitem"
                 >
                   <div className="w-64 sm:w-96 flex">
-                    <CollectionItemSkeleton key={index} />
+                    <CollectionItemSkeleton 
+                      key={index}
+                      aria-hidden="true" />
                   </div>
                 </div>
               ))
@@ -91,14 +109,20 @@ export const CollectionSlider = ({
                 <div
                   key={`${item.id}`}
                   className="mySnapItem snap-start shrink-0 last:pr-4 lg:last:pr-10"
+                  role="listitem"
                 >
                   <div className="w-64 sm:w-96 flex">
-                    <CollectionItem item={item} button_text={button_text} />
+                    <CollectionItem 
+                      item={item} 
+                      button_text={button_text} 
+                    />
                   </div>
                 </div>
               ))}
         </div>
-        <NextPrevDesktop onClickNext={scrollToNextSlide} onClickPrev={scrollToPrevSlide} />
+        <NextPrevDesktop
+          onClickNext={scrollToNextSlide} 
+          onClickPrev={scrollToPrevSlide} />
       </div>
     </div>
   );

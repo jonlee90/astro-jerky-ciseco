@@ -8,7 +8,14 @@ export function SectionProductsSlider(props: SectionProductsSliderFragment) {
   const products = collection?.reference?.products;
 
   return (
-    <section>
+    <section 
+      id="product-slider" 
+      aria-labelledby="product-slider-heading"
+      aria-label="Products slider"
+    >
+      <h2 id="product-slider-heading" className="sr-only">
+        {heading_bold?.value || 'Products'}
+      </h2>
     {heading_bold?.value == 'Best Sellers' ?
      <SnapGridProducts
       heading_bold={heading_bold?.value}

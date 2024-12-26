@@ -43,6 +43,8 @@ export function CartLineItem({
     <li
       key={id}
       className="flex gap-4"
+      aria-labelledby={`cart-item-${id}`}
+      aria-describedby={`cart-item-details-${id}`}
     >
       <div className="flex-shrink min-w-24">
         {image && (
@@ -66,7 +68,7 @@ export function CartLineItem({
 
       <div className="flex justify-between flex-grow">
         <div className="grid gap-2">
-          <span className='text-lead'>
+          <h2 id={`cart-item-${id}`} className='text-lead'>
             {product?.handle ? (
               <Link to={isBundle ? '/bundle/' + product.handle :lineItemUrl}  onClick={closeCartAside}>
                 {product?.title + (isBundle ? '' : ' (' + title + ')')}
@@ -74,9 +76,11 @@ export function CartLineItem({
             ) : (
               <span>{product?.title + ' (' + title + ')' || ''}</span>
             )}
-          </span>
+          </h2>
           {attributes && <CartLineAttributes attributes={attributes} />}
-          <div className="flex items-center gap-2 text-r">
+          <div 
+            id={`cart-item-details-${id}`}
+            className="flex items-center gap-2 text-r">
             <div className="flex justify-start text-fine">
               <CartLineQuantityAdjust line={line} />
             </div>
@@ -108,7 +112,12 @@ function CartLineQuantityAdjust({ line }: {line: CartLine}) {
       <label htmlFor={`quantity-${lineId}`} className="sr-only">
         Quantity, {quantity}
       </label>
-      <div className="flex items-center border rounded">
+      <div 
+        className="flex items-center border rounded"
+        role="group"
+        aria-labelledby={`quantity-${lineId}`}
+        aria-live="polite"
+      >
         <CartLineUpdateButton  lines={[{ id: lineId, quantity: prevQuantity }]}>
           <button
             name="decrease-quantity"
@@ -117,11 +126,14 @@ function CartLineQuantityAdjust({ line }: {line: CartLine}) {
             value={prevQuantity}
             disabled={quantity <= 1 || !!isOptimistic}
           >
-            <span>&#8722;</span>
+            <span aria-hidden="true">&#8722;</span>
           </button>
         </CartLineUpdateButton >
 
-        <div className="px-2 text-center" data-test="item-quantity">
+        <div 
+          id={`quantity-${lineId}`}
+          className="px-2 text-center" 
+          data-test="item-quantity">
           {quantity}
         </div>
 
@@ -133,7 +145,7 @@ function CartLineQuantityAdjust({ line }: {line: CartLine}) {
             aria-label="Increase quantity"
             disabled={!!isOptimistic}
           >
-            <span>&#43;</span>
+            <span aria-hidden="true">&#43;</span>
           </button>
         </CartLineUpdateButton >
       </div>
@@ -176,7 +188,7 @@ export function CartLineRemoveButton({
         className="flex items-center justify-center size-8 border rounded"
         type="submit"
         disabled={disabled} 
-        title="Remove item from cart"
+        aria-label="Remove item from cart"
       >
         <span className="sr-only">Remove</span>
         <IconRemove aria-hidden="true" />

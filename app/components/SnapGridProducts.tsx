@@ -44,6 +44,8 @@ export function SnapGridProducts(props: Props) {
         className={clsx(
           'grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-10 lg:gap-x-15 mx-5'
         )}
+        role="list"
+        aria-label="Product grid"
       >
 
       {products?.map((product, i) => {
@@ -64,6 +66,7 @@ export function SnapGridProducts(props: Props) {
                 }
               }}
               viewport={{ once: true, amount: 0 }}
+              role="listitem"
             >
               <ProductCard
                 product={product}

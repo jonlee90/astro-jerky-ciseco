@@ -64,7 +64,7 @@ function root({
 function home(): SeoConfig {
   return {
     title: 'Home',
-    titleTemplate: 'Astro Fresh Jerky | High Protein Snacks | Grass Fed Beef Jerky',
+    titleTemplate: "Astro Fresh Jerky: Beef Jerky, Protein Snacks, Chicken Jerky, Meat Snacks",
     description: "Astro Fresh Beef Jerky offers high-protein, Grass Fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients.",
     robots: {
       noIndex: false,
@@ -73,7 +73,7 @@ function home(): SeoConfig {
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'WebPage',
-      name: 'Astro Fresh Beef Jerky',
+      name: 'Astro Fresh Jerky',
       description: 'Astro Fresh Beef Jerky offers high-protein, Grass Fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients.',
       publisher: {
         '@type': 'Organization',
@@ -347,32 +347,69 @@ function listCollections({
     jsonLd: collectionsJsonLd({collections, url}),
   };
 }
-/*
-function bundle({
+function listBundles({
   bundleProducts,
-  url
+  url,
 }: {
-  bundleProducts: ProductMixFragment[];
+  bundleProducts: any;
   url: Request['url'];
 }): SeoConfig {
-const selectedVariant = bundleProducts[0]?.variants?.nodes[0];
-const product = bundleProducts[0];
   return {
-    title: 'Bundle Pack',
-    titleTemplate: '%s: Beef Jerky, Protein Snacks, Grass Fed Jerky',
-    description: 'Mix & Match between 12 different Beef Jerky flavors to create a custom order.',
+    title: 'Bundle Packs',
+    titleTemplate: 'Beef Jerky Bundle Packs | High Protein Snacks - Astro Fresh Jerky',
+    description: 'Mix & Match between 12 different beef jerky flavors to create a custom order',
     url,
-    media: {
-      type: 'image',
-      url: bundleProducts[0]?.variants?.nodes[0]?.image?.url,
-      height: bundleProducts[0]?.variants?.nodes[0]?.image?.height,
-      width: bundleProducts[0]?.variants?.nodes[0]?.image?.width,
-      altText: bundleProducts[0]?.variants?.nodes[0]?.image?.altText,
-    },
-    jsonLd: productJsonLd({product, selectedVariant, url}),
+    jsonLd: bundlesJsonLd({bundleProducts, url}),
   };
 }
-*/
+function bundlesJsonLd({
+  url,
+  bundleProducts,
+}: {
+  url: Request['url'];
+  bundleProducts: any;
+}): SeoConfig['jsonLd'] {
+  const itemListElement = bundleProducts.map(
+    (bundle, index) => {
+      return {
+        '@type': 'ListItem',
+        position: index + 1,
+        url: `/bundle/${bundle.handle}`,
+      };
+    },
+  );
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Bundles',
+    description: 'All Bundles',
+    url,
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement,
+    },
+  };
+}
+function bundle({
+  bundleHandle,
+  url
+}: {
+  bundleHandle: string;
+  url: Request['url'];
+}): SeoConfig {
+const title = bundleHandle.split('-') // Split the string on hyphens
+.map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+.join(' '); // Join the words with a space;
+
+  return {
+    title: title,
+    titleTemplate: '%s | High Protein Snacks - Astro Fresh Jerky',
+    description: 'Mix & Match between 12 different Beef Jerky flavors to create a custom order.',
+    url
+  };
+}
+
 function article({
   article,
   url,
@@ -524,6 +561,8 @@ export const seoPayload = {
   policy,
   product,
   root,
+  bundle,
+  listBundles
 };
 
 /**

@@ -12,7 +12,6 @@ export async function loader({
     storefront,
     request,
     types: ['products', 'pages', 'collections', 'articles'],
-    customUrls: [`${baseUrl}/sitemap-empty.xml`],
   });
 
   response.headers.set('Oxygen-Cache-Control', `max-age=${60 * 60 * 24}`);

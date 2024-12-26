@@ -32,12 +32,20 @@ export function CartMain({
       <CartEmpty hidden={linesCount}/>
 
 
-      <div id="CartDrawer" className='grid grid-cols-1 h-screen-no-nav grid-rows-[auto_1fr_auto]'>
+      <div 
+        id="CartDrawer" 
+        className='grid grid-cols-1 h-screen-no-nav grid-rows-[auto_1fr_auto]'
+        aria-live="polite"
+        aria-label="Shopping cart drawer"
+      >
         <FreeShippingProgressBar totalAmount={parseFloat(cart?.cost?.totalAmount?.amount || '0')} />
           <section
             aria-labelledby="cart-contents"
             className={'border-t px-3 pb-6 pt-2 sm-max:pt-2 overflow-auto transition mb-[165px]'}
           >
+            <h2 id="cart-contents" className="sr-only">
+              Cart contents
+            </h2>
             <ul className="grid gap-6 md:gap-10">
               {(cart?.lines?.nodes ?? []).map((line) => (
                 <CartLineItem key={line.id} line={line} layout={layout}/>
@@ -61,14 +69,18 @@ export function CartEmpty({
 }) {
   const {close} = useAside();
   return (
-    <div className={clsx('h-full overflow-auto py-6')} hidden={hidden}>
+    <div 
+      className={clsx('h-full overflow-auto py-6')} 
+      hidden={hidden}
+      aria-hidden={hidden}
+      >
       <section className="grid gap-6 text-center mt-28">
         <p>
           Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you
           started!
         </p>
         <div>
-          <ButtonPrimary onClick={close} className='!bg-neutral-900 hover:!bg-neutral-700 focus:!ring-neutral-600'>
+          <ButtonPrimary onClick={close} className='!bg-neutral-900 hover:!bg-neutral-700 focus:!ring-neutral-600' aria-label="Continue shopping">
             <ArrowLeftIcon className="w-4 h-4 me-2" />
             <span>Continue Shopping</span>
           </ButtonPrimary>
@@ -79,8 +91,12 @@ export function CartEmpty({
 }
 
 function FreeShippingProgressBar({ totalAmount }:{totalAmount: number}) {
+  const progressValue = Math.min(
+    (totalAmount / FREE_SHIPPING_THRESHOLD) * 100,
+    100
+  );
   return (
-    <div>
+    <div aria-live="polite" aria-label="Free shipping progress">
       <div className="flex justify-center font-bold text-sm my-4">
         <svg className="w-6 mr-2 color-logo-red" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M22.48 5.28 12 8.813 1.518 5.28M12 21.851V8.814" stroke="currentColor" strokeWidth="1.2" strokeMiterlimit="10"></path>
@@ -91,7 +107,16 @@ function FreeShippingProgressBar({ totalAmount }:{totalAmount: number}) {
         <h4 className="color-logo-green">{totalAmount < FREE_SHIPPING_THRESHOLD ? `FREE SHIPPING on orders over $${FREE_SHIPPING_THRESHOLD}!` : 'Your cart qualifies for free shipping'}</h4>
       </div>
       <div className="flex justify-center mb-4">
-        <Progress size='md' className="border border-gray-900/10 bg-gray-900/5 p-[2px] h-3" color="green" value={totalAmount * 1.66} variant="filled"/>
+        <Progress 
+          size='md' 
+          className="border border-gray-900/10 bg-gray-900/5 p-[2px] h-3" 
+          color="green" 
+          value={totalAmount * 1.66} 
+          variant="filled"
+          aria-label={`Progress towards free shipping: ${progressValue.toFixed(
+            0
+          )}%`}
+        />
       </div>
     </div>
   );

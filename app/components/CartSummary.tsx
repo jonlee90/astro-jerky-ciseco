@@ -45,7 +45,7 @@ export function CartSummary({cart}: CartSummaryProps) {
       <h2 id="summary-heading" className="sr-only">
         Order summary
       </h2>
-      <dl className="grid gap-1">
+      <dl className="grid gap-1" aria-live="polite">
         {saleAmount ? (
           <div className="flex items-center justify-between">
             <span >Rewards</span>
@@ -80,8 +80,18 @@ export function CartSummary({cart}: CartSummaryProps) {
 function CartAgreementCheckbox({ toggleDisableButton }: {toggleDisableButton: () => void}) {
   return (
     <div className="flex flex-row mt-2">
-      <input type="checkbox" className="align-middle mr-2 my-1 size-5" onChange={toggleDisableButton} />
-      <label className="text-fine">
+      <input
+        type="checkbox"
+        id="cart-agreement-checkbox"
+        className="align-middle mr-2 my-1 size-5"
+        onChange={toggleDisableButton}
+        aria-labelledby="agreement-label"
+      />
+      <label
+        id="agreement-label"
+        htmlFor="cart-agreement-checkbox"
+        className="text-fine"
+      >
         I agree with the <a href="/policies/terms-of-service" className="color-logo-red">Terms of Service</a>, <a href="/policies/refund-policy" className="color-logo-red">Returns/Refund/Exchanges Policy</a>, and <a href="/policies/shipping-policy" className="color-logo-red">Shipping and Handling Policy</a>.
       </label>
     </div>
@@ -96,7 +106,12 @@ function CartCheckoutActions({ checkoutUrl = '', disableButton }: CartCheckoutAc
   if (!checkoutUrl) return null;
   return (
     <div className="flex flex-col mt-2">
-      <a href={checkoutUrl} target="_self" className={disableButton ? 'disabled' : ''}>
+       <a
+        href={checkoutUrl}
+        target="_self"
+        aria-disabled={disableButton}
+        className={disableButton ? 'disabled' : ''}
+      >
         <Button as="span" width="full" className="uppercase">
           {disableButton ? 'Agree to Checkout' : 'Checkout'}
         </Button>

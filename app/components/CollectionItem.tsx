@@ -39,8 +39,16 @@ const CollectionItem: FC<CollectionItemProps> = ({
       to={'/' + handle}
       className={clsx(`block w-full`, className)}
       onClick={onClick}
+      aria-label={`View collection: ${productTitle || 'Unnamed collection'}`}
     >
-      <div className={`relative w-full aspect-w-16 ${image ? 'aspect-h-16' : 'aspect-h-12 sm:aspect-h-9'} rounded-2xl overflow-hidden bg-slate-100 group`}>
+      <article
+        className={`relative w-full aspect-w-16 ${
+          image ? 'aspect-h-16' : 'aspect-h-12 sm:aspect-h-9'
+        } rounded-2xl overflow-hidden bg-slate-100 group`}
+        role="group"
+        aria-labelledby={`collection-title-${handle}`}
+        aria-describedby={`collection-desc-${handle}`}
+      >
         {hImage && (
           <Image
             className="inset-0 w-full h-full object-cover rounded-2xl "
@@ -71,16 +79,22 @@ const CollectionItem: FC<CollectionItemProps> = ({
                */}
           </div>
         </div>
-      </div>
+      </article>
       <h2
+        id={`collection-title-${handle}`}
         className="text-lg lg:text-2xl  font-semibold mt-0.5 sm:mt-2 p-1 opacity-80 rounded-2xl"
         >
         {productTitle} 
       </h2>
-
+      {description && (
+        <p id={`collection-desc-${handle}`} className="sr-only">
+          {description}
+        </p>
+      )}
     </Link>
   );
 };
+
 
 export const CollectionItemSkeleton = ({
   className = '',
@@ -89,7 +103,11 @@ export const CollectionItemSkeleton = ({
 }) => {
   return (
     <div className={clsx(`block w-full`, className)}>
-      <div className="relative w-full aspect-w-16 aspect-h-12 sm:aspect-h-9 rounded-2xl overflow-hidden bg-slate-100 group">
+      <article
+        className="relative w-full aspect-w-16 aspect-h-12 sm:aspect-h-9 rounded-2xl overflow-hidden bg-slate-100 group"
+        role="group"
+        aria-label="Loading collection item"
+      >
         <span className="opacity-0 group-hover:opacity-40 absolute inset-0 bg-black/10 transition-opacity"></span>
 
         <div>
@@ -106,13 +124,14 @@ export const CollectionItemSkeleton = ({
                 sizeClass="py-3 px-4 sm:py-3.5 sm:px-6"
                 fontSize="text-sm font-medium"
                 className="nc-shadow-lg"
+                aria-disabled="true"
               >
                 {'Explore now'}
               </ButtonSecondary>
             </div>
           </div>
         </div>
-      </div>
+      </article>
     </div>
   );
 };

@@ -49,14 +49,15 @@ export async function loader({ request, context: { storefront } }: LoaderFunctio
   });
 
   const bundleProducts = flattenConnection(products);
-/*
-  const seo = seoPayload.bundle({
+  
+  const seo = seoPayload.listBundles({
     bundleProducts,
     url: request.url,
   });
-*/
+
   return json({
-    bundleProducts
+    bundleProducts,
+    seo
   });
 }
 

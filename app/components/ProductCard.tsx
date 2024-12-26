@@ -134,6 +134,8 @@ const ProductCard: FC<ProductCardProps> = ({
       <Link
         to={variantUrl}
         state={{product: product.handle, collection}}
+        className="group"
+        aria-label={`View details for ${product.title} (${selectedOptions[0].value})`}
       >
         <div className={clsx('grid gap-4', className)}>
           <motion.div
@@ -156,6 +158,7 @@ const ProductCard: FC<ProductCardProps> = ({
               className={`object-cover w-full absolute`}
               src={productMedia[currentImageIndex].url}
               key={productMedia[currentImageIndex].url}
+              alt={productMedia[currentImageIndex].altText || 'Product image'}
               initial={{opacity: 0}}
               animate={{opacity: 1}}
               transition={{duration: 0.5}}

@@ -1,9 +1,10 @@
-import { json } from '@shopify/remix-oxygen';
+import { json, LoaderFunctionArgs, MetaArgs } from '@shopify/remix-oxygen';
 import { useLoaderData } from '@remix-run/react';
-import { flattenConnection } from '@shopify/hydrogen';
+import { flattenConnection, getSeoMeta } from '@shopify/hydrogen';
 import { MixMatchProducts } from '~/components/MixMatch/MixMatchProducts';
 import { PRODUCT_MIX_FRAGMENT } from '~/data/fragments';
 import { ProductMixFragment } from 'storefrontapi.generated';
+import { seoPayload } from '~/lib/seo.server';
 
 // Type Definitions
 interface ProductVariant {
@@ -31,7 +32,7 @@ interface LoaderData {
   bundleProducts: ProductVariant[];
 }
 
-export async function loader({ params, context: { storefront } }: { params: any, context: any }) {
+export async function loader({ params, request, context: { storefront } }: LoaderFunctionArgs) {
   const { bundleHandle } = params;
   const { products } = await storefront.query(API_ALL_PRODUCTS_QUERY, {
     variables: {
@@ -77,13 +78,24 @@ export async function loader({ params, context: { storefront } }: { params: any,
       }
     });
   });
+
+   const seo = seoPayload.bundle({
+    bundleHandle,
+    url: request.url,
+  });
+  
   return json({
     bundleHandle,
     smallProducts,
     bigProducts,
-    bundleProducts
+    bundleProducts,
+    seo
   });
 }
+
+export const meta = ({matches}: MetaArgs<typeof loader>) => {
+  return getSeoMeta(...matches.map((match) => (match.data as any).seo));
+};
 
 export default function Bundle() {
   const { smallProducts, bigProducts, bundleHandle, bundleProducts } = useLoaderData<LoaderData>();

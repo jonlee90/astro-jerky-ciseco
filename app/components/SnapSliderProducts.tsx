@@ -42,7 +42,10 @@ export function SnapSliderProducts(props: Props) {
     cardStyle === '2' ? ProductCardLargeSkeleton : ProductCardSkeleton;
 
   return (
-    <div className={`nc-SectionSliderProductCard relative ` + className}>
+    <div 
+      className={`nc-SectionSliderProductCard relative ` + className}
+      aria-live="polite"
+    >
       <Heading
         className={'mb-8 text-neutral-900 dark:text-neutral-50 px-4 md:justify-center'}
         fontClass={headingFontClass}
@@ -53,6 +56,8 @@ export function SnapSliderProducts(props: Props) {
       <div
         ref={sliderRef}
         className="relative w-full flex gap-4 lg:gap-14 snap-x snap-mandatory overflow-x-auto scroll-p-l-container hiddenScrollbar"
+        role="list"
+        aria-label="Product slider"
       >
         <div className="w-0 px-3"></div>
         {isSkeleton &&
@@ -65,8 +70,9 @@ export function SnapSliderProducts(props: Props) {
                   ? 'w-[17rem] lg:w-80 xl:w-[25%]'
                   : 'w-full sm:w-96 lg:w-[50%] xl:w-[33.33%]', // card style 2 large
               )}
+              role="listitem"
             >
-              <CardSkeleton index={index} className="w-full" />
+              <CardSkeleton index={index} className="w-full"  aria-hidden="true" />
             </div>
           ))}
 
@@ -80,6 +86,7 @@ export function SnapSliderProducts(props: Props) {
                   ? 'w-[17rem] lg:w-80 xl:w-[25%] max-w-80'
                   : 'w-full sm:w-96 lg:w-[50%] xl:w-[33.33%]', // card style 2 large
               )}
+              role="listitem"
             >
               <Card
                 className="w-full"

@@ -10,6 +10,7 @@ import PageHeader from '~/components/PageHeader';
 import {routeHeaders} from '~/data/cache';
 import {seoPayload} from '~/lib/seo.server';
 import {getSeoMeta} from '@shopify/hydrogen';
+import { ContactForm } from '~/components/ContactForm';
 
 export const headers = routeHeaders;
 
@@ -38,7 +39,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 
 export default function Page() {
   const {page} = useLoaderData<typeof loader>();
-
+console.log(page.title)
   return (
     <div className="page-handle pt-16 lg:pt-24 pb-20 lg:pb-28 xl:pb-32 ">
       <div className="container">
@@ -48,10 +49,13 @@ export default function Page() {
             hasBreadcrumb
             breadcrumbText={page.title}
           />
+          {page.title == 'Contact' ? 
+            <ContactForm />
+            :
           <div
             dangerouslySetInnerHTML={{__html: page.body}}
             className="prose dark:prose-invert mt-16 lg:mt-20 !max-w-none"
-          />
+          />}
         </div>
       </div>
     </div>

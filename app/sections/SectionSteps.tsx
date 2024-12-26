@@ -18,7 +18,13 @@ export function SectionSteps(props: SectionStepsFragment) {
   const {title, headings, labels, contents, icons, style} = section;
 
   return (
-    <section className="section-steps container" title={title?.value}>
+    <section 
+      className="section-steps container"
+      aria-labelledby="section-steps-title"
+    >
+      <h1 id="section-steps-title" className="sr-only">
+        {title?.value || 'Our company values section'}
+      </h1>
       <div
         className={
           style?.value === '1'
@@ -26,11 +32,16 @@ export function SectionSteps(props: SectionStepsFragment) {
             : ''
         }
       >
-        <div className="relative grid sm:grid-cols-3  gap-10 sm:gap-16 xl:gap-20">
+        <div 
+          className="relative grid sm:grid-cols-3  gap-10 sm:gap-16 xl:gap-20"
+          role="list">
           {headings ? headings.parsedValue?.map((item, index) => (
-            <div
+            <article
               key={`${index + item}`}
               className="relative flex flex-col items-center max-w-xs mx-auto"
+              role="listitem"
+              aria-labelledby={`step-title-${index}`}
+              aria-describedby={`step-content-${index}`}
             >
               <div className="mb-4 sm:mb-10 max-w-[140px] mx-auto">
                 {!!icons?.nodes?.[index]?.image && (
@@ -42,19 +53,29 @@ export function SectionSteps(props: SectionStepsFragment) {
                 )}
               </div>
               <div className="text-center space-y-5">
-                <h2 className="text-base font-semibold">{item}</h2>
-                <p className="block text-slate-600 dark:text-slate-400 text-sm leading-6">
+                <h2 
+                  id={`step-title-${index}`}
+                  className="text-base font-semibold"
+                >
+                  {item}
+                </h2>
+                <p 
+                  id={`step-content-${index}`}
+                  className="block text-slate-600 dark:text-slate-400 text-sm leading-6"
+                >
                   {contents?.parsedValue?.[index]}
                 </p>
               </div>
-            </div>
+            </article>
           ))
           :
           <>
             {icons?.nodes?.map((item, index) => (
-              <div
+              <article
                 key={`${index}`}
                 className="relative flex flex-col items-center mx-auto w-full"
+                role="listitem"
+                aria-label={`Step ${index + 1}`}
               >
                 <div className="mb-4 sm:mb-10 mx-auto w-full">
                   <Image
@@ -62,7 +83,7 @@ export function SectionSteps(props: SectionStepsFragment) {
                     sizes="350px"
                   />
                 </div>
-              </div>
+              </article>
             ))}
           </>
           }
