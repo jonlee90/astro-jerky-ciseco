@@ -3,9 +3,13 @@ import { IconClose, IconXMark } from './Icon';
 
 interface AnnouncementBarProps {
   content: string[];
+  setVisible: (visible: boolean) => void;
 }
 
-export function AnnouncementBar({ content = [] }: AnnouncementBarProps) {
+export function AnnouncementBar({ 
+  content = [],
+  setVisible
+ }: AnnouncementBarProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   if (!isVisible) return null; // Hide the component if dismissed
@@ -36,7 +40,10 @@ export function AnnouncementBar({ content = [] }: AnnouncementBarProps) {
       </div>
       {/* Close Button */}
       <button
-        onClick={() => setIsVisible(false)} // Hide the bar on click
+        onClick={() => {
+          setVisible(false)
+          setIsVisible(false)
+        }} // Hide the bar on click
         className="absolute right-2 text-white bg-black text-center hover:text-gray-600 focus:outline-none rounded-full p-1"
         aria-label="Close Announcement Bar"
       >

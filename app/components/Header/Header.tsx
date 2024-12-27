@@ -33,6 +33,7 @@ export function Header({
   const {headerMenu} = header;
   const { pathname, state } = useLocation();
   const isHydrated = useIsHydrated();
+  const [isAnnouncementBarVisible, setAnnouncementBarVisible] = useState(true);
   const isBackButton = isHydrated && (pathname.includes('/beef-jerky/') ? !!state : (pathname.includes('/bundle/') && true));
   const isBundlePage = isHydrated && !!state && pathname.includes('/bundle/') && true;
   const isDesktop = useMediaQuery({minWidth: 767});
@@ -55,7 +56,10 @@ export function Header({
 
   return (
     <>
-      <AnnouncementBar content={content}/>
+      <AnnouncementBar 
+        content={content}
+        setVisible={setAnnouncementBarVisible}
+      />
       {/*
         <MainNav openMenu={openMenu} openCart={openCart} isHome={isHome} />
       */}
@@ -67,6 +71,7 @@ export function Header({
             primaryDomainUrl={primaryDomainUrl}
             isBackButton={isBackButton} 
             isBundlePage={isBundlePage}
+            isAnnouncementBarVisible={isAnnouncementBarVisible}
       />
       {isHydrated && (
         <>

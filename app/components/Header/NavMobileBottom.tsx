@@ -102,7 +102,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
         )}
 
         <div
-          className='justify-items-center'
+          className='justify-items-center ml-1'
         >
           <CartCount opacity={1} className={`cursor-pointer md:hidden`} showCart={true} />
         </div>

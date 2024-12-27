@@ -356,7 +356,7 @@ function listBundles({
 }): SeoConfig {
   return {
     title: 'Bundle Packs',
-    titleTemplate: 'Beef Jerky Bundle Packs | High Protein Snacks - Astro Fresh Jerky',
+    titleTemplate: 'Bundle Packs | High Protein Snacks - Astro Fresh Jerky',
     description: 'Mix & Match between 12 different beef jerky flavors to create a custom order',
     url,
     jsonLd: bundlesJsonLd({bundleProducts, url}),

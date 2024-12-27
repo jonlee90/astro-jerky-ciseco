@@ -120,14 +120,14 @@ const HeroSlider = () => {
             ))}
 
             <div
-              className='absolute left-1/2 bottom-10 sm:-bottom-5 xl:bottom-0 transform -translate-x-1/2 z-[4] w-full grid grid-cols-3'
+              className='absolute left-1/2 bottom-10 sm:-bottom-5 xl:bottom-0 transform -translate-x-1/2 z-[4] w-full flex flex-row'
             >
               
               {jerkyImage.map((illustration, i) => (
               <>
                 <div
                   key={i}
-                  className={`w-20 md:w-32 ${illustration.css}`}
+                  className={`w-20 md:w-32 basis-1/4 ${illustration.css}`}
                 >
                   <img
                     className={illustration.imageCss}
@@ -137,11 +137,12 @@ const HeroSlider = () => {
                 </div>
                 {i === 0 && 
                   <Link
+                  className='basis-1/2'
                     to="/best-beef-jerky-flavors"
                   >
-                  <h1 className="text-sm font-extrabold uppercase tracking-wider animate-floating bg-black text-white hover:bg-gray-600 p-2 w-full min-w-32 max-w-36 justify-self-center text-center">
+                  <h2 className="text-sm font-extrabold uppercase animate-floating bg-black text-white hover:bg-gray-600 p-2 w-full max-w-36 justify-self-center text-center">
                       Buy 3 for $33!
-                  </h1>
+                  </h2>
                   </Link>}
               </>
             ))}

@@ -16,6 +16,7 @@ interface TopHeaderProps {
   primaryDomainUrl: string;
   isBundlePage: boolean;
   isBackButton?: boolean;
+  isAnnouncementBarVisible: boolean;
 }
 
 export const TopHeader = ({
@@ -25,6 +26,7 @@ export const TopHeader = ({
   primaryDomainUrl,
   isBundlePage,
   isBackButton = false,
+  isAnnouncementBarVisible,
 }: TopHeaderProps) => {
   const isHydrated = useIsHydrated();
   const [isVisible, setIsVisible] = useState(true);
@@ -129,7 +131,11 @@ export const TopHeader = ({
         </motion.div>
       )}
 
-      {isBackButton && <BackButton isVisible={isVisible} />}
+      {isBackButton && 
+        <BackButton 
+          className={!isAnnouncementBarVisible ? 'top-5' : ''}
+          isVisible={isVisible} 
+        />}
     </header>
   );
 };
