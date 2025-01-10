@@ -71,7 +71,7 @@ export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity, s
               style={{opacity}}
             >
               <motion.div
-                className={`rounded-full bg-neutral-900`}
+                className={`rounded-full bg-neutral-900 hover:bg-neutral-700`}
                 whileTap={{ x: 0, y: 0 }}
                 animate={{ x: -3, y: -3 }}
               >

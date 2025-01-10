@@ -121,7 +121,7 @@ export default function Homepage() {
   const {route} = useLoaderData<typeof loader>();
   return (
     <div className={clsx('page-home', 'pb-20 lg:pb-28 xl:pb-32')}>
-      <HeroSlider key={0}/>
+      <HeroSlider />
       {/* 3. Render the route's content sections */}
       <RouteContent route={route} />
     </div>

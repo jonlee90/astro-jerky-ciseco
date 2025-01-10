@@ -22,13 +22,15 @@ const BackButton: React.FC<BackButtonProps> = ({
     : pathname.includes('/beef-jerky/')
     ? 'top-14'
     : '';
-console.log(className)
   return (
     <AnimatePresence>
       {!isVisible && (
         <motion.button
         onClick={() => navigate(navLink)}
-        whileHover={{ scale: 1.05 }}
+        whileHover={{ 
+          scale: 1.05,
+          translateY: -2
+        }}
         whileTap={{ scale: 0.95, opacity: 0.6 }}
         initial={{ x: '-60px' }}
         animate={{ x: '0px' }}

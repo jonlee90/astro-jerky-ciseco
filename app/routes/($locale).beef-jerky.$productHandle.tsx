@@ -46,7 +46,6 @@ import LoadingScreen from '../components/LoadingScreen';
 import { Popover, Transition } from '@headlessui/react';
 import { CartCount } from '~/components/CartCount';
 import { useIsHydrated } from '~/hooks/useIsHydrated';
-import HeroSlider from '~/components/HeroSlider';
 import ProductLevelIndicator from '~/components/ProductLevelIndicator';
 
 export const headers = routeHeaders;
@@ -564,8 +563,8 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
               <motion.button
                 key={i}
                 className={clsx(
-                  'variant-button flex-auto text-[16px] xs:text-[18px]',
-                  quantity === currentQuantity ? 'variant-button-pressed': '',
+                  'variant-button flex-auto text-[16px] xs:text-[18px] ',
+                  quantity === currentQuantity ? 'variant-button-pressed': 'hover:bg-primary-100',
                 )}
                 onClick={() => setCurrentQuantity(quantity)}
                 aria-label={`Select ${quantity} ${quantity === 1 ? 'bag' : 'bags'}`}
@@ -736,7 +735,7 @@ const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPri
                 selectedVariant: selectedVariant
               },
             ]}
-            className={`w-full pdp-add-to-cart-button bg-black text-white py-2 outline-none ${isSmallButton ? 'h-[56px]' : 'h-[60px] text-lead' }`}
+            className={`w-full pdp-add-to-cart-button bg-black hover:bg-neutral-700 text-white py-2 outline-none ${isSmallButton ? 'h-[56px]' : 'h-[60px] text-lead' }`}
             data-test="add-to-cart"
             onClick={() => open('cart')}
           >

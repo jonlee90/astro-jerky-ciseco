@@ -1,5 +1,7 @@
 
 import {Image} from '@shopify/hydrogen';
+import { motion } from 'framer-motion';
+import React from 'react';
 import { Link } from "react-router-dom";
 
 const HeroSlider = () => {
@@ -79,14 +81,20 @@ const HeroSlider = () => {
                 High Protein-Packed Snacks with bold flavors.
               </p>
               {/* Button */}
-              <div className={`text-sm border-black border w-80 mx-auto`}>
+              <motion.div 
+                className={`text-sm border-black border w-80 mx-auto`}
+                whileHover={{
+                  scale: 1.05,
+                  translateY: -2
+                }}
+              >
                 <Link
                   to="/best-beef-jerky-flavors"
                   className="flex pdp-add-to-cart-button bg-black text-white py-2 outline-none h-[56px] text-lead w-full items-center justify-center"
                 >
                   Discover the Flavors
                 </Link>
-              </div>
+              </motion.div>
             </div>
           </div>
 
@@ -95,7 +103,7 @@ const HeroSlider = () => {
             
             {products.map((product, i) => (
               <div
-                key={i}
+                key={product.alt} 
                 className={`absolute transform w-1/2 sm:w-80 ${product.css}`}
               >
                 <img
@@ -108,7 +116,7 @@ const HeroSlider = () => {
             {/* Illustrations */}
             {illustrations.map((illustration, i) => (
               <div
-                key={i}
+              key={illustration.alt}
                 className={`absolute w-20 md:w-32 ${illustration.css}`}
               >
                 <img
@@ -124,9 +132,8 @@ const HeroSlider = () => {
             >
               
               {jerkyImage.map((illustration, i) => (
-              <>
-                <div
-                  key={i}
+              <React.Fragment key={illustration.alt}> {/* Add a key to the Fragment */}
+                <div 
                   className={`w-20 md:w-32 basis-1/4 ${illustration.css}`}
                 >
                   <img
@@ -136,15 +143,23 @@ const HeroSlider = () => {
                   />
                 </div>
                 {i === 0 && 
-                  <Link
+                  
+              <motion.div 
+                whileHover={{
+                  scale: 1.05,
+                  translateY: -2
+                }}
+              >
+                <Link
                   className='basis-1/2'
                     to="/best-beef-jerky-flavors"
                   >
-                  <h2 className="text-sm font-extrabold uppercase animate-floating bg-black text-white hover:bg-gray-600 p-2 w-full max-w-36 justify-self-center text-center">
+                  <h2 className="text-sm font-extrabold uppercase animate-floating bg-black text-white p-2 w-full max-w-36 justify-self-center text-center">
                       Buy 3 for $33!
                   </h2>
-                  </Link>}
-              </>
+                  </Link>
+                </motion.div>}
+              </React.Fragment>
             ))}
             </div>
           </div>

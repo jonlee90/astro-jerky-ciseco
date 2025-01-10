@@ -44,7 +44,7 @@ export function AnnouncementBar({
           setVisible(false)
           setIsVisible(false)
         }} // Hide the bar on click
-        className="absolute right-2 text-white bg-black text-center hover:text-gray-600 focus:outline-none rounded-full p-1"
+        className="absolute right-2 text-white bg-black text-center hover:bg-slate-800 focus:outline-none rounded-full p-1"
         aria-label="Close Announcement Bar"
       >
         <IconClose />
