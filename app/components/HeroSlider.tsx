@@ -78,7 +78,7 @@ const HeroSlider = () => {
               </h1>
               {/* Description */}
               <p className="text-lg">
-                High Protein-Packed Snacks with bold flavors.
+              Providing quality hand-crafted jerky for our patrons since 2013. Pre and Post workout snack that hits the hunger switch off.
               </p>
               {/* Button */}
               <motion.div 
