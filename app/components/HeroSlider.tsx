@@ -78,7 +78,7 @@ const HeroSlider = () => {
               </h1>
               {/* Description */}
               <p className="text-lg">
-              Providing quality hand-crafted jerky for our patrons since 2013. Pre and Post workout snack that hits the hunger switch off.
+              Providing quality hand-crafted jerky for our patrons since 2013.
               </p>
               {/* Button */}
               <motion.div 
