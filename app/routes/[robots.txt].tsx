@@ -59,6 +59,8 @@ Disallow: /.well-known/shopify/monorail
 Disallow: /cdn/wpm/*.js
 Disallow: /recommendations/beef-jerky
 Disallow: /*/recommendations/beef-jerky
+Disallow: /collections/
+Disallow: /products/
 ${sitemapUrl ? `Sitemap: ${sitemapUrl}` : ''}
 
 # Google adsbot ignores robots.txt unless specifically named!

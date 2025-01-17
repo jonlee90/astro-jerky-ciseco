@@ -33,7 +33,7 @@ export function CollectionPage() {
       className="nc-PageCollection pt-8 lg:pt-14 pb-20 lg:pb-28 md:container"
     >
       <section 
-        aria-labelledby="collection-title"
+        aria-label='collection-count-toggle'
         className="container"
       >
         <p className="sr-only">{`Collection contains ${totalProducts} products.`}</p>
@@ -51,12 +51,20 @@ export function CollectionPage() {
             />
           </div>
         </div>
+      </section>
+
+      <section 
+        aria-labelledby="collection-title"
+        className='mx-5'>
         <h1 
           id="collection-title"
           className="block text-3xl sm:text-4xl font-semibold capitalize"
         >
           {collection.title.replace(/(<([^>]+)>)/gi, "")}
         </h1>
+        <p className="block mt-4 text-neutral-500 dark:text-neutral-400 text-sm sm:text-base">
+          {collection.description}
+        </p>
       </section>
 
       <ProductFilterHiddenScrollBar
@@ -84,14 +92,6 @@ export function CollectionPage() {
         )}
       </section>
       
-      <section 
-        aria-labelledby="page-description"
-        className=' sm:col-span-2 lg:col-span-3 mx-5 mt-20 lg:mt-28'>
-        <h2 id="page-description">High Protein {collection.title}</h2>
-        <p className="block mt-4 text-neutral-500 dark:text-neutral-400 text-sm sm:text-base">
-          {collection.description}
-        </p>
-      </section>
 
       <Suspense fallback={<div className="h-32" />}>
         <Await
