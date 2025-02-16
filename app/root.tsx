@@ -89,7 +89,7 @@ export async function loader(args: LoaderFunctionArgs) {
   if (url.pathname.includes('/collections/') && !url.pathname.includes('/collections/all')) {
     return redirect('/' + collectionHandle, 301);
   }
-   return {
+   return defer({
      ...deferredData,
      ...criticalData,
     shop: getShopAnalytics({
@@ -97,15 +97,15 @@ export async function loader(args: LoaderFunctionArgs) {
       publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
     }),
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
-    consent: {
-      checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
-      storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
-      withPrivacyBanner: true,
-    // localize the privacy banner
-    country: storefront.i18n.country,
-    language: storefront.i18n.language,
-    }
-   };
+     consent: {
+       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
+       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
+       withPrivacyBanner: true,
+      // localize the privacy banner
+      country: storefront.i18n.country,
+      language: storefront.i18n.language,
+     },
+   });
 }
 
 /**
