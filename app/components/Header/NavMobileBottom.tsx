@@ -22,9 +22,17 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
   const [cartData, setCartData] = useState<CartApiQueryFragment | null>(null);
 
   useEffect(() => {
-    // Resolve the promises and set state
-    isLoggedIn.then(setIsAuthenticated);
-    cart.then(setCartData);
+    const resolvePromises = async () => {
+      try {
+        const [authStatus, cartDetails] = await Promise.all([isLoggedIn, cart]);
+        setIsAuthenticated(authStatus);
+        setCartData(cartDetails);
+      } catch (error) {
+        console.error("Failed to resolve promises:", error);
+      }
+    };
+  
+    resolvePromises();
   }, [isLoggedIn, cart]);
 
   const navItems = [
