@@ -19,6 +19,7 @@ import backgroundLineSvg from '@/assets/images/Moon.svg?url';
 import backgroundLineSvg3 from '@/assets/images/BackgroundLine.svg?url';
 import Input from '~/components/MyInput';
 import clsx from 'clsx';
+import { hexToRgba } from '~/lib/utils';
 
 export function SectionImageWithText(props: SectionImageWithTextFragment) {
   const section = parseSection<
@@ -46,6 +47,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
   const fetcher = useFetcher();
   const {customerCreate} = (fetcher.data || {}) as AddSubscriberMutation;
   const backgroundColor = background_color?.value || 'black';
+  const gradientColorWithOpacity = hexToRgba(backgroundColor, 0.9); // Adjust opacity as needed
 
   return (
     <section
@@ -60,7 +62,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
           style?.value === '2' &&
             'relative flex flex-col lg:flex-row lg:justify-end bg-yellow-50 dark:bg-slate-800 rounded-2xl sm:rounded-[40px] p-4 pb-0 sm:p-5 sm:pb-0 lg:p-24',
           style?.value === '3' &&
-            'relative flex flex-col md:flex-row bg-slate-50 dark:bg-slate-800',
+            'relative flex flex-col md:flex-row',
         ])}
         style={{backgroundColor: backgroundColor || undefined}}
       >
@@ -98,13 +100,13 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
             <div
               className="absolute inset-0 pointer-events-none md:hidden"
               style={{
-                background: `linear-gradient(to top, ${backgroundColor} 1%, transparent 35%)`,
+                background: `linear-gradient(to top, ${backgroundColor} 0%, ${gradientColorWithOpacity} 5%, transparent 20%)`,
               }}
             ></div>
             <div
               className="absolute inset-0 pointer-events-none hidden md:block"
               style={{
-                background: `linear-gradient(to left, ${backgroundColor} 5%, transparent 50%)`,
+                background: `linear-gradient(to left, ${backgroundColor} 0%, ${gradientColorWithOpacity} 5%, transparent 30%)`,
               }}
             ></div>
           </div>
@@ -208,9 +210,10 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
               {!!button_2?.href && (
                 <ButtonSecondary
                   href={button_2.href.value || undefined}
-                  className="!bg-neutral-900 hover:!bg-neutral-700 focus:!ring-neutral-600"
+                  className="!bg-neutral-900 py-3 px-8 lg:py-3.5 hover:!bg-neutral-700 focus:!ring-neutral-600"
                 >
-                  {button_2?.text?.value || 'Learn more'}
+                  <span>{button_2?.text?.value || 'Learn more'}</span>
+                  <ArrowRightIcon className="w-4 h-4 ms-2" />
                 </ButtonSecondary>
               )}
             </div>

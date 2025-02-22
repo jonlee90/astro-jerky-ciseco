@@ -77,6 +77,22 @@ export function getUrlAndCheckIfExternal(
   return itemUrl;
 }
 
+export const hexToRgba = (hex: string, opacity: number): string => {
+  // Remove # if present
+  const cleanHex = hex.replace('#', '');
+  
+  // Convert hex to decimal
+  const bigint = parseInt(cleanHex, 16);
+  
+  // Extract RGB values
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  
+  // Return rgba string
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+};
+
 function resolveToFromType(
   {
     customPrefixes,
