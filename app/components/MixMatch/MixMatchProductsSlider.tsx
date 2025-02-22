@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { MixMatchProductCard } from './MixMatchProductCard';
 import { motion } from 'framer-motion';
+import NextPrevDesktop  from '../NextPrev/NextPrevDesktop';
+import useSnapSlider from '~/hooks/useSnapSlider';
 
 interface Product {
   id: string;
@@ -52,9 +54,20 @@ export function MixMatchProductsSlider({
   clickButton,
   currentBundle,
 }: MixMatchProductsSliderProps) {
+  const sortedProducts = products?.slice().sort((a, b) => {
+    const aAvailable = a.availableForSale;
+    const bAvailable = b.availableForSale;
+    return aAvailable === bAvailable ? 0 : aAvailable ? -1 : 1;
+  });
+
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  const {scrollToNextSlide, scrollToPrevSlide} = useSnapSlider({sliderRef});
+
+
   return (
     <section 
-      className='mb-10'
+      className='mb-10 relative'
       aria-labelledby={`slider-title-${title.replace(/\s+/g, '-').toLowerCase()}`}
     >
       <h2 
@@ -64,12 +77,13 @@ export function MixMatchProductsSlider({
         {title}
       </h2>
       <div 
-        className="swimlane hiddenScroll  md:pb-8 md:scroll-px-8 lg:scroll-px-12 pt-4 text-center px-5"
-        role="region"
+        ref={sliderRef}
+        className="relative w-full flex px-5 gap-4 lg:gap-8 snap-x snap-mandatory overflow-x-auto scroll-p-l-container hiddenScrollbar"
+        role="list"
         aria-label={`Product slider for ${title}`}
         tabIndex={0} // Makes the scrollable area keyboard focusable
       >
-        {products.map((product, i) => (
+        {sortedProducts.map((product, i) => (
           <MixMatchProductCard
             key={product.id || i}
             product={product}
@@ -81,6 +95,9 @@ export function MixMatchProductsSlider({
           />
         ))}
       </div>
+      {sortedProducts.length > 4 && (
+        <NextPrevDesktop onClickNext={scrollToNextSlide} onClickPrev={scrollToPrevSlide} />
+      )}
     </section>
   );
 }

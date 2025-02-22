@@ -40,7 +40,7 @@ export function MobileHeader({isBackButton}) {
       </div>
 
       <div className="flex items-center justify-center w-full gap-4">
-        <Logo className="w-16" aria-hidden="true" />
+        <Logo className="w-[60px]" aria-hidden="true" />
       </div>
 
       <div className="py-3 xs:mr-5 sm:!mr-10">

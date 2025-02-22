@@ -120,7 +120,7 @@ export const TopHeader = ({
           </div>
 
           <div className="flex items-center justify-center w-full gap-4">
-            <Logo className="w-16" />
+            <Logo className="w-[60px]" />
           </div>
 
           <div className="py-3 xs:mr-5 sm:!mr-10">

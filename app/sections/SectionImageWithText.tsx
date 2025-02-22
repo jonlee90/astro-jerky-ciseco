@@ -45,10 +45,11 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
 
   const fetcher = useFetcher();
   const {customerCreate} = (fetcher.data || {}) as AddSubscriberMutation;
+  const backgroundColor = background_color?.value || 'black';
 
   return (
     <section
-      className={`section-image-with-text container ${
+      className={`section-image-with-text ${
         style?.value !== '1' ? 'lg:pt-10' : ''
       }`}
     >
@@ -59,11 +60,11 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
           style?.value === '2' &&
             'relative flex flex-col lg:flex-row lg:justify-end bg-yellow-50 dark:bg-slate-800 rounded-2xl sm:rounded-[40px] p-4 pb-0 sm:p-5 sm:pb-0 lg:p-24',
           style?.value === '3' &&
-            'relative flex flex-col lg:flex-row bg-slate-50 dark:bg-slate-800 rounded-2xl sm:rounded-[40px] p-4 pb-0 sm:p-5 sm:pb-0 lg:p-24',
+            'relative flex flex-col md:flex-row bg-slate-50 dark:bg-slate-800',
         ])}
-        style={{backgroundColor: background_color?.value || undefined}}
+        style={{backgroundColor: backgroundColor || undefined}}
       >
-        {style?.value !== '1' && (
+        {/*style?.value !== '1' && (
           <div className="absolute inset-0">
             <img
               className="absolute w-full h-full object-contain object-bottom"
@@ -74,15 +75,48 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
               sizes="max-width: 640px 100vw, max-width: 1024px 80vw, 50vw"
             />
           </div>
-        )}
+        )*/}
 
+        {/* IMAGE */}
+        <div
+          className={clsx([
+            'w-full',
+            style?.value === '1' && 'relative flex-1 max-w-xl lg:max-w-none',
+            style?.value === '2' &&
+              'relative block lg:absolute lg:left-0 lg:bottom-0 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(55%-40px)]',
+            style?.value === '3' &&
+              'relative block',
+          ])}
+        >
+          {image?.image && (
+            <div className="relative w-full h-full">
+            <Image
+              data={image?.image}
+              className="w-full h-full object-cover"
+              sizes="max-width: 640px 100vw, max-width: 1024px 80vw, 50vw"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none md:hidden"
+              style={{
+                background: `linear-gradient(to top, ${backgroundColor} 1%, transparent 35%)`,
+              }}
+            ></div>
+            <div
+              className="absolute inset-0 pointer-events-none hidden md:block"
+              style={{
+                background: `linear-gradient(to left, ${backgroundColor} 5%, transparent 50%)`,
+              }}
+            ></div>
+          </div>
+          )}
+        </div>
         {/* CONTENT */}
         <div
           className={clsx([
             style?.value === '1' &&
               'relative flex-shrink-0 mb-16 lg:mb-0 lg:mr-10 lg:w-2/5',
             style?.value === '2' && 'lg:w-[45%] max-w-lg relative',
-            style?.value === '3' && 'lg:w-[50%] max-w-lg relative',
+            style?.value === '3' && 'flex flex-col py-10 lg:py-0  gap-4 lg:gap-10 text-center justify-center w-full',
           ])}
         >
           {hide_logo?.value !== 'true' && <Logo className="w-28" />}
@@ -92,13 +126,13 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
                 'font-semibold text-3xl sm:text-4xl xl:text-5xl 2xl:text-6xl !leading-[1.2] tracking-tight',
               style?.value === '2' &&
                 'font-semibold text-3xl sm:text-4xl xl:text-5xl 2xl:text-6xl !leading-[1.2] tracking-tight',
-              style?.value === '3' && 'font-semibold text-4xl md:text-5xl',
+              style?.value === '3' && 'font-semibold text-4xl',
               hide_logo?.value !== 'true' && 'mt-6 sm:mt-10',
             ])}
             dangerouslySetInnerHTML={{__html: heading?.value || ''}}
           ></h2>
           <div
-            className="block mt-6 text-slate-500 dark:text-slate-400 "
+            className="block text-slate-900 "
             dangerouslySetInnerHTML={{__html: content?.value || ''}}
           ></div>
           {!!features?.value && (
@@ -162,7 +196,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
             )}
 
           {(!!button_1?.href || !!button_2?.href) && (
-            <div className="flex space-x-2 sm:space-x-5 mt-6 sm:mt-12">
+            <div className="flex space-x-2 sm:space-x-5 justify-center">
               {button_1?.href && (
                 <ButtonPrimary
                   targetBlank={!!button_1.target?.value}
@@ -174,7 +208,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
               {!!button_2?.href && (
                 <ButtonSecondary
                   href={button_2.href.value || undefined}
-                  className="border border-slate-100 dark:border-slate-700"
+                  className="!bg-neutral-900 hover:!bg-neutral-700 focus:!ring-neutral-600"
                 >
                   {button_2?.text?.value || 'Learn more'}
                 </ButtonSecondary>
@@ -183,25 +217,6 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
           )}
         </div>
 
-        {/* IMAGE */}
-        <div
-          className={clsx([
-            'w-full',
-            style?.value === '1' && 'relative flex-1 max-w-xl lg:max-w-none',
-            style?.value === '2' &&
-              'relative block lg:absolute lg:left-0 lg:bottom-0 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(55%-40px)]',
-            style?.value === '3' &&
-              'relative block lg:absolute lg:right-0 lg:bottom-0 mt-10 lg:mt-0 max-w-lg lg:max-w-[calc(50%-40px)]',
-          ])}
-        >
-          {image?.image && (
-            <Image
-              data={image?.image}
-              className="w-full h-full object-cover"
-              sizes="max-width: 640px 100vw, max-width: 1024px 80vw, 50vw"
-            />
-          )}
-        </div>
       </div>
     </section>
   );

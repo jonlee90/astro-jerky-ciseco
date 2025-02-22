@@ -18,6 +18,8 @@ import { useAside } from './Aside';
 import { useVariantUrl } from '~/lib/variants';
 import { IconSpicy, IconBbq, IconChicken, IconPepper, IconCow } from "./Icon";
 import { useIsHydrated } from '~/hooks/useIsHydrated';
+import card from '@material-tailwind/react/theme/components/card';
+import ProductSoldOut from './ProductSoldOut';
 
 
 interface MoneyV2 {
@@ -66,7 +68,7 @@ const ProductCard: FC<ProductCardProps> = ({
   );
   const productMedia = flattenConnection(cardProduct.images);
   const {selectedOptions} = firstVariant;
-
+  const isAvailable = firstVariant.availableForSale;
 
   const productAnalytics = {
     productGid: product.id,
@@ -87,7 +89,6 @@ const ProductCard: FC<ProductCardProps> = ({
 
   const intervalDuration = 2000; // 2 seconds per image
   const totalDuration = intervalDuration * productMedia.length; // Total duration for all images to display
-  let productIcon;
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -128,8 +129,10 @@ const ProductCard: FC<ProductCardProps> = ({
 
   return ( 
     <motion.div 
-      className="flex flex-col gap-2" 
+      className='flex flex-col gap-2'
       whileHover={{scale: 1.02}} 
+      role="region"
+      aria-labelledby={`product-title-${product.handle}`}
       >
       <Link
         to={variantUrl}
@@ -141,6 +144,8 @@ const ProductCard: FC<ProductCardProps> = ({
           <motion.div
             ref={cardRef}
             className="card-image aspect-[4/5] pb-1 rounded-2xl"
+            role="img"
+            aria-label={product.title}
             onMouseEnter={() => {
               if (isDesktop || !transition) {
                 setIsHovered(true);
@@ -163,7 +168,9 @@ const ProductCard: FC<ProductCardProps> = ({
               animate={{opacity: 1}}
               transition={{duration: 0.5}}
             />
-
+            {!isAvailable && (
+              <ProductSoldOut/>
+            )}
             {/*<ProductBadge
               status={getProductStatus({
                 availableForSale: product.availableForSale,
@@ -188,7 +195,7 @@ const ProductCard: FC<ProductCardProps> = ({
             />
           </motion.div>
           <div className="grid gap-2">
-            <h2 className="w-full uppercase text-xl text-left">
+            <h2 id={`product-title-${product.handle}`} className="w-full uppercase text-xl text-left">
               {product.title + ' (' + selectedOptions[0].value + ')'}
             </h2>
             <div className="grid grid-cols-2">

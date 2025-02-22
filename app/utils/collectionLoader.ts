@@ -41,9 +41,18 @@ export async function loadCollectionData({
       language: locale.language,
     },
   });
-
   if (!collection) {
     throw new Response("Collection not found", { status: 404 });
+  }
+  // Sort products by availability
+  if (collection.products?.nodes) {
+    const sortedProducts = [...collection.products.nodes].sort((a, b) => {
+      const aAvailable = a.variants.nodes[0].availableForSale;
+      const bAvailable = b.variants.nodes[0].availableForSale;
+      return aAvailable === bAvailable ? 0 : aAvailable ? -1 : 1;
+    });
+
+    collection.products.nodes = sortedProducts;
   }
 
   const seo = seoPayload.collection({ collection, url: request.url });

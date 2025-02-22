@@ -1,10 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { flattenConnection, Image, Money, useMoney } from '@shopify/hydrogen';
-import { Modal } from '../Modal';
-import { IconMinus } from '../Icon';
-import { IconAdd } from '../Icon';
-import { isDiscounted, isNewArrival } from '~/lib/utils';
+import ProductSoldOut  from '../ProductSoldOut';
 import { getProductPlaceholder } from '~/lib/placeholders';
 import { motion } from 'framer-motion';
 import { getProductIcon } from '../ProductCard';
@@ -91,9 +88,9 @@ export function MixMatchProductCard({
   };
   return (
     <motion.div 
-      className={clsx('flex flex-col gap-2 w-40 md:w-52', { 'cursor-not-allowed opacity-50': !isAvailable })}
+      className={clsx('mySnapItem snap-start shrink-0 py-3 w-40 md:w-52', { 'cursor-not-allowed opacity-50': !isAvailable })}
       role="group"
-      aria-labelledby={`card-title-${cardProduct.id}`}
+      aria-labelledby={`product-title-${cardProduct.title}`}
     >
       <div className='grid gap-2'>
         <div className="card-image aspect-[4/5] bg-primary/5 rounded-2xl">
@@ -106,6 +103,9 @@ export function MixMatchProductCard({
               alt={image.altText || `Picture of ${cardProduct.title}`}
               loading={loading}
             />
+          )}
+          {!isAvailable && (
+            <ProductSoldOut/>
           )}
         </div>
         <h2

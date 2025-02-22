@@ -41,6 +41,12 @@ export function SnapSliderProducts(props: Props) {
   const CardSkeleton =
     cardStyle === '2' ? ProductCardLargeSkeleton : ProductCardSkeleton;
 
+  const sortedProducts = products?.slice().sort((a, b) => {
+    const aAvailable = a.variants.nodes[0].availableForSale;
+    const bAvailable = b.variants.nodes[0].availableForSale;
+    return aAvailable === bAvailable ? 0 : aAvailable ? -1 : 1;
+  });
+
   return (
     <div 
       className={`nc-SectionSliderProductCard relative ` + className}
@@ -77,7 +83,7 @@ export function SnapSliderProducts(props: Props) {
           ))}
 
         {!isSkeleton &&
-          products?.map((item, index) => (
+          sortedProducts?.map((item, index) => (
             <div
               key={item.id}
               className={clsx(
