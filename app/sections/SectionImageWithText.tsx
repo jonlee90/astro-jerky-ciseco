@@ -82,7 +82,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
         {/* IMAGE */}
         <div
           className={clsx([
-            'w-full',
+            'w-full h-full',
             style?.value === '1' && 'relative flex-1 max-w-xl lg:max-w-none',
             style?.value === '2' &&
               'relative block lg:absolute lg:left-0 lg:bottom-0 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(55%-40px)]',
@@ -94,7 +94,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
             <div className="relative w-full h-full">
             <Image
               data={image?.image}
-              className="w-full h-full object-cover"
+              className="w-full h-full block"
               sizes="max-width: 640px 100vw, max-width: 1024px 80vw, 50vw"
             />
             <div
