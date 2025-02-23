@@ -48,7 +48,6 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
   const {customerCreate} = (fetcher.data || {}) as AddSubscriberMutation;
   const backgroundColor = background_color?.value || 'black';
   const gradientColorWithOpacity = hexToRgba(backgroundColor, 0.9); // Adjust opacity as needed
-console.log(backgroundColor);
   return (
     <section
       className={`section-image-with-text`}
