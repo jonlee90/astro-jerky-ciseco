@@ -188,9 +188,9 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <Links />
         
         <Script
-          dangerouslySetInnerHTML={{
-            __html: `<script async type='text/javascript' src='https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=Xx5PGx'></script>`,
-          }}
+        async
+        type='text/javascript'
+        src='https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=Xx5PGx'
         ></Script>
         
       </head>
