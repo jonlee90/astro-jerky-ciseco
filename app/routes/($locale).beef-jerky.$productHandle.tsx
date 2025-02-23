@@ -210,6 +210,7 @@ export default function Product() {
   const [currentQuantity, setCurrentQuantity] = useState(3);
   const selectedVariant = useOptimisticVariant(product.selectedVariant, variants);
   const isHydrated = useIsHydrated();
+  const isOutOfStock = !selectedVariant?.availableForSale;
 
 
   let variantPrice = parseFloat(selectedVariant.price.amount) * currentQuantity;
@@ -274,14 +275,16 @@ if(!isHydrated) {
         aria-hidden={!showBottomAddToCartButton} // Hide from screen readers when not visible
         className={`fixed w-full lg:hidden z-20 ${isBackButton ? 'bottom-0' : 'bottom-16'}`}
       >
-        <BottomAddToCartButton
-          isBackButton={isBackButton}
-          selectedVariant={selectedVariant}
-          currentQuantity={currentQuantity}
-          selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
-          selectedVariantPrice={selectedVariantPrice}
-          setCurrentQuantity={setCurrentQuantity}
-        />
+        {!isOutOfStock &&(
+          <BottomAddToCartButton
+            isBackButton={isBackButton}
+            selectedVariant={selectedVariant}
+            currentQuantity={currentQuantity}
+            selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
+            selectedVariantPrice={selectedVariantPrice}
+            setCurrentQuantity={setCurrentQuantity}
+          />
+        )}
       </motion.div>
         <div 
           aria-label='Product section'
@@ -577,26 +580,20 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
         </div>
         {selectedVariant && (
           <div className="items-stretch gap-4">
-            {isOutOfStock ? (
-              <ButtonSecondary disabled aria-disabled="true" aria-label="Sold out">
-                <NoSymbolIcon className="w-5 h-5" />
-                <span className="ms-2">Sold out</span>
-              </ButtonSecondary>
-            ) : (
-              <div 
-                ref={addToCartButtonRef}
-                className="grid items-stretch gap-4"
-                role="region"
-                aria-label="Add to cart section">
-                <AddToCartButton3d
-                    isSmallButton={false}
-                    selectedVariant={selectedVariant}
-                    currentQuantity={currentQuantity}
-                    selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
-                    selectedVariantPrice={selectedVariantPrice}
-                  />
-              </div>
-            )}
+            <div 
+              ref={addToCartButtonRef}
+              className="grid items-stretch gap-4"
+              role="region"
+              aria-label="Add to cart section">
+              <AddToCartButton3d
+                  isSmallButton={false}
+                  selectedVariant={selectedVariant}
+                  currentQuantity={currentQuantity}
+                  selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
+                  selectedVariantPrice={selectedVariantPrice}
+                  isOutOfStock={isOutOfStock}
+                />
+            </div>
           </div>
         )}
       </div>
@@ -638,13 +635,7 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
     <div 
       className='w-full z-50'
     >
-      {isOutOfStock ? (
-        <ButtonSecondary disabled aria-disabled="true" aria-label="Sold out">
-          <NoSymbolIcon className="w-5 h-5" />
-          <span className="ms-2">Sold out</span>
-        </ButtonSecondary>
-      ) : (
-        <div className='py-5 px-3 grid grid-cols-5'>
+      <div className='py-5 px-3 grid grid-cols-5'>
           <div className='col-span-1'>
             <div className='border-black border'>
               <Popover 
@@ -715,14 +706,14 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
             currentQuantity={currentQuantity}
             selectedVariantCompareAtPrice={selectedVariantCompareAtPrice}
             selectedVariantPrice={selectedVariantPrice}
+            isOutOfStock={isOutOfStock}
           />
         </div>
-      )}
     </div>
   );
 };
 
-const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, isSmallButton = true, isBackButton = true}) => {
+const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, isOutOfStock, isSmallButton = true, isBackButton = true}) => {
   const {open} = useAside();
   return (
     <div className='col-span-4 flex flex-row gap-3'>
@@ -735,20 +726,33 @@ const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPri
                 selectedVariant: selectedVariant
               },
             ]}
-            className={`w-full pdp-add-to-cart-button bg-black hover:bg-neutral-700 text-white py-2 outline-none ${isSmallButton ? 'h-[56px]' : 'h-[60px] text-lead' }`}
+            className={`w-full pdp-add-to-cart-button relative ${isOutOfStock ? 'bg-neutral-600' : 'bg-black'} hover:bg-neutral-600 text-white py-2 outline-none ${isSmallButton ? 'h-[56px]' : 'h-[60px] text-lead' }`}
             data-test="add-to-cart"
+            disabled={isOutOfStock}
             onClick={() => open('cart')}
           >
-            <span className={`flex items-center ml-3 gap-2 font-bold `}>
-              <span>Add to Cart - </span>
-              <Prices
-                contentClass={`inline ${isSmallButton ? 'text-sm' : '' }`}
-                price={selectedVariantPrice}
-                compareAtPrice={selectedVariantCompareAtPrice}
-                compareAtPriceClass={'text-slate-600'}
-              />
-            </span>
-            <IconArrowRight className='absolute right-3 top-1/2 transform -translate-y-1/2' />
+            {isOutOfStock ? 
+            <>
+              <span className={`flex items-center ml-3 gap-2 font-bold `}>
+                SOLD OUT - Will Restock Soon
+              </span>
+              <NoSymbolIcon className="size-8 absolute right-3 top-1/2 transform -translate-y-1/2" />
+            </>
+            : 
+            <>
+              <span className={`flex items-center ml-3 gap-2 font-bold `}>
+                <span>Add to Cart - </span>
+                <Prices
+                  contentClass={`inline ${isSmallButton ? 'text-sm' : '' }`}
+                  price={selectedVariantPrice}
+                  compareAtPrice={selectedVariantCompareAtPrice}
+                  compareAtPriceClass={'text-slate-600'}
+                />
+              </span>
+              <IconArrowRight className='absolute right-3 top-1/2 transform -translate-y-1/2' />
+            </>
+            }
+            
           </AddToCartButton>
         </div>
         {isBackButton && (<CartCount opacity={1} className={`cursor-pointer size-14 md:hidden`} />)}

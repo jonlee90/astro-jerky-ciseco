@@ -72,10 +72,10 @@ export const CollectionSlider = ({
     }
   }, []);
   return (
-    <div className={`nc-DiscoverMoreSlider `}>
+    <div className={`nc-DiscoverMoreSlider xl:container`}>
       <Heading
         id={`slider-heading-${sectionId}`}
-        className="mb-12 mx-3 lg:mb-14 text-neutral-900 dark:text-neutral-50"
+        className="mb-12 mx-5 md:mx-10 xl:mx-0 lg:mb-14 text-neutral-900 dark:text-neutral-50"
         desc={sub_heading || ''}
         rightDescText={heading_light || ''}
         fontClass={headingFontClass}

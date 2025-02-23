@@ -12,6 +12,7 @@ export function SectionProductsSlider(props: SectionProductsSliderFragment) {
       id="product-slider" 
       aria-labelledby="product-slider-heading"
       aria-label="Products slider"
+      className='xl:container'
     >
       <h2 id="product-slider-heading" className="sr-only">
         {heading_bold?.value || 'Products'}

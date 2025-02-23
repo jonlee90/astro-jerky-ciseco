@@ -22,7 +22,7 @@ export function SectionGridProductsAndFilter(
       <div className={`nc-SectionGridProductsAndFilter container`}>
         <Heading
           className={
-            'mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 flex flex-1'
+            'mb-12 lg:mb-14 text-neutral-900 flex flex-1'
           }
           rightDescText={''}
           desc={sub_heading?.value ?? ''}

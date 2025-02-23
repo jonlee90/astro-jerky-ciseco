@@ -35,14 +35,14 @@ export function SnapGridProducts(props: Props) {
   return (
     <div className={`nc-SectionGridProductCard ` + className}>
       <Heading
-        className={'mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 px-4 container'}
+        className={'mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 mx-5 md:mx-10 xl:mx-0 '}
         fontClass={headingFontClass}
       >
         {heading_bold}
       </Heading>
       <div
         className={clsx(
-          'grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-10 lg:gap-x-15 mx-5'
+          'grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-10 lg:gap-x-15 mx-5 xl:mx-0'
         )}
         role="list"
         aria-label="Product grid"
