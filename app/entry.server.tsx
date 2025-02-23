@@ -32,7 +32,7 @@ export default async function handleRequest(
       'https://*.google-analytics.com',
       'https://*.googletagmanager.com',
       'https://*.klaviyo.com',
-      'https://*.cloudfront.com',
+      'https://*.cloudfront.net',
     ],
     styleSrc: [
       "'self'",
