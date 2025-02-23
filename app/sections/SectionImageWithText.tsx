@@ -60,7 +60,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
           style?.value === '2' &&
             'relative flex flex-col lg:flex-row lg:justify-end bg-yellow-50 dark:bg-slate-800 rounded-2xl sm:rounded-[40px] p-4 pb-0 sm:p-5 sm:pb-0 lg:p-24',
           style?.value === '3' &&
-            'relative flex flex-col md:flex-row',
+            'relative md:flex md:flex-row',
         ])}
       >
         {/*style?.value !== '1' && (
