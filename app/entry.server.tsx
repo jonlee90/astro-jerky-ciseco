@@ -31,7 +31,8 @@ export default async function handleRequest(
       'https://cdn.shopify.com',
       'https://*.google-analytics.com',
       'https://*.googletagmanager.com',
-      'https://*.klaviyo.com'
+      'https://*.klaviyo.com',
+      'https://*.cloudfront.com',
     ],
     styleSrc: [
       "'self'",
