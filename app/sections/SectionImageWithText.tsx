@@ -54,6 +54,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
       className={`section-image-with-text ${
         style?.value !== '1' ? 'lg:pt-10' : ''
       }`}
+      style={{backgroundColor: backgroundColor || undefined}}
     >
       <div
         className={clsx([
