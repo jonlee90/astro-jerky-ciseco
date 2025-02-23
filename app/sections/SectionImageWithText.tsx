@@ -48,7 +48,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
   const {customerCreate} = (fetcher.data || {}) as AddSubscriberMutation;
   const backgroundColor = background_color?.value || 'black';
   const gradientColorWithOpacity = hexToRgba(backgroundColor, 0.9); // Adjust opacity as needed
-
+console.log(backgroundColor);
   return (
     <section
       className={`section-image-with-text`}
@@ -88,7 +88,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
           ])}
         >
           {image?.image && (
-            <div className="relative w-full h-full">
+            <>
             <Image
               data={image?.image}
               className="w-full h-full block"
@@ -106,7 +106,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
                 background: `linear-gradient(to left, ${backgroundColor} 0%, ${gradientColorWithOpacity} 5%, transparent 30%)`,
               }}
             ></div>
-          </div>
+          </>
           )}
         </div>
         {/* CONTENT */}
@@ -116,7 +116,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
               'relative flex-shrink-0 mb-16 lg:mb-0 lg:mr-10 lg:w-2/5',
             style?.value === '2' && 'lg:w-[45%] max-w-lg relative',
             style?.value === '3' && 'flex flex-col py-10 lg:py-0  gap-4 lg:gap-10 text-center justify-center w-full',
-            'bg-gradient-to-b md:bg-gradient-to-r from-[#ff0000] to-[#facc15]'
+            'bg-gradient-to-b md:bg-gradient-to-r from-[#ED1C24] to-[#facc15]'
           ])}
         >
           {hide_logo?.value !== 'true' && <Logo className="w-28" />}
