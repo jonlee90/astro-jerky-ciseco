@@ -186,7 +186,9 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <meta name="google-site-verification" content="25YtPW1Ho9GeTDGAmb7ERIzVTKDKWaCkNnpXAs8tlH4" />
         <Meta />
         <Links />
+        <script async type='text/javascript' src='https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=Xx5PGx'></script>
       </head>
+      
       <body className="bg-white">
           {data ? (
             <Analytics.Provider
