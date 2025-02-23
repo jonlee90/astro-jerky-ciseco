@@ -184,6 +184,10 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
         <meta name="google-site-verification" content="25YtPW1Ho9GeTDGAmb7ERIzVTKDKWaCkNnpXAs8tlH4" />
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content={`default-src 'self'; script-src 'self' https://cdn.shopify.com https://d3hw6dc1ow8pp2.cloudfront.net https://d3g5hqndtiniji.cloudfront.net https://*.googletagmanager.com https://static.klaviyo.com data: 'nonce-${nonce}';`}
+        />
         <Meta />
         <Links />
         <script async type='text/javascript' src='https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=Xx5PGx'></script>
