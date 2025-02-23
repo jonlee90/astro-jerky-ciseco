@@ -59,7 +59,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
           style?.value === '2' &&
             'relative flex flex-col lg:flex-row lg:justify-end bg-yellow-50 dark:bg-slate-800 rounded-2xl sm:rounded-[40px] p-4 pb-0 sm:p-5 sm:pb-0 lg:p-24',
           style?.value === '3' &&
-            'relative md:flex md:flex-row',
+            'relative md:grid md:grid-cols-2',
         ])}
       >
         {/*style?.value !== '1' && (
@@ -115,7 +115,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
               'relative flex-shrink-0 mb-16 lg:mb-0 lg:mr-10 lg:w-2/5',
             style?.value === '2' && 'lg:w-[45%] max-w-lg relative',
             style?.value === '3' && 'flex flex-col py-10 lg:py-0  gap-4 lg:gap-10 text-center justify-center w-full',
-            'bg-gradient-to-b md:bg-gradient-to-r from-[#ED1C24] to-[#facc15]'
+            'bg-gradient-to-b md:bg-gradient-to-r from-[#ED1C24] to-[#facc15] mt-[-1px] md:mt-0'
           ])}
         >
           {hide_logo?.value !== 'true' && <Logo className="w-28" />}
