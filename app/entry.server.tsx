@@ -23,6 +23,7 @@ export default async function handleRequest(
       'https://d3hw6dc1ow8pp2.cloudfront.net',
       'https://d3g5hqndtiniji.cloudfront.net',
       'https://*.googletagmanager.com',
+      'https://*.klaviyo.com',
       'data:',
     ],
     imgSrc: [
@@ -46,6 +47,7 @@ export default async function handleRequest(
       'https://*.google-analytics.com',
       'https://*.analytics.google.com',
       'https://*.googletagmanager.com',
+      'https://*.klaviyo.com',
     ]
   });
   const body = await renderToReadableStream(
