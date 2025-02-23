@@ -229,6 +229,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
               >
                 {children}
               </PageLayout>
+              <GoogleTagManager />
             </Analytics.Provider>
         ) : (
           children
