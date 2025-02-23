@@ -30,7 +30,8 @@ export default async function handleRequest(
       "'self'",
       'https://cdn.shopify.com',
       'https://*.google-analytics.com',
-      'https://*.googletagmanager.com'
+      'https://*.googletagmanager.com',
+      'https://*.klaviyo.com'
     ],
     styleSrc: [
       "'self'",
@@ -38,6 +39,7 @@ export default async function handleRequest(
       'https://cdn.shopify.com',
       'http://localhost:*',
       'https://d3hw6dc1ow8pp2.cloudfront.net',
+      'https://*.klaviyo.com'
     ],
     connectSrc: [
       "'self'",
