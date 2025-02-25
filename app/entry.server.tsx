@@ -45,6 +45,8 @@ export default async function handleRequest(
     ],
     fontSrc: [
       'https://fonts.googleapis.com',
+      'https://fonts.gstatic.com',
+      'https://cdn.shopify.com',
     ],
     connectSrc: [
       "'self'",
