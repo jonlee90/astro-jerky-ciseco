@@ -36,6 +36,10 @@ import {
   SectionLatestBlog,
 } from './SectionLatestBlog';
 import {
+  SECTION_PRODUCT_DISPLAY_FRAGMENT,
+  SectionProductDisplay,
+} from './SectionProductDisplay';
+import {
   SECTION_CLIENTS_SAY_FRAGMENT,
   SectionClientsSay,
 } from './SectionClientsSay';
@@ -61,7 +65,8 @@ export type CisecoSectionType =
   | 'ciseco--section_tabs_collections_by_group'
   | 'ciseco--section_grid_products_and_filter'
   | 'ciseco--section_latest_blog'
-  | 'ciseco--section_clients_say';
+  | 'ciseco--section_clients_say'
+  | 'ciseco--section_product_display';
 
 export function Sections({
   sections,
@@ -139,6 +144,12 @@ export function Sections({
                 <SectionClientsSay {...section} key={section.id} />
               </WrapSection>
             );
+          case 'ciseco--section_product_display':
+            return (
+              <WrapSection key={section.id} index={index} {...args}>
+                <SectionProductDisplay {...section} key={section.id} />
+              </WrapSection>
+            );
 
           // case 'section_another':
           //   return <AnotherSection />;
@@ -195,6 +206,7 @@ export const SECTIONS_FRAGMENT = `#graphql
             ...SectionGridProductsAndFilter
             ...SectionLatestBlog
             ...SectionClientsSay
+            ...SectionProductDisplay
           }
         }
       }
@@ -211,6 +223,7 @@ export const SECTIONS_FRAGMENT = `#graphql
   ${SECTION_GRID_PRODUCTS_AND_FILTER_FRAGMENT}
   ${SECTION_LATEST_BLOG_FRAGMENT}
   ${SECTION_CLIENTS_SAY_FRAGMENT}
+  ${SECTION_PRODUCT_DISPLAY_FRAGMENT}
 
   # All common fragments
   ${COMMON_PRODUCT_CARD_FRAGMENT}

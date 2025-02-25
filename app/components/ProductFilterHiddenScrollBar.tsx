@@ -6,7 +6,7 @@ import { Link } from './Link';
 import clsx from 'clsx';
 
 
-const ProductFilterHiddenScrollBar = ({collectionHandle}: any) => {
+const ProductFilterHiddenScrollBar = ({collectionHandle, totalProducts}: any) => {
   const categoryData = [
     {
       label: "All Flavors",
@@ -88,7 +88,7 @@ const ProductFilterHiddenScrollBar = ({collectionHandle}: any) => {
                     :
                       <div></div>
                     }
-                    <span>{item.label}</span>
+                    <span>{item.label} {collectionHandle === item.value && (`(${totalProducts})`)}</span>
                   </div>
                 </Link> 
               </NavItem>

@@ -7,6 +7,7 @@ import { IconCart } from './Icon';
 import { useAside } from './Aside';
 import { RootLoader } from '~/root';
 import { useMediaQuery } from 'react-responsive';
+import { useAnalytics } from '@shopify/hydrogen';
 
 interface CartCountProps {
   className?: string;
@@ -59,6 +60,7 @@ const Badge: React.FC<BadgeProps> = ({ openCart, count }) => {
 
 export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity, showCart = false}) => {
   const rootData = useRouteLoaderData<RootLoader>('root');
+  const {publish, shop, cart, prevCart} = useAnalytics();
 //  const isMobile = useMediaQuery({maxWidth: 767});
   const {open} = useAside();
 
@@ -76,7 +78,10 @@ export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity, s
                 animate={{ x: -3, y: -3 }}
               >
                 <Badge
-                  openCart={() => open('cart')}
+                  openCart={() => {
+                    publish('cart_viewed', {cart, prevCart});
+                    open('cart');
+                  }}
                   count={cart?.totalQuantity || 0}
                 />
               </motion.div>

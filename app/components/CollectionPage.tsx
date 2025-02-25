@@ -2,7 +2,7 @@
 import { Await, useLoaderData } from "@remix-run/react";
 import { Suspense, useEffect, useState } from "react";
 import clsx from "clsx";
-import { flattenConnection } from "@shopify/hydrogen";
+import { Analytics, flattenConnection } from "@shopify/hydrogen";
 import { ProductsGrid } from "~/components/ProductsGrid";
 import PageHeader from "~/components/PageHeader";
 import { Empty } from "~/components/Empty";
@@ -69,6 +69,7 @@ export function CollectionPage() {
 
       <ProductFilterHiddenScrollBar
           collectionHandle={collection.handle}
+          totalProducts={totalProducts}
         />
 
       <section 
@@ -106,6 +107,15 @@ export function CollectionPage() {
           )}
         </Await>
       </Suspense>
+
+      <Analytics.CollectionView 
+        data={{
+          collection: {
+            id: collection.id,
+            handle: collection.handle
+          }
+        }}
+      />
     </div>
   );
 }
