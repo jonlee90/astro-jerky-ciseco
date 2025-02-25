@@ -40,6 +40,7 @@ export default async function handleRequest(
       'https://cdn.shopify.com',
       'http://localhost:*',
       'https://d3hw6dc1ow8pp2.cloudfront.net',
+      'https://fonts.googleapis.com',
       'https://*.klaviyo.com'
     ],
     connectSrc: [
