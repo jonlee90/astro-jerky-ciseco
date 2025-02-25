@@ -17,6 +17,11 @@ export function GoogleTagManager() {
       window.dataLayer = [];
     }
 
+    subscribe('product_viewed', () => {
+      // Triggering a custom event in GTM when a product is viewed
+      window.dataLayer.push({'event': 'viewed-product'});
+    });
+    
     subscribe('cart_updated', (data) => {
       // Triggering a custom event in GTM when a product is viewed
       const cart = data.cart;

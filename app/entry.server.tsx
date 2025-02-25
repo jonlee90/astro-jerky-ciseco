@@ -43,6 +43,9 @@ export default async function handleRequest(
       'https://fonts.googleapis.com',
       'https://*.klaviyo.com'
     ],
+    fontSrc: [
+      'https://fonts.googleapis.com',
+    ],
     connectSrc: [
       "'self'",
       'https://monorail-edge.shopifysvc.com',
