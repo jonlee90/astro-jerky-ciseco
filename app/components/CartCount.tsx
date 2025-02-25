@@ -60,7 +60,7 @@ const Badge: React.FC<BadgeProps> = ({ openCart, count }) => {
 
 export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity, showCart = false}) => {
   const rootData = useRouteLoaderData<RootLoader>('root');
-  const {publish, shop, cart, prevCart} = useAnalytics();
+  const {publish} = useAnalytics();
 //  const isMobile = useMediaQuery({maxWidth: 767});
   const {open} = useAside();
 
@@ -79,7 +79,7 @@ export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity, s
               >
                 <Badge
                   openCart={() => {
-                    publish('cart_viewed', {cart, prevCart});
+                    publish('custom_cart_viewed', {cart});
                     open('cart');
                   }}
                   count={cart?.totalQuantity || 0}

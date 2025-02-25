@@ -1,5 +1,5 @@
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
-import {CartForm, Money, type OptimisticCart} from '@shopify/hydrogen';
+import {CartForm, Money, useAnalytics, type OptimisticCart} from '@shopify/hydrogen';
 import { Button } from './Button';
 import { useState } from 'react';
 
@@ -104,6 +104,7 @@ interface CartCheckoutActionsProps {
 
 function CartCheckoutActions({ checkoutUrl = '', disableButton }: CartCheckoutActionsProps) {
   if (!checkoutUrl) return null;
+  const {publish, cart} = useAnalytics();
   return (
     <div className="flex flex-col mt-2">
        <a
@@ -112,7 +113,7 @@ function CartCheckoutActions({ checkoutUrl = '', disableButton }: CartCheckoutAc
         aria-disabled={disableButton}
         className={disableButton ? 'disabled' : ''}
       >
-        <Button as="span" width="full" className="uppercase">
+        <Button onClick={() => publish('custom_checkout', {cart})} as="span" width="full" className="uppercase">
           {disableButton ? 'Agree to Checkout' : 'Checkout'}
         </Button>
       </a>
