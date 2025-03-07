@@ -39,10 +39,10 @@ export async function loader(args: LoaderFunctionArgs) {
     return redirect(params?.locale ? `${params.locale}/products` : '/products');
   }
 
-  return defer({
+  return {
     ...deferredData,
     ...criticalData,
-  });
+  };
 }
 
 /**
@@ -105,12 +105,12 @@ export async function action({request, context}: ActionFunctionArgs) {
         },
       },
     );
-    return json(customerCreateData);
+    return customerCreateData;
   }
 
-  return json({
+  return {
     message: '_Index route - Hello, World!',
-  });
+  };
 }
 
 export const meta = ({matches}: MetaArgs<typeof loader>) => {

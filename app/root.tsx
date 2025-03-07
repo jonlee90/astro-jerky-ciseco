@@ -63,9 +63,6 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 
 export const links: LinksFunction = () => {
   return [
-    {rel: 'stylesheet', href: styles},
-    {rel: 'stylesheet', href: stylesFont},
-    {rel: 'stylesheet', href: rcSliderStyle},
     {rel: 'preconnect', href: 'https://cdn.shopify.com'},
     {rel: 'preconnect', href: 'https://astrofreshjerky.com'},
     {rel: 'icon', type: 'image/svg+xml', href: favicon},
@@ -89,7 +86,7 @@ export async function loader(args: LoaderFunctionArgs) {
   if (url.pathname.includes('/collections/') && !url.pathname.includes('/collections/all')) {
     return redirect('/' + collectionHandle, 301);
   }
-   return defer({
+   return {
      ...deferredData,
      ...criticalData,
     shop: getShopAnalytics({
@@ -105,7 +102,7 @@ export async function loader(args: LoaderFunctionArgs) {
       country: storefront.i18n.country,
       language: storefront.i18n.language,
      },
-   });
+   };
 }
 
 /**
@@ -185,6 +182,9 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
         <meta name="google-site-verification" content="25YtPW1Ho9GeTDGAmb7ERIzVTKDKWaCkNnpXAs8tlH4" />
         <Meta />
+        <link rel="stylesheet" href={styles}></link>
+        <link rel="stylesheet" href={stylesFont}></link>
+        <link rel="stylesheet" href={rcSliderStyle}></link>
         <Links />
         {/***********************************************/
         /**********  EXAMPLE UPDATE STARTS  ************/}

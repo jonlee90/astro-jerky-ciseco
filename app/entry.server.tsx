@@ -24,6 +24,7 @@ export default async function handleRequest(
       'https://d3g5hqndtiniji.cloudfront.net',
       'https://*.googletagmanager.com',
       'https://*.klaviyo.com',
+      'https://*.astrofreshjerky.com',
       'data:',
     ],
     imgSrc: [
@@ -33,6 +34,7 @@ export default async function handleRequest(
       'https://*.googletagmanager.com',
       'https://*.klaviyo.com',
       'https://*.cloudfront.net',
+      'https://*.astrofreshjerky.com',
     ],
     styleSrc: [
       "'self'",
@@ -41,13 +43,15 @@ export default async function handleRequest(
       'http://localhost:*',
       'https://d3hw6dc1ow8pp2.cloudfront.net',
       'https://fonts.googleapis.com',
-      'https://*.klaviyo.com'
+      'https://*.klaviyo.com',
+      'https://*.astrofreshjerky.com',
     ],
     fontSrc: [
       ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
       'https://fonts.googleapis.com',
       'https://fonts.gstatic.com',
       'https://cdn.shopify.com',
+      'https://*.astrofreshjerky.com',
     ],
     connectSrc: [
       "'self'",
@@ -58,11 +62,12 @@ export default async function handleRequest(
       'https://*.analytics.google.com',
       'https://*.googletagmanager.com',
       'https://*.klaviyo.com',
+      'https://*.astrofreshjerky.com',
     ]
   });
   const body = await renderToReadableStream(
     <NonceProvider>
-      <RemixServer context={remixContext} url={request.url} />
+      <RemixServer context={remixContext} url={request.url} nonce={nonce} />
     </NonceProvider>,
     {
       nonce,

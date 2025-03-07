@@ -3,7 +3,7 @@ import {Suspense} from 'react';
 import type {CartQueryDataReturn, OptimisticCartLine, OptimisticCart} from '@shopify/hydrogen';
 import {Image} from '@shopify/hydrogen';
 import {Analytics, CartForm, Money, useOptimisticCart} from '@shopify/hydrogen';
-import {json, LoaderFunctionArgs, type ActionFunctionArgs} from '@shopify/remix-oxygen';
+import {data, LoaderFunctionArgs, type ActionFunctionArgs} from '@shopify/remix-oxygen';
 import {CartEmpty, CartMain} from '~/components/CartMain';
 import type {RootLoader} from '~/root';
 import { CartDiscountCode, CartLineUpdateInput } from '@shopify/hydrogen/storefront-api-types';
@@ -90,7 +90,7 @@ export async function action({request, context}: ActionFunctionArgs) {
     headers.set('Location', redirectTo);
   }
 
-  return json(
+  return data(
     {
       cart: cartResult,
       errors,
@@ -103,7 +103,7 @@ export async function action({request, context}: ActionFunctionArgs) {
 }
 export async function loader({context}: LoaderFunctionArgs) {
   const {cart} = context;
-  return json(await cart.get());
+  return await cart.get();
 }
 type CartLine = OptimisticCartLine<CartApiQueryFragment>;
 
