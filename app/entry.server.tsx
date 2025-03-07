@@ -44,6 +44,7 @@ export default async function handleRequest(
       'https://*.klaviyo.com'
     ],
     fontSrc: [
+      ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
       'https://fonts.googleapis.com',
       'https://fonts.gstatic.com',
       'https://cdn.shopify.com',

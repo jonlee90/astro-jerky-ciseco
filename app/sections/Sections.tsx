@@ -36,10 +36,6 @@ import {
   SectionLatestBlog,
 } from './SectionLatestBlog';
 import {
-  SECTION_PRODUCT_DISPLAY_FRAGMENT,
-  SectionProductDisplay,
-} from './SectionProductDisplay';
-import {
   SECTION_CLIENTS_SAY_FRAGMENT,
   SectionClientsSay,
 } from './SectionClientsSay';
@@ -144,12 +140,6 @@ export function Sections({
                 <SectionClientsSay {...section} key={section.id} />
               </WrapSection>
             );
-          case 'ciseco--section_product_display':
-            return (
-              <WrapSection key={section.id} index={index} {...args}>
-                <SectionProductDisplay {...section} key={section.id} />
-              </WrapSection>
-            );
 
           // case 'section_another':
           //   return <AnotherSection />;
@@ -206,7 +196,6 @@ export const SECTIONS_FRAGMENT = `#graphql
             ...SectionGridProductsAndFilter
             ...SectionLatestBlog
             ...SectionClientsSay
-            ...SectionProductDisplay
           }
         }
       }
@@ -223,7 +212,6 @@ export const SECTIONS_FRAGMENT = `#graphql
   ${SECTION_GRID_PRODUCTS_AND_FILTER_FRAGMENT}
   ${SECTION_LATEST_BLOG_FRAGMENT}
   ${SECTION_CLIENTS_SAY_FRAGMENT}
-  ${SECTION_PRODUCT_DISPLAY_FRAGMENT}
 
   # All common fragments
   ${COMMON_PRODUCT_CARD_FRAGMENT}

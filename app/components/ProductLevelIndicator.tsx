@@ -1,5 +1,5 @@
 import React from "react";
-import { IconBbq, IconDry, IconSpicy } from "./Icon";
+import { IconHoney, IconDry, IconSpicy } from "./Icon";
 
 interface LevelIndicatorProps {
   icon: React.ElementType;
@@ -16,7 +16,7 @@ const LevelIndicator: React.FC<LevelIndicatorProps> = ({
 }) => {
   return (
     <li className="text-left">
-      <Icon size={30} />
+      <Icon size={35} />
       <div className="mt-2">{label}</div>
       <div className="flex mt-2">
         {Array.from({ length: maxLevel }).map((_, index) => (
@@ -41,7 +41,7 @@ const ProductLevelIndicator: React.FC<{ product: any }> = ({ product }) => {
   const indicators = [
     { icon: IconSpicy, label: "Heat", level: heatLevel },
     { icon: IconDry, label: "Dryness", level: drynessLevel },
-    { icon: IconBbq, label: "Sweetness", level: sweetnessLevel },
+    { icon: IconHoney, label: "Sweetness", level: sweetnessLevel },
   ];
 
   return (

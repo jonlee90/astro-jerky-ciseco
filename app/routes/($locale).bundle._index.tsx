@@ -4,7 +4,7 @@ import {
   type MetaArgs,
 } from '@shopify/remix-oxygen';
 import { Link } from '~/components/Link';
-import { flattenConnection, Money, useMoney, getSeoMeta } from '@shopify/hydrogen';
+import { flattenConnection, Money, useMoney, getSeoMeta, Image } from '@shopify/hydrogen';
 import clsx from 'clsx';
 import { Card, CardHeader, CardBody } from "@material-tailwind/react";
 import { motion } from 'framer-motion';
@@ -88,7 +88,7 @@ export default function AllBundle() {
           className="sm-only:p-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid gap-6 border-black"
           aria-label="Bundle products"
         >
-          {bundleProducts.map(({id, title, handle, description, priceRange, compareAtPriceRange}) => (
+          {bundleProducts.map(({id, title, handle, description, priceRange, compareAtPriceRange, media}) => (
             <Link 
               key={id} 
               to={`/bundle/${handle}`} 
@@ -99,7 +99,6 @@ export default function AllBundle() {
               <motion.div 
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.95 }}
-                className='border-2 rounded-full'
               >
                 <Card 
                   className="grid grid-cols-1 text-black"
@@ -110,12 +109,13 @@ export default function AllBundle() {
                     floated={false} 
                     shadow={false}
                     color="transparent"
-                    className="m-0">
-                    <div 
-                      className="cow-card h-36"
-                      role="img"
-                      aria-label={`Image for ${title}`}
-                    ></div>
+                    className="m-0 rounded-b-none">
+                    <Image
+                        data={media.nodes[0].image}
+                        role="img"
+                        aria-label={`Image for ${title}`}
+                        sizes='100vh'
+                      />
                   </CardHeader>
                   <CardBody className="grid grid-cols-1 gap-2 p-4">
                     <h2 id={`product-title-${id}`} className="font-bold">

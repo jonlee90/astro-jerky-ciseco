@@ -46,7 +46,7 @@ export function CartLineItem({
       aria-labelledby={`cart-item-${id}`}
       aria-describedby={`cart-item-details-${id}`}
     >
-      <div className="flex-shrink min-w-24">
+      <div className="flex-shrink min-w-24 max-w-28 flex items-center">
         {image && (
           <Link 
             to={isBundle ? '/bundle/' + product.handle :lineItemUrl}  
@@ -56,8 +56,7 @@ export function CartLineItem({
               }
             }}>
             <Image
-              width={96}
-              height={130}
+              sizes='100vh'
               data={image}
               className="object-cover object-center w-24 md:w-28 rounded-lg"
               alt={title}
