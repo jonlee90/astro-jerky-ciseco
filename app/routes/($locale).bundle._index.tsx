@@ -114,7 +114,8 @@ export default function AllBundle() {
                         data={media.nodes[0].image}
                         role="img"
                         aria-label={`Image for ${title}`}
-                        sizes='100vh'
+                        width="750px"
+                        height="458px"
                       />
                   </CardHeader>
                   <CardBody className="grid grid-cols-1 gap-2 p-4">
