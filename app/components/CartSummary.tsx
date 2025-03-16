@@ -104,7 +104,6 @@ interface CartCheckoutActionsProps {
 
 function CartCheckoutActions({ checkoutUrl = '', disableButton }: CartCheckoutActionsProps) {
   if (!checkoutUrl) return null;
-  const {publish, cart} = useAnalytics();
   return (
     <div className="flex flex-col mt-2">
        <a
@@ -113,7 +112,7 @@ function CartCheckoutActions({ checkoutUrl = '', disableButton }: CartCheckoutAc
         aria-disabled={disableButton}
         className={disableButton ? 'disabled' : ''}
       >
-        <Button onClick={() => publish('custom_checkout', {cart})} as="span" width="full" className="uppercase">
+        <Button as="span" width="full" className="uppercase">
           {disableButton ? 'Agree to Checkout' : 'Checkout'}
         </Button>
       </a>
