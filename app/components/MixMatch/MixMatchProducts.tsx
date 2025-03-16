@@ -204,14 +204,6 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
     return bars;
   };
 
-  const analyticsData = {
-    products: cartArray.map((item) => ({
-      productGid: item.merchandiseId,
-      quantity: item.quantity,
-    })),
-    totalValue: cartArray.reduce((total, item) => total + item.quantity, 0), // Assuming each item has a price of 1 for simplicity
-  };
-
   const handleAddToCart = () => {
     if (!done) return;
     
@@ -248,7 +240,6 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
                   lines={cartArray}
                   variant="primary"
                   data-test="add-to-cart"
-                  analytics={analyticsData}
                   disabled={!done}
                   onClick={handleAddToCart}
                   aria-label="Add completed bundle to cart"
