@@ -6,6 +6,7 @@ import { AddToCartButton } from '../AddToCartButton';
 import { MixMatchProductsSlider } from './MixMatchProductsSlider';
 import { useAside } from '../Aside';
 import { ProductVariant } from '@shopify/hydrogen/storefront-api-types';
+import { useAnalytics } from '@shopify/hydrogen';
 const progressClass: { [key: number]: string } = {
   1: `grid-cols-1`,
   2: `grid-cols-2`,
@@ -61,6 +62,7 @@ interface MixMatchProductsProps {
 
 export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bundleProducts }: MixMatchProductsProps) {
   const {open} = useAside();
+  const analytics = useAnalytics();
   const [bigBags, setBigBags] = useState(bigProducts);
   const [smallBags, setSmallBags] = useState(smallProducts);
   const { big_bag_quantity, small_bag_quantity, id} = currentBundle;
@@ -210,6 +212,23 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
     totalValue: cartArray.reduce((total, item) => total + item.quantity, 0), // Assuming each item has a price of 1 for simplicity
   };
 
+  const handleAddToCart = () => {
+    if (!done) return;
+    
+    // First send the bundle-specific analytics event
+    const bundleItems = [...bigBags, ...smallBags].filter(item => item.quantity > 0);
+    
+    // Publish to the analytics system
+    analytics.publish('custom_bundle_added_to_cart', {
+      bundle: currentBundle,
+      items: bundleItems,
+      totalValue: parseFloat(currentBundle.price || "0"),
+    });
+    
+    // Then open the cart
+    open('cart');
+  };
+
   return (
     <div className="mb-36">
       <header
@@ -231,7 +250,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
                   data-test="add-to-cart"
                   analytics={analyticsData}
                   disabled={!done}
-                  onClick={() => open('cart')}
+                  onClick={handleAddToCart}
                   aria-label="Add completed bundle to cart"
                 >
                   Add To Cart

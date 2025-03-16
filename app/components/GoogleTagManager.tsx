@@ -21,7 +21,7 @@ export function GoogleTagManager() {
       // Triggering a custom event in GTM when a product is viewed
       window.dataLayer.push({'event': 'viewed-product'});
     });
-    
+    /*
     subscribe('custom_cart_viewed', (data) => {
       const cart = data.cart;
       if (cart?.lines.nodes.length) {
@@ -43,7 +43,7 @@ export function GoogleTagManager() {
           });
       }
     });
-
+*/
     subscribe('product_added_to_cart', (data) => {
       // Triggering a custom event in GTM when a product is viewed
       const cart = data.cart;
@@ -67,6 +67,24 @@ export function GoogleTagManager() {
       }
     });
 
+     // NEW: Add specific handler for bundle added to cart
+     subscribe('custom_bundle_added_to_cart', (data) => {
+      const { bundle, items, totalValue } = data;
+      window.dataLayer.push({
+        event: 'bundle-add-to-cart',
+        ecommerce: {
+          bundle_id: bundle.id,
+          bundle_title: bundle.title,
+          total_amount: totalValue,
+          items: items.map((item) => ({
+            item_id: item.id,
+            item_name: item.title + ' ' + item.size,
+            price: parseFloat(item.price),
+            quantity: item.quantity,
+          }))
+        }
+      });
+    });
     
     subscribe('custom_checkout', (data) => {
       // Triggering a custom event in GTM when a product is viewed
