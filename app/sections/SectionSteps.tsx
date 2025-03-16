@@ -55,13 +55,13 @@ export function SectionSteps(props: SectionStepsFragment) {
               <div className="text-center space-y-5">
                 <h2 
                   id={`step-title-${index}`}
-                  className="text-base font-semibold"
+                  className="text-lg font-semibold"
                 >
                   {item}
                 </h2>
                 <p 
                   id={`step-content-${index}`}
-                  className="block text-slate-600 dark:text-slate-400 text-sm leading-6"
+                  className="block text-sm leading-6"
                 >
                   {contents?.parsedValue?.[index]}
                 </p>

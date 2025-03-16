@@ -42,6 +42,8 @@ import {
 import clsx from 'clsx';
 import {SECTION_HERO_FRAGMENT, SectionHero} from './SectionHero';
 import {OKENDO_PRODUCT_STAR_RATING_FRAGMENT} from '@okendo/shopify-hydrogen';
+import HeroSlider from '~/components/HeroSlider';
+import ProductDisplay from '~/components/ProductDisplay';
 
 export interface SectionProps {
   sections: SectionsFragment;
@@ -77,6 +79,9 @@ export function Sections({
         paddingTop: paddingTopPx ? `${paddingTopPx}px` : undefined,
       }}
     >
+
+      <HeroSlider />
+      
       {sections?.references?.nodes.map((section, index, arr) => {
         switch (section.type as CisecoSectionType) {
           case 'ciseco--section_hero':
@@ -149,6 +154,9 @@ export function Sections({
             return null;
         }
       })}
+
+
+      <ProductDisplay />
     </div>
   );
 }

@@ -9,7 +9,7 @@ export interface NextPrevDesktopProps {
 const NextPrevDesktop: FC<NextPrevDesktopProps> = ({
   onClickNext = () => {},
   onClickPrev = () => {},
-  btnClassName = 'w-32 h-[60%] absolute top-1/2 transform -translate-y-1/2 z-50 hidden md:block',
+  btnClassName = 'w-24 h-full bg-opacity-95 absolute top-1/2 transform -translate-y-1/2 z-50 hidden md:block',
 }) => {
 
   return (
@@ -26,7 +26,7 @@ const NextPrevDesktop: FC<NextPrevDesktopProps> = ({
           <span className="sr-only">Scroll left</span>
         </button>
         <button
-          className={`${btnClassName} cursor-right right-0`}
+          className={`${btnClassName} cursor-right right-0 bg-white`}
           onClick={(e) => {
             e.preventDefault();
             onClickNext();

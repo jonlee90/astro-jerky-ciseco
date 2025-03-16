@@ -42,7 +42,7 @@ export function SnapGridProducts(props: Props) {
       </Heading>
       <div
         className={clsx(
-          'grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-10 lg:gap-x-15 mx-5 xl:mx-0'
+          'grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-10 lg:gap-x-15 mx-5 xl:mx-0'
         )}
         role="list"
         aria-label="Product grid"

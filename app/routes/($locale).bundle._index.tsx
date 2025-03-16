@@ -14,6 +14,7 @@ import { useLoaderData } from '@remix-run/react';
 import { ProductMixFragment } from 'storefrontapi.generated';
 import { PRODUCT_MIX_FRAGMENT } from '~/data/fragments';
 import {seoPayload} from '~/lib/seo.server';
+import Prices from '~/components/Prices';
 
 // Type Definitions
 interface ProductVariant {
@@ -126,10 +127,11 @@ export default function AllBundle() {
                       {description}
                     </p>
                     <span className="flex gap-4 text-lead">
-                      <Money withoutTrailingZeros data={{ amount: priceRange.minVariantPrice.amount, currencyCode: 'USD' }} className="text-red-600" />
-                      <CompareAtPrice
-                        className="opacity-50"
-                        data={{ amount: compareAtPriceRange.minVariantPrice.amount, currencyCode: 'USD' }}
+                 
+                      <Prices
+                          contentClass="justify-center text-red"
+                          price={priceRange.minVariantPrice}
+                          compareAtPrice={compareAtPriceRange.minVariantPrice}
                       />
                     </span>
                   </CardBody>

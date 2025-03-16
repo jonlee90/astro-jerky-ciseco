@@ -78,6 +78,7 @@ export async function loader(args: LoaderFunctionArgs) {
    const url = new URL(args.request.url);
   
    const collectionHandle = url.href.split('/collections/')[1];
+   
    if (url.pathname.includes('pack') && !url.pathname.includes('bundle')) {
     const urlPathname = url.pathname.includes('beef-jerky') ? url.pathname.replace('beef-jerky', 'bundle') : url.pathname.replace('products', 'bundle');
     return redirect(urlPathname, 301);

@@ -34,6 +34,7 @@ export function CartLineItem({
   }
   const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
   const isBundle = product.tags && product.tags.includes('bundle');
+  const isProductDisplay = product.tags && product.tags.includes('product-display');
 
   
   const originalAmount = parseFloat(cost?.amountPerQuantity?.amount || '0') * quantity;
@@ -69,6 +70,9 @@ export function CartLineItem({
         <div className="grid gap-2">
           <h2 id={`cart-item-${id}`} className='text-lead'>
             {product?.handle ? (
+              isProductDisplay ?
+              <>{product?.title}</>
+              :
               <Link to={isBundle ? '/bundle/' + product.handle :lineItemUrl}  onClick={closeCartAside}>
                 {product?.title + (isBundle ? '' : ' (' + title + ')')}
               </Link>

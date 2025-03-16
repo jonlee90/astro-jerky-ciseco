@@ -16,7 +16,7 @@ const Prices: FC<PricesProps> = ({
   price,
   compareAtPrice,
   contentClass = 'py-1 px-2 md:py-1.5 md:px-2.5 text-lead font-medium',
-  compareAtPriceClass = 'text-sm text-slate-500',
+  compareAtPriceClass = 'text-base text-slate-500',
   withoutTrailingZeros,
 }) => {
   return (
@@ -33,7 +33,7 @@ const Prices: FC<PricesProps> = ({
             data={price}
           />
         ) : null}
-        {compareAtPrice && price && compareAtPrice.amount > price.amount ? (
+        {compareAtPrice && price && compareAtPrice.amount != price.amount ? (
           <s className={`ms-1 ${compareAtPriceClass}`}>
             <Money
               withoutTrailingZeros={withoutTrailingZeros}
