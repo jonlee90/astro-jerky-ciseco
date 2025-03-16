@@ -34,7 +34,7 @@ import {RouteContent} from '~/sections/RouteContent';
 import {getSeoMeta} from '@shopify/hydrogen';
 import {getLoaderRouteFromMetaobject} from '~/utils/getLoaderRouteFromMetaobject';
 import { motion } from 'framer-motion';
-import { IconArrowRight, IconFacebook } from '~/components/Icon';
+import { IconArrowRight, IconCheck, IconFacebook } from '~/components/Icon';
 import { IconX } from '~/components/Icon';
 import { IconPinterest } from '~/components/Icon';
 import { convertToNumber } from '~/lib/utils';
@@ -234,6 +234,8 @@ export default function Product() {
   };
 
   
+  const productCheck = ['Real Ingredients', '100% USA Angus Beef', 'High Protein'];
+
   const handleScroll = () => {
     const addToCartButtonElement = addToCartButtonRef.current;
     if (addToCartButtonElement) {
@@ -331,15 +333,24 @@ if(!isHydrated) {
                 </Await>
               </Suspense>
                 
-
+              <section 
+                aria-labelledby="product-check-heading"
+                className="w-full">
+                <h2 id="product-check-heading" className="sr-only">Product Check List</h2>
+                <ul
+                  role='list' 
+                  className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-1 gap-3 font-bold'>
+                  {productCheck.map((v, i) => <li key={i} className='flex text-lead items-end'><IconCheck className='mr-1 w-7 h-7' /> {v}</li>)}
+                </ul>
+              </section>
 
 
           {/* Product description */}
               {!!descriptionHtml && (
                 <section 
-                  aria-label="Product Details"
+                  aria-labelledby="product-details"
                   className="grid gap-7 2xl:gap-8 description-container">
-                  <h1 className="text-2xl font-semibold">Product Details</h1>
+                  <h2 id="product-details" className="sr-only">Product Details</h2>
                   <div
                     className="prose prose-sm sm:prose dark:prose-invert sm:max-w-4xl"
                     dangerouslySetInnerHTML={{
