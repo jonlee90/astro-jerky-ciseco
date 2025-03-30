@@ -207,6 +207,7 @@ export function IconCheck({
       <title>Check</title>
       <circle cx="10" cy="10" r="7.25" strokeWidth="1.25" />
       <path
+        color='rgb(0, 166, 81)'
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="1.5"

@@ -200,11 +200,12 @@ export default function Product() {
 
   const { pathname, state } = useLocation();
   const isBackButton = pathname.includes('/beef-jerky/') ? !!state : (pathname.includes('/bundle/') && true);
+  const isPack = pathname.includes('bags');
 
   const [showBottomAddToCartButton, setShowBottomAddToCartButton] = useState(false);
   const addToCartButtonRef = useRef<HTMLDivElement>(null); 
 
-  const [currentQuantity, setCurrentQuantity] = useState(3);
+  const [currentQuantity, setCurrentQuantity] = useState(isPack ? 1 : 3);
   const selectedVariant = useOptimisticVariant(product.selectedVariant, variants);
   const isHydrated = useIsHydrated();
   const isOutOfStock = !selectedVariant?.availableForSale;
@@ -422,7 +423,7 @@ if(!isHydrated) {
               {(products) => (
                   <SnapSliderProducts
                     heading_bold={'YOU MIGHT ALSO LIKE'}
-                    products={products.nodes.filter(node => !node.tags.includes('bundle'))}
+                    products={products.nodes.filter(node => node.tags.includes('beef-jerky'))}
                     className=''
                     headingFontClass="text-2xl lg:text-4xl font-semibold"
                   />
@@ -481,7 +482,8 @@ if(!isHydrated) {
 export function ProductForm({product, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity, addToCartButtonRef }) {
 
 
-  const location = useLocation();
+  const { pathname } = useLocation();
+  const isPack = pathname.includes('bags');
   /**
    * Likewise, we're defaulting to the first variant for purposes
    * of add to cart if there is none returned from the loader.
@@ -489,6 +491,9 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
    */
   const selectedVariant = product.selectedVariant!;
   const isOutOfStock = !selectedVariant?.availableForSale;
+
+  const bagOrPack = isPack ? 'Pack' : 'Bag';
+  console.log(selectedVariant, 'selectedVariant')
 /*
   const { collection } = location.state || {};
   const status = getProductStatus({
@@ -504,7 +509,7 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
     const quantity = i > 1 ? 3 * (i - 1) : i;
     variantsByQuantity.push({
       quantity: quantity,
-      title: 'Buy ' + quantity + ' Bag' + (i > 1 ? 's' : '')
+      title: 'Buy ' + quantity + ' ' + bagOrPack + (i > 1 ? 's' : '')
     });
   }
   //const collectionObj = collection ? collection : {handle: 'best-beef-jerky-flavors', title: 'Our Best Beef Jerky Flavors'};
@@ -558,10 +563,11 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
         compareAtPrice={selectedVariant.compareAtPrice}
       />
 
-      <div>
-        <ProductLevelIndicator product={product} /> {/* Render the icon based on tags */}
-      </div>
-
+      {!isPack && (
+        <div>
+          <ProductLevelIndicator product={product} /> {/* Render the icon based on tags */}
+        </div>
+      )}
       <div className='grid gap-7 2xl:gap-8'>
         
         <div 
@@ -578,7 +584,7 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
                   quantity === currentQuantity ? 'variant-button-pressed': 'hover:bg-primary-100',
                 )}
                 onClick={() => setCurrentQuantity(quantity)}
-                aria-label={`Select ${quantity} ${quantity === 1 ? 'bag' : 'bags'}`}
+                aria-label={`Buy ${quantity} ${bagOrPack + (quantity > 1 ? 's' : '')}`}
                 aria-pressed={quantity === currentQuantity}
               >
                 {title}
@@ -734,7 +740,7 @@ const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPri
                 selectedVariant: selectedVariant
               },
             ]}
-            className={`w-full pdp-add-to-cart-button relative ${isOutOfStock ? 'bg-neutral-600' : 'bg-black'} hover:bg-neutral-600 text-white py-2 outline-none ${isSmallButton ? 'h-[56px]' : 'h-[60px] text-lead' }`}
+            className={`w-full pdp-add-to-cart-button relative ${isOutOfStock ? 'bg-neutral-800' : 'bg-black'} hover:bg-neutral-800 text-white py-2 outline-none ${isSmallButton ? 'h-[56px]' : 'h-[60px] text-lead' }`}
             data-test="add-to-cart"
             disabled={isOutOfStock}
             onClick={() => open('cart')}

@@ -16,7 +16,7 @@ const ProductDisplay = () => {
   
     useEffect(() => {
         if (fetcher.state === 'idle' && !fetcher.data) {
-        fetcher.load(`/beef-jerky/the-classic-pack`);
+            fetcher.load(`/beef-jerky/the-classic-pack-3-bags?Type=Best+Sellers`);
         }
     }, [fetcher]);
     
@@ -36,6 +36,7 @@ const ProductDisplay = () => {
       };
   return (
     <section 
+        id='product-display'
         aria-label='Product section'
         className="2xl:max-w-screen-xl mx-auto container sm-max:max-w-[640px] grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5"
     >

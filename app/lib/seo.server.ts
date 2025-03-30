@@ -32,7 +32,7 @@ function root({
   return {
     title: shop?.name || 'Astro Fresh Jerky',
     titleTemplate: '%s | High Protein Snacks - Astro Fresh Jerky',
-    description: truncate(shop?.description ?? "Astro Fresh Jerky offers high-protein, Grass Fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients."),
+    description: truncate(shop?.description ?? "Handcrafted premium beef jerky made using 100% USA Angus Beef in LA since 2013. Family owned and made using high quality beef and spice."),
     handle: '@AstroFreshJerky',
     url,
     robots: {
@@ -43,7 +43,7 @@ function root({
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: shop.name || 'Astro Fresh Jerky',
-      description: shop?.description || 'Astro Fresh Jerky offers high-protein, Grass Fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients.',
+      description: shop?.description || 'Handcrafted premium beef jerky made using 100% USA Angus Beef in LA since 2013. Family owned and made using high quality beef and spice.',
       logo: shop.brand?.logo?.image?.url,
       sameAs: [
         'https://twitter.com/astrofreshjerky',
@@ -65,7 +65,7 @@ function home(): SeoConfig {
   return {
     title: 'Home',
     titleTemplate: "Astro Fresh Jerky: Beef Jerky, Protein Snacks, Chicken Jerky, Meat Snacks",
-    description: "Astro Fresh Beef Jerky offers high-protein, Grass Fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients.",
+    description: "Handcrafted premium beef jerky made using 100% USA Angus Beef in LA since 2013. Family owned and made using high quality beef and spice.",
     robots: {
       noIndex: false,
       noFollow: false,
@@ -74,7 +74,7 @@ function home(): SeoConfig {
       '@context': 'https://schema.org',
       '@type': 'WebPage',
       name: 'Astro Fresh Jerky',
-      description: 'Astro Fresh Beef Jerky offers high-protein, Grass Fed beef jerky with bold flavors. Perfect for healthy snacking, made from real, all-natural ingredients.',
+      description: 'Handcrafted premium beef jerky made using 100% USA Angus Beef in LA since 2013. Family owned and made using high quality beef and spice.',
       publisher: {
         '@type': 'Organization',
         name: 'Astro Fresh Jerky',
@@ -342,7 +342,7 @@ function listCollections({
   return {
     title: 'Collections',
     titleTemplate: 'Best Beef Jerky Flavors | High Protein Snacks - Astro Fresh Jerky',
-    description: 'All Astro Fresh Jerky collections',
+    description: 'Try our best handcrafted beef jerky flavors, made with 100% USA Angus Beef.',
     url,
     jsonLd: collectionsJsonLd({collections, url}),
   };

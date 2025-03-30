@@ -79,7 +79,7 @@ export async function loader(args: LoaderFunctionArgs) {
   
    const collectionHandle = url.href.split('/collections/')[1];
    
-   if (url.pathname.includes('pack') && !url.pathname.includes('bundle')) {
+   if (url.pathname.includes('pack') && !url.pathname.includes('bags') && !url.pathname.includes('bundle')) {
     const urlPathname = url.pathname.includes('beef-jerky') ? url.pathname.replace('beef-jerky', 'bundle') : url.pathname.replace('products', 'bundle');
     return redirect(urlPathname, 301);
   }
