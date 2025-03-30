@@ -87,11 +87,11 @@ const ProductDisplay = () => {
                                 value: '1'
                             },
                             {
-                                key: 'Whiskey BBQ Beef Jerky 3oz',
+                                key: 'Honey Teriyaki Beef Jerky 3oz',
                                 value: '1'
                             },
                             {
-                                key: 'Buffalo Chicken Wing Hot Jerky 3oz',
+                                key: 'Supernova Hot Beef Jerky 3oz',
                                 value: '1'
                             }
                         ]
@@ -117,17 +117,17 @@ const ProductDisplay = () => {
                 </h2>
                 <ul>
                     <li>1 x Sweet & Spicy Premium Beef Jerky 3oz bag</li>
-                    <li>1 x Whiskey BBQ Premium Beef Jerky 3oz bag</li>
-                    <li>1 x Buffalo Chicken Wing Premium Chicken Jerky 3oz bag</li>
+                    <li>1 x Honey Teriyaki Premium Beef Jerky 3oz bag</li>
+                    <li>1 x Supernova Hot Premium Beef Jerky 3oz bag</li>
                 </ul>
                 <p>
                     Behold, the royalty of the jerky world. These three flavors reign supreme in the Astro Jerky kingdom, each having earned their place as the crown jewels of our collection. They’re not just snacks—they’re legends in the making, consistently flying off the shelves for over a decade!
                 </p>
-                <p>Let’s kick things off with the first flavor: <span className='font-bold text-lg'>Sweet & Spicy</span>. This jerky is an instant classic, lighting up your taste buds like a bolt of lightning streaking across a midnight sky. The sweet kiss of brown sugar dances with the spicy heat of chili peppers, creating a taste sensation so bold, it’ll send your neurons into overdrive. Perfect for those craving an adventure in every bite.</p>
-                <p>Next, we have the smoky, whiskey-infused majesty that is <span className='font-bold text-lg'>Whiskey BBQ</span>. Picture this: a tender slice of premium beef, marinated in a rich whiskey BBQ sauce that’s been slow-cooked to perfection. It’s like wrapping yourself in a cozy campfire blanket—bold, smoky, and undeniably delicious. It’s not just a jerky; it’s an experience.</p>
-                <p>And finally, the fearless <span className='font-bold text-lg'>Hot Buffalo Chicken Wing</span>. Made using protein packed premium chicken breast, this one’s for the spice seekers and thrill chasers. Imagine the perfect balance of heat, zest, and spice crashing together like a storm. The fiery cayenne pepper and tangy buffalo sauce don’t just hit your tongue—they hit your soul, bringing the intense heat and flavor you’ve been longing for.</p>
-                <p>Each of these jerky bags is a one-way ticket to flavor town. And trust me, they’re not here for long. These fan favorites sell out faster than a speeding comet, and this curated pack is sure to do the same. Add it to your cart now before they disappear!</p>
-                <p>NOTE: And here’s the best part, every slice of Astro Fresh Jerky is hand-made in America, by Americans, with 100% premium beef and chicken breast. No fillers. No trimmings. No shortcuts. Just pure, mouthwatering jerky that’s packed with flavor and protein.</p>
+                <p>Let’s kick things off with the first flavor: <span className='font-bold text-lg'>Sweet & Spicy</span>. This jerky is an instant classic, lighting up your taste buds like a bolt of lightning streaking across a midnight sky. The sweet kiss of brown sugar dances with the fiery heat of chili peppers, creating a taste sensation so bold, it’ll send your neurons into overdrive. Perfect for those craving an adventure in every bite.</p>
+                <p>Next, experience the celestial fusion of <span className='font-bold text-lg'>Honey Teriyaki</span>. Crafted from premium grass-fed beef, this flavor blends real pineapple, golden honey, and authentic teriyaki sauce into a symphony of sweet and savory perfection. Slow-cooked to tender excellence, it’s a snack that transports you to the stars with every bite.</p>
+                <p>And finally, brace yourself for the fiery <span className='font-bold text-lg'>Supernova Hot</span>. Not for the faint of heart, this jerky is an explosive blend of cayenne peppers, habaneros, smoky undertones, and a touch of sweetness. It delivers a mouthwatering inferno of flavor, perfect for spice seekers who crave the heat and refuse to back down.</p>
+                <p>Each of these jerky bags is a one-way ticket to flavor town. And trust me, they won’t be here for long. These fan favorites sell out faster than a speeding comet, and this curated pack is sure to do the same. Add it to your cart now before they disappear!</p>
+                <p>NOTE: And here’s the best part—every slice of Astro Fresh Jerky is handcrafted in Los Angeles, with 100% premium beef. No fillers. No trimmings. No shortcuts. Just pure, mouthwatering jerky that’s packed with flavor and protein.</p>
             </div>
         </div>
     </section>
