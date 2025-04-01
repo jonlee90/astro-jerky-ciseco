@@ -171,7 +171,7 @@ const ProductCard: FC<ProductCardProps> = ({
             {!isAvailable && (
               <ProductSoldOut/>
             )}
-            {/*<ProductBadge
+            <ProductBadge
               status={getProductStatus({
                 availableForSale: product.availableForSale,
                 compareAtPriceRangeMinVariantPrice:
@@ -180,7 +180,7 @@ const ProductCard: FC<ProductCardProps> = ({
                 tags: product.tags,
                 size:firstVariant.title
               })}
-            />*/}
+            />
             <motion.div
               className="h-0.5 w-0 bg-black absolute bottom-0 left-0"
               initial={{width: isInView ? (isDesktop || !transition ? (isHovered ? '100%' : 0) : '100%') : 0}}
@@ -290,7 +290,7 @@ export const ProductBadge = ({
     return (
       <ProductStatus
         className={className}
-        color="logoGreen"
+        color="logoRed"
         status={status}
         icon="IconDiscount"
       />
