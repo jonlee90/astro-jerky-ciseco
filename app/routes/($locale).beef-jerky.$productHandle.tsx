@@ -298,6 +298,7 @@ if(!isHydrated) {
             <ProductGallery
               media={media.nodes}
               className="w-full lg:col-span-2 lg:gap-7"
+              aspectRatio={isPack ? '1/1' : '2/3'}
             />
             ) : (
               <Skeleton className="h-32" />
@@ -493,7 +494,6 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
   const isOutOfStock = !selectedVariant?.availableForSale;
 
   const bagOrPack = isPack ? 'Pack' : 'Bag';
-  console.log(selectedVariant, 'selectedVariant')
 /*
   const { collection } = location.state || {};
   const status = getProductStatus({
@@ -729,6 +729,7 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
 
 const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, isOutOfStock, isSmallButton = true, isBackButton = true}) => {
   const {open} = useAside();
+  const isPack = selectedVariant.product.title.includes('Bags');
   return (
     <div className='col-span-4 flex flex-row gap-3'>
         <div className={`text-sm border-black border w-full`}>
@@ -737,7 +738,21 @@ const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPri
               {
                 merchandiseId: selectedVariant.id,
                 quantity: currentQuantity,
-                selectedVariant: selectedVariant
+                selectedVariant: selectedVariant,
+                attributes: isPack ? [
+                  {
+                    key: 'Sweet and Spicy Beef Jerky 3oz',
+                    value: '1'
+                  },
+                  {
+                      key: 'Honey Teriyaki Beef Jerky 3oz',
+                      value: '1'
+                  },
+                  {
+                      key: 'Supernova Hot Beef Jerky 3oz',
+                      value: '1'
+                  }
+                ] : []
               },
             ]}
             className={`w-full pdp-add-to-cart-button relative ${isOutOfStock ? 'bg-neutral-800' : 'bg-black'} hover:bg-neutral-800 text-white py-2 outline-none ${isSmallButton ? 'h-[56px]' : 'h-[60px] text-lead' }`}

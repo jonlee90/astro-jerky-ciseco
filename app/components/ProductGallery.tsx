@@ -13,9 +13,11 @@ import { motion } from 'framer-motion';
 export function ProductGallery({
   media,
   className,
+  aspectRatio = '2/3',
 }: {
   media: MediaFragment[];
   className?: string;
+  aspectRatio?: string;
 }) {
   const [isOpenModal, setOpenModal] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -74,7 +76,7 @@ export function ProductGallery({
               <Image
                 loading={i === 0 ? 'eager' : 'lazy'}
                 data={image}
-                aspectRatio="2/3"
+                aspectRatio={aspectRatio}
                 sizes='(min-width: 48em) 60vw, 90vw'
                 className="object-cover rounded-2xl fadeIn w-full"
               />
