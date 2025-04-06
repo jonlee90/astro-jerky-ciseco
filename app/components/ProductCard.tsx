@@ -212,7 +212,7 @@ const ProductCard: FC<ProductCardProps> = ({
             />
           </motion.div>
           <div className="grid gap-2">
-            <h2 id={`product-title-${product.handle}`} className="w-full uppercase text-xl text-left">
+            <h2 id={`product-title-${product.handle}`} className="w-full uppercase font-bold text-xl text-left">
               {product.title + (selectedOptions[0].value !== 'Default Title' ? ' (' + selectedOptions[0].value + ')' : '')}
             </h2>
             <div className="grid grid-cols-2">
