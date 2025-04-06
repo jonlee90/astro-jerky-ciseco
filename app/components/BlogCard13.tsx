@@ -16,7 +16,7 @@ const BlogCard13: FC<BlogCard13Props> = ({className = 'w-full', post}) => {
       data-nc-id="Card13"
     >
       <div className="flex flex-col py-2">
-        <h2 className={`nc-card-title block font-semibold text-base`}>
+        <h2 className={`nc-card-title block font-semibold text-lg`}>
           <Link to={'/news/' + post.handle} className="line-clamp-2 capitalize">
             {post.title || 'title'}
           </Link>
@@ -25,7 +25,7 @@ const BlogCard13: FC<BlogCard13Props> = ({className = 'w-full', post}) => {
           <span className="line-clamp-2">{post.excerpt || ''}</span>
         </span>
 
-        <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs sm:text-sm">
+        <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm sm:text-base">
           <time className="text-gray-500">
             {new Date(post.publishedAt).toDateString()}
           </time>

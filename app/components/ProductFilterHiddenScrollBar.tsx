@@ -71,7 +71,7 @@ const ProductFilterHiddenScrollBar = ({collectionHandle, totalProducts}: any) =>
         <h2 id="product-filter-section" className="sr-only">Product Filters</h2>
         <Nav
           className="p-1 productFilterHiddenScrollBar px-2 overflow-x-auto hiddenScrollbar w-full justify-start md:w-auto md:rounded-full"
-          containerClassName="mb-12 lg:mb-14 relative flex w-full text-sm md:text-base md:justify-center"
+          containerClassName="mb-12 lg:mb-14 relative flex w-full text-base md:text-lg md:justify-center"
         >
           {categoryData.map((item) => (
               <NavItem
@@ -82,7 +82,7 @@ const ProductFilterHiddenScrollBar = ({collectionHandle, totalProducts}: any) =>
                     to={`/${item.value}`}
                     prefetch="intent"
                   >
-                  <div className="flex items-center justify-center space-x-1.5 sm:space-x-2.5 text-xs sm:text-sm">
+                  <div className="flex items-center justify-center space-x-1.5 sm:space-x-2.5 text-sm sm:text-base">
                     {item.icon ? 
                       <item.icon size={26} />
                     :

@@ -2889,7 +2889,7 @@ export default function Page() {
           <div>
             <label
               htmlFor="shopify_Access_Token"
-              className="block text-sm font-medium leading-6 text-gray-900"
+              className="block text-base font-medium leading-6 text-gray-900"
             >
               Shopify Access Token
             </label>
@@ -2902,7 +2902,7 @@ export default function Page() {
               defaultValue={__ACCESS_TOKEN || undefined}
               placeholder="shpat_xxxxxxxxxxxxxxxxxxxxx"
             />
-            <span className="text-xs text-neutral-700">
+            <span className="text-sm text-neutral-700">
               You can get the access token from your Shopify admin.
             </span>
           </div>
@@ -3261,7 +3261,7 @@ function BoxMessage({accessToken}: {accessToken: string}) {
   return (
     <div className="max-w-screen-sm mx-auto">
       {isLoading ? (
-        <div className="block my-5 text-xs text-center">
+        <div className="block my-5 text-sm text-center">
           Loading... Please <strong>do not</strong> leave, close or reload this
           page until the process is complete!
         </div>
@@ -3270,7 +3270,7 @@ function BoxMessage({accessToken}: {accessToken: string}) {
       <hr className="my-10" />
       <div
         className={clsx(
-          'p-5 border rounded-2xl text-xs text-neutral-700 overflow-auto hiddenScrollbar',
+          'p-5 border rounded-2xl text-sm text-neutral-700 overflow-auto hiddenScrollbar',
         )}
       >
         {/* MESSAGE */}
@@ -3293,9 +3293,9 @@ function BoxMessage({accessToken}: {accessToken: string}) {
         {renderStatusAll()}
 
         <hr className="my-4" />
-        <details className="text-xs">
+        <details className="text-sm">
           <summary>
-            <span className="text-xs text-neutral-700">Show fetcher.data</span>
+            <span className="text-sm text-neutral-700">Show fetcher.data</span>
           </summary>
           <hr className="my-2" />
           <div className="max-h-screen overflow-auto hiddenScrollbar">

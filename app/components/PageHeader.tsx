@@ -34,7 +34,7 @@ const PageHeader: FC<Props> = ({
     }
     return (
       <div
-        className={`block text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-400 ${
+        className={`block text-sm sm:text-base font-medium text-slate-700 dark:text-slate-400 ${
           reverseBreadcrumb ? 'mb-3' : 'mt-3 lg:mt-5'
         }`}
       >
@@ -44,7 +44,7 @@ const PageHeader: FC<Props> = ({
         >
           {prevbreadcrumb.title}
         </Link>
-        <span className="text-xs mx-1 sm:mx-1.5">/</span>
+        <span className="text-sm mx-1 sm:mx-1.5">/</span>
         {!!breadcrumbText && (
           <span className="underline">{breadcrumbText}</span>
         )}
@@ -55,12 +55,12 @@ const PageHeader: FC<Props> = ({
   return (
     <div className={className}>
       {reverseBreadcrumb && renderBreadcrumb()}
-      <Heading className="block text-3xl sm:text-4xl font-semibold capitalize">
+      <Heading className="block text-3xl md:text-4xl font-semibold capitalize">
         {title}
       </Heading>
       {!reverseBreadcrumb && renderBreadcrumb()}
       {!!description && (
-        <span className="block mt-4 dark:text-neutral-400 text-sm sm:text-base">
+        <span className="block mt-4 text-lg">
           {description}
         </span>
       )}

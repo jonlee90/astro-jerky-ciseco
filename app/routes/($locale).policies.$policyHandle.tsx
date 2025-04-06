@@ -60,7 +60,7 @@ export default function Policies() {
               {policy.title}
             </Heading>
             <Link
-              className="inline-block justify-self-start text-sm font-medium hover:underline mt-3 lg:mt-5"
+              className="inline-block justify-self-start text-base font-medium hover:underline mt-3 lg:mt-5"
               to={'/policies'}
             >
               &larr; Back to Policies

@@ -14,7 +14,7 @@ export interface AvatarProps extends HydrogenImageProps {
 
 const Avatar: FC<AvatarProps> = ({
   containerClassName = 'ring-1 ring-white dark:ring-neutral-900',
-  sizeClass = 'h-6 w-6 text-sm',
+  sizeClass = 'h-6 w-6 text-base',
   radius = 'rounded-full',
   imgUrl,
   userName,

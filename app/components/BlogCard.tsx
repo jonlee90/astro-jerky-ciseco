@@ -27,7 +27,7 @@ export const BlogCard: FC<Props> = ({post, className = ''}) => {
         </Link>
       </div>
       <div className="max-w-xl">
-        <div className="mt-8 flex flex-wrap items-center gap-2 sm:gap-x-4 text-xs">
+        <div className="mt-8 flex flex-wrap items-center gap-2 sm:gap-x-4 text-sm">
           <time className="text-gray-500">
             {new Date(post.publishedAt).toDateString()}
           </time>
@@ -49,7 +49,7 @@ export const BlogCard: FC<Props> = ({post, className = ''}) => {
               {post.title}
             </Link>
           </h3>
-          <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
+          <p className="mt-5 line-clamp-3 text-base leading-6 text-gray-600">
             {post.excerpt}
           </p>
         </div>

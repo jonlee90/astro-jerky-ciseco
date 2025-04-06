@@ -29,7 +29,7 @@ const MySwitch: FC<MySwitchProps> = ({
     >
       <div>
         <Label>{label}</Label>
-        <p className="text-neutral-500 dark:text-neutral-400  text-xs">
+        <p className="text-neutral-500 dark:text-neutral-400  text-sm">
           {desc}
         </p>
       </div>

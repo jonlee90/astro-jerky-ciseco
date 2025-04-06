@@ -63,7 +63,7 @@ function Address({
         <Badge color="blue">{index}</Badge>
         {defaultAddress && <Badge color="red">Default</Badge>}
       </div>
-      <ul className="flex-1 text-sm text-slate-700 prose prose-slate">
+      <ul className="flex-1 text-base text-slate-700 prose prose-slate">
         {(address.firstName || address.lastName) && (
           <li>
             {'' +
@@ -78,7 +78,7 @@ function Address({
       <div className="flex flex-row font-medium items-baseline">
         <Link
           to={`/account/address/${encodeURIComponent(address.id)}`}
-          className="text-left underline text-sm px-1"
+          className="text-left underline text-base px-1"
           prefetch="intent"
         >
           Edit

@@ -105,14 +105,14 @@ export default function Article() {
             {title}
           </h1>
           {!!excerpt && (
-            <span className="block text-base text-neutral-500 md:text-lg dark:text-neutral-400 pb-1">
+            <span className="block text-lg text-neutral-500 md:text-lg dark:text-neutral-400 pb-1">
               {excerpt}
             </span>
           )}
 
           <div className="w-full border-b border-neutral-100 dark:border-neutral-800"></div>
           <>
-            <div className="nc-PostMeta2 flex items-center flex-wrap text-neutral-700 text-left dark:text-neutral-200 text-sm leading-none flex-shrink-0">
+            <div className="nc-PostMeta2 flex items-center flex-wrap text-neutral-700 text-left dark:text-neutral-200 text-base leading-none flex-shrink-0">
               <Avatar
                 containerClassName="flex-shrink-0"
                 sizeClass="w-8 h-8 sm:h-11 sm:w-11 "
@@ -124,7 +124,7 @@ export default function Article() {
                     {author?.name || 'Guest'}
                   </div>
                 </div>
-                <div className="text-xs mt-[6px]">
+                <div className="text-sm mt-[6px]">
                   <span className="text-neutral-700 dark:text-neutral-300">
                     {/* {formattedDate} */}
                     {new Date(publishedAt).toDateString()}

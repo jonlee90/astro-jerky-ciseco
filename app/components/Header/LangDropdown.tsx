@@ -83,7 +83,7 @@ const LangDropdown: FC<LangDropdownProps> = ({
         renderTrigger={(openModal) => {
           return (
             <button
-              className={`text-opacity-80 group h-10 sm:h-12 px-3 py-1.5 inline-flex items-center text-sm text-gray-800 dark:text-neutral-200 font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+              className={`text-opacity-80 group h-10 sm:h-12 px-3 py-1.5 inline-flex items-center text-base text-gray-800 dark:text-neutral-200 font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
               onClick={openModal}
             >
               <GlobeAltIcon className="w-[18px] h-[18px] opacity-80" />
@@ -140,8 +140,8 @@ function Country({
         disabled={isLoading}
       >
         <div className="grid text-left">
-          <span className="text-sm font-medium ">{label}</span>
-          <span className="text-xs text-gray-500 dark:text-gray-400 uppercase">
+          <span className="text-base font-medium ">{label}</span>
+          <span className="text-sm text-gray-500 dark:text-gray-400 uppercase">
             {currency.replace(' ', ' - ')}
           </span>
         </div>

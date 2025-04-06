@@ -131,7 +131,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
             dangerouslySetInnerHTML={{__html: heading?.value || ''}}
           ></h2>
           <div
-            className="block text-slate-900 "
+            className="block text-lg"
             dangerouslySetInnerHTML={{__html: content?.value || ''}}
           ></div>
           {!!features?.value && (
@@ -181,7 +181,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
           {customerCreate?.customerUserErrors[0]?.message && (
             <div className="text-red-400 flex gap-2 mt-1 ml-1">
               <InformationCircleIcon className="w-4 h-4" />
-              <i className="text-xs">
+              <i className="text-sm">
                 {customerCreate?.customerUserErrors[0]?.message}
               </i>
             </div>
@@ -190,7 +190,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
             customerCreate?.customer?.id && (
               <div className="text-green-500 flex gap-2 mt-1 ml-1">
                 <CheckCircleIcon className="w-4 h-4" />
-                <i className="text-xs">Thank you for subscribing!</i>
+                <i className="text-sm">Thank you for subscribing!</i>
               </div>
             )}
 

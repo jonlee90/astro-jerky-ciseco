@@ -54,7 +54,7 @@ export function SectionHero(props: SectionHeroFragment) {
           <div className="container relative">
             <div className="flex max-w-lg flex-col items-start space-y-5 xl:max-w-2xl xl:space-y-8 ">
               {sub_heading?.value && (
-                <span className="font-semibold text-neutral-900 sm:text-lg md:text-xl">
+                <span className="font-semibold text-neutral-900 sm:text-xl md:text-2xl">
                   {sub_heading?.value}
                 </span>
               )}
@@ -68,7 +68,7 @@ export function SectionHero(props: SectionHeroFragment) {
                 <div className="sm:pt-4">
                   <ButtonPrimary
                     sizeClass="px-6 py-3 lg:px-8 lg:py-4"
-                    fontSize="text-sm sm:text-base lg:text-lg font-medium"
+                    fontSize="text-lg sm:text-lg lg:text-xl font-medium"
                     href={cta_button?.href?.value || ''}
                     targetBlank={cta_button?.target?.value === 'true'}
                   >

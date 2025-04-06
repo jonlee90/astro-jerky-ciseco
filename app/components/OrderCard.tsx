@@ -35,7 +35,7 @@ export function OrderCard({order}: {order: OrderCardFragment}) {
         )}
 
         <div className="">
-          <h3 className="text-base font-semibold leading-6 text-gray-900">
+          <h3 className="text-lg font-semibold leading-6 text-gray-900">
             <Link to={url} prefetch="intent" className="focus:outline-none">
               <span className="absolute inset-0" aria-hidden="true" />
               {lineItems.length > 1
@@ -43,7 +43,7 @@ export function OrderCard({order}: {order: OrderCardFragment}) {
                 : lineItems[0].title}
             </Link>
           </h3>
-          <div className="mt-2 text-sm text-gray-500">
+          <div className="mt-2 text-base text-gray-500">
             <div className="">
               <span>Order No. {order.number}</span>
               {` / `}
@@ -54,7 +54,7 @@ export function OrderCard({order}: {order: OrderCardFragment}) {
                 <div className="sr-only">Fulfillment Status</div>
                 <div className="mt-5">
                   <span
-                    className={`px-3 py-1 text-xs font-medium rounded-full ${
+                    className={`px-3 py-1 text-sm font-medium rounded-full ${
                       fulfillmentStatus === 'SUCCESS'
                         ? 'bg-green-100 text-green-800'
                         : 'bg-primary/5 text-primary/50'

@@ -39,7 +39,7 @@ const BlogCard12: FC<BlogCard12Props> = ({className = 'h-full', post}) => {
         <span className="hidden sm:block mt-4 text-slate-500 dark:text-slate-400 leading-6">
           <span className="line-clamp-2">{post.excerpt || ''}</span>
         </span>
-        <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs sm:text-sm">
+        <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm sm:text-base">
           <time className="text-gray-500">
             {new Date(post.publishedAt).toDateString()}
           </time>

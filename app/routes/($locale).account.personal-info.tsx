@@ -17,44 +17,44 @@ const Page = () => {
         </h2>
         <dl className="divide-y divide-gray-100">
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">
+            <dt className="text-base font-medium leading-6 text-gray-900">
               First name
             </dt>
             <dd
-              className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+              className="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
               aria-label="First name"
             >
               {firstName || 'No first name provided'}
             </dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">
+            <dt className="text-base font-medium leading-6 text-gray-900">
               Last name
             </dt>
             <dd
-              className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+              className="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
               aria-label="Last name"
             >
               {lastName || 'No last name provided'}
             </dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">
+            <dt className="text-base font-medium leading-6 text-gray-900">
               Phone number
             </dt>
             <dd
-              className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+              className="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
               aria-label="Phone number"
             >
               {phoneNumber?.phoneNumber ?? 'No phone number provided'}
             </dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">
+            <dt className="text-base font-medium leading-6 text-gray-900">
               Email address
             </dt>
             <dd
-              className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+              className="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
               aria-label="Email address"
             >
               {emailAddress?.emailAddress ?? 'No email address provided'}

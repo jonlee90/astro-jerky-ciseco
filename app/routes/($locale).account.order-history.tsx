@@ -35,7 +35,7 @@ type OrderCardsProps = {
 function EmptyOrders() {
   return (
     <div aria-labelledby="empty-orders-section">
-      <h3 id="empty-orders-section" className="text-lg font-semibold">
+      <h3 id="empty-orders-section" className="text-xl font-semibold">
         No Orders Found
       </h3>
       <p className="mt-2">You haven&apos;t placed any orders yet.</p>
@@ -54,7 +54,7 @@ function EmptyOrders() {
 function Orders({ orders }: OrderCardsProps) {
   return (
     <section aria-labelledby="orders-section" className="mt-6">
-      <h3 id="orders-section" className="text-lg font-semibold">
+      <h3 id="orders-section" className="text-xl font-semibold">
         Your Orders
       </h3>
       <div className="grid grid-flow-row grid-cols-1 gap-2 gap-y-6 md:gap-4 lg:gap-6 sm:grid-cols-2">

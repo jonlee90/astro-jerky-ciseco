@@ -77,7 +77,7 @@ export default function AllProducts() {
         <div className="space-y-10 lg:space-y-16">
           {/* HEADING */}
           <div>
-            <div className="flex items-center text-sm font-medium gap-2 text-neutral-500 mb-2">
+            <div className="flex items-center text-base font-medium gap-2 text-neutral-500 mb-2">
               <FireIcon className="w-5 h-5" />
               <span className="text-neutral-700 ">All Products</span>
             </div>

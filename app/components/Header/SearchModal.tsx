@@ -118,7 +118,7 @@ const SearchModal: FC<Props> = () => {
                       aria-hidden="true"
                     />
                     <Combobox.Input
-                      className="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
+                      className="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-base"
                       placeholder="Search..."
                       onChange={(event) => setRawQuery(event.target.value)}
                     />
@@ -130,10 +130,10 @@ const SearchModal: FC<Props> = () => {
                   >
                     {[1, 1, 11].length > 0 && (
                       <li>
-                        <h2 className="text-xs font-semibold text-gray-900">
+                        <h2 className="text-sm font-semibold text-gray-900">
                           Posts
                         </h2>
-                        <ul className="-mx-4 mt-2 text-sm text-gray-700">
+                        <ul className="-mx-4 mt-2 text-base text-gray-700">
                           {[1, 1, 11].map((post, index) => (
                             <Combobox.Option
                               key={index}
@@ -167,7 +167,7 @@ const SearchModal: FC<Props> = () => {
                   </Combobox.Options>
 
                   {rawQuery === '?' && (
-                    <div className="py-14 px-6 text-center text-sm sm:px-14">
+                    <div className="py-14 px-6 text-center text-base sm:px-14">
                       <LifebuoyIcon
                         className="mx-auto h-6 w-6 text-gray-400"
                         aria-hidden="true"
@@ -184,7 +184,7 @@ const SearchModal: FC<Props> = () => {
                     </div>
                   )}
 
-                  <div className="flex flex-wrap items-center bg-gray-50 py-2.5 px-4 text-xs text-gray-700">
+                  <div className="flex flex-wrap items-center bg-gray-50 py-2.5 px-4 text-sm text-gray-700">
                     Type{' '}
                     <kbd
                       className={classNames(

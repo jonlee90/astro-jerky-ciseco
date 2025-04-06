@@ -46,7 +46,7 @@ const CollectionCard6: FC<CollectionCard6Props> = ({
 
           <div className="text-center">
             <span
-              className={`block mb-1 text-sm text-slate-500 dark:text-slate-400`}
+              className={`block mb-1 text-base text-slate-500 dark:text-slate-400`}
             >
               {description}
             </span>
@@ -60,7 +60,7 @@ const CollectionCard6: FC<CollectionCard6Props> = ({
 
           <Link
             to={'/collections/' + handle}
-            className="flex items-center text-sm font-medium group-hover:text-primary-500 transition-colors"
+            className="flex items-center text-base font-medium group-hover:text-primary-500 transition-colors"
           >
             <span>See Collection</span>
             <ArrowRightIcon className="w-4 h-4 ml-2.5" />

@@ -48,7 +48,7 @@ const NcInputNumber: FC<NcInputNumberProps> = ({
           {label}
         </span>
         {desc && (
-          <span className="text-xs text-neutral-500 dark:text-neutral-400 font-normal">
+          <span className="text-sm text-neutral-500 dark:text-neutral-400 font-normal">
             {desc}
           </span>
         )}

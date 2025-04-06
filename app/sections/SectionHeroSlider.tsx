@@ -225,7 +225,7 @@ const SectionItem = ({section}: {section: HeroItemFragment}) => {
             <div className="space-y-5 sm:space-y-6">
               {!!item.sub_heading?.value && (
                 <span
-                  className="nc-SectionHeroSliderItem__subheading block text-base font-medium text-slate-700 md:text-xl"
+                  className="nc-SectionHeroSliderItem__subheading block text-lg font-medium text-slate-700 md:text-xl"
                   dangerouslySetInnerHTML={{__html: item.sub_heading.value}}
                 />
               )}
@@ -241,7 +241,7 @@ const SectionItem = ({section}: {section: HeroItemFragment}) => {
               <ButtonPrimary
                 className="nc-SectionHeroSliderItem__button !text-black uppercase mb-12 gap-3"
                 sizeClass="py-3 px-6 sm:py-4"
-                fontSize="text-sm sm:text-base xl:text-lg font-bold"
+                fontSize="text-lg sm:text-lg xl:text-xl font-bold"
                 href={item.cta_button?.href?.value}
                 targetBlank={item.cta_button?.target?.value === 'true'}
               >

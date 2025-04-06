@@ -84,7 +84,7 @@ export function SectionTabsCollectionsByGroup(
         {moreThanOneGroup && (
           <Nav
             className="p-1 bg-white dark:bg-neutral-800 rounded-full shadow-lg overflow-x-auto hiddenScrollbar"
-            containerClassName="mb-12 lg:mb-14 relative flex justify-center w-full text-sm md:text-base"
+            containerClassName="mb-12 lg:mb-14 relative flex justify-center w-full text-base md:text-lg"
           >
             {collection_groups?.nodes.map((item, index) => (
               <NavItem
@@ -92,7 +92,7 @@ export function SectionTabsCollectionsByGroup(
                 isActive={tabActive === index}
                 onClick={() => setTabActive(index)}
               >
-                <div className="flex items-center justify-center space-x-1.5 sm:space-x-2.5 text-xs sm:text-sm ">
+                <div className="flex items-center justify-center space-x-1.5 sm:space-x-2.5 text-sm sm:text-base ">
                   {item.icon_svg?.value && (
                     <span
                       className="inline-block *:w-full *:h-full w-4 h-4 sm:w-5 sm:h-5"

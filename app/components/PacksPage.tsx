@@ -43,7 +43,7 @@ export function PacksPage() {
           {collection.title.replace(/(<([^>]+)>)/gi, "")}
         </h1>
         <div
-          className="block mt-4 text-sm sm:text-base"
+          className="block mt-4 text-lg"
           dangerouslySetInnerHTML={{
             __html: collection.descriptionHtml || '',
           }}
@@ -63,7 +63,7 @@ export function PacksPage() {
           <SnapGridProducts
             products={currentProducts}
             showHeading={false}
-            classOverride="grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-10 lg:gap-x-15 custom-grid"
+            classOverride="grid grid-cols-2 lg:grid-cols-3 gap-7 md:gap-10 lg:gap-x-15 custom-grid"
           />
         ) : (
           <Empty />
@@ -73,9 +73,9 @@ export function PacksPage() {
 
 
       <section
-        className="text-center mt-20 grid grid-cols-1 gap-5 container"
+        className="text-center mt-20 grid grid-cols-1 gap-5 container text-lg"
         aria-label='bundle page button container'>
-          <h2 className="text-lead font-bold">Want full control over your flavor mission?</h2>
+          <h2 className="text-2xl font-bold">Want full control over your flavor mission?</h2>
           <p>You can also build your own custom jerky bundle from over 12 mouthwatering flavors. Tailor it to your cravings, your adventure, or gift it to someone who deserves a cosmic snacking experience.</p>
           <Link to={`/bundle`} >
             <ButtonPrimary className='!bg-neutral-900 hover:!bg-neutral-700 focus:!ring-neutral-600' aria-label="bundle page button">

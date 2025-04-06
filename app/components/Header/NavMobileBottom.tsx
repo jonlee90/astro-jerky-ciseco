@@ -76,7 +76,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
                 aria-current={isActive ? 'page' : undefined}
               >
                 <item.icon />
-                <span className="text-sm">{item.label}</span>
+                <span className="text-base">{item.label}</span>
               </Link>
               {isActive && <SpotlightEffect />}
             </motion.div>
@@ -95,7 +95,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
               aria-current={activeItemIndex == 3 ? 'page' : undefined}
             >
               <IconReward />
-              <span className="text-sm">Rewards</span>
+              <span className="text-base">Rewards</span>
             </Link>
             {activeItemIndex == 3 && <SpotlightEffect />}
           </motion.div>

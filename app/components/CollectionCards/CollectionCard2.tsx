@@ -47,11 +47,11 @@ const CollectionCard2: FC<CollectionCard2Props> = ({
       <div className="mt-5 flex-1 text-center">
         {!!name && (
           <h2
-            className="text-base sm:text-lg text-neutral-900 dark:text-neutral-100 font-semibold"
+            className="text-lg sm:text-lg text-neutral-900 dark:text-neutral-100 font-semibold"
             dangerouslySetInnerHTML={{__html: name}}
           ></h2>
         )}
-        <span className="block mt-0.5 sm:mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
+        <span className="block mt-0.5 sm:mt-1.5 text-base text-neutral-500 dark:text-neutral-400">
           {desc}
         </span>
       </div>

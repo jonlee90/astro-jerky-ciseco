@@ -180,7 +180,7 @@ function CartLineItem({line}: {line: CartLine}) {
 
   const renderStatusInstock = () => {
     return (
-      <div className="rounded-full flex items-center justify-center px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+      <div className="rounded-full flex items-center justify-center px-2.5 py-1.5 text-sm text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
         <CheckIcon className="w-3.5 h-3.5 text-secondary-500" />
         <span className="ml-1 leading-none">In Stock</span>
       </div>
@@ -212,7 +212,7 @@ function CartLineItem({line}: {line: CartLine}) {
         <div>
           <div className="flex justify-between gap-5">
             <div className="flex-[1.5] ">
-              <h3 className="text-base font-semibold">
+              <h3 className="text-lg font-semibold">
                 {merchandise?.product?.handle ? (
                   <Link to={lineItemUrl}>
                     {merchandise?.product?.title || ''}
@@ -221,7 +221,7 @@ function CartLineItem({line}: {line: CartLine}) {
                   <span>{merchandise?.product?.title || ''}</span>
                 )}
               </h3>
-              <div className="mt-2 sm:mt-2.5 text-sm text-slate-500 dark:text-slate-400 flex pe-3 gap-x-4 capitalize">
+              <div className="mt-2 sm:mt-2.5 text-base text-slate-500 dark:text-slate-400 flex pe-3 gap-x-4 capitalize">
                 {merchandise?.selectedOptions.some(
                   (option) =>
                     option.name === 'Title' && option.value === 'Default Title',
@@ -255,7 +255,7 @@ function CartLineItem({line}: {line: CartLine}) {
           </div>
         </div>
 
-        <div className="flex mt-auto pt-4 items-end justify-between text-sm">
+        <div className="flex mt-auto pt-4 items-end justify-between text-base">
           {renderStatusInstock()}
 
           <CartLineRemoveButton disabled={!!isOptimistic} lineId={id} />
@@ -279,9 +279,9 @@ function CartSummary({
   return (
     <>
       <div className="flex justify-between">
-        <h3 className="text-lg font-semibold ">Subtotal</h3>
+        <h3 className="text-xl font-semibold ">Subtotal</h3>
 
-        <span className="text-lg font-semibold">
+        <span className="text-xl font-semibold">
           {cost?.subtotalAmount?.amount ? (
             <Money data={cost?.subtotalAmount} />
           ) : (
@@ -289,7 +289,7 @@ function CartSummary({
           )}
         </span>
       </div>
-      <p className="mt-2 text-sm text-slate-500">
+      <p className="mt-2 text-base text-slate-500">
         Shipping, discounts, will be calculated at checkout.
       </p>
 
@@ -304,7 +304,7 @@ function CartSummary({
           Checkout
         </ButtonPrimary>
       </a>
-      <div className="mt-5 text-sm text-slate-500 flex items-center justify-center">
+      <div className="mt-5 text-base text-slate-500 flex items-center justify-center">
         <p className="block relative pl-5">
           <svg
             className="w-4 h-4 absolute -left-1 top-0.5"

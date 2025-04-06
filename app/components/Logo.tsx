@@ -43,7 +43,7 @@ const Logo: React.FC<LogoProps> = ({
           />
         ) : (
           <h1>
-            <span className="text-lg sm:text-xl font-semibold line-clamp-2">
+            <span className="text-xl sm:text-xl font-semibold line-clamp-2">
               {shop.name}
             </span>
           </h1>

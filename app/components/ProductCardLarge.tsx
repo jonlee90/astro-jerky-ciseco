@@ -89,7 +89,7 @@ const ProductCardLarge: FC<ProductCardProps> = ({
           <h2 className="font-semibold text-lg sm:text-xl ">{title}</h2>
           {/* AUTHOR */}
           <div className="mt-3 flex items-center text-slate-500 dark:text-slate-400">
-            <span className="text-sm ">
+            <span className="text-base ">
               <span className="line-clamp-1 capitalize">{featureText}</span>
             </span>
             {featureText && hasReviews && (
@@ -149,7 +149,7 @@ export const ProductCardLargeSkeleton = ({
           <h2 className="font-semibold text-lg sm:text-xl ">Product Title</h2>
           {/* AUTHOR */}
           <div className="mt-3 flex items-center text-slate-500 dark:text-slate-400">
-            <span className="text-sm ">
+            <span className="text-base ">
               <span className="line-clamp-1 capitalize">The best feature</span>
             </span>
             <span className="h-5 mx-1 sm:mx-2 border-l border-slate-200 dark:border-slate-700" />
@@ -157,7 +157,7 @@ export const ProductCardLargeSkeleton = ({
             <>
               <div className="flex">
                 <StarIcon className="w-4 h-4 text-amber-400" />
-                <span className="text-sm ml-1">
+                <span className="text-base ml-1">
                   <span className="line-clamp-1">5.0 (78 reviews)</span>
                 </span>
               </div>

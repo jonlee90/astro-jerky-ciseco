@@ -74,7 +74,7 @@ const ProductDisplay = () => {
             />
            
         
-            <div className={`text-sm border-black border w-full`}>
+            <div className={`text-base border-black border w-full`}>
                 <AddToCartButton
                     lines={[
                     {
@@ -111,8 +111,8 @@ const ProductDisplay = () => {
                 </AddToCartButton>
             </div>
 
-            <div className='grid grid-cols-1 gap-5'>
-                <h2 className='font-bold text-lg'>
+            <div className='grid grid-cols-1 gap-5 text-lg'>
+                <h2 className='font-bold text-xl'>
                     The Ultimate Flavor Trio: The Best Seller Classic Pack!
                 </h2>
                 <ul>
@@ -123,9 +123,9 @@ const ProductDisplay = () => {
                 <p>
                     Behold, the royalty of the jerky world. These three flavors reign supreme in the Astro Jerky kingdom, each having earned their place as the crown jewels of our collection. They’re not just snacks—they’re legends in the making, consistently flying off the shelves for over a decade!
                 </p>
-                <p>Let’s kick things off with the first flavor: <span className='font-bold text-lg'>Sweet & Spicy</span>. This jerky is an instant classic, lighting up your taste buds like a bolt of lightning streaking across a midnight sky. The sweet kiss of brown sugar dances with the fiery heat of chili peppers, creating a taste sensation so bold, it’ll send your neurons into overdrive. Perfect for those craving an adventure in every bite.</p>
-                <p>Next, experience the celestial fusion of <span className='font-bold text-lg'>Honey Teriyaki</span>. Crafted from premium grass-fed beef, this flavor blends real pineapple, golden honey, and authentic teriyaki sauce into a symphony of sweet and savory perfection. Slow-cooked to tender excellence, it’s a snack that transports you to the stars with every bite.</p>
-                <p>And finally, brace yourself for the fiery <span className='font-bold text-lg'>Supernova Hot</span>. Not for the faint of heart, this jerky is an explosive blend of cayenne peppers, habaneros, smoky undertones, and a touch of sweetness. It delivers a mouthwatering inferno of flavor, perfect for spice seekers who crave the heat and refuse to back down.</p>
+                <p>Let’s kick things off with the first flavor: <span className='font-bold'>Sweet & Spicy</span>. This jerky is an instant classic, lighting up your taste buds like a bolt of lightning streaking across a midnight sky. The sweet kiss of brown sugar dances with the fiery heat of chili peppers, creating a taste sensation so bold, it’ll send your neurons into overdrive. Perfect for those craving an adventure in every bite.</p>
+                <p>Next, experience the celestial fusion of <span className='font-bold'>Honey Teriyaki</span>. Crafted from premium grass-fed beef, this flavor blends real pineapple, golden honey, and authentic teriyaki sauce into a symphony of sweet and savory perfection. Slow-cooked to tender excellence, it’s a snack that transports you to the stars with every bite.</p>
+                <p>And finally, brace yourself for the fiery <span className='font-bold'>Supernova Hot</span>. Not for the faint of heart, this jerky is an explosive blend of cayenne peppers, habaneros, smoky undertones, and a touch of sweetness. It delivers a mouthwatering inferno of flavor, perfect for spice seekers who crave the heat and refuse to back down.</p>
                 <p>Each of these jerky bags is a one-way ticket to flavor town. And trust me, they won’t be here for long. These fan favorites sell out faster than a speeding comet, and this curated pack is sure to do the same. Add it to your cart now before they disappear!</p>
                 <p>NOTE: And here’s the best part—every slice of Astro Fresh Jerky is handcrafted in Los Angeles, with 100% premium beef. No fillers. No trimmings. No shortcuts. Just pure, mouthwatering jerky that’s packed with flavor and protein.</p>
             </div>

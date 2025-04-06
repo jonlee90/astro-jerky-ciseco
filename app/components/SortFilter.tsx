@@ -238,7 +238,7 @@ export function FiltersDrawer({
                 <>
                   <PopoverButton
                     className={clsx([
-                      `relative flex gap-2 items-center justify-center ps-4 pe-3.5 py-2 text-sm rounded-full border focus:outline-none select-none`,
+                      `relative flex gap-2 items-center justify-center ps-4 pe-3.5 py-2 text-base rounded-full border focus:outline-none select-none`,
                       isActive || open
                         ? 'border-primary-600 bg-primary-50 text-primary-900'
                         : 'border-neutral-300 text-neutral-700 hover:border-neutral-500 focus:border-neutral-500',
@@ -457,7 +457,7 @@ function TabsPriceRage({
         <>
           <Popover.Button
             className={clsx([
-              `flex items-center gap-2 justify-center px-4 py-2 text-sm rounded-full border focus:outline-none select-none`,
+              `flex items-center gap-2 justify-center px-4 py-2 text-base rounded-full border focus:outline-none select-none`,
               isActive || open
                 ? 'border-primary-600 bg-primary-50 text-primary-900'
                 : 'border-neutral-300 text-neutral-700 hover:border-slate-500',
@@ -483,7 +483,7 @@ function TabsPriceRage({
                 <div className="relative flex flex-col px-5 py-6 gap-y-6">
                   <div className="">
                     <h5 className="font-medium">{filter.label}</h5>
-                    <div className="text-xs mt-1 ">
+                    <div className="text-sm mt-1 ">
                       The highest price is {initMaxWithCurrency}
                     </div>
                   </div>
@@ -516,12 +516,12 @@ function TabsPriceRage({
                       <div className="flex-1">
                         <label
                           htmlFor="minPrice"
-                          className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                          className="block text-base font-medium text-neutral-700 dark:text-neutral-300"
                         >
                           Min price
                         </label>
                         <div className="mt-1 relative rounded-md">
-                          <span className="absolute inset-y-0 start-3.5 flex items-center pointer-events-none text-neutral-700 sm:text-sm">
+                          <span className="absolute inset-y-0 start-3.5 flex items-center pointer-events-none text-neutral-700 sm:text-base">
                             $
                           </span>
                           <Input
@@ -529,7 +529,7 @@ function TabsPriceRage({
                             type="number"
                             name="minPrice"
                             id="minPrice"
-                            className="block min-w-32 ps-7 pe-4 sm:text-sm border-neutral-200 dark:border-neutral-700 rounded-lg bg-transparent"
+                            className="block min-w-32 ps-7 pe-4 sm:text-base border-neutral-200 dark:border-neutral-700 rounded-lg bg-transparent"
                             value={minPrice ?? initMin ?? 0}
                             onChange={(e) => {
                               setMinPrice(Number(e.target.value));
@@ -540,12 +540,12 @@ function TabsPriceRage({
                       <div className="flex-1">
                         <label
                           htmlFor="maxPrice"
-                          className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                          className="block text-base font-medium text-neutral-700 dark:text-neutral-300"
                         >
                           Max price
                         </label>
                         <div className="mt-1 relative rounded-md">
-                          <span className="absolute inset-y-0 start-3.5 flex items-center pointer-events-none text-neutral-700 sm:text-sm">
+                          <span className="absolute inset-y-0 start-3.5 flex items-center pointer-events-none text-neutral-700 sm:text-base">
                             $
                           </span>
                           <Input
@@ -553,7 +553,7 @@ function TabsPriceRage({
                             type="number"
                             name="maxPrice"
                             id="maxPrice"
-                            className="block min-w-32 ps-7 pe-4 sm:text-sm border-neutral-200 dark:border-neutral-700 rounded-lg bg-transparent"
+                            className="block min-w-32 ps-7 pe-4 sm:text-base border-neutral-200 dark:border-neutral-700 rounded-lg bg-transparent"
                             value={maxPrice ?? initMax ?? 0}
                             onChange={(e) => {
                               setMaxPrice(Number(e.target.value));
@@ -658,12 +658,12 @@ function TabsPriceRageOnMoreFilterModal({
           <div className="flex-1">
             <label
               htmlFor="minPrice"
-              className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+              className="block text-base font-medium text-neutral-700 dark:text-neutral-300"
             >
               Min price
             </label>
             <div className="mt-1 relative rounded-md">
-              <span className="absolute inset-y-0 start-3.5 flex items-center pointer-events-none text-neutral-700 sm:text-sm">
+              <span className="absolute inset-y-0 start-3.5 flex items-center pointer-events-none text-neutral-700 sm:text-base">
                 $
               </span>
               <Input
@@ -671,7 +671,7 @@ function TabsPriceRageOnMoreFilterModal({
                 type="number"
                 name="minPrice"
                 id="minPrice"
-                className="block min-w-32 ps-7 pe-4 sm:text-sm border-neutral-200 dark:border-neutral-700 rounded-lg bg-transparent"
+                className="block min-w-32 ps-7 pe-4 sm:text-base border-neutral-200 dark:border-neutral-700 rounded-lg bg-transparent"
                 value={minPrice ?? initMin ?? 0}
                 onChange={(e) => {
                   onChangeMinPrice(Number(e.target.value));
@@ -683,12 +683,12 @@ function TabsPriceRageOnMoreFilterModal({
           <div className="flex-1">
             <label
               htmlFor="maxPrice"
-              className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+              className="block text-base font-medium text-neutral-700 dark:text-neutral-300"
             >
               Max price
             </label>
             <div className="mt-1 relative rounded-md">
-              <span className="absolute inset-y-0 start-3.5 flex items-center pointer-events-none text-neutral-700 sm:text-sm">
+              <span className="absolute inset-y-0 start-3.5 flex items-center pointer-events-none text-neutral-700 sm:text-base">
                 $
               </span>
               <Input
@@ -696,7 +696,7 @@ function TabsPriceRageOnMoreFilterModal({
                 type="number"
                 name="maxPrice"
                 id="maxPrice"
-                className="block min-w-32 ps-7 pe-4 sm:text-sm border-neutral-200 dark:border-neutral-700 rounded-lg bg-transparent"
+                className="block min-w-32 ps-7 pe-4 sm:text-base border-neutral-200 dark:border-neutral-700 rounded-lg bg-transparent"
                 value={maxPrice ?? initMax ?? 0}
                 onChange={(e) => {
                   onChangeMaxPrice(Number(e.target.value));
@@ -759,7 +759,7 @@ function TabMoreFilterOnMobile({
     <div className="flex-shrink-0">
       <button
         className={clsx([
-          `relative flex gap-2 items-center justify-center px-4 py-2 text-sm rounded-full focus:outline-none select-none`,
+          `relative flex gap-2 items-center justify-center px-4 py-2 text-base rounded-full focus:outline-none select-none`,
           hasFiltered || isOpenMoreFilter
             ? 'border border-primary-600 bg-primary-50 text-primary-900'
             : 'border border-neutral-300 text-neutral-700 hover:border-neutral-500 focus:border-neutral-500',
@@ -893,7 +893,7 @@ function TabMoreFilterOnMobile({
                             <h3 className="text-xl font-medium">
                               {filter.label}
                             </h3>
-                            <span className="block text-sm mt-2 text-neutral-700">
+                            <span className="block text-base mt-2 text-neutral-700">
                               The highest price is {initMaxWithCurrency}
                             </span>
                             <div className="mt-7 relative">

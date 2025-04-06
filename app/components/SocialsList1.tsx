@@ -29,7 +29,7 @@ const SocialsList1: FC<SocialsList1Props> = ({
                 <div className="w-5 h-5 rounded-full bg-slate-100" />
               )}
             </div>
-            <span className="hidden lg:block text-sm">{item.name}</span>
+            <span className="hidden lg:block text-base">{item.name}</span>
           </a>
         );
       })}

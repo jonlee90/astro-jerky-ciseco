@@ -82,7 +82,7 @@ const HeroSlider = () => {
               </p>
               {/* Button */}
               <motion.div 
-                className={`text-sm border-black border w-80 mx-auto`}
+                className={`text-base border-black border w-80 mx-auto`}
                 whileHover={{
                   scale: 1.05,
                   translateY: -2
@@ -154,7 +154,7 @@ const HeroSlider = () => {
                   className='basis-1/2'
                     to="/best-beef-jerky-flavors"
                   >
-                  <h2 className="text-sm font-extrabold uppercase animate-floating bg-black text-white p-2 w-full max-w-36 justify-self-center text-center">
+                  <h2 className="text-base font-extrabold uppercase animate-floating bg-black text-white p-2 w-full max-w-36 justify-self-center text-center">
                       Buy 3 for $33!
                   </h2>
                   </Link>

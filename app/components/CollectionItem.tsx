@@ -71,7 +71,7 @@ const CollectionItem: FC<CollectionItemProps> = ({
          {/*     <div className="max-w-[18rem] mx-auto">
               {!!productTitle && (
                   <h2
-                    className="text-lg lg:text-2xl   font-semibold mt-0.5 sm:mt-2 p-1 opacity-85 px-5"
+                    className="text-xl lg:text-2xl   font-semibold mt-0.5 sm:mt-2 p-1 opacity-85 px-5"
                     dangerouslySetInnerHTML={{__html: productTitle}}
                   />
                 )}
@@ -82,7 +82,7 @@ const CollectionItem: FC<CollectionItemProps> = ({
       </article>
       <h2
         id={`collection-title-${handle}`}
-        className="text-lg lg:text-2xl  font-semibold mt-0.5 sm:mt-2 p-1 opacity-80 rounded-2xl"
+        className="text-xl lg:text-2xl  font-semibold mt-0.5 sm:mt-2 p-1 opacity-80 rounded-2xl"
         >
         {productTitle} 
       </h2>
@@ -113,7 +113,7 @@ export const CollectionItemSkeleton = ({
         <div>
           <div className="absolute inset-4 md:inset-8 flex flex-col">
             <div className="max-w-[18rem]">
-              <span className={`block text-sm text-slate-700`}>Collection</span>
+              <span className={`block text-base text-slate-700`}>Collection</span>
               <h2 className="text-xl md:text-2xl text-slate-900 font-semibold mt-0.5 sm:mt-2">
                 Skeleton Collection
               </h2>
@@ -122,7 +122,7 @@ export const CollectionItemSkeleton = ({
               <ButtonSecondary
                 disabled
                 sizeClass="py-3 px-4 sm:py-3.5 sm:px-6"
-                fontSize="text-sm font-medium"
+                fontSize="text-base font-medium"
                 className="nc-shadow-lg"
                 aria-disabled="true"
               >

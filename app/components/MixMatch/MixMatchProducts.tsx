@@ -256,7 +256,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
               )}
             </div>
           </div>
-          <div className="text-left text-xs">
+          <div className="text-left text-sm">
             {big_bag_quantity ? (
               <div className={isSmall ? 'opacity-70' : 'font-bold'}>
                 <motion.div aria-live="polite">{big_bag_quantity} BIG BAGS</motion.div>

@@ -21,7 +21,7 @@ export function AnnouncementBar({
     >
       <div className="flex whitespace-nowrap sm-max:animate-marqueeLeft">
         {content.map((message, index) => (
-          index === 0 && <span key={index} className="px-10 font-bold uppercase text-sm">
+          index === 0 && <span key={index} className="px-10 font-bold uppercase text-base">
             {message}
           </span>
         ))}
@@ -31,7 +31,7 @@ export function AnnouncementBar({
         .map((message, index) => (
           <span
             key={`loop-${index + 1}`}
-            className="px-10 font-bold uppercase text-sm md:hidden"
+            className="px-10 font-bold uppercase text-base md:hidden"
             aria-hidden="true"
           >
             {message}

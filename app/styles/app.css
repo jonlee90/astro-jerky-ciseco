@@ -7,8 +7,8 @@
   --color-primary-shopify: 20 20 20; /* Text, buttons, etc. */
   --color-contrast: 250 250 249; /* Backgrounds, borders, etc. */
   --color-accent: 191 72 0; /* Labels like "On sale" */
-  --font-size-fine: 0.75rem; /* text-xs */
-  --font-size-copy: 1rem; /* text-base */
+  --font-size-fine: 0.75rem; /* text-sm */
+  --font-size-copy: 1rem; /* text-lg */
   --font-size-lead: 1.125rem; /* text-lg */
   --font-size-heading: 2rem; /* text-2xl */
   --font-size-display: 3rem; /* text-4xl */
@@ -826,7 +826,6 @@ a.disabled {
 .custom-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
 }
 @media (width < 48rem) {
   .custom-grid > :nth-child(1) {

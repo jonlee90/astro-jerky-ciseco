@@ -44,7 +44,7 @@ const CollectionCard1: FC<CollectionCard1Props> = ({
         {!!title && (
           <h2
             className={`${
-              size === 'large' ? 'text-lg' : 'text-base'
+              size === 'large' ? 'text-lg' : 'text-lg'
             } nc-card-title text-neutral-900 dark:text-neutral-100 font-semibold`}
             dangerouslySetInnerHTML={{__html: title}}
           ></h2>
@@ -52,7 +52,7 @@ const CollectionCard1: FC<CollectionCard1Props> = ({
         {!!description && (
           <span
             className={`${
-              size === 'large' ? 'text-sm' : 'text-xs'
+              size === 'large' ? 'text-base' : 'text-sm'
             } block mt-[2px] text-neutral-500 dark:text-neutral-400`}
           >
             {description}

@@ -23,7 +23,7 @@ export default function TemplatesDropdown() {
     <div className="TemplatesDropdown">
       <HeaderMenuDataWrap
         fallback={
-          <div className="text-opacity-90 py-2 h-10 sm:h-12 flex items-center rounded-md text-sm lg:text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-0">
+          <div className="text-opacity-90 py-2 h-10 sm:h-12 flex items-center rounded-md text-base lg:text-lg font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-0">
             <span>Await</span>
             <ChevronDownIcon className="text-opacity-70 ml-2 h-5 w-5 text-neutral-700 group-hover:text-opacity-80 transition ease-in-out duration-150" />
           </div>
@@ -36,7 +36,7 @@ export default function TemplatesDropdown() {
                 <PopoverButton
                   className={`
                   ${open ? '' : 'text-opacity-90'}
-                  group py-2 h-10 sm:h-12 flex items-center rounded-md text-sm lg:text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-0`}
+                  group py-2 h-10 sm:h-12 flex items-center rounded-md text-base lg:text-lg font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-0`}
                 >
                   <span>{headerMenu?.title || 'Shops'}</span>
                   <ChevronDownIcon
@@ -57,7 +57,7 @@ export default function TemplatesDropdown() {
                   <PopoverPanel className="absolute z-20 w-full mt-3.5 inset-x-0">
                     <div className="bg-white dark:bg-neutral-900 shadow-lg">
                       <div className="container">
-                        <div className="flex text-sm border-t border-slate-200 dark:border-slate-700 py-10 lg:py-14">
+                        <div className="flex text-base border-t border-slate-200 dark:border-slate-700 py-10 lg:py-14">
                           <div className="flex-1 grid grid-cols-4 gap-6 xl:gap-8 pr-6 xl:pr-8">
                             {headerMenu?.items.map((item, index) => (
                               <MenuItem

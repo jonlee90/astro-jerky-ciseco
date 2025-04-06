@@ -14,26 +14,26 @@ export function AccountDetails({
         <h3 className="font-bold text-lead">Account Details</h3>
         <div className="lg:p-8 p-6 border border-gray-200 rounded">
           <div className="flex">
-            <h3 className="font-bold text-base flex-1">Profile</h3>
+            <h3 className="font-bold text-lg flex-1">Profile</h3>
             <Link
               prefetch="intent"
-              className="underline text-sm font-normal"
+              className="underline text-base font-normal"
               to="/account/edit"
             >
               Edit
             </Link>
           </div>
-          <div className="mt-4 text-sm text-primary/50">Name</div>
+          <div className="mt-4 text-base text-primary/50">Name</div>
           <p className="mt-1">
             {firstName || lastName
               ? (firstName ? firstName + ' ' : '') + lastName
               : 'Add name'}{' '}
           </p>
 
-          <div className="mt-4 text-sm text-primary/50">Phone number</div>
+          <div className="mt-4 text-base text-primary/50">Phone number</div>
           <p className="mt-1">{phoneNumber?.phoneNumber ?? 'N/A'}</p>
 
-          <div className="mt-4 text-sm text-primary/50">Email address</div>
+          <div className="mt-4 text-base text-primary/50">Email address</div>
           <p className="mt-1">{emailAddress?.emailAddress ?? 'N/A'}</p>
         </div>
       </div>

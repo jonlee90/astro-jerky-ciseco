@@ -22,12 +22,12 @@ const NavMobile: React.FC<NavMobileProps> = ({onClose}) => {
     itemClass = ' pl-2 text-neutral-900 dark:text-neutral-200 font-medium ',
   ) => {
     return (
-      <ul className="nav-mobile-sub-menu pl-4 pb-1 text-base">
+      <ul className="nav-mobile-sub-menu pl-4 pb-1 text-lg">
         {item.items?.map((i, index) => (
           <Disclosure key={i.id} as="li">
             <Link
               to={item.to}
-              className={`flex text-sm rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 mt-0.5 pr-4 ${itemClass}`}
+              className={`flex text-base rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 mt-0.5 pr-4 ${itemClass}`}
               target={item.target}
               prefetch="intent"
             >
@@ -53,7 +53,7 @@ const NavMobile: React.FC<NavMobileProps> = ({onClose}) => {
         className="text-slate-900 dark:text-white"
       >
         <Link
-          className="flex w-full items-center py-2.5 px-2.5 font-medium uppercase tracking-wide text-sm hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
+          className="flex w-full items-center py-2.5 px-2.5 font-medium uppercase tracking-wide text-base hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
           to={item.to}
           target={item.target}
           prefetch="intent"
@@ -139,7 +139,7 @@ const NavMobile: React.FC<NavMobileProps> = ({onClose}) => {
             defaultValue={searchTerm}
             type="search"
             placeholder="Type and press enter"
-            className="border-none bg-transparent focus:outline-none focus:ring-0 w-full text-sm "
+            className="border-none bg-transparent focus:outline-none focus:ring-0 w-full text-base "
           />
         </div>
         <input type="submit" hidden value="" />
@@ -151,7 +151,7 @@ const NavMobile: React.FC<NavMobileProps> = ({onClose}) => {
     <div className="w-full h-full overflow-auto py-2 bg-white divide-y divide-neutral-100 ">
       <div className="pb-6 pt-2.5 grid gap-5">
         {/* <Logo /> */}
-        <div className="flex flex-col  text-slate-600 dark:text-slate-300 text-sm gap-4">
+        <div className="flex flex-col  text-slate-600 dark:text-slate-300 text-base gap-4">
           {!!description && <span>{description}</span>}
 
           <div className="flex justify-between items-center">

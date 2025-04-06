@@ -103,7 +103,7 @@ const NcModal: FC<NcModalProps> = ({
                   {modalTitle && (
                     <Dialog.Title
                       as="h3"
-                      className="text-base font-semibold text-neutral-900 lg:text-xl dark:text-neutral-200 mx-10"
+                      className="text-lg font-semibold text-neutral-900 lg:text-xl dark:text-neutral-200 mx-10"
                     >
                       {modalTitle}
                     </Dialog.Title>

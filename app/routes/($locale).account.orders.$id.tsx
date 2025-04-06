@@ -95,8 +95,8 @@ export default function OrderRoute() {
       <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden z-0">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-4 sm:p-8 bg-slate-50 dark:bg-slate-500/5">
           <div>
-            <p className="text-lg font-semibold">Order No. {order.name}</p>
-            <p className="text-slate-500 dark:text-slate-400 text-sm mt-1.5 sm:mt-2">
+            <p className="text-xl font-semibold">Order No. {order.name}</p>
+            <p className="text-slate-500 dark:text-slate-400 text-base mt-1.5 sm:mt-2">
               <span>{new Date(order.processedAt!).toDateString()} </span>
               <span className="mx-2">·</span>
 
@@ -145,15 +145,15 @@ export default function OrderRoute() {
                     <div>
                       <div className="flex flex-wrap gap-2 justify-between ">
                         <div>
-                          <h3 className="text-base font-medium">{title}</h3>
-                          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                          <h3 className="text-lg font-medium">{title}</h3>
+                          <p className="mt-1 text-base text-slate-500 dark:text-slate-400">
                             {variantTitle}
                           </p>
                         </div>
                         <Prices price={price!} className="mt-0.5" />
                       </div>
                     </div>
-                    <div className="flex flex-1 items-end justify-between text-sm">
+                    <div className="flex flex-1 items-end justify-between text-base">
                       <p className="text-gray-500 dark:text-slate-400 flex items-center">
                         <span className="hidden sm:inline-block">Qty</span>
                         <span className="inline-block sm:hidden">x</span>
@@ -175,14 +175,14 @@ export default function OrderRoute() {
         </div>
 
         <div className="rounded-lg bg-gray-50 px-4 sm:px-8 py-6">
-          <dl className="flex-1 space-y-6 divide-y divide-gray-200 text-sm text-gray-600 sm:grid sm:grid-cols-5 sm:gap-x-6 sm:space-y-0 sm:divide-y-0 lg:flex-none lg:gap-x-8">
+          <dl className="flex-1 space-y-6 divide-y divide-gray-200 text-base text-gray-600 sm:grid sm:grid-cols-5 sm:gap-x-6 sm:space-y-0 sm:divide-y-0 lg:flex-none lg:gap-x-8">
             {((discountValue && discountValue.amount) ||
               discountPercentage) && (
               <div className="flex justify-between sm:block">
                 <dt className="font-medium text-gray-900">Discounts</dt>
                 <dd className="sm:mt-1">
                   {discountPercentage ? (
-                    <span className="text-sm">-{discountPercentage}% OFF</span>
+                    <span className="text-base">-{discountPercentage}% OFF</span>
                   ) : (
                     discountValue && <Money data={discountValue!} />
                   )}

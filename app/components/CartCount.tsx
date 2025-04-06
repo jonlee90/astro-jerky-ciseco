@@ -29,7 +29,7 @@ const Badge: React.FC<BadgeProps> = ({ openCart, count }) => {
         <IconCart className="size-8" />
         <div
           aria-label={`Cart has ${count} item`}
-          className='text-black bg-white absolute top-3 right-2.5 text-xs font-medium subpixel-antialiased size-4 flex items-center justify-center text-center rounded-full'
+          className='text-black bg-white absolute top-3 right-2.5 text-sm font-medium subpixel-antialiased size-4 flex items-center justify-center text-center rounded-full'
         >
           <span>{count || 0}</span>
         </div>

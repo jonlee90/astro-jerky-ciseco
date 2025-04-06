@@ -119,14 +119,14 @@ export default function AllBundle() {
                         height="458px"
                       />
                   </CardHeader>
-                  <CardBody className="grid grid-cols-1 gap-2 p-4">
-                    <h2 id={`product-title-${id}`} className="font-bold">
+                  <CardBody className="grid grid-cols-1 gap-2 p-4 text-lg">
+                    <h2 id={`product-title-${id}`} className="font-bold text-2xl">
                       {title}
                     </h2>
                     <p className="opacity-70">
                       {description}
                     </p>
-                    <span className="flex gap-4 text-lead">
+                    <span className="flex gap-4">
                  
                       <Prices
                           contentClass="justify-center text-red"

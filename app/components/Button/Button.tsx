@@ -22,7 +22,7 @@ const Button: FC<ButtonProps> = ({
   className = 'text-neutral-700 disabled:cursor-not-allowed',
   translateClass = '',
   sizeClass = 'py-3 px-4 lg:py-3.5 lg:px-7',
-  fontSize = 'text-sm sm:text-base font-medium',
+  fontSize = 'text-base sm:text-lg font-medium',
   disabled = false,
   href,
   children,

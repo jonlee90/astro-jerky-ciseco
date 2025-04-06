@@ -53,7 +53,7 @@ export function FilterMenu({onTabChange,isSmall, onToggle}: any) {
             <>
               <Popover.Button
                 className={clsx(
-                  `flex gap-2 flex-shrink-0 items-center justify-center ps-4 pe-3.5 py-2 text-sm border rounded-full focus:outline-none select-none`,
+                  `flex gap-2 flex-shrink-0 items-center justify-center ps-4 pe-3.5 py-2 text-base border rounded-full focus:outline-none select-none`,
                   activeItem?.value || open
                     ? 'border-primary-600 bg-primary-50 text-primary-900'
                     : 'border-neutral-300 text-neutral-700 hover:border-neutral-500',

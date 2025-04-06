@@ -64,7 +64,7 @@ const CollectionCard4: FC<CollectionCard4Props> = ({
           </div>
 
           <div className="">
-            <span className="flex items-center mb-2 text-sm text-slate-700">
+            <span className="flex items-center mb-2 text-base text-slate-700">
               <FireIcon className="w-4 h-4 me-1.5" />
               {count} products
             </span>
@@ -78,7 +78,7 @@ const CollectionCard4: FC<CollectionCard4Props> = ({
 
           <Link
             to={'/collections/' + handle}
-            className="flex items-center text-sm font-medium group-hover:text-primary-500 transition-colors"
+            className="flex items-center text-base font-medium group-hover:text-primary-500 transition-colors"
           >
             <span>See Collection</span>
             <ArrowUpRightIcon className="w-4 h-4 ms-2.5" />
@@ -126,7 +126,7 @@ export const CollectionCard4Skeleton: FC<
           </div>
 
           <div className="">
-            <span className="flex items-center mb-2 text-sm text-slate-700">
+            <span className="flex items-center mb-2 text-base text-slate-700">
               <FireIcon className="w-4 h-4 me-1.5" />
               99 products
             </span>
@@ -135,7 +135,7 @@ export const CollectionCard4Skeleton: FC<
             </h2>
           </div>
 
-          <a className="flex items-center text-sm font-medium group-hover:text-primary-500 transition-colors">
+          <a className="flex items-center text-base font-medium group-hover:text-primary-500 transition-colors">
             <span>See Collection</span>
             <ArrowUpRightIcon className="w-4 h-4 ms-2.5" />
           </a>

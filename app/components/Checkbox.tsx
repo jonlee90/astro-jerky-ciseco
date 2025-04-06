@@ -20,7 +20,7 @@ const Checkbox: FC<CheckboxProps> = ({
   ...props
 }) => {
   return (
-    <div className={`flex text-sm xl:text-base ${className}`}>
+    <div className={`flex text-base xl:text-lg ${className}`}>
       <input
         id={id || name}
         name={name}
@@ -31,17 +31,17 @@ const Checkbox: FC<CheckboxProps> = ({
       {label && (
         <label
           htmlFor={id || name}
-          className="pl-2.5 sm:pl-3.5 flex flex-col flex-1 justify-center select-none text-sm xl:text-base"
+          className="pl-2.5 sm:pl-3.5 flex flex-col flex-1 justify-center select-none text-base xl:text-lg"
         >
           <span
-            className={`text-slate-900 dark:text-slate-100 text-sm xl:text-base ${labelClassName} ${
+            className={`text-slate-900 dark:text-slate-100 text-base xl:text-lg ${labelClassName} ${
               subLabel ? '-mt-0.5' : ''
             }`}
           >
             {label}
           </span>
           {subLabel && (
-            <p className="mt-0.5 text-slate-500 dark:text-slate-400 text-sm font-light">
+            <p className="mt-0.5 text-slate-500 dark:text-slate-400 text-base font-light">
               {subLabel}
             </p>
           )}

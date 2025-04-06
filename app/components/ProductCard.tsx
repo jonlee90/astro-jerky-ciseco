@@ -433,11 +433,11 @@ export const ProductCardSkeleton = ({
           })}
         </div>
         <div>
-          <h2 className="nc-ProductCard__title text-base font-semibold transition-colors">
+          <h2 className="nc-ProductCard__title text-lg font-semibold transition-colors">
             Product title
           </h2>
           <p
-            className={`text-sm text-slate-500 dark:text-slate-400 mt-1 capitalize`}
+            className={`text-base text-slate-500 dark:text-slate-400 mt-1 capitalize`}
           >
             Outstanding feature
           </p>
@@ -452,7 +452,7 @@ export const ProductCardSkeleton = ({
           />
           <>
             <div className="flex">
-              <span className="text-sm ml-1">
+              <span className="text-base ml-1">
                 <span className="line-clamp-1">5.0 (28 reviews)</span>
               </span>
             </div>

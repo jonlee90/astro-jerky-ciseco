@@ -116,7 +116,7 @@ export default function AvatarDropdown() {
                                   <MyUser2Icon />
                                 </div>
                                 <div className="ms-4">
-                                  <p className="text-sm font-medium ">
+                                  <p className="text-base font-medium ">
                                     Sign in
                                   </p>
                                 </div>
@@ -134,7 +134,7 @@ export default function AvatarDropdown() {
                                   <MyUser2Icon />
                                 </div>
                                 <div className="ms-4">
-                                  <p className="text-sm font-medium ">
+                                  <p className="text-base font-medium ">
                                     {'My Account'}
                                   </p>
                                 </div>
@@ -152,7 +152,7 @@ export default function AvatarDropdown() {
                                   <MyDocIcon />
                                 </div>
                                 <div className="ms-4">
-                                  <p className="text-sm font-medium ">
+                                  <p className="text-base font-medium ">
                                     {'Order history'}
                                   </p>
                                 </div>
@@ -169,7 +169,7 @@ export default function AvatarDropdown() {
                                 <MyHearthIcon />
                               </div>
                               <div className="ms-4">
-                                <p className="text-sm font-medium ">
+                                <p className="text-base font-medium ">
                                   {'Wishlists'}
                                 </p>
                               </div>
@@ -187,7 +187,7 @@ export default function AvatarDropdown() {
                                 <MyHelpIcon />
                               </div>
                               <div className="ms-4">
-                                <p className="text-sm font-medium ">
+                                <p className="text-base font-medium ">
                                   {'Policies'}
                                 </p>
                               </div>
@@ -209,7 +209,7 @@ export default function AvatarDropdown() {
                                     <MyLogoutIcon />
                                   </div>
                                   <div className="ms-4">
-                                    <p className="text-sm font-medium ">
+                                    <p className="text-base font-medium ">
                                       {state !== 'idle'
                                         ? 'Loading ... '
                                         : 'Log out'}
@@ -259,7 +259,7 @@ function CustomerInfo({
           <h4 className="font-semibold capitalize">
             {lastName || firstName ? firstName + ' ' + lastName : 'No name'}
           </h4>
-          <p className="text-xs mt-0.5">{address}</p>
+          <p className="text-sm mt-0.5">{address}</p>
         </div>
       </Link>
       <div className="w-full border-b border-neutral-200 dark:border-neutral-700" />

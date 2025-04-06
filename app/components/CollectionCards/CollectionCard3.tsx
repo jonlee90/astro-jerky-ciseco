@@ -47,7 +47,7 @@ const CollectionCard3: FC<CollectionCard3Props> = ({
             <div className="max-w-xs">
               {!!name && (
                 <span
-                  className={`block mb-2 text-sm text-slate-700`}
+                  className={`block mb-2 text-base text-slate-700`}
                   dangerouslySetInnerHTML={{__html: name}}
                 ></span>
               )}
@@ -61,7 +61,7 @@ const CollectionCard3: FC<CollectionCard3Props> = ({
             <div className="mt-auto">
               <ButtonSecondary
                 sizeClass="py-3 px-4 sm:py-3.5 sm:px-6"
-                fontSize="text-sm font-medium"
+                fontSize="text-base font-medium"
                 className="nc-shadow-lg"
               >
                 Show me all

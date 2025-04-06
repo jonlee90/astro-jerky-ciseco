@@ -20,7 +20,7 @@ const Radio: FC<RadioProps> = ({
   defaultChecked,
 }) => {
   return (
-    <div className={`flex items-center text-sm xl:text-base ${className}`}>
+    <div className={`flex items-center text-base xl:text-lg ${className}`}>
       <input
         id={id}
         name={name}
@@ -34,7 +34,7 @@ const Radio: FC<RadioProps> = ({
         // eslint-disable-next-line jsx-a11y/label-has-associated-control
         <label
           htmlFor={id}
-          className="pl-2.5 sm:pl-3 block text-slate-900 dark:text-slate-100 select-none text-sm xl:text-base"
+          className="pl-2.5 sm:pl-3 block text-slate-900 dark:text-slate-100 select-none text-base xl:text-lg"
           dangerouslySetInnerHTML={{__html: label}}
         />
       )}

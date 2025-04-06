@@ -83,7 +83,7 @@ function Account({customer}: AccountType) {
                   />
               </div>
               <div className='font-bold grid grid-rows-2 gap-2 items-center'>
-                <span className="text-lg">{100 - loyalty_points_points_until} points until your next $5 rewards!</span>
+                <span className="text-xl">{100 - loyalty_points_points_until} points until your next $5 rewards!</span>
                 <Link to={'/best-beef-jerky-flavors'} aria-label="Shop now to earn points">
                   <motion.button className="bg-black text-white py-3 rounded-full font-normal w-40">SHOP NOW</motion.button>
                 </Link>
@@ -144,13 +144,13 @@ function Account({customer}: AccountType) {
                   aria-label={action.title} />
               </div>
               <div className="mt-8">
-                <h3 className="text-base font-semibold leading-6 text-gray-900">
+                <h3 className="text-lg font-semibold leading-6 text-gray-900">
                   <Link to={action.href} className="focus:outline-none">
                     <span className="absolute inset-0" aria-hidden="true" />
                     {action.title}
                   </Link>
                 </h3>
-                <p className="mt-2 text-sm text-gray-500">
+                <p className="mt-2 text-base text-gray-500">
                   {action.description}
                 </p>
               </div>

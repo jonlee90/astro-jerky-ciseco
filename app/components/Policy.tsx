@@ -67,7 +67,7 @@ const Policy: FC<Props> = ({
               <span className="block font-semibold text-slate-900">
                 {item.name}
               </span>
-              <div className="text-slate-500 mt-1 text-sm line-clamp-1">
+              <div className="text-slate-500 mt-1 text-base line-clamp-1">
                 {item.desc}
               </div>
             </div>

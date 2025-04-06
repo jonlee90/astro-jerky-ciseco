@@ -116,14 +116,14 @@ export default function AccountDetailsEdit() {
       <Form method="post">
         {actionData?.formError && (
           <div className="flex items-center justify-center mb-6 bg-red-100 rounded">
-            <p className="my-4 text-sm text-red-900">{actionData.formError}</p>
+            <p className="my-4 text-base text-red-900">{actionData.formError}</p>
           </div>
         )}
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
           <div className="sm:col-span-4">
             <label
               htmlFor="firstName"
-              className="block text-sm font-medium leading-6 text-gray-900"
+              className="block text-base font-medium leading-6 text-gray-900"
             >
               First name
             </label>
@@ -144,7 +144,7 @@ export default function AccountDetailsEdit() {
           <div className="sm:col-span-4">
             <label
               htmlFor="lastName"
-              className="block text-sm font-medium leading-6 text-gray-900"
+              className="block text-base font-medium leading-6 text-gray-900"
             >
               Last name
             </label>
@@ -165,7 +165,7 @@ export default function AccountDetailsEdit() {
           <div className="sm:col-span-4">
             <label
               htmlFor="email"
-              className="block text-sm font-medium leading-6 text-gray-900"
+              className="block text-base font-medium leading-6 text-gray-900"
             >
               Email address
             </label>
@@ -184,7 +184,7 @@ export default function AccountDetailsEdit() {
           <div className="sm:col-span-4">
             <label
               htmlFor="phone"
-              className="block text-sm font-medium leading-6 text-gray-900"
+              className="block text-base font-medium leading-6 text-gray-900"
             >
               Phone number
             </label>

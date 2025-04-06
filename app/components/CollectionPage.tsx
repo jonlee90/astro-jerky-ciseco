@@ -37,7 +37,7 @@ export function CollectionPage() {
         className="container"
       >
         <p className="sr-only">{`Collection contains ${totalProducts} products.`}</p>
-        <div className="grid grid-cols-6 items-center text-sm font-medium gap-2 mb-8">
+        <div className="grid grid-cols-6 items-center text-base font-medium gap-2 mb-8">
           <div className="col-span-2 flex">
             <span className="text-neutral-700 ml-1">
               {totalProducts} Jerkies
@@ -62,7 +62,7 @@ export function CollectionPage() {
         >
           {collection.title.replace(/(<([^>]+)>)/gi, "")}
         </h1>
-        <p className="block mt-4 text-sm sm:text-base">
+        <p className="block mt-4 text-lg">
           {collection.description}
         </p>
       </section>

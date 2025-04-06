@@ -18,7 +18,7 @@ const ProductStatus: FC<Props> = ({
   status,
   icon,
   color = 'zinc',
-  className = 'absolute top-3 end-3 px-2.5 py-1.5 !text-base',
+  className = 'absolute top-3 end-3 px-2.5 py-1.5 !text-lg',
 }) => {
   const renderIcon = () => {
     if (icon === 'NoSymbolIcon') {

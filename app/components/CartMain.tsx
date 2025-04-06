@@ -97,7 +97,7 @@ function FreeShippingProgressBar({ totalAmount }:{totalAmount: number}) {
   );
   return (
     <div aria-live="polite" aria-label="Free shipping progress">
-      <div className="flex justify-center font-bold text-sm my-4">
+      <div className="flex justify-center font-bold text-base my-4">
         <svg className="w-6 mr-2 color-logo-red" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M22.48 5.28 12 8.813 1.518 5.28M12 21.851V8.814" stroke="currentColor" strokeWidth="1.2" strokeMiterlimit="10"></path>
           <path d="m7.025 3.425 10.48 3.535" stroke="currentColor" strokeWidth="1.079" strokeMiterlimit="10"></path>

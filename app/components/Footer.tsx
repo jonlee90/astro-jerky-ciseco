@@ -31,7 +31,7 @@ const Footer: React.FC<FooterProps> = ({
 
   const renderWidgetMenu = (menu: ParentEnhancedMenuItem, index: number) => {
     return (
-      <div key={index + menu.id} className="text-sm">
+      <div key={index + menu.id} className="text-lg">
         <NavLink 
           key={index} 
           to={getUrlAndCheckIfExternal(menu.url, publicStoreDomain, primaryDomainUrl)}  
@@ -79,7 +79,7 @@ const Footer: React.FC<FooterProps> = ({
               </Await>
             </Suspense>
           </nav>
-          <p className="mt-8 text-[13px] leading-5 md:order-1">
+          <p className="mt-8 text-base leading-5 md:order-1">
             © {new Date().getFullYear()} Astro Fresh Jerky, LLC. All rights reserved.
           </p>
         </div>
@@ -99,14 +99,14 @@ export function WidgetAddSubscriberForm() {
       <div
         className={`nc-WidgetHeading1 flex items-center justify-between p-4 border-b border-neutral-100 `}
       >
-        <h2 className="flex flex-wrap gap-3 text-base font-semibold text-neutral-900 dark:text-neutral-100">
+        <h2 className="flex flex-wrap gap-3 text-lg font-semibold text-neutral-900 dark:text-neutral-100">
           <EnvelopeIcon className="w-6 h-6" />
           <span>Stay up to date</span>
         </h2>
       </div>
 
       <div className="p-4 xl:p-5">
-        <span className="mt-2 text-sm leading-6 text-neutral-600 dark:text-neutral-400">
+        <span className="mt-2 text-base leading-6 text-neutral-600 dark:text-neutral-400">
           Subscribe to our newsletter to get the latest updates and special
           offers.
         </span>
@@ -139,7 +139,7 @@ export function WidgetAddSubscriberForm() {
           {customerCreate?.customerUserErrors[0]?.message && (
             <div className="text-red-400 flex gap-2 mt-1 ml-1">
               <InformationCircleIcon className="w-4 h-4" />
-              <i className="text-xs">
+              <i className="text-sm">
                 {customerCreate?.customerUserErrors[0]?.message}
               </i>
             </div>
@@ -148,7 +148,7 @@ export function WidgetAddSubscriberForm() {
             customerCreate?.customer?.id && (
               <div className="text-green-500 flex gap-2 mt-1 ml-1">
                 <CheckCircleIcon className="w-4 h-4" />
-                <i className="text-xs">Thank you for subscribing!</i>
+                <i className="text-sm">Thank you for subscribing!</i>
               </div>
             )}
         </div>

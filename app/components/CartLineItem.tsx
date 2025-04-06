@@ -92,7 +92,7 @@ export function CartLineItem({
         </div>
         <span>
           <CartLinePrice line={line} as="span" contentClass={clsx(onSale && '!text-red-600', 'py-1 px-2 md:py-1.5 md:px-2.5')} />
-          {(<CartLinePrice contentClass='inline-block line-through opacity-50 py-1 px-2 md:py-1.5 md:px-2.5 !text-base justify-end' priceType='compareAt' line={line} as="span" />)}
+          {(<CartLinePrice contentClass='inline-block line-through opacity-50 py-1 px-2 md:py-1.5 md:px-2.5 !text-lg justify-end' priceType='compareAt' line={line} as="span" />)}
         </span>
       </div>
     </li>
@@ -158,7 +158,7 @@ function CartLineQuantityAdjust({ line }: {line: CartLine}) {
 
 function CartLineAttributes({ attributes }: {attributes: CartLine['attributes']}) {
   return (
-    <div className='text-xs'>
+    <div className='text-sm'>
       {attributes.map((attribute, index) => (
         <div key={index}>
           {attribute.key}: {attribute.value}

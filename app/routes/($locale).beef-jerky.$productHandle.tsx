@@ -342,7 +342,7 @@ if(!isHydrated) {
                 <ul
                   role='list' 
                   className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-1 gap-3 font-bold'>
-                  {productCheck.map((v, i) => <li key={i} className='flex text-lead items-end'><IconCheck className='mr-1 w-7 h-7' /> {v}</li>)}
+                  {productCheck.map((v, i) => <li key={i} className='flex text-xl items-end'><IconCheck className='mr-1 w-7 h-7' /> {v}</li>)}
                 </ul>
               </section>
 
@@ -351,7 +351,7 @@ if(!isHydrated) {
               {!!descriptionHtml && (
                 <section 
                   aria-labelledby="product-details"
-                  className="grid gap-7 2xl:gap-8 description-container">
+                  className="grid gap-7 2xl:gap-8 description-container text-lg">
                   <h2 id="product-details" className="sr-only">Product Details</h2>
                   <div
                     className="sm:max-w-4xl"
@@ -426,7 +426,7 @@ if(!isHydrated) {
                     heading_bold={'YOU MIGHT ALSO LIKE'}
                     products={products.nodes.filter(node => node.tags.includes('beef-jerky'))}
                     className=''
-                    headingFontClass="text-2xl lg:text-4xl font-semibold"
+                    headingFontClass="text-3xl md:text-4xl font-semibold"
                   />
               )}
             </Await>
@@ -521,7 +521,7 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
       {/*!!collectionObj && (
           <nav className="mb-4" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-1">
-              <li className="flex items-center text-xs xl:text-sm">
+              <li className="flex items-center text-sm xl:text-base">
                 <Link
                   to={'/'}
                   className="font-medium text-gray-500 hover:text-gray-900"
@@ -531,7 +531,7 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
                 </Link>
                 <IconCaret direction='left' className="ml-2 h-5 w-5 flex-shrink-0 text-gray-300 " />
               </li>
-              <li className="flex items-center text-xs xl:text-sm">
+              <li className="flex items-center text-sm xl:text-base">
                 <Link
                   to={'/' + collectionObj.handle}
                   className="font-medium text-gray-500 hover:text-gray-900"
@@ -541,7 +541,7 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
                 </Link>
                 <IconCaret direction='left' className="ml-2 h-5 w-5 flex-shrink-0 text-gray-300 " />
               </li>
-              <li className="flex items-center text-xs xl:text-sm" aria-current="page">
+              <li className="flex items-center text-sm xl:text-base" aria-current="page">
                 {product.title}
               </li>
             </ol>
@@ -662,7 +662,7 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
                       aria-expanded={open}
                       aria-controls="quantity-menu"
                       className={clsx(
-                        `flex gap-2 flex-shrink-0 items-center pdp-quantity-button justify-center  h-[56px] py-2 text-sm border border-black bg-white w-full outline-none`,
+                        `flex gap-2 flex-shrink-0 items-center pdp-quantity-button justify-center  h-[56px] py-2 text-base border border-black bg-white w-full outline-none`,
                          open
                           ? 'pdp-quantity-button-active'
                           : '',
@@ -695,7 +695,7 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
                                   aria-label={`Select ${quantity} ${
                                     quantity === 1 ? 'bag' : 'bags'
                                   }`}
-                                  className='items-center justify-center  h-[50px] py-2 text-sm w-full border border-black mt-1 shadow-xl bg-white'
+                                  className='items-center justify-center  h-[50px] py-2 text-base w-full border border-black mt-1 shadow-xl bg-white'
                                   onClick={() => {
                                     setCurrentQuantity(quantity);
                                     setActiveItem(variantsByQuantity?.find((item) => item.quantity === quantity))
@@ -732,7 +732,7 @@ const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPri
   const isPack = selectedVariant.product.title.includes('The Classic Pack');
   return (
     <div className='col-span-4 flex flex-row gap-3'>
-        <div className={`text-sm border-black border w-full`}>
+        <div className={`text-base border-black border w-full`}>
           <AddToCartButton
             lines={[
               {
@@ -772,7 +772,7 @@ const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPri
               <span className={`flex items-center ml-3 gap-2 font-bold `}>
                 <span>Add to Cart - </span>
                 <Prices
-                  contentClass={`inline ${isSmallButton ? 'text-sm' : '' }`}
+                  contentClass={`inline ${isSmallButton ? 'text-base' : '' }`}
                   price={selectedVariantPrice}
                   compareAtPrice={selectedVariantCompareAtPrice}
                   compareAtPriceClass={'text-slate-600'}

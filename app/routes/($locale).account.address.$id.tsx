@@ -221,13 +221,13 @@ export default function EditAddress() {
       <ModalWrapper title={isNewAddress ? 'Add address' : 'Edit address'}>
         {actionData?.formError && (
           <div className="flex items-center justify-center mb-6 bg-red-100 rounded">
-            <p className="m-4 text-sm text-red-900">{actionData.formError}</p>
+            <p className="m-4 text-base text-red-900">{actionData.formError}</p>
           </div>
         )}
         {addressId}
         <h3 className="text-xl font-semibold">Address not found.</h3>
         <div className="mt-6">
-          <ButtonPrimary href="/account/address" fontSize="text-sm font-medium">
+          <ButtonPrimary href="/account/address" fontSize="text-base font-medium">
             <ArrowLeftIcon className="h-5 w-5 mr-2" />
             Go back to address book
           </ButtonPrimary>
@@ -251,14 +251,14 @@ export default function EditAddress() {
           />
           {actionData?.formError && (
             <div className="flex items-center justify-center mb-6 bg-red-100 rounded">
-              <p className="m-4 text-sm text-red-900">{actionData.formError}</p>
+              <p className="m-4 text-base text-red-900">{actionData.formError}</p>
             </div>
           )}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-2.5">
             <div className="">
               <label
                 htmlFor="firstName"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="block text-base font-medium leading-6 text-gray-900"
               >
                 First name
               </label>
@@ -279,7 +279,7 @@ export default function EditAddress() {
             <div className="">
               <label
                 htmlFor="lastName"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="block text-base font-medium leading-6 text-gray-900"
               >
                 Last name
               </label>
@@ -300,7 +300,7 @@ export default function EditAddress() {
             <div className="sm:col-span-2">
               <label
                 htmlFor="company"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="block text-base font-medium leading-6 text-gray-900"
               >
                 Company
               </label>
@@ -320,7 +320,7 @@ export default function EditAddress() {
             <div className="sm:col-span-2">
               <label
                 htmlFor="address1"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="block text-base font-medium leading-6 text-gray-900"
               >
                 Address line 1*
               </label>
@@ -335,7 +335,7 @@ export default function EditAddress() {
                   aria-label="Address line 1"
                   defaultValue={address?.address1 ?? ''}
                 />
-                <span className="text-xs text-slate-500">
+                <span className="text-sm text-slate-500">
                   The first line of the address. Typically the street address or
                   PO Box number.
                 </span>
@@ -345,7 +345,7 @@ export default function EditAddress() {
             <div className="sm:col-span-2">
               <label
                 htmlFor="address2"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="block text-base font-medium leading-6 text-gray-900"
               >
                 Address line 2*
               </label>
@@ -359,7 +359,7 @@ export default function EditAddress() {
                   aria-label="Address line 2"
                   defaultValue={address?.address2 ?? ''}
                 />
-                <span className="text-xs text-slate-500">
+                <span className="text-sm text-slate-500">
                   The second line of the address. Typically the number of the
                   apartment, suite, or unit.
                 </span>
@@ -369,7 +369,7 @@ export default function EditAddress() {
             <div className="">
               <label
                 htmlFor="city"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="block text-base font-medium leading-6 text-gray-900"
               >
                 City
               </label>
@@ -390,7 +390,7 @@ export default function EditAddress() {
             {/* <div className="">
             <label
               htmlFor="zoneCode"
-              className="block text-sm font-medium leading-6 text-gray-900"
+              className="block text-base font-medium leading-6 text-gray-900"
             >
               State / Province (zoneCode)
             </label>
@@ -412,7 +412,7 @@ export default function EditAddress() {
             <div className="">
               <label
                 htmlFor="zip"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="block text-base font-medium leading-6 text-gray-900"
               >
                 Zip / Postal Code
               </label>
@@ -433,7 +433,7 @@ export default function EditAddress() {
             <div className="sm:col-span-2">
               <label
                 htmlFor="territoryCode"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="block text-base font-medium leading-6 text-gray-900"
               >
                 Country (Territory) Code
               </label>
@@ -454,7 +454,7 @@ export default function EditAddress() {
             <div className="sm:col-span-2">
               <label
                 htmlFor="phone"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="block text-base font-medium leading-6 text-gray-900"
               >
                 Phone
               </label>
@@ -468,7 +468,7 @@ export default function EditAddress() {
                   aria-label="Phone"
                   defaultValue={address?.phoneNumber ?? ''}
                 />
-                <span className="text-xs text-slate-500">
+                <span className="text-sm text-slate-500">
                   Formatted using E.164 standard. For example, +16135551111.
                 </span>
               </div>
@@ -490,14 +490,14 @@ export default function EditAddress() {
                   defaultChecked={defaultAddress?.id === address?.id}
                 />
               </div>
-              <div className="text-sm leading-6">
+              <div className="text-base leading-6">
                 <label
                   htmlFor="defaultAddress"
                   className="font-medium text-gray-900"
                 >
                   Set as default address
                 </label>
-                <p className="text-slate-500 text-xs">
+                <p className="text-slate-500 text-sm">
                   This address will be used as your default shipping address.
                 </p>
               </div>
@@ -513,7 +513,7 @@ export default function EditAddress() {
               <Button
                 className={`disabled:bg-opacity-90 bg-red-700 hover:bg-red-800 text-red-50 `}
                 sizeClass="px-4 py-3 sm:px-6"
-                fontSize="text-sm font-medium"
+                fontSize="text-base font-medium"
                 type="button"
                 loading={state !== 'idle'}
                 onClick={() => {
@@ -540,7 +540,7 @@ export default function EditAddress() {
                 sizeClass="sm:!px-4 !py-3"
                 href=".."
                 loading={state !== 'idle'}
-                fontSize="text-sm  font-medium"
+                fontSize="text-base  font-medium"
                 type="button"
               >
                 Cancel
@@ -549,7 +549,7 @@ export default function EditAddress() {
                 type="submit"
                 loading={state !== 'idle'}
                 sizeClass="px-4 py-3 sm:px-6"
-                fontSize="text-sm font-medium"
+                fontSize="text-base font-medium"
               >
                 <span className="hidden sm:inline-block">
                   {isNewAddress ? 'Add address' : 'Update address'}
@@ -622,7 +622,7 @@ const ModalWrapper = ({
                 />
                 <Dialog.Title
                   as="h3"
-                  className="text-base font-semibold text-neutral-900 lg:text-xl dark:text-neutral-200 mx-10"
+                  className="text-lg font-semibold text-neutral-900 lg:text-xl dark:text-neutral-200 mx-10"
                 >
                   {title}
                 </Dialog.Title>
