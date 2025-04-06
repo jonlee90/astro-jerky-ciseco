@@ -755,7 +755,7 @@ const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPri
                 ] : []
               },
             ]}
-            className={`w-full pdp-add-to-cart-button relative ${isOutOfStock ? 'bg-neutral-800' : 'bg-black'} hover:bg-neutral-800 text-white py-2 outline-none ${isSmallButton ? 'h-[56px]' : 'h-[60px] text-lead' }`}
+            className={`w-full pdp-add-to-cart-button text-base relative ${isOutOfStock ? 'bg-neutral-800' : 'bg-black'} hover:bg-neutral-800 text-white py-2 outline-none ${isSmallButton ? 'h-[56px]' : 'h-[60px] text-lead' }`}
             data-test="add-to-cart"
             disabled={isOutOfStock}
             onClick={() => open('cart')}
@@ -769,10 +769,10 @@ const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPri
             </>
             : 
             <>
-              <span className={`flex items-center ml-3 gap-2 font-bold `}>
+              <span className={`flex items-center ml-3 gap-2 font-bold`}>
                 <span>Add to Cart - </span>
                 <Prices
-                  contentClass={`inline ${isSmallButton ? 'text-base' : '' }`}
+                  contentClass={`inline ${isSmallButton ? '!text-base' : '' }`}
                   price={selectedVariantPrice}
                   compareAtPrice={selectedVariantCompareAtPrice}
                   compareAtPriceClass={'text-slate-600'}
