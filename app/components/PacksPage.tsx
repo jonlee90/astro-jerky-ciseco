@@ -64,6 +64,7 @@ export function PacksPage() {
             products={currentProducts}
             showHeading={false}
             classOverride="grid grid-cols-2 lg:grid-cols-3 gap-7 md:gap-10 lg:gap-x-15 custom-grid"
+            isPacksPage={true}
           />
         ) : (
           <Empty />

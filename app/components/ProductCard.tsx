@@ -36,6 +36,7 @@ interface ProductCardProps {
   variantKey?: number;
   transition?: boolean;
   showBadge?: boolean;
+  showProductBadge?: boolean;
   imageAspectRatio?: string;
 }
 
@@ -48,6 +49,7 @@ interface ProductCardProps {
  *   quickAdd?: boolean;
  *   transition?: boolean;
  *   showBadge?: boolean;
+ *   showProductBadge?: boolean;
  *   imageAspectRatio?: string;
  * }}
  */
@@ -60,6 +62,7 @@ const ProductCard: FC<ProductCardProps> = ({
   variantKey = 0,
   transition = true,
   showBadge = true,
+  showProductBadge = true,
   imageAspectRatio = 'aspect-[4/5]',
 }: ProductCardProps) => {
 
@@ -183,16 +186,18 @@ const ProductCard: FC<ProductCardProps> = ({
             {!isAvailable && (
               <ProductSoldOut/>
             )}
-            <ProductBadge
-              status={getProductStatus({
-                availableForSale: product.availableForSale,
-                compareAtPriceRangeMinVariantPrice:
-                  product.compareAtPriceRange.minVariantPrice,
-                priceRangeMinVariantPrice: firstVariant.price,
-                tags: product.tags,
-                size:firstVariant.title
-              })}
-            />
+            {showProductBadge && (
+              <ProductBadge
+                status={getProductStatus({
+                  availableForSale: product.availableForSale,
+                  compareAtPriceRangeMinVariantPrice:
+                    product.compareAtPriceRange.minVariantPrice,
+                  priceRangeMinVariantPrice: firstVariant.price,
+                  tags: product.tags,
+                  size:firstVariant.title
+                })}
+              />
+            )}
             <motion.div
               className="h-0.5 w-0 bg-black absolute bottom-0 left-0"
               initial={{width: isInView ? (isDesktop || !transition ? (isHovered ? '100%' : 0) : '100%') : 0}}
