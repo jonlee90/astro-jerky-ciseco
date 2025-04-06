@@ -3,15 +3,16 @@ import { Await, useLoaderData } from "@remix-run/react";
 import { Suspense, useEffect, useState } from "react";
 import clsx from "clsx";
 import { Analytics, flattenConnection } from "@shopify/hydrogen";
-import { ProductsGrid } from "~/components/ProductsGrid";
-import PageHeader from "~/components/PageHeader";
+import { SnapGridProducts } from "~/components/SnapGridProducts";
 import { Empty } from "~/components/Empty";
-import { SwitchTab } from "~/components/Tabs";
-import ProductFilterHiddenScrollBar from "~/components/ProductFilterHiddenScrollBar";
 import { RouteContent } from "~/sections/RouteContent";
 import { loadCollectionData } from "~/utils/collectionLoader";
+import { motion } from "framer-motion";
+import { IconArrowRight } from "./Icon";
+import { Link } from "./Link";
+import ButtonPrimary from "./Button/ButtonPrimary";
 
-export function CollectionPage() {
+export function PacksPage() {
   const { collection, routePromise } = useLoaderData<typeof loadCollectionData>();
 
   const noResults = !collection.products.nodes.length;
@@ -33,27 +34,6 @@ export function CollectionPage() {
       className="nc-PageCollection pt-8 lg:pt-14 pb-20 lg:pb-28 md:container"
     >
       <section 
-        aria-label='collection-count-toggle'
-        className="container"
-      >
-        <p className="sr-only">{`Collection contains ${totalProducts} products.`}</p>
-        <div className="grid grid-cols-6 items-center text-sm font-medium gap-2 mb-8">
-          <div className="col-span-2 flex">
-            <span className="text-neutral-700 ml-1">
-              {totalProducts} Jerkies
-            </span>
-          </div>
-          <div className="flex col-span-4 ml-auto">
-            <SwitchTab
-              isSmall={isSmall}
-              onToggle={(val: string) => onToggle(val)}
-              className="justify-self-end"
-            />
-          </div>
-        </div>
-      </section>
-
-      <section 
         aria-labelledby="collection-title"
         className='mx-5'>
         <h1 
@@ -62,16 +42,13 @@ export function CollectionPage() {
         >
           {collection.title.replace(/(<([^>]+)>)/gi, "")}
         </h1>
-        <p className="block mt-4 text-sm sm:text-base">
-          {collection.description}
-        </p>
-      </section>
-
-      <ProductFilterHiddenScrollBar
-          collectionHandle={collection.handle}
-          totalProducts={totalProducts}
+        <div
+          className="block mt-4 text-sm sm:text-base"
+          dangerouslySetInnerHTML={{
+            __html: collection.descriptionHtml || '',
+          }}
         />
-
+      </section>
       <section 
         aria-labelledby="product-list"
         role="region"
@@ -83,16 +60,30 @@ export function CollectionPage() {
             : `Displaying ${totalProducts} products.`}
         </div>
         {!noResults ? (
-          <ProductsGrid
-            nodes={currentProducts}
-            isSmall={isSmall}
-            collection={collection}
+          <SnapGridProducts
+            products={currentProducts}
+            showHeading={false}
+            classOverride="grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-10 lg:gap-x-15 custom-grid"
           />
         ) : (
           <Empty />
         )}
       </section>
       
+
+
+      <section
+        className="text-center mt-20 grid grid-cols-1 gap-5 container"
+        aria-label='bundle page button container'>
+          <h2 className="text-lead font-bold">Want full control over your flavor mission?</h2>
+          <p>You can also build your own custom jerky bundle from over 12 mouthwatering flavors. Tailor it to your cravings, your adventure, or gift it to someone who deserves a cosmic snacking experience.</p>
+          <Link to={`/bundle`} >
+            <ButtonPrimary className='!bg-neutral-900 hover:!bg-neutral-700 focus:!ring-neutral-600' aria-label="bundle page button">
+                <span>BUILD CUSTOM PACK</span>
+                <IconArrowRight className="w-4 h-4 ms-2" />
+            </ButtonPrimary>
+          </Link>
+      </section>
 
       <Suspense fallback={<div className="h-32" />}>
         <Await

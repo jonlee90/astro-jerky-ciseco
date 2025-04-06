@@ -74,10 +74,10 @@ export function CartLineItem({
               <>{product?.title}</>
               :
               <Link to={isBundle ? '/bundle/' + product.handle :lineItemUrl}  onClick={closeCartAside}>
-                {product?.title + (isBundle ? '' : ' (' + title + ')')}
+                {product?.title + (isBundle || title === 'Default Title' ? '' : ' (' + title + ')')}
               </Link>
             ) : (
-              <span>{product?.title + ' (' + title + ')' || ''}</span>
+              <span>{product?.title + (title === 'Default Title' ? '' : ' (' + title + ')')}</span>
             )}
           </h2>
           {attributes && <CartLineAttributes attributes={attributes} />}

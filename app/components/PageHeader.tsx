@@ -60,7 +60,7 @@ const PageHeader: FC<Props> = ({
       </Heading>
       {!reverseBreadcrumb && renderBreadcrumb()}
       {!!description && (
-        <span className="block mt-4 text-neutral-500 dark:text-neutral-400 text-sm sm:text-base">
+        <span className="block mt-4 dark:text-neutral-400 text-sm sm:text-base">
           {description}
         </span>
       )}

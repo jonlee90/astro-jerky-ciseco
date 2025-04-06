@@ -20,6 +20,8 @@ export interface Props {
   className?: string;
   headingFontClass?: string;
   isSkeleton?: boolean;
+  showHeading?: boolean;
+  classOverride?: string;
 }
 
 export function SnapGridProducts(props: Props) {
@@ -28,21 +30,25 @@ export function SnapGridProducts(props: Props) {
     products = [],
     className = 'container',
     headingFontClass,
+    showHeading = true,
+    classOverride = 'grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-10 lg:gap-x-15 mx-5 xl:mx-0'
   } = props;
 
 
 
   return (
     <div className={`nc-SectionGridProductCard ` + className}>
-      <Heading
-        className={'mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 mx-5 md:mx-10 xl:mx-0 '}
-        fontClass={headingFontClass}
-      >
-        {heading_bold}
-      </Heading>
+      {showHeading && (
+        <Heading
+          className={'mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 mx-5 md:mx-10 xl:mx-0 '}
+          fontClass={headingFontClass}
+        >
+          {heading_bold}
+        </Heading>)
+      }
       <div
         className={clsx(
-          'grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-10 lg:gap-x-15 mx-5 xl:mx-0'
+          classOverride
         )}
         role="list"
         aria-label="Product grid"
@@ -73,10 +79,14 @@ export function SnapGridProducts(props: Props) {
                 loading={getImageLoadingPriority(i)}
                 variantKey={0}
                 transition={false}
+                className='gap-0'
+                showBadge={showHeading}
+                imageAspectRatio={showHeading ? "aspect-[4/5]" : "aspect-[1/1]"}
               />
             </motion.div>
           );
         })}
+
     </div>
     </div>
   );

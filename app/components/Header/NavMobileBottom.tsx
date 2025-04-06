@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from '@remix-run/react';
-import { IconHome, IconJerky, IconBundle, IconReward, IconCart } from '../Icon';
+import { IconHome, IconJerky, IconBundle, IconReward, IconPack } from '../Icon';
 import { motion } from 'framer-motion';
 import useWindowScroll from './useWindowScroll';
 import { Link } from '../Link';
@@ -30,8 +30,8 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
   const navItems = [
   { path: '/', label: 'Home', icon: IconHome },
   { path: '/collections', link: '/best-beef-jerky-flavors', label: 'Jerky', icon: IconJerky },
+  { path: '/beef-jerky-packs', label: 'Packs', icon: IconPack },
   { path: '/bundle', label: 'Bundle', icon: IconBundle },
-  { path: '/rewards', label: 'Rewards', icon: IconReward, needsAuth: false },
 ];
   const activeItemIndex = navItems.findIndex((item) => {
     if (isAuthenticated && pathname === '/rewards' && item.path === '/rewards') {
@@ -40,7 +40,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
       return true;
     }  else if (item.path === pathname && pathname.includes(item.path)) {
       return true;
-    } else if (pathname.includes('jerky') && item.path != '/') {
+    } else if (pathname.includes('jerky') && item.path != '/' && pathname != '/beef-jerky-packs') {
       return true;
     } else {
       return false;
@@ -63,7 +63,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
       <div className="relative grid grid-cols-5 items-center text-center mt-1">
         {navItems.map((item, index) => {
           // Skip rendering the fourth item since we handle it separately
-          if (index === 3) return null;
+      //    if (index === 3) return null;
           const urlPath = item.link ? item.link : item.path;
           const isActive = index === activeItemIndex;
           return (
@@ -83,7 +83,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
           );
         })}
 
-        {/* Handle the fourth nav item separately */}
+        {/* Handle the fourth nav item separately 
         {isAuthenticated !== null && (
           <motion.div 
             className='relative'
@@ -100,7 +100,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
             {activeItemIndex == 3 && <SpotlightEffect />}
           </motion.div>
         )}
-
+*/}
         <div
           className='justify-items-center ml-1'
         >

@@ -822,3 +822,14 @@ a.disabled {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-ring-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-shadow);
 
 }
+
+.custom-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+@media (width < 48rem) {
+  .custom-grid > :nth-child(1) {
+    grid-column: span 2;
+  }
+}

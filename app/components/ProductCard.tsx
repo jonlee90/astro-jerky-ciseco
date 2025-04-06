@@ -35,6 +35,8 @@ interface ProductCardProps {
   quickAdd?: boolean;
   variantKey?: number;
   transition?: boolean;
+  showBadge?: boolean;
+  imageAspectRatio?: string;
 }
 
 /**
@@ -45,6 +47,8 @@ interface ProductCardProps {
  *   loading?: HTMLImageElement['loading'];
  *   quickAdd?: boolean;
  *   transition?: boolean;
+ *   showBadge?: boolean;
+ *   imageAspectRatio?: string;
  * }}
  */
 const ProductCard: FC<ProductCardProps> = ({
@@ -54,7 +58,9 @@ const ProductCard: FC<ProductCardProps> = ({
   loading,
   quickAdd,
   variantKey = 0,
-  transition = true
+  transition = true,
+  showBadge = true,
+  imageAspectRatio = 'aspect-[4/5]',
 }: ProductCardProps) => {
 
   const {open} = useAside();
@@ -127,6 +133,12 @@ const ProductCard: FC<ProductCardProps> = ({
     return () => clearInterval(interval);
   }, [isInView, isHovered, isDesktop, productMedia.length, intervalDuration]);
 
+  const isSale =
+  product.compareAtPriceRange.minVariantPrice &&
+  firstVariant.price &&
+    Number(product.compareAtPriceRange.minVariantPrice.amount) >
+      Number(firstVariant.price.amount);
+
   return ( 
     <motion.div 
       className='flex flex-col gap-2'
@@ -143,7 +155,7 @@ const ProductCard: FC<ProductCardProps> = ({
         <div className={clsx('grid gap-4', className)}>
           <motion.div
             ref={cardRef}
-            className="card-image aspect-[4/5] pb-1 rounded-2xl"
+            className={"card-image pb-1 rounded-2xl " + imageAspectRatio}
             role="img"
             aria-label={product.title}
             onMouseEnter={() => {
@@ -196,25 +208,27 @@ const ProductCard: FC<ProductCardProps> = ({
           </motion.div>
           <div className="grid gap-2">
             <h2 id={`product-title-${product.handle}`} className="w-full uppercase text-xl text-left">
-              {product.title + ' (' + selectedOptions[0].value + ')'}
+              {product.title + (selectedOptions[0].value !== 'Default Title' ? ' (' + selectedOptions[0].value + ')' : '')}
             </h2>
             <div className="grid grid-cols-2">
               <span className="text-copy content-center">
                 <Prices
                 contentClass="self-center"
                   price={firstVariant.price}
-                  // compareAtPrice={
-                  //   isSale ? product.compareAtPriceRange.minVariantPrice : undefined
-                  // }
+                   compareAtPrice={
+                     isSale ? product.compareAtPriceRange.minVariantPrice : undefined
+                   }
                   withoutTrailingZeros={
                     Number(product.priceRange.minVariantPrice.amount || 1) > 99
                   }
                 />
               </span>
             </div>
-            <span className='items -mt-1'>
-              {getProductIcon(product)} {/* Render the icon based on tags */}
-            </span>
+            {showBadge && (
+              <span className='items -mt-1'>
+                {getProductIcon(product)} {/* Render the icon based on tags */}
+              </span>
+            )}
           </div>
         </div>
       </Link>

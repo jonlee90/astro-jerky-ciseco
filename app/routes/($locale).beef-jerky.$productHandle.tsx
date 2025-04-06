@@ -354,7 +354,7 @@ if(!isHydrated) {
                   className="grid gap-7 2xl:gap-8 description-container">
                   <h2 id="product-details" className="sr-only">Product Details</h2>
                   <div
-                    className="prose prose-sm sm:prose dark:prose-invert sm:max-w-4xl"
+                    className="sm:max-w-4xl"
                     dangerouslySetInnerHTML={{
                       __html: descriptionHtml || '',
                     }}
@@ -552,7 +552,7 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
           title={product.title}
           aria-label={`Product title: ${product.title} (${selectedVariant.title})`}
         >
-            {product.title + ' (' + selectedVariant.title + ')'}
+            {product.title + (selectedVariant.title !== 'Default Title' ? ' (' + selectedVariant.title + ')' : '')}
         </h1>
       </div>
 
@@ -729,7 +729,7 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
 
 const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, isOutOfStock, isSmallButton = true, isBackButton = true}) => {
   const {open} = useAside();
-  const isPack = selectedVariant.product.title.includes('Bags');
+  const isPack = selectedVariant.product.title.includes('The Classic Pack');
   return (
     <div className='col-span-4 flex flex-row gap-3'>
         <div className={`text-sm border-black border w-full`}>

@@ -9,19 +9,21 @@ export function ProductsGrid({
   nodes,
   className = 'mt-8 lg:mt-10',
   isSmall = false,
-  collection
+  collection,
+  classOverride = 'grid sm:grid-cols-2 lg:grid-cols-3 gap-x-28 gap-y-10 mx-5',
 }: {
   nodes?: CommonProductCardFragment[];
   className?: string;
   isSmall?: boolean;
   collection: Collection;
+  classOverride?: string;
 }) {
   const variantKey = isSmall ? 1 : 0;
   // Sort products so that available products come first
   return (
     <div
       className={clsx(
-        'grid sm:grid-cols-2 lg:grid-cols-3 gap-x-28 gap-y-10 mx-5',
+        classOverride,
         className,
       )}
       id="product-grid"
