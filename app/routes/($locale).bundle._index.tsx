@@ -14,7 +14,7 @@ import { useLoaderData } from '@remix-run/react';
 import { ProductMixFragment } from 'storefrontapi.generated';
 import { PRODUCT_MIX_FRAGMENT } from '~/data/fragments';
 import {seoPayload} from '~/lib/seo.server';
-import Prices from '~/components/Prices';
+import {BundleProductCard} from '~/components/BundleProductCard';
 
 // Type Definitions
 interface ProductVariant {
@@ -89,55 +89,11 @@ export default function AllBundle() {
           className="sm-only:p-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid gap-6 border-black"
           aria-label="Bundle products"
         >
-          {bundleProducts.map(({id, title, handle, description, priceRange, compareAtPriceRange, media}) => (
-            <Link 
-              key={id} 
-              to={`/bundle/${handle}`} 
-              prefetch="intent" 
-              state={{ pack: handle }}
-              aria-label={`Get ${title} bundle`}
-            >
-              <motion.div 
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Card 
-                  className="grid grid-cols-1 text-black"
-                  role="article"
-                  aria-labelledby={`product-title-${id}`}
-                >
-                  <CardHeader 
-                    floated={false} 
-                    shadow={false}
-                    color="transparent"
-                    className="m-0 rounded-b-none">
-                    <Image
-                        data={media.nodes[0].image}
-                        role="img"
-                        aria-label={`Image for ${title}`}
-                        width="750px"
-                        height="458px"
-                      />
-                  </CardHeader>
-                  <CardBody className="grid grid-cols-1 gap-2 p-4 text-lg">
-                    <h2 id={`product-title-${id}`} className="font-bold text-2xl">
-                      {title}
-                    </h2>
-                    <p className="opacity-70">
-                      {description}
-                    </p>
-                    <span className="flex gap-4">
-                 
-                      <Prices
-                          contentClass="justify-center text-red"
-                          price={priceRange.minVariantPrice}
-                          compareAtPrice={compareAtPriceRange.minVariantPrice}
-                      />
-                    </span>
-                  </CardBody>
-                </Card>
-              </motion.div>
-            </Link>
+          {bundleProducts.map((product) => (
+            <BundleProductCard
+              key={product.id}
+              product={product}
+            />
           ))}
         </div>
         </div>

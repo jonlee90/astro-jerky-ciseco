@@ -56,7 +56,6 @@ export function PageLayout({
       <main role="main" className="flex-grow">
         {children}
       </main>
-
       <Footer 
         footer={footer}
         header={header}

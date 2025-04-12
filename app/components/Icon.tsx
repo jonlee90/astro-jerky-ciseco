@@ -441,7 +441,7 @@ export function IconBbq({size = 16}) {
 export function IconBundle({className = '', ...props
 }: IconProps) {
   return (
-    <svg className={`w-8 ${className}`} xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1" d="M19 15h4V1H9v4m6 14h4V5H5v4M1 23h14V9H1z"/></svg>
+    <svg className={`w-8 ${className}`} xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="1" d="M19 15h4V1H9v4m6 14h4V5H5v4M1 23h14V9H1z"/></svg>
   )
 }
 export function IconStar({content, label = 'pt', contentX, contentY, contentSize}) {

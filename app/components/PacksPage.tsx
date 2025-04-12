@@ -7,10 +7,11 @@ import { SnapGridProducts } from "~/components/SnapGridProducts";
 import { Empty } from "~/components/Empty";
 import { RouteContent } from "~/sections/RouteContent";
 import { loadCollectionData } from "~/utils/collectionLoader";
-import { motion } from "framer-motion";
+import {BundleProductCard} from '~/components/BundleProductCard';
 import { IconArrowRight } from "./Icon";
 import { Link } from "./Link";
 import ButtonPrimary from "./Button/ButtonPrimary";
+import { c } from "vite/dist/node/types.d-FdqQ54oU";
 
 export function PacksPage() {
   const { collection, routePromise } = useLoaderData<typeof loadCollectionData>();
@@ -28,11 +29,34 @@ export function PacksPage() {
   const onToggle = (value: string) => setIsSmall(value === "small");
 
   const totalProducts = noResults ? 0 : currentProducts.length;
-
+  const packDescriptions = [
+    {
+      handle: 'the-classic-pack-3-bags',
+      products: ['Honey Teriyaki', 'Supernova Hot', 'Sweet & Spicy']
+    },
+    {
+      handle: 'the-sweet-spicy-pack-3-bags',
+      products: ['Big Bang Hot', 'Supernova Hot', 'Sweet & Spicy']
+    },
+    {
+      handle: 'the-hot-pack-3-bags',
+      products: ['Big Bang Hot', 'South West Hot', 'Supernova Hot']
+    },
+    {
+      handle: 'the-sweet-pack-3-bags',
+      products: ['Whiskey BBQ', 'Honey Teriyaki', 'Milky Way BBQ']
+    },
+    {
+      handle: 'the-savory-pack-3-bags',
+      products: ['Sweet & Spicy', 'Peppered', 'Astro\'s Original']
+    }
+  ];
   return (
     <div
-      className="nc-PageCollection pt-8 lg:pt-14 pb-20 lg:pb-28 md:container"
+      className="nc-PageCollection pt-10 lg:pt-20 pb-20 lg:pb-28 xl:pb-32 space-y-20 sm:space-y-24 lg:space-y-28"
     >
+      <div className="container space-y-14 lg:space-y-24">
+
       <section 
         aria-labelledby="collection-title"
         className='mx-5'>
@@ -51,6 +75,7 @@ export function PacksPage() {
       </section>
       <section 
         aria-labelledby="product-list"
+        className="sm-only:p-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid gap-6 border-black"
         role="region"
       >
         <h2 id="product-list" className="sr-only">List of Products</h2>
@@ -59,7 +84,25 @@ export function PacksPage() {
             ? "No products available."
             : `Displaying ${totalProducts} products.`}
         </div>
-        {!noResults ? (
+        
+        
+          {currentProducts.map((product) => {
+            const updatedProduct = {
+              ...product,
+              title:
+                product.handle === "the-classic-pack-3-bags"
+                  ? product.title.replace(" - 3 Bags", " - (Best Seller)")
+                  : product.title,
+            };
+            return (
+            <BundleProductCard
+              key={updatedProduct.id}
+              product={updatedProduct}
+              urlPrefix={"beef-jerky"}
+              packDescriptions={packDescriptions}
+            />
+          )})}
+        {/*!noResults ? (
           <SnapGridProducts
             products={currentProducts}
             showHeading={false}
@@ -68,7 +111,7 @@ export function PacksPage() {
           />
         ) : (
           <Empty />
-        )}
+        )*/}
       </section>
       
 
@@ -108,6 +151,7 @@ export function PacksPage() {
           }
         }}
       />
+      </div>
     </div>
   );
 }
