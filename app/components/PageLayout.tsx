@@ -55,6 +55,7 @@ export function PageLayout({
 
       <main role="main" className="flex-grow">
         {children}
+        <div className="klaviyo-form-WUUqWC"></div>
       </main>
       <Footer 
         footer={footer}

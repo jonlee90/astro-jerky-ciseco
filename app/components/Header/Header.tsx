@@ -35,7 +35,7 @@ export function Header({
   const isHydrated = useIsHydrated();
   const [isAnnouncementBarVisible, setAnnouncementBarVisible] = useState(true);
   const isBackButton = isHydrated && (pathname.includes('/beef-jerky/') ? !!state : (pathname.includes('/bundle/') && true));
-  const isBundlePage = isHydrated && !!state && pathname.includes('/bundle/') && true;
+  const isBundlePage = isHydrated && !state && pathname.includes('/bundle/') && true;
   const isDesktop = useMediaQuery({minWidth: 767});
 
   const [opacity, setOpacity] = useState<number>(1);
@@ -53,7 +53,9 @@ export function Header({
     "FREE SHIPPING OVER $60",
     "Buy 3 bags for $33",
   ];
-
+  console.log(isDesktop, 'isDesktop');
+  console.log(isBackButton, 'isBackButton');
+  console.log(isBundlePage, 'isBundlePage');
   return (
     <>
       <AnnouncementBar 
@@ -82,6 +84,7 @@ export function Header({
                 <CartCount
                   opacity={opacity}
                   className={`pdp-nav-button md:hidden right-5 ${isDesktop ? 'top-10' : 'bottom-5'}`}
+                  showCart={true}
                 />
                 {isBackButton && (
                   <BackButton isVisible={!isBackButton} />

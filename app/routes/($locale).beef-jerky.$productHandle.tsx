@@ -695,7 +695,7 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
                                   aria-label={`Select ${quantity} ${
                                     quantity === 1 ? 'bag' : 'bags'
                                   }`}
-                                  className='items-center justify-center  h-[50px] py-2 text-base w-full border border-black mt-1 shadow-xl bg-white'
+                                  className='items-center justify-center  h-[50px] py-2 text-sm w-full border border-black mt-1 shadow-xl bg-white'
                                   onClick={() => {
                                     setCurrentQuantity(quantity);
                                     setActiveItem(variantsByQuantity?.find((item) => item.quantity === quantity))
@@ -755,7 +755,7 @@ const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPri
                 ] : []
               },
             ]}
-            className={`w-full pdp-add-to-cart-button text-base relative ${isOutOfStock ? 'bg-neutral-800' : 'bg-black'} hover:bg-neutral-800 text-white py-2 outline-none ${isSmallButton ? 'h-[56px]' : 'h-[60px] text-lead' }`}
+            className={`w-full pdp-add-to-cart-button text-sm relative ${isOutOfStock ? 'bg-neutral-800' : 'bg-black'} hover:bg-neutral-800 text-white py-2 outline-none ${isSmallButton ? 'h-[56px]' : 'h-[60px] text-lead' }`}
             data-test="add-to-cart"
             disabled={isOutOfStock}
             onClick={() => open('cart')}

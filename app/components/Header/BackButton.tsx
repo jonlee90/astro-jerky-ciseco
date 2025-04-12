@@ -15,7 +15,7 @@ const BackButton: React.FC<BackButtonProps> = ({
   const navigate = useNavigate();
 
   const { pathname, state } = useLocation();
-  const navLink = pathname.includes('/bundle') && !!state ? '/bundle' : -1;
+  const navLink = pathname.includes('/bundle') && !state ? '/bundle' : -1;
   // Determine dynamic class based on navLink and pathname
   const buttonPosition = navLink === '/bundle'
     ? 'bottom-5'
