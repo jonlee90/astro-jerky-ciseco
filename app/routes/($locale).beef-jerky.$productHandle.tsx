@@ -772,7 +772,7 @@ const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPri
               <span className={`flex items-center ml-3 gap-2 font-bold`}>
                 <span>Add to Cart - </span>
                 <Prices
-                  contentClass={`inline ${isSmallButton ? '!text-base' : '' }`}
+                  contentClass={`inline ${isSmallButton ? '!text-sm' : '' }`}
                   price={selectedVariantPrice}
                   compareAtPrice={selectedVariantCompareAtPrice}
                   compareAtPriceClass={'text-slate-600'}
