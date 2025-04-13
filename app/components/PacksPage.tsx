@@ -58,8 +58,7 @@ export function PacksPage() {
       <div className="container space-y-14 lg:space-y-24">
 
       <section 
-        aria-labelledby="collection-title"
-        className='mx-5'>
+        aria-labelledby="collection-title">
         <h1 
           id="collection-title"
           className="block text-3xl sm:text-4xl font-semibold capitalize"
