@@ -11,7 +11,7 @@ import {BundleProductCard} from '~/components/BundleProductCard';
 import { IconArrowRight } from "./Icon";
 import { Link } from "./Link";
 import ButtonPrimary from "./Button/ButtonPrimary";
-import { c } from "vite/dist/node/types.d-FdqQ54oU";
+import PageHeader from '~/components/PageHeader';
 
 export function PacksPage() {
   const { collection, routePromise } = useLoaderData<typeof loadCollectionData>();
@@ -59,17 +59,11 @@ export function PacksPage() {
 
       <section 
         aria-labelledby="collection-title">
-        <h1 
-          id="collection-title"
-          className="block text-3xl sm:text-4xl font-semibold capitalize"
-        >
-          {collection.title.replace(/(<([^>]+)>)/gi, "")}
-        </h1>
-        <div
-          className="block mt-4 text-lg"
-          dangerouslySetInnerHTML={{
-            __html: collection.descriptionHtml || '',
-          }}
+        <PageHeader
+          // remove the html tags on title
+          title={collection.title.replace(/(<([^>]+)>)/gi, "")}
+          description={collection.description}
+          hasBreadcrumb={false}
         />
       </section>
       <section 

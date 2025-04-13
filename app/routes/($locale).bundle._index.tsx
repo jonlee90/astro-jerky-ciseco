@@ -80,8 +80,8 @@ export default function AllBundle() {
        <div className="space-y-14 lg:space-y-24">
         <PageHeader
           // remove the html tags on title
-          title={'BUNDLE PACKS'}
-          description={'MIX & MATCH BETWEEN 12 DIFFERENT FLAVORS TO CREATE A CUSTOM PREMIUM BEEF JERKY PACK!'}
+          title={'Bundle Packs'}
+          description={'Mix & Match Between 12 Different Flavors to Create a Custom Premium Beef Jerky Pack!'}
           hasBreadcrumb={false}
         />
         <div  
