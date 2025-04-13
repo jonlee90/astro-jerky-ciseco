@@ -55,7 +55,14 @@ export function PageLayout({
 
       <main role="main" className="flex-grow">
         {children}
-        <div className="klaviyo-form-WUUqWC"></div>
+        <section 
+            aria-labelledby="email-signup-form"
+            className='bg-logo-green w-full'>
+          <h2 id="email-signup-form" className="sr-only">
+            Email Sign Up
+          </h2>
+          <div className="klaviyo-form-WUUqWC"></div>
+        </section>
       </main>
       <Footer 
         footer={footer}
