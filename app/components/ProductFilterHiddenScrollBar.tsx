@@ -6,10 +6,10 @@ import { Link } from './Link';
 import clsx from 'clsx';
 
 
-const ProductFilterHiddenScrollBar = ({collectionHandle, totalProducts}: any) => {
+const ProductFilterHiddenScrollBar = ({collectionHandle, totalProducts, filterRef}: any) => {
   const categoryData = [
     {
-      label: "All Flavors",
+      label: "All",
       value: "best-beef-jerky-flavors",
     },
     {
@@ -38,7 +38,6 @@ const ProductFilterHiddenScrollBar = ({collectionHandle, totalProducts}: any) =>
       icon: IconCow,
     }
   ];
-  const filterRef = useRef<HTMLDivElement>(null); // Ref for the filter component
   const [isSticky, setIsSticky] = useState(false); // State to manage sticky behavior
 
    // Function to handle scroll event and check when the filter should stick
@@ -63,6 +62,7 @@ const ProductFilterHiddenScrollBar = ({collectionHandle, totalProducts}: any) =>
   
   return (
       <section
+        id="product-filter"
         aria-labelledby="product-filter-section"
         role='region'
         ref={filterRef}
@@ -79,7 +79,7 @@ const ProductFilterHiddenScrollBar = ({collectionHandle, totalProducts}: any) =>
                 isActive={collectionHandle === item.value}
               >
                 <Link
-                    to={`/${item.value}`}
+                    to={`/${item.value}#product-filter`}
                     prefetch="intent"
                   >
                   <div className="flex items-center justify-center space-x-1.5 sm:space-x-2.5 text-sm sm:text-base">

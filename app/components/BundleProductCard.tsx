@@ -76,15 +76,15 @@ export function BundleProductCard({
             )}
           </CardHeader>
           <CardBody className="grid grid-cols-1 gap-2 p-4 text-lg">
-            <h2 id={`product-title-${id}`} className="font-bold text-2xl">
+            <h2 aria-label="Product Title" id={`product-title-${id}`} className="font-bold text-2xl">
               {cleanedTitle}
             </h2>
-            {description && <p className="opacity-70">{description}</p>}
+            {description && <p aria-label="Product description">{description}</p>}
             
             {priceRange && compareAtPriceRange && (
-              <span className="flex gap-4">
+              <span aria-label="Product Price" className="flex gap-4">
                 <Prices
-                  contentClass="justify-center text-red"
+                  contentClass="justify-center !text-red-600"
                   price={priceRange.minVariantPrice}
                   compareAtPrice={compareAtPriceRange.minVariantPrice}
                 />
@@ -94,7 +94,7 @@ export function BundleProductCard({
               <ul className="list-none space-y-2">
                 {matchingPackDescription.products.map((product, index) => (
                   <li key={index} className="text-sm opacity-70">
-                    1x {product} Premium Beef Jerkey 3oz
+                    1x {product} Beef Jerkey 3oz
                   </li>
                 ))}
               </ul>

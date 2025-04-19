@@ -14,7 +14,7 @@ import { SwitchTab } from "./Tabs";
 
 const categoryData = [
   {
-    label: "All Flavors",
+    label: "All",
     value: "all"
   },
   {

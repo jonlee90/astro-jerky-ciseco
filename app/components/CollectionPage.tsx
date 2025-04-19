@@ -1,6 +1,6 @@
 // components/CollectionPage.tsx
 import { Await, useLoaderData } from "@remix-run/react";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { Analytics, flattenConnection } from "@shopify/hydrogen";
 import { ProductsGrid } from "~/components/ProductsGrid";
@@ -10,6 +10,7 @@ import { SwitchTab } from "~/components/Tabs";
 import ProductFilterHiddenScrollBar from "~/components/ProductFilterHiddenScrollBar";
 import { RouteContent } from "~/sections/RouteContent";
 import { loadCollectionData } from "~/utils/collectionLoader";
+import { SnapGridProducts } from "./SnapGridProducts";
 
 export function CollectionPage() {
   const { collection, routePromise } = useLoaderData<typeof loadCollectionData>();
@@ -23,6 +24,17 @@ export function CollectionPage() {
   useEffect(() => {
     setCurrentProducts(flattenConnection(collection.products));
   }, [collection.products]);
+
+  const filterRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    // Scroll to the ProductFilterHiddenScrollBar if the hash is #product-filter
+    const hash = window.location.hash;
+    if (hash === '#product-filter' && filterRef.current) {
+      console.log(filterRef.current);
+      filterRef.current.scrollIntoView({ behavior: 'instant' });
+    }
+  }, [filterRef]);
+
 
   const onToggle = (value: string) => setIsSmall(value === "small");
 
@@ -68,6 +80,7 @@ export function CollectionPage() {
       </section>
 
       <ProductFilterHiddenScrollBar
+          filterRef={filterRef}
           collectionHandle={collection.handle}
           totalProducts={totalProducts}
         />
@@ -83,12 +96,13 @@ export function CollectionPage() {
             : `Displaying ${totalProducts} products.`}
         </div>
         {!noResults ? (
-          <ProductsGrid
-            nodes={currentProducts}
-            isSmall={isSmall}
-            collection={collection}
-          />
-        ) : (
+            <SnapGridProducts
+              showHeading={false}
+              products={currentProducts}
+              className={'w-full mx-auto'}
+        
+              />
+          ) : (
           <Empty />
         )}
       </section>

@@ -85,7 +85,7 @@ export function SnapGridProducts(props: Props) {
                   showProductBadge={false}
                   className='gap-0'
                   showBadge={showHeading}
-                  imageAspectRatio={showHeading ? "aspect-[4/5]" : "aspect-[1/1]"}
+                  imageAspectRatio={isPacksPage  ? "aspect-[1/1]" : "aspect-[4/5]"}
                 />
                 
               {i == 0 && isPacksPage && (

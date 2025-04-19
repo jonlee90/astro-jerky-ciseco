@@ -51,11 +51,9 @@ export function Header({
   }, [y]);
   const content = [
     "FREE SHIPPING OVER $60",
+    "SAME DAY SHIPPING",
     "Buy 3 bags for $33",
   ];
-  console.log(isDesktop, 'isDesktop');
-  console.log(isBackButton, 'isBackButton');
-  console.log(isBundlePage, 'isBundlePage');
   return (
     <>
       <AnnouncementBar 
