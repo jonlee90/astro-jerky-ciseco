@@ -832,3 +832,9 @@ a.disabled {
     grid-column: span 2;
   }
 }
+
+.collection-title {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

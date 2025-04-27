@@ -32,6 +32,7 @@ const colors = {
     'bg-fuchsia-400/15 text-fuchsia-800 group-data-[hover]:bg-fuchsia-400/25 dark:bg-fuchsia-400/10 dark:text-fuchsia-400 dark:group-data-[hover]:bg-fuchsia-400/20',
   rose: 'bg-rose-800 text-white group-data-[hover]:bg-rose-400/25 ',
   logoRed: 'bg-logo-red text-white group-data-[hover]:bg-logo-red ',
+  logoYellow: 'bg-logo-yellow text-black group-data-[hover]:bg-logo-yellow ',
   logoGreen: 'bg-logo-green text-white group-data-[hover]:bg-logo-green '
 };
 

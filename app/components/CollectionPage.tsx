@@ -2,7 +2,7 @@
 import { Await, useLoaderData } from "@remix-run/react";
 import { Suspense, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
-import { Analytics, flattenConnection } from "@shopify/hydrogen";
+import { Analytics, flattenConnection, Image } from "@shopify/hydrogen";
 import { ProductsGrid } from "~/components/ProductsGrid";
 import PageHeader from "~/components/PageHeader";
 import { Empty } from "~/components/Empty";
@@ -14,12 +14,31 @@ import { SnapGridProducts } from "./SnapGridProducts";
 
 export function CollectionPage() {
   const { collection, routePromise } = useLoaderData<typeof loadCollectionData>();
-
+console.log(collection.horizontal_image?.reference?.image, 'collection in CollectionPage');
   const noResults = !collection.products.nodes.length;
   const [isSmall, setIsSmall] = useState(false);
   const [currentProducts, setCurrentProducts] = useState(() =>
     flattenConnection(collection.products)
   );
+
+  const iconImages = [
+    {
+      description: "MADE IN THE USA",
+      url: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/icon-usa.png"
+    },
+    {
+      description: "SAME DAY SHIPPING",
+      url: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/icon-shipping.png"
+    },
+    {
+      description: "HANDCRAFTED WITH FAMILY RECIPE",
+      url: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/icon-knife.png"
+    },
+    {
+      description: "HIGH IN PROTEIN",
+      url: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/icon-protein.png"
+    }
+  ];
 
   useEffect(() => {
     setCurrentProducts(flattenConnection(collection.products));
@@ -42,9 +61,9 @@ export function CollectionPage() {
 
   return (
     <div
-      className="nc-PageCollection pt-8 lg:pt-14 pb-20 lg:pb-28 md:container"
+      className="nc-PageCollection pb-20 lg:pb-28 md:container"
     >
-      <section 
+      {/*<section 
         aria-label='collection-count-toggle'
         className="container"
       >
@@ -63,21 +82,58 @@ export function CollectionPage() {
             />
           </div>
         </div>
-      </section>
+      </section>*/}
 
+      {collection.horizontal_image?.reference ? 
       <section 
         aria-labelledby="collection-title"
-        className='mx-5'>
+        className="p-10 relative text-white text-center bg-radial-overlay"
+        style={{
+          backgroundImage: `radial-gradient(rgba(0, 0, 0, 0.2) 0%, transparent 60%), url(${collection.horizontal_image.reference.image.url})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+        >
+        <h2 className="relative text-xl sm:text-2xl italic font-serif">Astro's</h2>
         <h1 
           id="collection-title"
-          className="block text-3xl sm:text-4xl font-semibold capitalize"
+          className="block text-3xl sm:text-4xl font-semibold capitalize relative"
         >
           {collection.title.replace(/(<([^>]+)>)/gi, "")}
         </h1>
-        <p className="block mt-4 text-lg">
+        <p className="block mt-4 text-lg relative">
+          {collection.description}
+        </p>
+        <div 
+          className="flex items-start justify-center text-center relative mt-8">
+            {
+            iconImages.map((image, index) => (
+              <div key={index} className={`flex flex-col items-center shrink-1 max-w-24  lg:max-w-32 ${index !== 0 ? 'ml-2 md:ml-8 lg:ml-10' : ''}`}>
+                <img src={image.url} alt={image.description} className="size-12 md:size-16 text-black" />
+                <span className="text-xs mt-4 font-bold">{image.description}</span>
+              </div>
+            ))
+            }
+        </div>
+      </section>
+      :
+      <section 
+        aria-labelledby="collection-title"
+        className="p-10 relative text-center bg-radial-overlay"
+        >
+        <h2 className="relative text-xl sm:text-2xl italic font-serif">Astro's</h2>
+        <h1 
+          id="collection-title"
+          className="block text-3xl sm:text-4xl font-semibold capitalize relative"
+        >
+          {collection.title.replace(/(<([^>]+)>)/gi, "")}
+        </h1>
+        <p className="block mt-4 text-lg relative">
           {collection.description}
         </p>
       </section>
+      }
 
       <ProductFilterHiddenScrollBar
           filterRef={filterRef}

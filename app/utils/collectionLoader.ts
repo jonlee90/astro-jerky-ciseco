@@ -101,6 +101,19 @@ const COLLECTION_QUERY = `#graphql
         height
         altText
       }
+      horizontal_image: metafield(key: "horizontal_image", namespace: "ciseco--collection") {
+        reference {
+          ... on MediaImage {
+            id
+            image {
+              altText
+              height
+              width
+              url
+            }
+          }
+        }
+      }
       productsWithDefaultFilter:products(
         first: 0,
         filters: {},

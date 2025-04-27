@@ -18,7 +18,7 @@ const ProductStatus: FC<Props> = ({
   status,
   icon,
   color = 'zinc',
-  className = 'absolute top-3 end-3 px-2.5 py-1.5 !text-sm',
+  className = 'absolute top-3 end-3 px-2.5 py-1.5 !text-sm font-bold',
 }) => {
   const renderIcon = () => {
     if (icon === 'NoSymbolIcon') {
@@ -45,7 +45,7 @@ const ProductStatus: FC<Props> = ({
     return (
       <Badge color={color} className={CLASSES}>
         {Icon ? <Icon className="w-3.5 h-3.5" /> : ''}
-        <span className="leading-none">{status}</span>
+        <span className="leading-none font-bold">{status}</span>
       </Badge>
     );
   };

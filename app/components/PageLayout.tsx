@@ -55,6 +55,15 @@ export function PageLayout({
 
       <main role="main" className="flex-grow">
         {children}
+
+        {/*<section 
+            aria-labelledby="guaranteed-section"
+            className='bg-logo-green w-full'>
+            <h2 id="guaranteed-section" className="text-xl">
+              Love at First Bite 100% Guaranteed
+            </h2>
+
+        </section>*/}
         <section 
             aria-labelledby="email-signup-form"
             className='bg-logo-green w-full'>

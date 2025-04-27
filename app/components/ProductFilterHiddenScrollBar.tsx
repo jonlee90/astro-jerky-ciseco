@@ -66,7 +66,7 @@ const ProductFilterHiddenScrollBar = ({collectionHandle, totalProducts, filterRe
         aria-labelledby="product-filter-section"
         role='region'
         ref={filterRef}
-        className={clsx(isSticky ? "sticky-filter md:relative" : "", 'mt-8 lg:mt-14 md:z-50')}
+        className={clsx(isSticky ? "sticky-filter md:relative" : "", 'lg:mt-14 md:z-50')}
       >
         <h2 id="product-filter-section" className="sr-only">Product Filters</h2>
         <Nav

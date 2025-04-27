@@ -17,9 +17,10 @@ export function SectionProductsSlider(props: SectionProductsSliderFragment) {
       <h2 id="product-slider-heading" className="sr-only">
         {heading_bold?.value || 'Products'}
       </h2>
-    {heading_bold?.value == 'Best Sellers' ?
+    {heading_bold?.value == 'Trending now' ?
      <SnapGridProducts
       heading_bold={heading_bold?.value}
+      sub_heading={sub_heading?.value}
       products={products?.nodes}
       className={'w-full mx-auto'}
 

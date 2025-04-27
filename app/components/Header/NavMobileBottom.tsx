@@ -51,7 +51,7 @@ const NavMobileBottom: React.FC<NavMobileBottomProps> = ({ opacity, isLoggedIn, 
     <nav
       role="navigation"
       aria-label="Bottom Mobile Navigation"
-      className="shadow-lightHeader-top overflow-hidden bottom-0 md:hidden fixed z-50 w-full h-[75px] bg-contrast/95 border-x border-b border-gray-300 pb-1 transform -translate-x-1/2 left-1/2"
+      className="shadow-lightHeader-top overflow-hidden bottom-0 md:hidden fixed z-50 w-full h-20 bg-contrast/95 border-x border-b border-gray-300 pb-1 transform -translate-x-1/2 left-1/2"
       style={{ opacity }}
     >
       {activeItemIndex >= 0 && (

@@ -270,14 +270,15 @@ const ProductCard: FC<ProductCardProps> = ({
   );
 }
 export const getProductIcon = (product: any) => {
-  const { tags, flavor_level } = product;
+  const { tags, flavor_level, size = 30 } = product;
+  const tagsString = tags.join(' ');
   const count = flavor_level ? parseInt(flavor_level.value) : 1;
 
   const getIconComponent = (index: number) => {
-    if (tags.includes('hot-spicy')) return <IconSpicy key={index} size={30} />;
-    if (tags.includes('bbq')) return <IconBbq key={index} size={30} />;
-    if (tags.includes('chicken')) return <IconChicken key={index} size={30} />;
-    if (tags.includes('peppered')) return <IconPepper key={index} size={30} />;
+    if (tagsString.includes('hot-spicy')) return <IconSpicy key={index} size={size} />;
+    if (tagsString.includes('bbq')) return <IconBbq key={index} size={size} />;
+    if (tagsString.includes('chicken')) return <IconChicken key={index} size={size} />;
+    if (tagsString.includes('peppered')) return <IconPepper key={index} size={size} />;
     return <IconCow key={index}  />;
   };
 
@@ -287,7 +288,7 @@ export const ProductBadge = ({
   status,
   className,
 }: {
-  status: 'Sold out' | 'Sale' | 'New' | '3 FOR $33' | '3 FOR $20' | null;
+  status: 'Sold out' | 'Sale' | 'New' | '3 FOR $33' | '3 FOR $20' | 'Best Seller' |null;
   className?: string;
 }) => {
   if (!status) {
@@ -305,7 +306,7 @@ export const ProductBadge = ({
     );
   }
 
-  if (status === '3 FOR $33' || status === '3 FOR $20') {
+  /*if (status === '3 FOR $33' || status === '3 FOR $20') {
     return (
       <ProductStatus
         className={className}
@@ -315,7 +316,16 @@ export const ProductBadge = ({
       />
     );
   }
-
+*/
+  if (status === 'Best Seller') {
+    return (
+      <ProductStatus
+        className={'absolute top-3 end-3 px-2.5 py-1.5 !text-xs md:!text-sm font-bold !rounded-none'}
+        color="logoYellow"
+        status={status}
+      />
+    );
+  }
   if (status === 'Sale') {
     return (
       <ProductStatus
@@ -384,7 +394,11 @@ export const getProductStatus = ({
   if (!availableForSale) {
     return 'Sold out';
   }
+  
 
+  if (tags?.includes('best_sellers') && size == '3oz') {
+    return 'Best Seller';
+  }
       
   if (tags?.includes('label:3-for-33') && size == '3oz') {
     return '3 FOR $33';

@@ -2,14 +2,19 @@ import type {SectionCollectionsSliderFragment} from 'storefrontapi.generated';
 import {parseSection} from '~/utils/parseSection';
 import type {ParsedMetafields} from '@shopify/hydrogen';
 import Heading from '~/components/Heading/Heading';
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
+import {Image} from '@shopify/hydrogen';
 import useSnapSlider from '~/hooks/useSnapSlider';
 import CollectionItem, {
   CollectionItemSkeleton,
   type TMyCommonCollectionItem,
 } from '~/components/CollectionItem';
-import NextPrev from '~/components/NextPrev/NextPrev';
+import { motion } from 'framer-motion';
 import NextPrevDesktop from '~/components/NextPrev/NextPrevDesktop';
+import ButtonPrimary from '~/components/Button/ButtonPrimary';
+import { Link } from '~/components/Link';
+import { IconCow } from '~/components/Icon';
+import { getProductIcon } from '~/components/ProductCard';
 
 export function SectionCollectionsSlider(
   props: SectionCollectionsSliderFragment,
@@ -64,6 +69,8 @@ export const CollectionSlider = ({
   sectionId: string;
 }) => {
   const sliderRef = useRef<HTMLDivElement>(null);
+  const [currentActive, setCurrentActive] = useState<TMyCommonCollectionItem | null>(() => collections[0].image); // State to track the active element
+
   const {scrollToNextSlide, scrollToPrevSlide} = useSnapSlider({sliderRef});
   useEffect(() => {
     // Ensure slider is focusable
@@ -71,8 +78,14 @@ export const CollectionSlider = ({
       sliderRef.current.setAttribute('tabindex', '0');
     }
   }, []);
+  const listOfImages = collections.filter(Boolean).map((item) => (
+    item.image
+  ));
+  const handleHoverOrTap = (item) => {
+    setCurrentActive(item.image); // Update the currentActive state
+  };
   return (
-    <div className={`nc-DiscoverMoreSlider xl:container`}>
+    <div className={`nc-DiscoverMoreSlider lg:container`}>
       <Heading
         id={`slider-heading-${sectionId}`}
         className="mb-12 mx-5 md:mx-10 xl:mx-0 lg:mb-14 text-neutral-900 dark:text-neutral-50"
@@ -83,8 +96,51 @@ export const CollectionSlider = ({
         {heading_bold || ''}
       </Heading>
       <div className="relative">
-    
-        <div
+    {heading_light ? (
+    <div className='flex flex-col lg:flex-row-reverse'>
+      <div className='lg:w-1/2 lg:border-2 !border-l-0'>
+          <Image
+            className="inset-0 w-2/3 lg:w-4/5 h-full object-cover rounded-2xl mx-auto"
+            data={currentActive || listOfImages[0]}
+            width={'1000px'}
+            height={'1000px'}
+          />
+      </div>
+
+      <div className='lg:w-1/2 flex flex-col h-[50vh] lg:h-[40vw] overflow-visible'>
+      {
+        collections.filter(Boolean).map((item, index) => (
+          <motion.div
+            key={`${item.id}`}
+            className={`z-10 grid grid-cols-9 items-center text-base sm:text-xl pl-10 lg:pl-0 font-semibold ${currentActive === item.image ? `${index === 0 ? 'bg-logo-red' : (index === 1 ? 'bg-amber-900' : (index === 2 ? 'bg-gray-900' : 'bg-orange-600'))} text-white z-20 border-r-2 mx-2 !px-3 shadow-[0_0_0_2px_#fff,0_0_0_6px_#0b7bff,0_0_0_8px_#fff]` : 'md:border-r-2'} ${index !== 0 ? 'border-t-2' : ''}`}
+            role="listitem"
+            style={{ flexGrow: 1 }}
+            onHoverStart={() => handleHoverOrTap(item)}
+            onTapStart={() => handleHoverOrTap(item)}
+          >
+            <span className={`col-span-1 mr-8 ${currentActive === item.image ? 'underline' : ''}`}>
+              {'0' + (index + 1)}
+            </span>
+            <span className='col-span-4 xl:col-span-5'>
+              {item.title.replace("Beef", "")}
+            </span>
+            {currentActive === item.image && (<ButtonPrimary className='col-span-4 xl:col-span-3 !text-xs !bg-white hover:!bg-neutral-300 focus:!ring-neutral-400 border-black border' aria-label="Shop Now">
+              <Link
+                to={`/${item.handle}`}
+                className='grid grid-cols-8 w-full text-black'
+              >
+                {getProductIcon({tags: [item.handle], size: 20})}
+                <span className='col-span-7 font-bold content-center'>SHOP NOW</span>
+                </Link>
+              </ButtonPrimary>)}
+          </motion.div>
+        ))
+      }
+      </div>
+    </div>
+    ): (
+      <>
+      <div
           ref={sliderRef}
           className="relative w-full flex gap-4 lg:gap-8 snap-x snap-mandatory overflow-x-auto scroll-p-l-container hiddenScrollbar"
           role="list"
@@ -123,6 +179,9 @@ export const CollectionSlider = ({
         <NextPrevDesktop
           onClickNext={scrollToNextSlide} 
           onClickPrev={scrollToPrevSlide} />
+      </>
+    )}
+        
       </div>
     </div>
   );

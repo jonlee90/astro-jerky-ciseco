@@ -50,9 +50,6 @@ export function MobileHeader({isBackButton}) {
       </div>
     </motion.header>
     
-    {isBackButton && (
-      <BackButton isVisible={isVisible} />
-    )}
   </>
   );
 }
