@@ -1,4 +1,5 @@
 import React, {type FC} from 'react';
+import { IconCaret } from '../Icon';
 
 export interface NextPrevProps {
   className?: string;
@@ -15,7 +16,7 @@ const NextPrev: FC<NextPrevProps> = ({
   className = '',
   onClickNext = () => {},
   onClickPrev = () => {},
-  btnClassName = 'w-10 h-10',
+  btnClassName = 'w-20 h-20',
   onlyNext = false,
   onlyPrev = false,
 }) => {
@@ -23,15 +24,13 @@ const NextPrev: FC<NextPrevProps> = ({
 
   return (
     <div
-      className={`nc-NextPrev relative flex items-center text-slate-500 dark:text-slate-400 ${className}`}
+      className={`nc-NextPrev relative flex items-center justify-between text-slate-500 dark:text-slate-400 ${className}`}
     >
       {!onlyNext && (
         <button
           className={`${btnClassName} ${
             !onlyPrev ? 'me-2' : ''
-          } border-slate-200 dark:border-slate-600 rounded-full flex items-center justify-center ${
-            focus === 'left' ? 'border-2' : ''
-          }`}
+          } border-white rounded-full flex items-center justify-center`}
           onClick={(e) => {
             e.preventDefault();
             onClickPrev();
@@ -40,35 +39,15 @@ const NextPrev: FC<NextPrevProps> = ({
           data-glide-dir="<"
           onMouseEnter={() => setFocus('left')}
         >
-          <svg
-            className="w-5 h-5 rtl:rotate-180"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <path
-              d="M9.57 5.92993L3.5 11.9999L9.57 18.0699"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeMiterlimit="10"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M20.5 12H3.67004"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeMiterlimit="10"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+        <IconCaret 
+          direction="right"
+          className='!size-20'
+        />
         </button>
       )}
       {!onlyPrev && (
         <button
-          className={`${btnClassName}  border-slate-200 dark:border-slate-600 rounded-full flex items-center justify-center ${
-            focus === 'right' ? 'border-2' : ''
-          }`}
+          className={`${btnClassName}  border-white rounded-full flex items-center justify-center`}
           onClick={(e) => {
             e.preventDefault();
             onClickNext();
@@ -77,28 +56,10 @@ const NextPrev: FC<NextPrevProps> = ({
           data-glide-dir=">"
           onMouseEnter={() => setFocus('right')}
         >
-          <svg
-            className="w-5 h-5 rtl:rotate-180"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <path
-              d="M14.4301 5.92993L20.5001 11.9999L14.4301 18.0699"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeMiterlimit="10"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M3.5 12H20.33"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeMiterlimit="10"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <IconCaret 
+            direction="left"
+            className='!size-20'
+          />
         </button>
       )}
     </div>

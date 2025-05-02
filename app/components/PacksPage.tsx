@@ -25,7 +25,7 @@ export function PacksPage() {
   useEffect(() => {
     setCurrentProducts(flattenConnection(collection.products));
   }, [collection.products]);
-
+console.log(collection, 'collection')
   const onToggle = (value: string) => setIsSmall(value === "small");
 
   const totalProducts = noResults ? 0 : currentProducts.length;
@@ -56,15 +56,27 @@ export function PacksPage() {
       className="nc-PageCollection pt-10 lg:pt-20 pb-20 lg:pb-28 xl:pb-32 space-y-20 sm:space-y-24 lg:space-y-28"
     >
       <div className="container space-y-14 lg:space-y-24">
-
+        
       <section 
-        aria-labelledby="collection-title">
-        <PageHeader
-          // remove the html tags on title
-          title={collection.title.replace(/(<([^>]+)>)/gi, "")}
-          description={collection.description}
-          hasBreadcrumb={false}
-        />
+        aria-labelledby="collection-title"
+        className="p-10 relative text-white text-center bg-radial-overlay"
+        style={{
+          backgroundImage: `radial-gradient(rgba(0, 0, 0, 0.2) 0%, transparent 60%), url(${collection.horizontal_image.reference.image.url})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+        >
+        <h2 className="relative text-xl sm:text-2xl italic font-serif">Astro's</h2>
+        <h1 
+          id="collection-title"
+          className="block text-3xl sm:text-4xl font-semibold capitalize relative"
+        >
+          {collection.title.replace(/(<([^>]+)>)/gi, "")}
+        </h1>
+        <p className="block mt-4 text-lg relative">
+          {collection.description}
+        </p>
       </section>
       <section 
         aria-labelledby="product-list"

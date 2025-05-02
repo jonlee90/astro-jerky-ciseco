@@ -88,7 +88,7 @@ export function IconArrow({direction = 'right'}: IconProps) {
 
 export function IconCaret({
   direction = 'down',
-  stroke = 'currentColor',
+  stroke = 'white',
   className = '',
   ...props
 }: IconProps) {

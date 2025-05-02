@@ -350,6 +350,9 @@ shop-pay-button {
   .nc-SectionClientSay .glide__bullet--active {
     @apply bg-neutral-700;
   }
+  .nc-SectionClientSay {
+    background-color:#8b6424
+  }
   .nc-GallerySlider .glide__bullet--active {
     @apply h-2 w-2 bg-white;
   }
