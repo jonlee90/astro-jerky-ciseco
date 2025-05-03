@@ -61,7 +61,7 @@ const ProductCard: FC<ProductCardProps> = ({
   collection,
   className,
   loading,
-  quickAdd,
+  quickAdd = true,
   variantKey = 0,
   transition = true,
   showBadge = true,
@@ -145,10 +145,9 @@ const ProductCard: FC<ProductCardProps> = ({
   firstVariant.price &&
     Number(product.compareAtPriceRange.minVariantPrice.amount) >
       Number(firstVariant.price.amount);
-
   return ( 
     <motion.div 
-      className='flex flex-col gap-2'
+      className='flex flex-col gap-2 relative'
       whileHover={{scale: 1.02}} 
       role="region"
       aria-labelledby={`product-title-${product.handle}`}
@@ -215,19 +214,21 @@ const ProductCard: FC<ProductCardProps> = ({
               }}
             />
           </motion.div>
-          <div className="grid gap-5 text-center">
-            <h2 id={`product-title-${product.handle}`} className="w-full uppercase font-bold text-xl">
-              {product.title.replace(/beef jerky/gi, "") + (selectedOptions[0].value !== 'Default Title' ? ' (' + selectedOptions[0].value + ')' : '')}
-            </h2>
-            
-            {showLevelIndicator && (
+          <div className="flex gap-5 text-left flex-col">
+              <div>
+                <h2 className="relative text-gray-600 text-xl italic font-serif">{getProductCategory(product)}</h2>
+                <h2 id={`product-title-${product.handle}`} className="w-full uppercase font-bold text-xl">
+                  {product.title.replace(/beef jerky/gi, "") + (selectedOptions[0].value !== 'Default Title' ? ' (' + selectedOptions[0].value + ')' : '')}
+                </h2>
+              </div>
+            {false && (
               <div className='px-2'>
                 <ProductLevelIndicator product={product} size={25} /> {/* Render the icon based on tags */}
               </div>
             )}
             <div>
                 <Prices
-                contentClass="justify-center"
+                contentClass="justify-start"
                   price={firstVariant.price}
                    compareAtPrice={
                      isSale ? product.compareAtPriceRange.minVariantPrice : undefined
@@ -246,6 +247,7 @@ const ProductCard: FC<ProductCardProps> = ({
           </div>
         </div>
       </Link>
+      
       {quickAdd && firstVariant.availableForSale && (
         <AddToCartButton
           lines={[
@@ -256,16 +258,16 @@ const ProductCard: FC<ProductCardProps> = ({
             },
           ]}
           variant="secondary"
-          className="mt-2"
+          className="absolute right-0 bottom-[70px] lg:bottom-14"
           analytics={{
             products: [productAnalytics],
             totalValue: parseFloat(productAnalytics.price),
           }}
           onClick={() => open('cart')}
         >
-          <span className="flex items-center justify-center gap-2">
-            Add to Cart
-          </span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" className="size-12" viewBox="0 0 24 24" role="img">
+            <path fill="black" fillRule="evenodd" d="M12 1.25C6.063 1.25 1.25 6.063 1.25 12S6.063 22.75 12 22.75S22.75 17.937 22.75 12S17.937 1.25 12 1.25M12.75 8a.75.75 0 0 0-1.5 0v3.25H8a.75.75 0 0 0 0 1.5h3.25V16a.75.75 0 0 0 1.5 0v-3.25H16a.75.75 0 0 0 0-1.5h-3.25z" clipRule="evenodd" />
+          </svg>
         </AddToCartButton>
       )}
       {quickAdd && !firstVariant.availableForSale && (
@@ -293,6 +295,24 @@ export const getProductIcon = (product: any) => {
 
   return Array.from({ length: count }, (_, index) => getIconComponent(index));
 };
+
+export const getProductCategory = (product: any) => {
+  const { tags, flavor_level, handle, size = 30 } = product;
+  const tagsString = tags.join(' ');
+  const count = flavor_level ? parseInt(flavor_level.value) : 1;
+
+  const getIconComponent = () => {
+    if (handle.includes('sweet-spicy-beef-jerky')) return 'Classic';
+    if (tagsString.includes('hot-spicy')) return 'Spicy';
+    if (tagsString.includes('bbq')) return 'BBQ';
+    if (tagsString.includes('chicken')) return 'Chicken';
+    if (tagsString.includes('peppered')) return 'Classic';
+    return 'Classic';
+  };
+
+  return Array.from({ length: count }, (_, index) => getIconComponent());
+};
+
 export const ProductBadge = ({
   status,
   className,
