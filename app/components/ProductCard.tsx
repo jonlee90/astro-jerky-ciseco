@@ -258,7 +258,7 @@ const ProductCard: FC<ProductCardProps> = ({
             },
           ]}
           variant="secondary"
-          className="absolute right-0 bottom-[70px] lg:bottom-14"
+          className="absolute right-1 bottom-0 lg:bottom-14"
           analytics={{
             products: [productAnalytics],
             totalValue: parseFloat(productAnalytics.price),
