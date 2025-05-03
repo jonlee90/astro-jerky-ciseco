@@ -57,6 +57,15 @@ export const PRODUCT_MIX_FRAGMENT = `#graphql
     flavor_level: metafield(namespace: "custom", key:"flavor_level") {
       value
     }
+    heat_level: metafield(namespace: "custom", key:"heat_level") {
+      value
+    }
+    sweetness_level: metafield(namespace: "custom", key:"sweetness_level") {
+      value
+    }
+    dryness_level: metafield(namespace: "custom", key:"dryness_level") {
+      value
+    }
     small_bag_quantity: metafield(namespace: "custom", key:"small_bag_quantity") {
       value
     }

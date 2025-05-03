@@ -98,6 +98,7 @@ export function SnapSliderProducts(props: Props) {
                 className="w-full"
                 product={item}
                 loading={getImageLoadingPriority(index)}
+                showBadge={false}
               />
             </div>
           ))}

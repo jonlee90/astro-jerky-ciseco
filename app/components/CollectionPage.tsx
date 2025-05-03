@@ -89,7 +89,7 @@ console.log(collection.horizontal_image?.reference?.image, 'collection in Collec
         aria-labelledby="collection-title"
         className="p-10 relative text-white text-center bg-radial-overlay"
         style={{
-          backgroundImage: `radial-gradient(rgba(0, 0, 0, 0.2) 0%, transparent 60%), url(${collection.horizontal_image.reference.image.url})`,
+          backgroundImage: `radial-gradient(rgba(0, 0, 0, 0.6) 0%, transparent 90%), url(${collection.horizontal_image.reference.image.url})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',

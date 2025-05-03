@@ -51,17 +51,34 @@ console.log(collection, 'collection')
       products: ['Sweet & Spicy', 'Peppered', 'Astro\'s Original']
     }
   ];
+  const iconImages = [
+    {
+      description: "MADE IN THE USA",
+      url: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/icon-usa.png"
+    },
+    {
+      description: "SAME DAY SHIPPING",
+      url: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/icon-shipping.png"
+    },
+    {
+      description: "HANDCRAFTED WITH FAMILY RECIPE",
+      url: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/icon-knife.png"
+    },
+    {
+      description: "HIGH IN PROTEIN",
+      url: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/icon-protein.png"
+    }
+  ];
   return (
     <div
-      className="nc-PageCollection pt-10 lg:pt-20 pb-20 lg:pb-28 xl:pb-32 space-y-20 sm:space-y-24 lg:space-y-28"
+      className="nc-PageCollection  pb-20 lg:pb-28 md:container"
     >
-      <div className="container space-y-14 lg:space-y-24">
         
       <section 
         aria-labelledby="collection-title"
         className="p-10 relative text-white text-center bg-radial-overlay"
         style={{
-          backgroundImage: `radial-gradient(rgba(0, 0, 0, 0.2) 0%, transparent 60%), url(${collection.horizontal_image.reference.image.url})`,
+          backgroundImage: `radial-gradient(rgba(0, 0, 0, 0.95) 0%, transparent 95%), url(${collection.horizontal_image.reference.image.url})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -77,6 +94,17 @@ console.log(collection, 'collection')
         <p className="block mt-4 text-lg relative">
           {collection.description}
         </p>
+        <div 
+          className="flex items-start justify-center text-center relative mt-8">
+            {
+            iconImages.map((image, index) => (
+              <div key={index} className={`flex flex-col items-center shrink-1 max-w-24  lg:max-w-32 ${index !== 0 ? 'ml-2 md:ml-8 lg:ml-10' : ''}`}>
+                <img src={image.url} alt={image.description} className="size-12 md:size-16 text-black" />
+                <span className="text-xs mt-4 font-bold">{image.description}</span>
+              </div>
+            ))
+            }
+        </div>
       </section>
       <section 
         aria-labelledby="product-list"
@@ -156,7 +184,6 @@ console.log(collection, 'collection')
           }
         }}
       />
-      </div>
     </div>
   );
 }

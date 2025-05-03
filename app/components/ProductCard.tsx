@@ -20,6 +20,7 @@ import { IconSpicy, IconBbq, IconChicken, IconPepper, IconCow } from "./Icon";
 import { useIsHydrated } from '~/hooks/useIsHydrated';
 import card from '@material-tailwind/react/theme/components/card';
 import ProductSoldOut from './ProductSoldOut';
+import ProductLevelIndicator from './ProductLevelIndicator';
 
 
 interface MoneyV2 {
@@ -37,6 +38,7 @@ interface ProductCardProps {
   transition?: boolean;
   showBadge?: boolean;
   showProductBadge?: boolean;
+  showLevelIndicator?: boolean;
   imageAspectRatio?: string;
 }
 
@@ -50,6 +52,7 @@ interface ProductCardProps {
  *   transition?: boolean;
  *   showBadge?: boolean;
  *   showProductBadge?: boolean;
+ *   showLevelIndicator?: boolean;
  *   imageAspectRatio?: string;
  * }}
  */
@@ -63,6 +66,7 @@ const ProductCard: FC<ProductCardProps> = ({
   transition = true,
   showBadge = true,
   showProductBadge = true,
+  showLevelIndicator = true,
   imageAspectRatio = 'aspect-[4/5]',
 }: ProductCardProps) => {
 
@@ -211,14 +215,19 @@ const ProductCard: FC<ProductCardProps> = ({
               }}
             />
           </motion.div>
-          <div className="grid gap-2">
-            <h2 id={`product-title-${product.handle}`} className="w-full uppercase font-bold text-xl text-left">
-              {product.title + (selectedOptions[0].value !== 'Default Title' ? ' (' + selectedOptions[0].value + ')' : '')}
+          <div className="grid gap-5 text-center">
+            <h2 id={`product-title-${product.handle}`} className="w-full uppercase font-bold text-xl">
+              {product.title.replace(/beef jerky/gi, "") + (selectedOptions[0].value !== 'Default Title' ? ' (' + selectedOptions[0].value + ')' : '')}
             </h2>
-            <div className="grid grid-cols-2">
-              <span className="text-copy content-center">
+            
+            {showLevelIndicator && (
+              <div className='px-2'>
+                <ProductLevelIndicator product={product} size={25} /> {/* Render the icon based on tags */}
+              </div>
+            )}
+            <div>
                 <Prices
-                contentClass="self-center"
+                contentClass="justify-center"
                   price={firstVariant.price}
                    compareAtPrice={
                      isSale ? product.compareAtPriceRange.minVariantPrice : undefined
@@ -227,13 +236,13 @@ const ProductCard: FC<ProductCardProps> = ({
                     Number(product.priceRange.minVariantPrice.amount || 1) > 99
                   }
                 />
-              </span>
             </div>
             {showBadge && (
               <span className='items -mt-1'>
                 {getProductIcon(product)} {/* Render the icon based on tags */}
               </span>
             )}
+            
           </div>
         </div>
       </Link>

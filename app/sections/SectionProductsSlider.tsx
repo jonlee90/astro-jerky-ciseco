@@ -17,7 +17,7 @@ export function SectionProductsSlider(props: SectionProductsSliderFragment) {
       <h2 id="product-slider-heading" className="sr-only">
         {heading_bold?.value || 'Products'}
       </h2>
-    {heading_bold?.value == 'Trending now' ?
+    {heading_bold?.value == 'T' ?
      <SnapGridProducts
       heading_bold={heading_bold?.value}
       sub_heading={sub_heading?.value}
@@ -64,7 +64,7 @@ export const SECTION_PRODUCTS_SLIDER_FRAGMENT = `#graphql
       key
       value
     }
-
+   
     collection: field(key: "collection") {
       type
       key
@@ -78,7 +78,10 @@ export const SECTION_PRODUCTS_SLIDER_FRAGMENT = `#graphql
             first: 10, 
           ) {
             nodes {
-              ...CommonProductCard
+              ...CommonProductCard,
+              flavor_level: metafield(namespace: "custom", key:"flavor_level") {
+                value
+              }
             }
           }
         }

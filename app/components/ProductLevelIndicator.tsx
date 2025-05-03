@@ -6,6 +6,7 @@ interface LevelIndicatorProps {
   label: string;
   level: number; // The level or count of indicators to display
   maxLevel?: number; // Maximum possible level (default to 4)
+  size?: number; 
 }
 
 const LevelIndicator: React.FC<LevelIndicatorProps> = ({
@@ -13,10 +14,11 @@ const LevelIndicator: React.FC<LevelIndicatorProps> = ({
   label,
   level,
   maxLevel = 4,
+  size = 35,
 }) => {
   return (
-    <li className="text-left">
-      <Icon size={35} />
+    <li className="text-center">
+      <Icon size={size} />
       <div className="mt-2">{label}</div>
       <div className="flex mt-2">
         {Array.from({ length: maxLevel }).map((_, index) => (
@@ -32,7 +34,7 @@ const LevelIndicator: React.FC<LevelIndicatorProps> = ({
   );
 };
 
-const ProductLevelIndicator: React.FC<{ product: any }> = ({ product }) => {
+const ProductLevelIndicator: React.FC<{ product: any }> = ({ product, size }) => {
   const { dryness_level, sweetness_level, heat_level } = product;
   const drynessLevel = dryness_level ? parseInt(dryness_level.value, 10) : 0;
   const sweetnessLevel = sweetness_level ? parseInt(sweetness_level.value, 10) : 0;
@@ -47,7 +49,7 @@ const ProductLevelIndicator: React.FC<{ product: any }> = ({ product }) => {
   return (
     <ul className="grid grid-cols-3 gap-4 list-none max-w-lg">
       {indicators.map(({ icon, label, level }, index) => (
-        <LevelIndicator key={index} icon={icon} label={label} level={level} />
+        <LevelIndicator key={index} icon={icon} label={label} level={level} size={size} />
       ))}
     </ul>
   );

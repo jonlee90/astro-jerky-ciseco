@@ -104,6 +104,18 @@ export const COMMON_PRODUCT_CARD_FRAGMENT = `#graphql
     availableForSale
     vendor
     tags
+    flavor_level: metafield(namespace: "custom", key:"flavor_level") {
+      value
+    }
+    heat_level: metafield(namespace: "custom", key:"heat_level") {
+      value
+    }
+    sweetness_level: metafield(namespace: "custom", key:"sweetness_level") {
+      value
+    }
+    dryness_level: metafield(namespace: "custom", key:"dryness_level") {
+      value
+    }
     options {
       name
       values
@@ -149,9 +161,6 @@ export const COMMON_PRODUCT_CARD_FRAGMENT = `#graphql
         amount
         currencyCode
       }
-    }
-    flavor_level: metafield(namespace: "custom", key:"flavor_level") {
-      value
     }
   } 
 `;

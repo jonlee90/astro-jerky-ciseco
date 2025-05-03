@@ -8,6 +8,7 @@ export interface PricesProps {
   compareAtPrice?: Maybe<Pick<MoneyV2, 'amount' | 'currencyCode'>>;
   contentClass?: string;
   compareAtPriceClass?: string;
+  priceClass?: string;
   withoutTrailingZeros?: boolean;
 }
 
@@ -17,6 +18,7 @@ const Prices: FC<PricesProps> = ({
   compareAtPrice,
   contentClass = 'py-1 px-2 md:py-1.5 md:px-2.5 text-lead font-medium',
   compareAtPriceClass = 'text-lg text-slate-500',
+  priceClass = 'text-xl font-semibold',
   withoutTrailingZeros,
 }) => {
   return (
@@ -29,7 +31,7 @@ const Prices: FC<PricesProps> = ({
         {price ? (
           <Money
             withoutTrailingZeros={withoutTrailingZeros}
-            className="!leading-none"
+            className={`!leading-none ${priceClass}`}
             data={price}
           />
         ) : null}
