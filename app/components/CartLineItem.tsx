@@ -38,8 +38,10 @@ export function CartLineItem({
 
   
   const originalAmount = parseFloat(cost?.amountPerQuantity?.amount || '0') * quantity;
+  const compareAtAmount = parseFloat(cost?.compareAtAmountPerQuantity?.amount || '0');
   const totalAmount = parseFloat(cost?.totalAmount?.amount || '0');
-  const onSale = totalAmount < originalAmount;
+  const onSale = originalAmount < compareAtAmount || totalAmount < originalAmount;
+
   return (
     <li
       key={id}
@@ -68,7 +70,7 @@ export function CartLineItem({
 
       <div className="flex justify-between flex-grow">
         <div className="grid gap-2">
-          <h2 id={`cart-item-${id}`} className='text-lead'>
+          <h2 id={`cart-item-${id}`} className='text-lg font-semibold'>
             {product?.handle ? (
               isProductDisplay ?
               <>{product?.title}</>
@@ -91,8 +93,8 @@ export function CartLineItem({
           </div>
         </div>
         <span>
-          <CartLinePrice line={line} as="span" contentClass={clsx(onSale && '!text-red-600', 'py-1 px-2 md:py-1.5 md:px-2.5')} />
-          {(<CartLinePrice contentClass='inline-block line-through opacity-50 py-1 px-2 md:py-1.5 md:px-2.5 !text-lg justify-end' priceType='compareAt' line={line} as="span" />)}
+          <CartLinePrice line={line} as="span" priceClass='text-lg font-semibold' contentClass={clsx(onSale && '!text-red-600', 'py-1 px-2 md:py-1.5 md:px-2.5')} />
+          {(<CartLinePrice priceClass='text-base' contentClass='inline-block line-through opacity-50 py-1 px-2 md:py-1.5 md:px-2.5 justify-end' priceType='compareAt' line={line} as="span" />)}
         </span>
       </div>
     </li>

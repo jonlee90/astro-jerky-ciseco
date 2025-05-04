@@ -67,7 +67,7 @@ const ProductDisplay = () => {
             </h1>
 
             <Prices
-                contentClass="!text-3xl justify-center"
+                contentClass="!text-3xl justify-center !text-red-600"
                 compareAtPriceClass='text-2xl text-slate-500 ml-[10px]'
                 price={selectedVariant.price}
                 compareAtPrice={selectedVariant.compareAtPrice}

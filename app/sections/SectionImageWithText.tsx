@@ -20,6 +20,7 @@ import backgroundLineSvg3 from '@/assets/images/BackgroundLine.svg?url';
 import Input from '~/components/MyInput';
 import clsx from 'clsx';
 import { hexToRgba } from '~/lib/utils';
+import { IconCow } from '~/components/Icon';
 
 export function SectionImageWithText(props: SectionImageWithTextFragment) {
   const section = parseSection<
@@ -108,14 +109,16 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
           </>
           )}
         </div>
-        {/* CONTENT */}
+        {/* CONTENT 
+        bg-gradient-to-b md:bg-gradient-to-r from-[#ED1C24] to-[#facc15] mt-[-1px] md:mt-0
+        */}
         <div
           className={clsx([
             style?.value === '1' &&
               'relative flex-shrink-0 mb-16 lg:mb-0 lg:mr-10 lg:w-2/5',
             style?.value === '2' && 'lg:w-[45%] max-w-lg relative',
             style?.value === '3' && 'flex flex-col py-10 lg:py-0  gap-4 lg:gap-10 text-center justify-center w-full',
-            'bg-gradient-to-b md:bg-gradient-to-r from-[#ED1C24] to-[#facc15] mt-[-1px] md:mt-0'
+            'bg-gradient-to-b md:bg-gradient-to-r from-[#551d00] to-[#350e00] mt-[-1px] md:mt-0 text-white'
           ])}
         >
           {hide_logo?.value !== 'true' && <Logo className="w-28" />}
@@ -207,10 +210,11 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
               {!!button_2?.href && (
                 <ButtonSecondary
                   href={button_2.href.value || undefined}
-                  className="!bg-neutral-900 py-3 px-8 lg:py-3.5 hover:!bg-neutral-700 focus:!ring-neutral-600"
+                  bgColor='bg-secondary-600 hover:!bg-secondary-900'
+                  className="py-3 px-8  lg:py-3.5 focus:!ring-neutral-600 grid grid-cols-7"
                 >
-                  <span>{button_2?.text?.value || 'Learn more'}</span>
-                  <ArrowRightIcon className="w-4 h-4 ms-2" />
+                  <IconCow fill='white' className="size-6 text-white col-span-1"  />
+                  <span className='uppercase col-span-6'>{button_2?.text?.value || 'Learn more'}</span>
                 </ButtonSecondary>
               )}
             </div>
