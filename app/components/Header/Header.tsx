@@ -84,9 +84,6 @@ export function Header({
                   className={`pdp-nav-button md:hidden right-5 ${isDesktop ? 'top-10' : 'bottom-5'}`}
                   showCart={true}
                 />
-                {isBackButton && (
-                  <BackButton isVisible={!isBackButton} />
-                )}
               </>
             )}
             </>

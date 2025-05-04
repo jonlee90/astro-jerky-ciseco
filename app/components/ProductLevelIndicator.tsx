@@ -7,24 +7,30 @@ interface LevelIndicatorProps {
   level: number; // The level or count of indicators to display
   maxLevel?: number; // Maximum possible level (default to 4)
   size?: number; 
+  levelClass?: string;
+  labelClass?: string;
 }
 
 const LevelIndicator: React.FC<LevelIndicatorProps> = ({
   icon: Icon,
   label,
   level,
-  maxLevel = 4,
+  maxLevel = 3,
   size = 35,
+  levelClass = "h-1 w-6 mr-1",
+  labelClass = "text-base"
 }) => {
   return (
-    <li className="text-center">
-      <Icon size={size} />
-      <div className="mt-2">{label}</div>
-      <div className="flex mt-2">
+    <li className="justify-items-center grid gap-1">
+      <div className="text-center">
+        <Icon size={size} />
+        <div className={`mt-2 ${labelClass}`}>{label}</div>
+      </div>
+      <div className="flex flex-row">
         {Array.from({ length: maxLevel }).map((_, index) => (
           <div
             key={index}
-            className={`h-1 w-6 mr-1 ${
+            className={`${levelClass} ${
               index < level ? "bg-black" : "bg-gray-300"
             }`}
           ></div>
@@ -34,7 +40,7 @@ const LevelIndicator: React.FC<LevelIndicatorProps> = ({
   );
 };
 
-const ProductLevelIndicator: React.FC<{ product: any }> = ({ product, size }) => {
+const ProductLevelIndicator: React.FC<{ product: any }> = ({ product, size, levelClass, labelClass }) => {
   const { dryness_level, sweetness_level, heat_level } = product;
   const drynessLevel = dryness_level ? parseInt(dryness_level.value, 10) : 0;
   const sweetnessLevel = sweetness_level ? parseInt(sweetness_level.value, 10) : 0;
@@ -42,14 +48,14 @@ const ProductLevelIndicator: React.FC<{ product: any }> = ({ product, size }) =>
 
   const indicators = [
     { icon: IconSpicy, label: "Heat", level: heatLevel },
-    { icon: IconDry, label: "Dryness", level: drynessLevel },
-    { icon: IconHoney, label: "Sweetness", level: sweetnessLevel },
+    { icon: IconDry, label: "Dry", level: drynessLevel },
+    { icon: IconHoney, label: "Sweet", level: sweetnessLevel },
   ];
 
   return (
     <ul className="grid grid-cols-3 gap-4 list-none max-w-lg">
       {indicators.map(({ icon, label, level }, index) => (
-        <LevelIndicator key={index} icon={icon} label={label} level={level} size={size} />
+        <LevelIndicator key={index} icon={icon} label={label} level={level} size={size} levelClass={levelClass} labelClass={labelClass} />
       ))}
     </ul>
   );

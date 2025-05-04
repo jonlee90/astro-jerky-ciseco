@@ -121,12 +121,12 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
       productsArr: filterArrByTag('bbq'),
     },
     {
-      title: 'CHICKEN',
-      productsArr: filterArrByTag('chicken-jerky'),
-    },
-    {
       title: 'PEPPERED',
       productsArr: filterArrByTag('peppered'),
+    },
+    {
+      title: 'CHICKEN',
+      productsArr: filterArrByTag('chicken-jerky'),
     },
   ];
 

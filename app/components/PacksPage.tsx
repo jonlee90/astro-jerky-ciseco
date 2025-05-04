@@ -25,8 +25,6 @@ export function PacksPage() {
   useEffect(() => {
     setCurrentProducts(flattenConnection(collection.products));
   }, [collection.products]);
-console.log(collection, 'collection')
-  const onToggle = (value: string) => setIsSmall(value === "small");
 
   const totalProducts = noResults ? 0 : currentProducts.length;
   const packDescriptions = [
@@ -108,7 +106,7 @@ console.log(collection, 'collection')
       </section>
       <section 
         aria-labelledby="product-list"
-        className="sm-only:p-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid gap-6 border-black"
+        className="sm-only:p-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid gap-6 border-black mt-10"
         role="region"
       >
         <h2 id="product-list" className="sr-only">List of Products</h2>

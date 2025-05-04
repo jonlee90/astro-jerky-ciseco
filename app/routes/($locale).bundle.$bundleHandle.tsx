@@ -19,6 +19,9 @@ interface ProductVariant {
   media: any[];
   size: string;
   flavor_level: string;
+  heat_level: string;
+  sweetness_level: string;
+  dryness_level: string;
   price: string;
   compareAtPrice: string;
   small_bag_quantity: any;
@@ -36,7 +39,7 @@ export async function loader({ params, request, context: { storefront } }: Loade
   const { bundleHandle } = params;
   const { products } = await storefront.query(API_ALL_PRODUCTS_QUERY, {
     variables: {
-      count: 20,
+      count: 25,
       sortKey: "BEST_SELLING",
       country: storefront.i18n.country,
       language: storefront.i18n.language,
@@ -64,6 +67,9 @@ export async function loader({ params, request, context: { storefront } }: Loade
         media: flattenConnection(product.media),
         size,
         flavor_level: product.flavor_level,
+        heat_level: product.heat_level,
+        sweetness_level: product.sweetness_level,
+        dryness_level: product.dryness_level,
         small_bag_quantity: product.small_bag_quantity ? parseInt(product.small_bag_quantity.value) : 0,
         big_bag_quantity: product.big_bag_quantity ? parseInt(product.big_bag_quantity.value) : 0,
         price: product.priceRange.minVariantPrice.amount,
@@ -100,6 +106,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 export default function Bundle() {
   const { smallProducts, bigProducts, bundleHandle, bundleProducts } = useLoaderData<LoaderData>();
   const currentBundle = bundleProducts.find(bundle => bundle.handle === bundleHandle);
+  console.log(bundleProducts, 'currentBundle in Bundle');
   return (
     <MixMatchProducts
       bigProducts={bigProducts}

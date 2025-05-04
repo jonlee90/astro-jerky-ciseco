@@ -1,4 +1,5 @@
 import {useRef} from 'react';
+import {Image} from '@shopify/hydrogen';
 import useSnapSlider from '~/hooks/useSnapSlider';
 import Heading from '~/components/Heading/Heading';
 import ProductCard, {ProductCardSkeleton} from '~/components/ProductCard';
@@ -53,11 +54,12 @@ export function SnapSliderProducts(props: Props) {
       aria-live="polite"
     >
       <Heading
-        className={'mb-8 text-neutral-900 dark:text-neutral-50 px-4 md:justify-center'}
+        className="mb-12 mx-5 md:mx-10 xl:mx-0 lg:mb-14 text-neutral-900"
+        desc={sub_heading || ''}
+        rightDescText={heading_light || ''}
         fontClass={headingFontClass}
-        rightDescText={heading_light}
       >
-        {heading_bold}
+        {heading_bold || ''}
       </Heading>
       <div
         ref={sliderRef}

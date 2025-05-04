@@ -88,7 +88,7 @@ export const CollectionSlider = ({
     <div className={`nc-DiscoverMoreSlider lg:container`}>
       <Heading
         id={`slider-heading-${sectionId}`}
-        className="mb-12 mx-5 md:mx-10 xl:mx-0 lg:mb-14 text-neutral-900 dark:text-neutral-50"
+        className="mb-12 mx-5 md:mx-10 xl:mx-0 lg:mb-14 text-neutral-900"
         desc={sub_heading || ''}
         rightDescText={heading_light || ''}
         fontClass={headingFontClass}
@@ -112,7 +112,7 @@ export const CollectionSlider = ({
         collections.filter(Boolean).map((item, index) => (
           <motion.div
             key={`${item.id}`}
-            className={`z-10 grid grid-cols-9 items-center text-base sm:text-xl pl-10 lg:pl-0 font-semibold ${currentActive === item.image ? `${index === 0 ? 'bg-logo-red' : (index === 1 ? 'bg-amber-900' : (index === 2 ? 'bg-gray-900' : 'bg-orange-600'))} text-white z-20 border-r-2 mx-2 !px-3 shadow-[0_0_0_2px_#fff,0_0_0_6px_#0b7bff,0_0_0_8px_#fff]` : 'md:border-r-2'} ${index !== 0 ? 'border-t-2' : ''}`}
+            className={`z-10 grid grid-cols-9 items-center text-base sm:text-xl px-5 font-semibold ${currentActive === item.image ? `${index === 0 ? 'bg-logo-red' : (index === 1 ? 'bg-amber-900' : (index === 2 ? 'bg-gray-900' : 'bg-orange-600'))} text-white z-20 ` : 'md:border-r-2'} ${index !== 0 ? 'border-t-2' : ''}`}
             role="listitem"
             style={{ flexGrow: 1 }}
             onHoverStart={() => handleHoverOrTap(item)}

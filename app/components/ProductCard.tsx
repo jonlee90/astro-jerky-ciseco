@@ -216,9 +216,12 @@ const ProductCard: FC<ProductCardProps> = ({
           </motion.div>
           <div className="flex gap-5 text-left flex-col">
               <div>
-                <h2 className="relative text-gray-600 text-xl italic font-serif">{getProductCategory(product)}</h2>
+                <div className='flex flex-row justify-between text-gray-600 text-base'>
+                  <h2 className="italic font-serif">{getProductCategory(product)}</h2>
+                  {selectedOptions[0].value !== 'Default Title' && (<p className='font-serif'>{selectedOptions[0].value}</p>)}
+                </div>
                 <h2 id={`product-title-${product.handle}`} className="w-full uppercase font-bold text-xl">
-                  {product.title.replace(/beef jerky/gi, "") + (selectedOptions[0].value !== 'Default Title' ? ' (' + selectedOptions[0].value + ')' : '')}
+                  {product.title.replace(/beef jerky/gi, "")}
                 </h2>
               </div>
             {false && (

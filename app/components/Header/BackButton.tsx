@@ -36,7 +36,7 @@ const BackButton: React.FC<BackButtonProps> = ({
         animate={{ x: '0px' }}
         exit={{ opacity: 0, x: '-60px' }}
         transition={{ duration: 0.2, ease: 'easeOut' }}
-        className={`pdp-nav-button  ${className} opacity-80 transform left-2 ${buttonPosition}`}
+        className={`pdp-nav-button  ${className} transform left-2 ${buttonPosition}`}
         >
         <IconCaret
           direction="right"

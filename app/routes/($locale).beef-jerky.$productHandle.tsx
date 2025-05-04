@@ -565,7 +565,7 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
 
       {!isPack && (
         <div>
-          <ProductLevelIndicator product={product} /> {/* Render the icon based on tags */}
+          <ProductLevelIndicator product={product}  /> {/* Render the icon based on tags */}
         </div>
       )}
       <div className='grid gap-7 2xl:gap-8'>

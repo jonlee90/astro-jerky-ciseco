@@ -5,6 +5,8 @@ import ProductSoldOut  from '../ProductSoldOut';
 import { getProductPlaceholder } from '~/lib/placeholders';
 import { motion } from 'framer-motion';
 import { getProductIcon } from '../ProductCard';
+import ProductLevelIndicator from '../ProductLevelIndicator';
+import { getProductCategory } from '../ProductCard';
 
 interface Product {
   id: string;
@@ -88,11 +90,11 @@ export function MixMatchProductCard({
   };
   return (
     <motion.div 
-      className={clsx('mySnapItem snap-start shrink-0 py-3 w-40 md:w-52', { 'cursor-not-allowed opacity-50': !isAvailable })}
+      className={clsx('mySnapItem snap-start shrink-0 py-3 w-52', { 'cursor-not-allowed opacity-50': !isAvailable })}
       role="group"
       aria-labelledby={`product-title-${cardProduct.title}`}
     >
-      <div className='grid gap-2'>
+      <div className='grid gap-3'>
         <div className="card-image aspect-[4/5] bg-primary/5 rounded-2xl">
           {image && (
             <Image
@@ -108,14 +110,20 @@ export function MixMatchProductCard({
             <ProductSoldOut/>
           )}
         </div>
-        <h2
-          id={`card-title-${cardProduct.id}`}
-          className="w-full uppercase text-copy text-left"
-        >
-          {cardProduct.title + ' (' + cardProduct.size + ')'}
-        </h2>
-        <div className='text-left'>
-          {getProductIcon(cardProduct)} {/* Render the icon based on tags */}
+        <div>
+          <div className='flex flex-row justify-between text-gray-600 text-base'>
+            <h2 className="italic font-serif">{getProductCategory(product)}</h2>
+            <p className=''>{cardProduct.size}</p>
+          </div>
+          <h2
+            id={`card-title-${cardProduct.id}`}
+            className="w-full uppercase text-xl font-bold text-left"
+          >
+            {cardProduct.title.replace(/beef jerky/gi, "")}
+          </h2>
+        </div>
+        <div className=''>
+          <ProductLevelIndicator product={product} size={25} levelClass={'h-1 w-3 mr-1'} labelClass='text-sm' /> {/* Render the icon based on tags */}
         </div>
         <div className="grid">
           <div className="flex gap-8 justify-between items-center">
