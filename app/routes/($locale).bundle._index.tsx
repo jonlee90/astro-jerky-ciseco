@@ -15,6 +15,7 @@ import { ProductMixFragment } from 'storefrontapi.generated';
 import { PRODUCT_MIX_FRAGMENT } from '~/data/fragments';
 import {seoPayload} from '~/lib/seo.server';
 import {BundleProductCard} from '~/components/BundleProductCard';
+import PageTitleWithBackground from '~/components/PageTitleWithBackground';
 
 // Type Definitions
 interface ProductVariant {
@@ -71,22 +72,17 @@ export default function AllBundle() {
   const { bundleProducts } = useLoaderData<LoaderData>();
   return (
     <div
-      className={clsx(
-        `nc-PageCollection pt-10 lg:pt-20 pb-20 lg:pb-28 xl:pb-32`,
-        'space-y-20 sm:space-y-24 lg:space-y-28',
-      )}
+      className={'nc-PageBundle pb-20 lg:pb-28 md:container'}
     >
-      <div className="container">
-       <div className="space-y-14 lg:space-y-24">
-        <PageHeader
-          // remove the html tags on title
+        <PageTitleWithBackground
           title={'Bundle Packs'}
           description={'Mix & Match Between 12 Different Flavors to Create a Custom Premium Beef Jerky Pack!'}
-          hasBreadcrumb={false}
+          backgroundImage={'https://cdn.shopify.com/s/files/1/0641/9742/7365/files/beef-jerky-bundle-background.png'}
+          radialGradient="radial-gradient(rgba(0, 0, 0, 0.95) 0%, transparent 95%)"
         />
         <div  
           data-test="product-grid" 
-          className="sm-only:p-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid gap-6 border-black"
+          className="p-5 md:p-0  mt-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid gap-6 border-black"
           aria-label="Bundle products"
         >
           {bundleProducts.map((product) => (
@@ -96,8 +92,6 @@ export default function AllBundle() {
             />
           ))}
         </div>
-        </div>
-      </div>
     </div>
   );
 }

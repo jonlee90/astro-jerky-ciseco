@@ -38,10 +38,10 @@ export function BundleProductCard({
     images = [],
   } = product;
 
-  const image = images?.edges?.[0].node || media?.nodes?.[0]?.image || null;
-  const imageWidth = urlPrefix == 'beef-jerky' ? '750px' : image?.width;
-  const imageHeight = urlPrefix == 'beef-jerky' ? '650px' : image?.height;
-  const cardHeaderClassName = urlPrefix == 'beef-jerky' ? 'px-20 border-b' : '';
+  const image = images?.edges?.[4]?.node || images?.edges?.[0].node ||media?.nodes?.[0]?.image || null;
+  const imageWidth = image?.width;
+  const imageHeight = image?.height;
+  const cardHeaderClassName = '';
   const matchingPackDescription = packDescriptions.find(
     (pack) => pack.handle === handle
   );
@@ -93,7 +93,7 @@ export function BundleProductCard({
             {matchingPackDescription && (
               <ul className="list-none space-y-2">
                 {matchingPackDescription.products.map((product, index) => (
-                  <li key={index} className="text-sm opacity-70">
+                  <li key={index} className="text-sm">
                     1x {product} Beef Jerkey 3oz
                   </li>
                 ))}

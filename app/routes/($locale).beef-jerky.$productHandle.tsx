@@ -298,7 +298,7 @@ if(!isHydrated) {
             <ProductGallery
               media={media.nodes}
               className="w-full lg:col-span-2 lg:gap-7"
-              aspectRatio={isPack ? '1/1' : '2/3'}
+              aspectRatio={'2/3'}
             />
             ) : (
               <Skeleton className="h-32" />
@@ -908,7 +908,7 @@ export const PRODUCT_QUERY = `#graphql
       selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {
         ...ProductVariantFragment
       }
-      media(first: 7) {
+      media(first: 4) {
         nodes {
           ...Media
         }

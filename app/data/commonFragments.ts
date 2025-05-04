@@ -127,7 +127,7 @@ export const COMMON_PRODUCT_CARD_FRAGMENT = `#graphql
       height
     }
     # Need to 4 images, so we can display the productCardLarge component correctly, which requires 4 images
-    images(first: 4) {
+    images(first: 5) {
       edges {
         node {
           url

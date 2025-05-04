@@ -11,34 +11,16 @@ import ProductFilterHiddenScrollBar from "~/components/ProductFilterHiddenScroll
 import { RouteContent } from "~/sections/RouteContent";
 import { loadCollectionData } from "~/utils/collectionLoader";
 import { SnapGridProducts } from "./SnapGridProducts";
+import PageTitleWithBackground from "./PageTitleWithBackground";
 
 export function CollectionPage() {
   const { collection, routePromise } = useLoaderData<typeof loadCollectionData>();
-console.log(collection.horizontal_image?.reference?.image, 'collection in CollectionPage');
   const noResults = !collection.products.nodes.length;
   const [isSmall, setIsSmall] = useState(false);
   const [currentProducts, setCurrentProducts] = useState(() =>
     flattenConnection(collection.products)
   );
 
-  const iconImages = [
-    {
-      description: "MADE IN THE USA",
-      url: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/icon-usa.png"
-    },
-    {
-      description: "SAME DAY SHIPPING",
-      url: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/icon-shipping.png"
-    },
-    {
-      description: "HANDCRAFTED WITH FAMILY RECIPE",
-      url: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/icon-knife.png"
-    },
-    {
-      description: "HIGH IN PROTEIN",
-      url: "https://cdn.shopify.com/s/files/1/0641/9742/7365/files/icon-protein.png"
-    }
-  ];
 
   useEffect(() => {
     setCurrentProducts(flattenConnection(collection.products));
@@ -85,38 +67,11 @@ console.log(collection.horizontal_image?.reference?.image, 'collection in Collec
       </section>*/}
 
       {collection.horizontal_image?.reference ? 
-      <section 
-        aria-labelledby="collection-title"
-        className="p-10 relative text-white text-center bg-radial-overlay"
-        style={{
-          backgroundImage: `radial-gradient(rgba(0, 0, 0, 0.6) 0%, transparent 90%), url(${collection.horizontal_image.reference.image.url})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }}
-        >
-        <h2 className="relative text-xl sm:text-2xl italic font-serif">Astro's</h2>
-        <h1 
-          id="collection-title"
-          className="block text-3xl sm:text-4xl font-semibold capitalize relative"
-        >
-          {collection.title.replace(/(<([^>]+)>)/gi, "")}
-        </h1>
-        <p className="block mt-4 text-lg relative">
-          {collection.description}
-        </p>
-        <div 
-          className="flex items-start justify-center text-center relative mt-8">
-            {
-            iconImages.map((image, index) => (
-              <div key={index} className={`flex flex-col items-center shrink-1 max-w-24  lg:max-w-32 ${index !== 0 ? 'ml-2 md:ml-8 lg:ml-10' : ''}`}>
-                <img src={image.url} alt={image.description} className="size-12 md:size-16 text-black" />
-                <span className="text-xs mt-4 font-bold">{image.description}</span>
-              </div>
-            ))
-            }
-        </div>
-      </section>
+      <PageTitleWithBackground
+        title={collection.title}
+        description={collection.description}
+        backgroundImage={collection.horizontal_image.reference.image.url}
+      />
       :
       <section 
         aria-labelledby="collection-title"
