@@ -43,7 +43,7 @@ const PageTitleWithBackground: React.FC<PageTitleWithBackgroundProps> = ({
         backgroundRepeat: 'no-repeat',
       }}
     >
-      <h2 className="relative text-xl sm:text-2xl italic font-serif">Astro's</h2>
+      <h2 className="relative text-xl sm:text-2xl italic">Astro's</h2>
       <h1
         id="collection-title"
         className="block text-3xl sm:text-4xl font-semibold capitalize relative"

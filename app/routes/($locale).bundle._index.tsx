@@ -76,7 +76,7 @@ export default function AllBundle() {
     >
         <PageTitleWithBackground
           title={'Bundle Packs'}
-          description={'Mix & Match Between 12 Different Flavors to Create a Custom Premium Beef Jerky Pack!'}
+          description={'Mix & Match Between 12 Unique Flavors to Create a Custom Premium Beef Jerky Pack!'}
           backgroundImage={'https://cdn.shopify.com/s/files/1/0641/9742/7365/files/beef-jerky-bundle-background.png'}
           radialGradient="radial-gradient(rgba(0, 0, 0, 0.95) 0%, transparent 95%)"
         />

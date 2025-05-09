@@ -77,7 +77,7 @@ export function CollectionPage() {
         aria-labelledby="collection-title"
         className="p-10 relative text-center bg-radial-overlay"
         >
-        <h2 className="relative text-xl sm:text-2xl italic font-serif">Astro's</h2>
+        <h2 className="relative text-xl sm:text-2xl italic">Astro's</h2>
         <h1 
           id="collection-title"
           className="block text-3xl sm:text-4xl font-semibold capitalize relative"

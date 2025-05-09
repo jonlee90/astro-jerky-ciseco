@@ -217,7 +217,7 @@ const ProductCard: FC<ProductCardProps> = ({
           <div className="flex gap-5 text-left flex-col">
               <div>
                 <div className='flex flex-row justify-between text-gray-600 text-base'>
-                  <h2 className="italic font-serif">{getProductCategory(product)}</h2>
+                  <h2 className="italic">{getProductCategory(product)}</h2>
                   {selectedOptions[0].value !== 'Default Title' && (<p>{selectedOptions[0].value}</p>)}
                 </div>
                 <h2 id={`product-title-${product.handle}`} className="w-full uppercase font-bold text-xl">

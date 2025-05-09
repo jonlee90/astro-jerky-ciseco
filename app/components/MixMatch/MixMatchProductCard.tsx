@@ -112,7 +112,7 @@ export function MixMatchProductCard({
         </div>
         <div>
           <div className='flex flex-row justify-between text-gray-600 text-base'>
-            <h2 className="italic font-serif">{getProductCategory(product)}</h2>
+            <h2 className="italic">{getProductCategory(product)}</h2>
             <p className=''>{cardProduct.size}</p>
           </div>
           <h2

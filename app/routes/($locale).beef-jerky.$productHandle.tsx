@@ -517,7 +517,7 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
   return (
     <>
       {/* ---------- HEADING ----------  */}
-      <div className='mt-5  grid gap-7 2xl:gap-8'>
+      <div className='lg:mt-5  grid gap-7 2xl:gap-8'>
       {/*!!collectionObj && (
           <nav className="mb-4" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-1">
