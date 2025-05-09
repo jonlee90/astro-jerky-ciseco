@@ -218,7 +218,7 @@ const ProductCard: FC<ProductCardProps> = ({
               <div>
                 <div className='flex flex-row justify-between text-gray-600 text-base'>
                   <h2 className="italic font-serif">{getProductCategory(product)}</h2>
-                  {selectedOptions[0].value !== 'Default Title' && (<p className='font-serif'>{selectedOptions[0].value}</p>)}
+                  {selectedOptions[0].value !== 'Default Title' && (<p>{selectedOptions[0].value}</p>)}
                 </div>
                 <h2 id={`product-title-${product.handle}`} className="w-full uppercase font-bold text-xl">
                   {product.title.replace(/beef jerky/gi, "")}
@@ -261,7 +261,7 @@ const ProductCard: FC<ProductCardProps> = ({
             },
           ]}
           variant="secondary"
-          className="absolute right-1 bottom-0 lg:bottom-14"
+          className="absolute right-1 bottom-0 lg:bottom-3"
           analytics={{
             products: [productAnalytics],
             totalValue: parseFloat(productAnalytics.price),
@@ -272,13 +272,6 @@ const ProductCard: FC<ProductCardProps> = ({
             <path fill="black" fillRule="evenodd" d="M12 1.25C6.063 1.25 1.25 6.063 1.25 12S6.063 22.75 12 22.75S22.75 17.937 22.75 12S17.937 1.25 12 1.25M12.75 8a.75.75 0 0 0-1.5 0v3.25H8a.75.75 0 0 0 0 1.5h3.25V16a.75.75 0 0 0 1.5 0v-3.25H16a.75.75 0 0 0 0-1.5h-3.25z" clipRule="evenodd" />
           </svg>
         </AddToCartButton>
-      )}
-      {quickAdd && !firstVariant.availableForSale && (
-        <ButtonSecondary className="mt-2" disabled>
-          <span className="flex items-center justify-center gap-2">
-            Sold out
-          </span>
-        </ButtonSecondary>
       )}
     </motion.div>
   );
@@ -305,7 +298,7 @@ export const getProductCategory = (product: any) => {
   const count = flavor_level ? parseInt(flavor_level.value) : 1;
 
   const getIconComponent = () => {
-    if (handle.includes('sweet-spicy-beef-jerky')) return 'Classic';
+    if (tagsString.includes('classic_flavors')) return 'Classic';
     if (tagsString.includes('hot-spicy')) return 'Spicy';
     if (tagsString.includes('bbq')) return 'BBQ';
     if (tagsString.includes('chicken')) return 'Chicken';

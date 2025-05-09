@@ -54,7 +54,7 @@ const Heading: React.FC<HeadingProps> = ({
         }
       >
         {rightDescText && (
-          <div className="mt-2 md:mt-3 font-semibold block text-base sm:text-lg uppercase">
+          <div className="mt-2 md:mt-3 font-semibold block text-base sm:text-lg uppercase font-RobotoSlabRegular">
               {rightDescText}
           </div>
         )}
@@ -65,7 +65,7 @@ const Heading: React.FC<HeadingProps> = ({
           {children || `Section Heading`}
         </HeadingTag>
         {!!desc && (
-          <div className="mt-2 md:mt-3 block text-base sm:text-lg">
+          <div className="mt-2 md:mt-3 block text-base sm:text-lg font-RobotoSlabRegular">
             {desc}
           </div>
         )}
