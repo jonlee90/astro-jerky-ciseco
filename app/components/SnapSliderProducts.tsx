@@ -8,7 +8,7 @@ import ProductCardLarge, {
   ProductCardLargeSkeleton,
 } from '~/components/ProductCardLarge';
 import clsx from 'clsx';
-import {type CommonProductCardFragment} from 'storefrontapi.generated';
+import {type ProductFragment} from 'storefrontapi.generated';
 import NextPrev from './NextPrev/NextPrev';
 import NextPrevDesktop from './NextPrev/NextPrevDesktop';
 
@@ -16,7 +16,7 @@ export interface Props {
   heading_bold?: string | null;
   heading_light?: string | null;
   sub_heading?: string | null;
-  products?: CommonProductCardFragment[] | null;
+  products?: ProductFragment[] | null;
   cardStyle?: '1' | '2' | null;
   className?: string;
   headingFontClass?: string;
@@ -54,7 +54,7 @@ export function SnapSliderProducts(props: Props) {
       aria-live="polite"
     >
       <Heading
-        className="mb-12 mx-5 md:mx-10 xl:mx-0 lg:mb-14 text-neutral-900"
+        className="mb-6 mx-5 md:mx-10 xl:mx-0 lg:mb-14 text-neutral-900 text-center justify-self-center" 
         desc={sub_heading || ''}
         rightDescText={heading_light || ''}
         fontClass={headingFontClass}

@@ -236,7 +236,7 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
             <div className="text-right self-center justify-end flex-row-reverse">
               {done || !(big_bag_quantity && small_bag_quantity) ? (
                 <AddToCartButton
-                  className="px-4 py-3 rounded-full w-[188px] relative bg-neutral-900 text-slate-50 shadow-xl hover:bg-neutral-700 transition duration-200 disabled:opacity-50 disabled:pointer-events-none"
+                  className="relative p-[3px]"
                   lines={cartArray}
                   variant="primary"
                   data-test="add-to-cart"
@@ -244,7 +244,11 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
                   onClick={handleAddToCart}
                   aria-label="Add completed bundle to cart"
                 >
-                  Add To Cart
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary-300 to-primary-500 rounded-full" />
+                  <div className="px-8 py-2  bg-black rounded-full relative group transition duration-200 text-white hover:bg-transparent">
+                    Add To Cart
+                  </div>
+                  
                 </AddToCartButton>
               ) : (
                 <SwitchTab 

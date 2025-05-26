@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IconBbq, IconChicken, IconCow, IconPepper, IconSpicy, IconStar } from './Icon';
+import { IconHoney, IconChicken, IconCow, IconPepper, IconSpicy, IconStar } from './Icon';
 import NavItem from './NavItem';
 import Nav from './Nav';
 import { Link } from './Link';
@@ -20,7 +20,7 @@ const ProductFilterHiddenScrollBar = ({collectionHandle, totalProducts, filterRe
     {
       label: "BBQ",
       value: "bbq-beef-jerky",
-      icon: IconBbq,
+      icon: IconHoney,
     },
     {
       label: "Chicken",

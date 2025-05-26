@@ -39,7 +39,6 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 
 export default function Page() {
   const {page} = useLoaderData<typeof loader>();
-console.log(page.title)
   return (
     <div className="page-handle pt-16 lg:pt-24 pb-20 lg:pb-28 xl:pb-32 ">
       <div className="container">

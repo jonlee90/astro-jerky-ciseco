@@ -661,13 +661,13 @@ shop-pay-button {
   border-color: rgb(237, 28, 36);
 }
 .color-logo-green {
-  color:rgb(0, 166, 81);
+  color:rgb(0, 166, 81); /* #00a651 */
 }
 .color-logo-red {
-  color: rgb(237, 28, 36);
+  color: rgb(237, 28, 36); /* #ed1c24 */
 }
 .color-logo-yellow {
-  color: rgb(255, 195, 8);
+  color: rgb(255, 195, 8); /* #ffc308 */
 }
 .bg-default-gray {
   background-color: #fafaf9;
@@ -840,4 +840,28 @@ a.disabled {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.swiper {
+  width: 100%;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 300px;
+  height: 300px;
+}
+
+.swiper-button-next::after {
+  content: ">"!important;
+  color:black;
+  font-weight: bolder;
+}
+.swiper-button-prev::after {
+  content: "<"!important;
+  color: black;
+  font-weight: bolder;
 }

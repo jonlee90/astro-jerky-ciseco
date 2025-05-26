@@ -15,6 +15,8 @@ import ButtonPrimary from '~/components/Button/ButtonPrimary';
 import { Link } from '~/components/Link';
 import { IconCow } from '~/components/Icon';
 import { getProductIcon } from '~/components/ProductCard';
+import ProductSwiper from '~/components/ProductSwiper';
+import NextPrev from '~/components/NextPrev/NextPrev';
 
 export function SectionCollectionsSlider(
   props: SectionCollectionsSliderFragment,
@@ -71,6 +73,10 @@ export const CollectionSlider = ({
   const sliderRef = useRef<HTMLDivElement>(null);
   const [currentActive, setCurrentActive] = useState<TMyCommonCollectionItem | null>(() => collections[0].image); // State to track the active element
 
+  const [swiperInstance, setSwiperInstance] = useState<any>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeCollection, setActiveCollection] = useState(collections[0] || null);
+
   const {scrollToNextSlide, scrollToPrevSlide} = useSnapSlider({sliderRef});
   useEffect(() => {
     // Ensure slider is focusable
@@ -84,11 +90,13 @@ export const CollectionSlider = ({
   const handleHoverOrTap = (item) => {
     setCurrentActive(item.image); // Update the currentActive state
   };
+
+  
   return (
     <div className={`nc-DiscoverMoreSlider lg:container`}>
       <Heading
         id={`slider-heading-${sectionId}`}
-        className="mb-12 mx-5 md:mx-10 xl:mx-0 lg:mb-14 text-neutral-900"
+        className="mb-12 mx-5 md:mx-10 xl:mx-0 lg:mb-14 text-neutral-900 text-center justify-self-center"
         desc={sub_heading || ''}
         rightDescText={heading_light || ''}
         fontClass={headingFontClass}
@@ -97,10 +105,62 @@ export const CollectionSlider = ({
       </Heading>
       <div className="relative">
     {heading_light ? (
-    <div className='flex flex-col lg:flex-row-reverse'>
-      <div className='lg:w-1/2 lg:border-2 !border-l-0'>
+       <>
+      <ProductSwiper
+        items={collections}
+        renderSlide={(collection) => (
+          <motion.img
+            className={`object-cover w-full absolute card-image`}
+            src={collection.image.url}
+            alt={collection.image.altText || 'Product image'}
+          />
+        )}
+        onSlideChange={(swiper) => setActiveCollection(collections[swiper.activeIndex])}
+        onSwiper={setSwiperInstance}
+        initialSlide={2}
+        spaceBetween={50}
+        slidesPerView={2}
+        className={'max-w-full'}
+        breakpoints = {{
+          640: {slidesPerView: 2},
+          1024: {slidesPerView: 3},
+        }}
+        coverflowEffect ={{
+          rotate: 0,
+          modifier: 7,
+          slideShadows: false,
+        }}
+      />
+      <div className='absolute w-full left-1/2 -translate-x-1/2 lg:w-2/3'>
+          <NextPrev
+              className='z-10'
+              stroke="black"
+              onClickNext={() => swiperInstance.slideNext()}
+              onClickPrev={() => swiperInstance.slidePrev()}
+            />  
+        </div>
+        <div className="flex gap-3 flex-col items-center justify-center text-center w-full mt-4">
+          <h2 id={`product-title-${activeCollection?.handle}`} className="w-3/5 uppercase font-bold text-2xl">
+            {activeCollection?.title?.replace(" Jerky", "").replace("Beef", "").replace("Best", "All")}
+          </h2>
+        <div>
+            
+        </div>
+        <div>
+          <Link
+            to={`/${activeCollection?.handle}`}
+            className='group border !border-neutral-900 hover:!bg-neutral-900 hover:text-white py-3 px-4 lg:py-3.5 lg:px-7 mx-auto items-center justify-center rounded-full grid grid-cols-6 text-lead disabled:bg-opacity-90'
+            aria-label="Shop Now"
+          >
+            {getProductIcon({tags: [activeCollection.handle]}, 24, 'group-hover:fill-white')}
+            <span className='col-start-3 col-span-3 uppercase'>Shop Now</span>
+            </Link>
+        </div>
+      </div>
+       {/*<div className='flex flex-col lg:flex-row-reverse'>
+      <div className='lg:w-1/2 p-10 lg:border-2 !border-l-0'>
           <Image
-            className="inset-0 w-2/3 lg:w-4/5 h-full object-cover rounded-2xl mx-auto"
+            className="inset-0 h-full object-cover rounded-2xl mx-auto"
             data={currentActive || listOfImages[0]}
             width={'1000px'}
             height={'1000px'}
@@ -137,7 +197,9 @@ export const CollectionSlider = ({
         ))
       }
       </div>
-    </div>
+    </div>*/}
+      </>
+   
     ): (
       <>
       <div

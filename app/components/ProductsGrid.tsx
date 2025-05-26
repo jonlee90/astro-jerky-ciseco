@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import ProductCard from './ProductCard';
 import {getImageLoadingPriority} from '~/lib/const';
-import {CommonProductCardFragment} from 'storefrontapi.generated';
+import {ProductFragment} from 'storefrontapi.generated';
 import { Collection } from '@shopify/hydrogen/storefront-api-types';
 import { motion, useInView, Variants } from 'framer-motion';
 
@@ -12,7 +12,7 @@ export function ProductsGrid({
   collection,
   classOverride = 'grid sm:grid-cols-2 lg:grid-cols-3 gap-x-28 gap-y-10 mx-5',
 }: {
-  nodes?: CommonProductCardFragment[];
+  nodes?: ProductFragment[];
   className?: string;
   isSmall?: boolean;
   collection: Collection;

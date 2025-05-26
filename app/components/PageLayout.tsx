@@ -12,6 +12,7 @@ import {CartMain} from './CartMain';
 import { Aside, useAside } from './Aside';
 import type { RootLoader } from '~/root';
 import { Header } from './Header/Header';
+import { MotionConfig } from 'framer-motion';
 
 
 type LayoutProps = {
@@ -36,49 +37,34 @@ export function PageLayout({
   const primaryDomainUrl = layout?.shop.primaryDomain.url;
   return (
     <Aside.Provider>
-      <CartAside cart={cart} />
-        <div>
-          <a href="#mainContent" className="sr-only">
-            Skip to content
-          </a>
-        </div>
+      <MotionConfig reducedMotion="user">
+        <CartAside cart={cart} />
+          <div>
+            <a href="#mainContent" className="sr-only">
+              Skip to content
+            </a>
+          </div>
 
-      {header && (
-        <Header 
+        {header && (
+          <Header 
+            header={header}
+            cart={cart}
+            isLoggedIn={isLoggedIn} 
+            primaryDomainUrl={primaryDomainUrl}
+            publicStoreDomain={publicStoreDomain}
+          />
+        )}
+
+        <main role="main" className="flex-grow">
+          {children}
+        </main>
+        <Footer 
+          footer={footer}
           header={header}
-          cart={cart}
-          isLoggedIn={isLoggedIn} 
           primaryDomainUrl={primaryDomainUrl}
           publicStoreDomain={publicStoreDomain}
         />
-      )}
-
-      <main role="main" className="flex-grow">
-        {children}
-
-        {/*<section 
-            aria-labelledby="guaranteed-section"
-            className='bg-logo-green w-full'>
-            <h2 id="guaranteed-section" className="text-xl">
-              Love at First Bite 100% Guaranteed
-            </h2>
-
-        </section>*/}
-        <section 
-            aria-labelledby="email-signup-form"
-            className='bg-logo-green w-full'>
-          <h2 id="email-signup-form" className="sr-only">
-            Email Sign Up
-          </h2>
-          <div className="klaviyo-form-WUUqWC"></div>
-        </section>
-      </main>
-      <Footer 
-        footer={footer}
-        header={header}
-        primaryDomainUrl={primaryDomainUrl}
-        publicStoreDomain={publicStoreDomain}
-      />
+      </MotionConfig>
     </Aside.Provider>
   );
 }

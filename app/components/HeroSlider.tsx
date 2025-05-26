@@ -69,9 +69,8 @@ const HeroSlider = () => {
 
 
   return (
-    <section className="bg-gradient-to-br from-yellow-400 via-yellow-300 to-yellow-200 pt-12 overflow-hidden">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center justify-center sm:min-h-[40rem]">
+    <section className="section-hero-slider bg-gradient-to-br from-yellow-400 via-yellow-300 to-yellow-200 pt-12 overflow-hidden mx-auto px-6">
+        <div className="container grid grid-cols-1 lg:grid-cols-2 items-center justify-center sm:min-h-[40rem]">
           {/* Hero Content */}
           <div className="text-center">
             <div className="space-y-6">
@@ -83,23 +82,23 @@ const HeroSlider = () => {
               <p className="text-lg">
               Providing quality hand-crafted jerky for our patrons since 2013.
               </p>
-                  <ButtonPrimary className='w-64 h-[50px] text-lead !bg-neutral-900 hover:!bg-neutral-700 focus:!ring-neutral-600' aria-label="Shop Now">
                   <Link
                     to="/best-beef-jerky-flavors"
-                    className='grid grid-cols-8 w-full'
+                    className='py-3 px-4 lg:py-3.5 lg:px-7 mx-auto items-center justify-center rounded-full grid grid-cols-8 w-64 h-[50px] text-lead !bg-neutral-900 hover:!bg-neutral-700 focus:!ring-neutral-600 text-slate-50 disabled:bg-opacity-90'
+                    aria-label="Shop Now"
                   >
-                    <IconCow fill='white' className="size-6 text-white col-span-1"  />
+                    <IconCow className="size-6 text-white col-span-1 fill-white"  />
                     <span className='col-span-7'>SHOP NOW</span>
                     </Link>
-                  </ButtonPrimary>
             </div>
           </div>
 
           {/* Product Lineup */}
-          <div className="h-[100vw] min-h-[28rem] sm:h-full relative">
+          <div className="h-[100vw] min-h-[18rem] sm:h-full relative">
             
             {products.map((product, i) => (
-              <div
+              <motion.div
+                motion-safety="always"
                 key={product.alt} 
                 className={`absolute transform w-1/2 sm:w-80 ${product.css}`}
               >
@@ -107,13 +106,13 @@ const HeroSlider = () => {
                   src={product.src}
                   alt={product.alt}
                 />
-              </div>
+              </motion.div>
             ))}
 
             {/* Illustrations */}
             {illustrations.map((illustration, i) => (
-              <div
-              key={illustration.alt}
+              <motion.div
+                key={illustration.alt}
                 className={`absolute w-20 md:w-32 ${illustration.css}`}
               >
                 <img
@@ -121,7 +120,7 @@ const HeroSlider = () => {
                   src={illustration.src}
                   alt={illustration.alt}
                 />
-              </div>
+              </motion.div>
             ))}
 
             {/*<div
@@ -162,7 +161,6 @@ const HeroSlider = () => {
 
           </div>
         </div>
-      </div>
     </section>
   );
 };

@@ -32,7 +32,7 @@ import stylesFont from '~/styles/custom-font.css?url';
 import rcSliderStyle from 'rc-slider/assets/index.css?url';
 import {COMMON_COLLECTION_ITEM_FRAGMENT} from './data/commonFragments';
 import invariant from 'tiny-invariant';
-import { useIsHydrated } from './hooks/useIsHydrated';
+import {OkendoProvider, getOkendoProviderData} from '@okendo/shopify-hydrogen';
 import {GoogleTagManager} from '~/components/GoogleTagManager'
 import { PageLayout } from './components/PageLayout';
 
@@ -95,14 +95,15 @@ export async function loader(args: LoaderFunctionArgs) {
       publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
     }),
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
-     consent: {
-       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
-       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
-       withPrivacyBanner: true,
-      // localize the privacy banner
-      country: storefront.i18n.country,
-      language: storefront.i18n.language,
-     },
+    consent: {
+      checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
+      storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
+      withPrivacyBanner: true,
+    // localize the privacy banner
+    country: storefront.i18n.country,
+    language: storefront.i18n.language,
+    },
+    publicOkendoSubcriberId: env.PUBLIC_OKENDO_SUBSCRIBER_ID,
    };
 }
 
@@ -114,7 +115,7 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
   const {storefront, env} = context;
   const {language, country} = storefront.i18n;
 
-  const [header, layout] = await Promise.all([
+  const [header, layout, okendoProviderData] = await Promise.all([
     storefront.query(HEADER_QUERY, {
       cache: storefront.CacheLong(),
       variables: {
@@ -125,7 +126,11 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
         country,
       },
     }),
-    getLayoutData(context)
+    getLayoutData(context),
+    getOkendoProviderData({
+      context,
+      subscriberId: env.PUBLIC_OKENDO_SUBSCRIBER_ID,
+    }),
   ]);
   const seo = seoPayload.root({shop: layout.shop, url: request.url});
 
@@ -133,7 +138,8 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
     layout,
     seo,
     selectedLocale: storefront.i18n,
-    header
+    header,
+    okendoProviderData
   };
 }
 
@@ -182,6 +188,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
         <meta name="google-site-verification" content="25YtPW1Ho9GeTDGAmb7ERIzVTKDKWaCkNnpXAs8tlH4" />
+        <meta name="oke:subscriber_id" content='74d14d1a-8a34-4644-ac36-5c3e259bd46f' />
         <Meta />
         <link rel="stylesheet" href={styles}></link>
         <link rel="stylesheet" href={stylesFont}></link>
@@ -210,6 +217,9 @@ export function Layout({children}: {children?: React.ReactNode}) {
       </head>
       
       <body className="bg-white">
+        <a href="#main-content" className="sr-only focus:not-sr-only">
+          Skip to main content
+        </a>
         {/***********************************************/
         /**********  EXAMPLE UPDATE STARTS  ************/}
         <noscript>
@@ -226,19 +236,25 @@ export function Layout({children}: {children?: React.ReactNode}) {
         {/**********   EXAMPLE UPDATE END   ************/
         /***********************************************/}
           {data ? (
-            <Analytics.Provider
-              cart={data.cart}
-              shop={data.shop}
-              consent={data.consent}
-            >
-              <PageLayout
-                key={`${locale.language}-${locale.country}`}
-                {...data}
+            <>
+              <OkendoProvider
+                nonce={nonce}
+                okendoProviderData={data.okendoProviderData}
+              />
+              <Analytics.Provider
+                cart={data.cart}
+                shop={data.shop}
+                consent={data.consent}
               >
-                {children}
-              </PageLayout>
-              <GoogleTagManager />
-            </Analytics.Provider>
+                <PageLayout
+                  key={`${locale.language}-${locale.country}`}
+                  {...data}
+                >
+                  {children}
+                </PageLayout>
+                <GoogleTagManager />
+              </Analytics.Provider>
+            </>
         ) : (
           children
         )}

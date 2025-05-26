@@ -68,7 +68,7 @@ export type CisecoSectionType =
 
 export function Sections({
   sections,
-  className = 'space-y-20 sm:space-y-24 lg:space-y-28 xl:space-y-32 mx-auto',
+  className = 'space-y-10 sm:space-y-12 lg:space-y-14 xl:space-y-16 mx-auto',
   paddingTopPx,
   ...args
 }: SectionProps) {
@@ -83,6 +83,7 @@ export function Sections({
       <HeroSlider />
       
       {sections?.references?.nodes.map((section, index, arr) => {
+
         switch (section.type as CisecoSectionType) {
           case 'ciseco--section_hero':
             return (
@@ -104,9 +105,12 @@ export function Sections({
             );
           case 'ciseco--section_products_slider':
             return (
-              <WrapSection key={section.id} index={index} {...args}>
-                <SectionProductsSlider {...section} key={section.id} />
-              </WrapSection>
+              <>
+                {section?.heading_bold?.value == 'Curated Packs' && (<ProductDisplay />)}
+                <WrapSection key={section.id} index={index} {...args}>
+                  <SectionProductsSlider {...section} key={section.id} />
+                </WrapSection>
+              </>
             );
 
           case 'ciseco--section_steps':
@@ -156,7 +160,26 @@ export function Sections({
       })}
 
 
-      <ProductDisplay />
+      
+      
+      
+
+        {/*<section 
+            aria-labelledby="guaranteed-section"
+            className='bg-logo-green w-full'>
+            <h2 id="guaranteed-section" className="text-xl">
+              Love at First Bite 100% Guaranteed
+            </h2>
+
+        </section>*/}
+        <section 
+            aria-labelledby="email-signup-form"
+            className='bg-logo-green w-full'>
+          <h2 id="email-signup-form" className="sr-only">
+            Email Sign Up
+          </h2>
+          <div className="klaviyo-form-WUUqWC"></div>
+        </section>
     </div>
   );
 }

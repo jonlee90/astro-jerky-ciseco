@@ -3,7 +3,7 @@ import {type FC} from 'react';
 import {useState, useEffect, useRef} from 'react';
 import {flattenConnection, Image, Money, useMoney} from '@shopify/hydrogen';
 import ButtonSecondary from './Button/ButtonSecondary';
-import {type CommonProductCardFragment} from 'storefrontapi.generated';
+import {type ProductFragment} from 'storefrontapi.generated';
 import {useGetPublicStoreCdnStaticUrlFromRootLoaderData} from '~/hooks/useGetPublicStoreCdnStaticUrlFromRootLoaderData';
 import {AddToCartButton} from './AddToCartButton';
 import {Link} from './Link';
@@ -16,9 +16,8 @@ import ProductStatus from './ProductStatus';
 import {useMediaQuery} from 'react-responsive';
 import { useAside } from './Aside';
 import { useVariantUrl } from '~/lib/variants';
-import { IconSpicy, IconBbq, IconChicken, IconPepper, IconCow } from "./Icon";
-import { useIsHydrated } from '~/hooks/useIsHydrated';
-import card from '@material-tailwind/react/theme/components/card';
+import { IconSpicy, IconBbq, IconChicken, IconPepper, IconCow, IconHoney } from "./Icon";
+import {OkendoStarRating} from '@okendo/shopify-hydrogen';
 import ProductSoldOut from './ProductSoldOut';
 import ProductLevelIndicator from './ProductLevelIndicator';
 
@@ -29,7 +28,7 @@ interface MoneyV2 {
 }
 
 interface ProductCardProps {
-  product: CommonProductCardFragment;
+  product: ProductFragment;
   collection?: string;
   className?: string;
   loading?: HTMLImageElement['loading'];
@@ -214,16 +213,26 @@ const ProductCard: FC<ProductCardProps> = ({
               }}
             />
           </motion.div>
-          <div className="flex gap-5 text-left flex-col">
-              <div>
+          <div className="flex gap-2 text-left flex-col">
                 <div className='flex flex-row justify-between text-gray-600 text-base'>
-                  <h2 className="italic">{getProductCategory(product)}</h2>
+                  {/*<h2 className="italic">{getProductCategory(product)}</h2>*/}
+                  <span className='items -mt-1'>
+                    {getProductIcon(product, 24)} {/* Render the icon based on tags */}
+                  </span>
                   {selectedOptions[0].value !== 'Default Title' && (<p>{selectedOptions[0].value}</p>)}
                 </div>
+              <div>
                 <h2 id={`product-title-${product.handle}`} className="w-full uppercase font-bold text-xl">
                   {product.title.replace(/beef jerky/gi, "")}
                 </h2>
               </div>
+             {/* <div className='flex'>
+                <OkendoStarRating
+                  productId={product.id}
+                  okendoStarRatingSnippet={product.okendoStarRatingSnippet}
+                /> 
+              
+              </div>*/}
             {false && (
               <div className='px-2'>
                 <ProductLevelIndicator product={product} size={25} /> {/* Render the icon based on tags */}
@@ -276,17 +285,16 @@ const ProductCard: FC<ProductCardProps> = ({
     </motion.div>
   );
 }
-export const getProductIcon = (product: any) => {
-  const { tags, flavor_level, size = 30 } = product;
+export const getProductIcon = (product: any, size = 30, className = '') => {
+  const { tags, flavor_level, handle} = product;
   const tagsString = tags.join(' ');
   const count = flavor_level ? parseInt(flavor_level.value) : 1;
-
   const getIconComponent = (index: number) => {
-    if (tagsString.includes('hot-spicy')) return <IconSpicy key={index} size={size} />;
-    if (tagsString.includes('bbq')) return <IconBbq key={index} size={size} />;
-    if (tagsString.includes('chicken')) return <IconChicken key={index} size={size} />;
-    if (tagsString.includes('peppered')) return <IconPepper key={index} size={size} />;
-    return <IconCow key={index}  />;
+    if (tagsString.includes('hot-spicy')) return <IconSpicy className={className} key={index} size={size} />;
+    if (tagsString.includes('bbq')) return <IconHoney className={className} key={index} size={size} />;
+    if (tagsString.includes('chicken')) return <IconChicken className={className} key={index} size={size} />;
+    if (tagsString.includes('peppered')) return <IconPepper className={className} key={index} size={size} />;
+    return <IconCow className={className} key={index} size={size}   />;
   };
 
   return Array.from({ length: count }, (_, index) => getIconComponent(index));
@@ -379,7 +387,7 @@ export function getProductUrlWithSelectedOption({
   product,
   optionSelected,
 }: {
-  product: CommonProductCardFragment;
+  product: ProductFragment;
   optionSelected: {
     name: string;
     value: string;

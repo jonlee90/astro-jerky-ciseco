@@ -213,7 +213,7 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
                   bgColor='bg-secondary-600 hover:!bg-secondary-900'
                   className="py-3 px-8  lg:py-3.5 focus:!ring-neutral-600 grid grid-cols-7"
                 >
-                  <IconCow fill='white' className="size-6 text-white col-span-1"  />
+                  <IconCow className="size-6 col-span-1 fill-white"  />
                   <span className='uppercase col-span-6'>{button_2?.text?.value || 'Learn more'}</span>
                 </ButtonSecondary>
               )}

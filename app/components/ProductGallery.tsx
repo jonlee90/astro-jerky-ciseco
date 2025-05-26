@@ -37,7 +37,7 @@ export function ProductGallery({
         className={`swimlane p-0 lg:grid-flow-row hiddenScroll lg:px-8 lg:overflow-x-auto lg:grid-cols-1 ${className}`}
       >
         {media.map((med, i) => {
-
+          if(i > 2) return null; // Limit to first 3 images
           const image =
             med.__typename === 'MediaImage'
               ? {...med.image, altText: med.alt || 'Product image'}

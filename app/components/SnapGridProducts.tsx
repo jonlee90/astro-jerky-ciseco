@@ -7,8 +7,6 @@ import ProductCardLarge, {
   ProductCardLargeSkeleton,
 } from '~/components/ProductCardLarge';
 import clsx from 'clsx';
-import {type CommonProductCardFragment} from 'storefrontapi.generated';
-import { ProductsGrid } from './ProductsGrid';
 import { motion } from 'framer-motion';
 
 export interface Props {
@@ -42,7 +40,6 @@ export function SnapGridProducts(props: Props) {
   return (
     <div className={`nc-SectionGridProductCard ` + className}>
       {showHeading && (
-        <>
           <Heading
             className={'mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 mx-5 md:mx-10 xl:mx-0'}
             fontClass={headingFontClass}
@@ -50,7 +47,6 @@ export function SnapGridProducts(props: Props) {
           >
             {heading_bold}
           </Heading>
-        </>
         )
       }
       <div

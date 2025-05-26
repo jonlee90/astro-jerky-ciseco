@@ -31,7 +31,6 @@ export function CollectionPage() {
     // Scroll to the ProductFilterHiddenScrollBar if the hash is #product-filter
     const hash = window.location.hash;
     if (hash === '#product-filter' && filterRef.current) {
-      console.log(filterRef.current);
       filterRef.current.scrollIntoView({ behavior: 'instant' });
     }
   }, [filterRef]);

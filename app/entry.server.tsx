@@ -25,7 +25,21 @@ export default async function handleRequest(
       'https://*.googletagmanager.com',
       'https://*.klaviyo.com',
       'https://*.astrofreshjerky.com',
+      'https://d3hw6dc1ow8pp2.cloudfront.net',
+      'https://dov7r31oq5dkj.cloudfront.net',
+      'https://cdn-static.okendo.io',
+      'https://surveys.okendo.io',
+      'https://api.okendo.io',
+      'https://www.google.com',
+      'https://www.gstatic.com',
       'data:',
+    ],
+    mediaSrc: [
+      "'self'",
+      'https://d3hw6dc1ow8pp2.cloudfront.net',
+      'https://d3g5hqndtiniji.cloudfront.net',
+      'https://dov7r31oq5dkj.cloudfront.net',
+      'https://cdn-static.okendo.io',
     ],
     imgSrc: [
       "'self'",
@@ -35,6 +49,12 @@ export default async function handleRequest(
       'https://*.klaviyo.com',
       'https://*.cloudfront.net',
       'https://*.astrofreshjerky.com',
+      'data:',
+      'https://d3hw6dc1ow8pp2.cloudfront.net',
+      'https://d3g5hqndtiniji.cloudfront.net',
+      'https://dov7r31oq5dkj.cloudfront.net',
+      'https://cdn-static.okendo.io',
+      'https://surveys.okendo.io',
     ],
     styleSrc: [
       "'self'",
@@ -45,6 +65,9 @@ export default async function handleRequest(
       'https://fonts.googleapis.com',
       'https://*.klaviyo.com',
       'https://*.astrofreshjerky.com',
+      'https://d3hw6dc1ow8pp2.cloudfront.net',
+      'https://cdn-static.okendo.io',
+      'https://surveys.okendo.io',
     ],
     fontSrc: [
       ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
@@ -52,6 +75,11 @@ export default async function handleRequest(
       'https://fonts.gstatic.com',
       'https://cdn.shopify.com',
       'https://*.astrofreshjerky.com',
+      'https://d3hw6dc1ow8pp2.cloudfront.net',
+      'https://dov7r31oq5dkj.cloudfront.net',
+      'https://cdn.shopify.com',
+      'https://cdn-static.okendo.io',
+      'https://surveys.okendo.io',
     ],
     connectSrc: [
       "'self'",
@@ -63,7 +91,14 @@ export default async function handleRequest(
       'https://*.googletagmanager.com',
       'https://*.klaviyo.com',
       'https://*.astrofreshjerky.com',
-    ]
+      'https://api.okendo.io',
+      'https://cdn-static.okendo.io',
+      'https://surveys.okendo.io',
+      'https://api.raygun.com',
+      'https://www.google.com',
+      'https://www.gstatic.com',
+    ],
+    frameSrc: ['https://www.google.com', 'https://www.gstatic.com'],
   });
   const body = await renderToReadableStream(
     <NonceProvider>

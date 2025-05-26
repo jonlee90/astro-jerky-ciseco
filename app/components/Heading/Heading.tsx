@@ -34,7 +34,7 @@ const Heading: React.FC<HeadingProps> = ({
   className = 'mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50',
   isCenter = false,
   hasNextPrev = false,
-  fontClass = 'text-display font-semibold py-2 text-left',
+  fontClass = 'text-4xl font-semibold py-2 text-center uppercase',
   rightDescText,
   rightPopoverOptions = solutions,
   onClickNext,
@@ -44,7 +44,7 @@ const Heading: React.FC<HeadingProps> = ({
 }) => {
   return (
     <div
-      className={`nc-Section-Heading relative flex flex-row sm:items-end justify-between items-center ${className}`}
+      className={`nc-Section-Heading text- relative flex flex-row sm:items-end justify-between items-center ${className}`}
     >
       <div
         className={
@@ -54,7 +54,7 @@ const Heading: React.FC<HeadingProps> = ({
         }
       >
         {rightDescText && (
-          <div className="mt-2 md:mt-3 font-semibold block text-base sm:text-lg uppercase font-RobotoSlabRegular">
+          <div className="mt-2 md:mt-3 block text-base sm:text-lg font-RobotoSlabRegular">
               {rightDescText}
           </div>
         )}

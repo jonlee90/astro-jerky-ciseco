@@ -5,7 +5,7 @@ import {
   redirect,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
-import {useLoaderData, Await, useLocation} from '@remix-run/react';
+import {useLoaderData, Await, useLocation, useRouteLoaderData} from '@remix-run/react';
 import {
   getSelectedProductOptions,
   Analytics,
@@ -44,6 +44,14 @@ import { Popover, Transition } from '@headlessui/react';
 import { CartCount } from '~/components/CartCount';
 import { useIsHydrated } from '~/hooks/useIsHydrated';
 import ProductLevelIndicator from '~/components/ProductLevelIndicator';
+import { RootLoader } from '~/root';
+import {
+  OKENDO_PRODUCT_REVIEWS_FRAGMENT,
+  OKENDO_PRODUCT_STAR_RATING_FRAGMENT,
+  OkendoReviews,
+  OkendoStarRating,
+} from '@okendo/shopify-hydrogen';
+import type {ProductFragment} from 'storefrontapi.generated';
 
 export const headers = routeHeaders;
 
@@ -141,19 +149,6 @@ function loadDeferredData(args: LoaderFunctionArgs) {
   const {productHandle} = params;
   invariant(productHandle, 'Missing productHandle param, check route filename');
 
-  // In order to show which variants are available in the UI, we need to query
-  // all of them. But there might be a *lot*, so instead separate the variants
-  // into it's own separate query that is deferred. So there's a brief moment
-  // where variant options might show as available when they're not, but after
-  // this deferred query resolves, the UI will update.
-  const variants = context.storefront.query(VARIANTS_QUERY, {
-    variables: {
-      handle: productHandle,
-      country: context.storefront.i18n.country,
-      language: context.storefront.i18n.language,
-    },
-  });
-
   // 3. Query the route metaobject
   const routePromise = getLoaderRouteFromMetaobject({
     params,
@@ -163,7 +158,6 @@ function loadDeferredData(args: LoaderFunctionArgs) {
   });
 
   return {
-    variants,
     routePromise,
   };
 }
@@ -235,7 +229,7 @@ export default function Product() {
   };
 
   
-  const productCheck = ['Real Ingredients', '100% USA Angus Beef', 'High Protein'];
+  const productCheck = ['High Protein', '100% USA Angus Beef', 'Real Ingredients'];
 
   const handleScroll = () => {
     const addToCartButtonElement = addToCartButtonRef.current;
@@ -335,16 +329,7 @@ if(!isHydrated) {
                 </Await>
               </Suspense>
                 
-              <section 
-                aria-labelledby="product-check-heading"
-                className="w-full">
-                <h2 id="product-check-heading" className="sr-only">Product Check List</h2>
-                <ul
-                  role='list' 
-                  className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-1 gap-3 font-bold'>
-                  {productCheck.map((v, i) => <li key={i} className='flex text-xl items-end'><IconCheck className='mr-1 w-7 h-7' /> {v}</li>)}
-                </ul>
-              </section>
+              
 
 
           {/* Product description */}
@@ -359,10 +344,20 @@ if(!isHydrated) {
                       __html: descriptionHtml || '',
                     }}
                   />
+                  <div 
+                    aria-labelledby="product-check-heading"
+                    className="w-full">
+                    <h2 id="product-check-heading" className="sr-only">Product Check List</h2>
+                    <ul
+                      role='list' 
+                      className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-1 gap-3 font-bold'>
+                      {productCheck.map((v, i) => <li key={i} className='flex text-xl items-end'><IconCheck className='mr-1 w-7 h-7' /> {v}</li>)}
+                    </ul>
+                  </div>
                   <Image
                     loading={'lazy'}
                     data={{
-                      url: 'https://cdn.shopify.com/s/files/1/0641/9742/7365/files/pdp-1.jpg',
+                      url: 'https://cdn.shopify.com/s/files/1/0641/9742/7365/files/pdp-2.jpg',
                       altText: 'Astro beef jerky next to ingredients like pepper, garlic, onion, and jalapeno'
                     }}
                     aspectRatio={undefined}
@@ -402,12 +397,19 @@ if(!isHydrated) {
                 </section>
                */}
 
+               
+              {/* Product reviews 
+              <ProductReviews product={product} />
+*/}
             </div>
           </section>
         </div>
 
+
+          
+
         <hr className="border-slate-200 dark:border-slate-700 my-8" />
-        {/* DETAIL AND REVIEW */}
+     
 
 
           
@@ -548,17 +550,24 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
           </nav>
         )*/}
         <h1
-          className="text-4xl sm:text-5xl font-bold"
+          className="text-4xl sm:text-5xl font-bold px-2 text-center"
           title={product.title}
           aria-label={`Product title: ${product.title} (${selectedVariant.title})`}
         >
             {product.title + (selectedVariant.title !== 'Default Title' ? ' (' + selectedVariant.title + ')' : '')}
         </h1>
       </div>
-
-      
+{/*
+      <div className='px-2 flex'>
+        <OkendoStarRating
+          productId={product.id}
+          okendoStarRatingSnippet={product.okendoStarRatingSnippet}
+        /> 
+        <span className='ml-2'>Reviews</span>
+      </div>
+      */}
       <Prices
-        contentClass="!text-2xl font-semibold"
+        priceClass="!text-3xl mx-auto"
         price={selectedVariant.price}
         compareAtPrice={selectedVariant.compareAtPrice}
       />
@@ -831,8 +840,40 @@ const SocialSharing = ({selectedVariant}: {selectedVariant: any}) => {
     </div>
   )
 }
+
+const ProductReviews = ({product}: {product: ProductFragment}) => {
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const publicOkendoSubcriberId = rootData?.publicOkendoSubcriberId;
+
+  if (!product?.id || !publicOkendoSubcriberId) {
+    return null;
+  }
+
+  return (
+    <>
+      <hr className="border-slate-200 dark:border-slate-700" />
+
+      <div className="product-page__reviews scroll-mt-nav" id="reviews">
+        {/* HEADING */}
+        {product?.okendoReviewsSnippet ? (
+          <h2 className="text-2xl font-semibold text-center sm:text-left">
+            <span>Reviews</span>
+          </h2>
+        ) : null}
+
+        <div className="product-page__reviews-widget">
+          <OkendoReviews
+            productId={product?.id}
+            okendoReviewsSnippet={product?.okendoReviewsSnippet}
+          />
+        </div>
+      </div>
+    </>
+  );
+};
+
 export const PRODUCT_VARIANT_FRAGMENT = `#graphql
-  fragment ProductVariantFragment on ProductVariant {
+  fragment ProductVariant on ProductVariant {
     id
     availableForSale
     selectedOptions {
@@ -867,14 +908,8 @@ export const PRODUCT_VARIANT_FRAGMENT = `#graphql
   }
 `;
 
-export const PRODUCT_QUERY = `#graphql
-  query Product(
-    $country: CountryCode
-    $language: LanguageCode
-    $handle: String!
-    $selectedOptions: [SelectedOptionInput!]!
-  ) @inContext(country: $country, language: $language) {
-    product(handle: $handle) {
+const PRODUCT_FRAGMENT = `#graphql
+  fragment Product on Product {
       id
       title
       vendor
@@ -901,12 +936,30 @@ export const PRODUCT_QUERY = `#graphql
       dryness_level: metafield(namespace: "custom", key:"dryness_level") {
         value
       }
+      reviews_rating_count: metafield(namespace: "reviews", key:"rating_count") {
+        id
+        value
+        namespace
+        key
+      }
+      reviews_rating: metafield(namespace: "reviews", key:"rating") {
+        id
+        value
+        namespace
+        key
+      }
+      outstanding_features: metafield(namespace: "ciseco--product", key:"outstanding_features") {
+        id
+        value
+        namespace
+        key
+      }
       options {
         name
         values
       }
       selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {
-        ...ProductVariantFragment
+        ...ProductVariant
       }
       media(first: 4) {
         nodes {
@@ -915,13 +968,31 @@ export const PRODUCT_QUERY = `#graphql
       }
       variants(first: 1) {
         nodes {
-          ...ProductVariantFragment
+          ...ProductVariant
         }
       }
       seo {
         description
         title
       }
+      ...OkendoStarRatingSnippet
+		  ...OkendoReviewsSnippet
+  }
+  ${PRODUCT_VARIANT_FRAGMENT}
+  ${OKENDO_PRODUCT_STAR_RATING_FRAGMENT}
+	${OKENDO_PRODUCT_REVIEWS_FRAGMENT}
+` as const;
+
+
+export const PRODUCT_QUERY = `#graphql
+  query Product(
+    $country: CountryCode
+    $language: LanguageCode
+    $handle: String!
+    $selectedOptions: [SelectedOptionInput!]!
+  ) @inContext(country: $country, language: $language) {
+    product(handle: $handle) {
+      ...Product
     }
     shop {
       name
@@ -940,25 +1011,9 @@ export const PRODUCT_QUERY = `#graphql
     }
   }
   ${MEDIA_FRAGMENT}
-  ${PRODUCT_VARIANT_FRAGMENT}
+  ${PRODUCT_FRAGMENT}
 ` as const;
 
-export const VARIANTS_QUERY = `#graphql
-  query variants(
-    $country: CountryCode
-    $language: LanguageCode
-    $handle: String!
-  ) @inContext(country: $country, language: $language) {
-    product(handle: $handle) {
-      variants(first: 250) {
-        nodes {
-          ...ProductVariantFragment
-        }
-      }
-    }
-  }
-  ${PRODUCT_VARIANT_FRAGMENT}
-` as const;
 
 const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   query productRecommendations(
