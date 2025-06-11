@@ -270,7 +270,7 @@ const ProductCard: FC<ProductCardProps> = ({
             },
           ]}
           variant="secondary"
-          className="absolute right-1 bottom-0 lg:bottom-3"
+          className="absolute right-1 -bottom-2 lg:bottom-3"
           analytics={{
             products: [productAnalytics],
             totalValue: parseFloat(productAnalytics.price),

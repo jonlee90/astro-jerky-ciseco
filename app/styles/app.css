@@ -727,7 +727,7 @@ shop-pay-button {
 }
 
 .variant-button-pressed {
-  box-shadow: none;
+  box-shadow: none!important;
   transform: translate(1px, 1px);
   background-color: rgb(255, 203, 8);
   font-weight: bold;

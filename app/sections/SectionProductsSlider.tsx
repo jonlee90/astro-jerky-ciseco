@@ -22,6 +22,7 @@ import Prices from '~/components/Prices';
 import ButtonPrimary from '~/components/Button/ButtonPrimary';
 import { Link } from '~/components/Link';
 import ProductSwiper from '~/components/ProductSwiper';
+import NextPrevPressable from '~/components/NextPrev/NextPrevPressable';
 
 export function SectionProductsSlider(props: SectionProductsSliderFragment) {
   const {heading_bold, heading_light, sub_heading, body, collection, style} =
@@ -94,11 +95,13 @@ export function SectionProductsSlider(props: SectionProductsSliderFragment) {
         onSwiper={setSwiperInstance}
       />
       <div className='absolute w-full left-1/2 -translate-x-1/2 lg:w-2/3'>
-          <NextPrev
+          <NextPrevPressable
               className='z-10'
               stroke="black"
               onClickNext={() => swiperInstance.slideNext()}
               onClickPrev={() => swiperInstance.slidePrev()}
+              activeIndex={activeIndex}
+              totalItems={products?.length || 0}
             />  
         </div>
         <div className="flex gap-3 flex-col items-center justify-center text-center w-full mt-4">
@@ -129,11 +132,11 @@ export function SectionProductsSlider(props: SectionProductsSliderFragment) {
         <div>
           <Link
             to={`/beef-jerky/${activeProduct?.handle}`}
-            className='group border !border-neutral-900 hover:!bg-neutral-900 hover:text-white py-3 px-4 lg:py-3.5 lg:px-7 mx-auto items-center justify-center rounded-full grid grid-cols-10 text-lead disabled:bg-opacity-90'
+            className='group border !border-neutral-900 !bg-neutral-900 hover:!bg-neutral-700 focus:!ring-neutral-600 text-slate-50 py-3 px-4 lg:py-3.5 lg:px-7 mx-auto items-center justify-center rounded-full grid grid-cols-6 text-lead disabled:bg-opacity-90'
             aria-label="Shop Now"
           >
-            {getProductIcon(activeProduct, 24, 'group-hover:fill-white')}
-            <span className='col-start-3 col-span-7 uppercase'>View Details + Buy</span>
+            {getProductIcon(activeProduct, 24, 'fill-white')}
+            <span className='col-start-3 col-span-7 uppercase'>View Details</span>
             </Link>
         </div>
       </div>

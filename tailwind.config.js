@@ -134,7 +134,7 @@ export default {
         }
       },
       animation: {
-        marqueeLeft: 'marqueeLeft 24s linear infinite forwards',
+        marqueeLeft: 'marqueeLeft 60s linear infinite forwards',
         rotate: 'rotate 26s linear infinite',
         floating: 'floating 7s ease-in-out infinite',
       }

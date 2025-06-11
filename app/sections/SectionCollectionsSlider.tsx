@@ -17,6 +17,7 @@ import { IconCow } from '~/components/Icon';
 import { getProductIcon } from '~/components/ProductCard';
 import ProductSwiper from '~/components/ProductSwiper';
 import NextPrev from '~/components/NextPrev/NextPrev';
+import NextPrevPressable from '~/components/NextPrev/NextPrevPressable';
 
 export function SectionCollectionsSlider(
   props: SectionCollectionsSliderFragment,
@@ -115,7 +116,10 @@ export const CollectionSlider = ({
             alt={collection.image.altText || 'Product image'}
           />
         )}
-        onSlideChange={(swiper) => setActiveCollection(collections[swiper.activeIndex])}
+        onSlideChange={(swiper) => {
+          setActiveCollection(collections[swiper.activeIndex]);
+          setActiveIndex(swiper.activeIndex);
+        }}
         onSwiper={setSwiperInstance}
         initialSlide={2}
         spaceBetween={50}
@@ -127,16 +131,17 @@ export const CollectionSlider = ({
         }}
         coverflowEffect ={{
           rotate: 0,
-          modifier: 7,
+          modifier: 4,
           slideShadows: false,
         }}
       />
       <div className='absolute w-full left-1/2 -translate-x-1/2 lg:w-2/3'>
-          <NextPrev
+          <NextPrevPressable
               className='z-10'
               stroke="black"
               onClickNext={() => swiperInstance.slideNext()}
               onClickPrev={() => swiperInstance.slidePrev()}
+              activeIndex={activeIndex}
             />  
         </div>
         <div className="flex gap-3 flex-col items-center justify-center text-center w-full mt-4">
@@ -149,10 +154,10 @@ export const CollectionSlider = ({
         <div>
           <Link
             to={`/${activeCollection?.handle}`}
-            className='group border !border-neutral-900 hover:!bg-neutral-900 hover:text-white py-3 px-4 lg:py-3.5 lg:px-7 mx-auto items-center justify-center rounded-full grid grid-cols-6 text-lead disabled:bg-opacity-90'
+            className='group border !border-neutral-900 !bg-neutral-900 hover:!bg-neutral-700 focus:!ring-neutral-600 text-slate-50 py-3 px-4 lg:py-3.5 lg:px-7 mx-auto items-center justify-center rounded-full grid grid-cols-6 text-lead disabled:bg-opacity-90'
             aria-label="Shop Now"
           >
-            {getProductIcon({tags: [activeCollection.handle]}, 24, 'group-hover:fill-white')}
+            {getProductIcon({tags: [activeCollection.handle]}, 24, 'fill-white')}
             <span className='col-start-3 col-span-3 uppercase'>Shop Now</span>
             </Link>
         </div>

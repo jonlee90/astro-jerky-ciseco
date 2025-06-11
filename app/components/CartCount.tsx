@@ -8,6 +8,7 @@ import { useAside } from './Aside';
 import { RootLoader } from '~/root';
 import { useMediaQuery } from 'react-responsive';
 import { useAnalytics } from '@shopify/hydrogen';
+import { ButtonPressable } from './Button/ButtonPressable';
 
 interface CartCountProps {
   className?: string;
@@ -72,19 +73,18 @@ export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity, s
               className={`border-black border rounded-full size-14  ${className} ${cart?.totalQuantity || showCart ? '' : 'hidden'}`}
               style={{opacity}}
             >
-              <motion.div
-                className={`rounded-full bg-neutral-900 hover:bg-neutral-700`}
-                whileTap={{ x: 0, y: 0 }}
-                animate={{ x: -3, y: -3 }}
-              >
-                <Badge
-                  openCart={() => {
-                    publish('custom_cart_viewed', {cart});
-                    open('cart');
-                  }}
-                  count={cart?.totalQuantity || 0}
-                />
-              </motion.div>
+           
+                <ButtonPressable
+                  bgColor='black'
+                >
+                  <Badge
+                    openCart={() => {
+                      publish('custom_cart_viewed', {cart});
+                      open('cart');
+                    }}
+                    count={cart?.totalQuantity || 0}
+                  />
+                </ButtonPressable>
             </motion.div>
           )}
         </Await>
