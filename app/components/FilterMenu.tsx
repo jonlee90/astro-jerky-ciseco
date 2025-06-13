@@ -33,7 +33,7 @@ const categoryData = [
     icon: IconChicken
   },
   {
-    label: "Pepppered",
+    label: "Peppered",
     value: "peppered",
     icon: IconPepper
   }

@@ -28,7 +28,7 @@ const ProductFilterHiddenScrollBar = ({collectionHandle, totalProducts, filterRe
       icon: IconChicken,
     },
     {
-      label: "Pepppered",
+      label: "Peppered",
       value: "peppered-beef-jerky",
       icon: IconPepper,
     },
