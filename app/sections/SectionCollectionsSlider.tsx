@@ -18,6 +18,7 @@ import { getProductIcon } from '~/components/ProductCard';
 import ProductSwiper from '~/components/ProductSwiper';
 import NextPrev from '~/components/NextPrev/NextPrev';
 import NextPrevPressable from '~/components/NextPrev/NextPrevPressable';
+import { ButtonPressable } from '~/components/Button/ButtonPressable';
 
 export function SectionCollectionsSlider(
   props: SectionCollectionsSliderFragment,
@@ -152,14 +153,16 @@ export const CollectionSlider = ({
             
         </div>
         <div>
-          <Link
-            to={`/${activeCollection?.handle}`}
-            className='group border !border-neutral-900 !bg-neutral-900 hover:!bg-neutral-700 focus:!ring-neutral-600 text-slate-50 py-3 px-4 lg:py-3.5 lg:px-7 mx-auto items-center justify-center rounded-full grid grid-cols-6 text-lead disabled:bg-opacity-90'
+          <ButtonPressable
+            href={`/${activeCollection?.handle}`}
+            size="h-12 w-56 lg:w-60 lg:h-14"
+            className="mx-auto text-white border-black border group"
+            buttonClass="grid grid-cols-8 py-3 px-8  lg:py-3.5"
             aria-label="Shop Now"
           >
             {getProductIcon({tags: [activeCollection.handle]}, 24, 'fill-white')}
-            <span className='col-start-3 col-span-3 uppercase'>Shop Now</span>
-            </Link>
+            <span className='col-span-7 uppercase'>Shop Now</span>
+          </ButtonPressable>
         </div>
       </div>
        {/*<div className='flex flex-col lg:flex-row-reverse'>

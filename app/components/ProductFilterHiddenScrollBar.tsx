@@ -45,7 +45,7 @@ const ProductFilterHiddenScrollBar = ({collectionHandle, totalProducts, filterRe
     const filterElement = filterRef.current;
     if (filterElement) {
       const filterPosition = filterElement.getBoundingClientRect().top;
-      const shouldStick = filterPosition <= 10;
+      const shouldStick = filterPosition <= 61;
 
       // Only update isSticky when there's an actual change
       if (shouldStick !== isSticky) {

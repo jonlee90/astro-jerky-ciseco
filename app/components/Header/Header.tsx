@@ -14,7 +14,11 @@ import { useMediaQuery } from 'react-responsive';
 import useWindowScroll from './useWindowScroll';
 import BackButton from './BackButton';
 import { TopHeader } from './TopHeader';
+import { IconChicken, IconCow, IconHoney, IconPepper, IconSpicy } from '../Icon';
+import ButtonPrimary from '../Button/ButtonPrimary';
+import SocialsList from '../SocialsList';
 
+type Viewport = 'desktop' | 'mobile';
 interface HeaderProps {
   header: HeaderMenuQuery;
   cart: Promise<CartApiQueryFragment | null>;
@@ -56,14 +60,14 @@ export function Header({
   ];
   return (
     <>
-      <AnnouncementBar 
-        content={content}
-        setVisible={setAnnouncementBarVisible}
-      />
       {/*
         <MainNav openMenu={openMenu} openCart={openCart} isHome={isHome} />
       */}
       
+      <AnnouncementBar 
+        content={content}
+        setVisible={setAnnouncementBarVisible}
+      />
       <TopHeader 
             isLoggedIn={isLoggedIn}
             headerMenu={headerMenu}
@@ -73,11 +77,7 @@ export function Header({
             isBundlePage={isBundlePage}
             isAnnouncementBarVisible={isAnnouncementBarVisible}
       />
-      {isHydrated && (
-        <>
-          {isBackButton || isBundlePage  ? (
-            <>
-            {isBundlePage && (
+          {isHydrated && (isBundlePage)  && (
               <>
                 <CartCount
                   opacity={opacity}
@@ -85,14 +85,120 @@ export function Header({
                   showCart={true}
                 />
               </>
-            )}
-            </>
-          ) : (
-            <NavMobileBottom opacity={opacity} isLoggedIn={isLoggedIn} cart={cart} />
           )}
-        </>
-      )}
     </>
   );
 }
 
+export function HeaderMenu({
+  header,
+  viewport,
+  publicStoreDomain,
+  primaryDomainUrl
+}: {
+  header: HeaderProps['header'];
+  viewport: Viewport;
+  publicStoreDomain: HeaderProps['publicStoreDomain'];
+  primaryDomainUrl: HeaderProps['primaryDomainUrl'];
+}) {
+  const {mobileSideMenu} = header;
+  const className = `header-menu-${viewport}`;
+  const {close} = useAside();
+  const renderIcon = (label: string, className = 'self-center') => {
+    switch (label.toLowerCase()) { // Using lowercase comparison for case-insensitive match
+      case 'hot & spicy':
+        return <IconSpicy className={className} size={24} />;
+      case 'bbq':
+        return <IconHoney className={className} size={24} />;
+      case 'chicken':
+        return <IconChicken className={className} size={24} />;
+      case 'peppered':
+        return <IconPepper className={className} size={24} />;
+      case 'shop all':
+        return <IconCow className={className} size={24} />;
+      default:
+        return null;
+    }
+  };
+
+    
+  return (
+    <nav className={className + ' grid grid-cols-1 gap-7 mt-14'} role="navigation">
+      {(mobileSideMenu || '').items.map((item, i) => {
+        if (!item.url) return null;
+
+        // if the url is internal, we strip the domain
+        const url =
+          item.url.includes('myshopify.com') ||
+          item.url.includes(publicStoreDomain) ||
+          item.url.includes(primaryDomainUrl)
+            ? new URL(item.url).pathname
+            : item.url;
+        return (
+          <div className={`grid grid-cols-1 ${item.items.length > 0 ? 'gap-7' : ''}`}>
+            <NavLink
+              className={`header-menu-item font-bold text-2xl`}
+              end
+              key={item.id}
+              onClick={close}
+              prefetch="intent"
+              style={activeLinkStyle}
+              to={url}
+            >
+              {item.title}
+            </NavLink>
+            {item.items && (
+              <div className='grid grid-cols-1 ml-5 gap-5'>
+                {item.items.map((subItem) => (
+                  <NavLink
+                    className="header-menu-subItems text-xl"
+                    end
+                    key={subItem.id}
+                    onClick={close}
+                    prefetch="intent"
+                    style={activeLinkStyle}
+                    to={subItem.url}
+                  >
+                    <div className="flex flex-row">
+                      {renderIcon(subItem.title)}
+                      <span className='ml-2'>{subItem.title}</span>
+                    </div>
+                  </NavLink>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })}
+
+      <div className='grid grid-cols-1 gap-5 mt-10 absolute bottom-5'>
+
+        <SocialsList
+          data={header?.socials?.edges.map((edge) => {
+            const node = edge.node;
+            return {
+              name: node.title?.value || '',
+              icon: node.icon?.reference?.image?.url || '',
+              href: node.link?.value || '',
+            };
+          })}
+          itemClass="block opacity-90 hover:opacity-100"
+          className="!gap-10"
+        />
+      </div>
+    </nav>
+  );
+}
+
+function activeLinkStyle({
+  isActive,
+  isPending,
+}: {
+  isActive: boolean;
+  isPending: boolean;
+}) {
+  return {
+    fontWeight: isActive ? 'bold' : undefined,
+    color: isPending ? 'grey' : 'black',
+  };
+}

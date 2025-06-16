@@ -307,11 +307,7 @@ export function IconAdd({className = ''}) {
     <svg className={`w-12 ${className}`} enableBackground="new 0 0 24 24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 24c-6.617 0-12-5.383-12-12s5.383-12 12-12 12 5.383 12 12-5.383 12-12 12zm0-22c-5.514 0-10 4.486-10 10s4.486 10 10 10 10-4.486 10-10-4.486-10-10-10zm5 11h-10c-.552 0-1-.448-1-1s.448-1 1-1h10c.553 0 1 .448 1 1s-.447 1-1 1zm-5 5c-.552 0-1-.447-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10c0 .553-.448 1-1 1z"/></svg>
   )
 }
-export function IconMinus({className = '', size = 48}) {
-  return (
-    <svg className={`w-12 ${className} feather feather-minus-circle`}  fill="none" height={size} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width={size} xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><line x1="8" x2="16" y1="12" y2="12"/></svg>
-    )
-  }
+
 export function IconFacebook({size = 18}) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24"><path fill="black" d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4z"/></svg>
@@ -481,4 +477,36 @@ export function IconCow({className = 'fill-black', size = 24}) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" className={` transition-colors ${className}`}  width={size} height={size} viewBox="0 0 256 256"><path d="M104 192a8 8 0 0 1-8 8H80a8 8 0 0 1 0-16h16a8 8 0 0 1 8 8m72-8h-16a8 8 0 0 0 0 16h16a8 8 0 0 0 0-16m68.39-61.88A16 16 0 0 1 232 128h-32v32a40 40 0 0 1-24 72H80a40 40 0 0 1-24-72v-32H24a16 16 0 0 1-15.69-19a56.13 56.13 0 0 1 54.91-45h1.64A55.83 55.83 0 0 1 48 24a8 8 0 0 1 16 0a40 40 0 0 0 40 40h48a40 40 0 0 0 40-40a8 8 0 0 1 16 0a55.83 55.83 0 0 1-16.86 40h1.64a56.13 56.13 0 0 1 54.91 45a15.82 15.82 0 0 1-3.3 13.12M144 124a12 12 0 1 0 12-12a12 12 0 0 0-12 12m-56 0a12 12 0 1 0 12-12a12 12 0 0 0-12 12m-32-12v-8a39.8 39.8 0 0 1 8-24h-.8A40.09 40.09 0 0 0 24 112Zm144 80a24 24 0 0 0-24-24H80a24 24 0 0 0 0 48h96a24 24 0 0 0 24-24m32-80a40.08 40.08 0 0 0-39.2-32h-.8a39.8 39.8 0 0 1 8 24v8Z"/></svg>
   )
+}
+export function IconMenuCircle(props: IconProps) {
+  return (
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <title>Menu</title>
+      <circle cx="6" cy="6" r="2" fill="currentColor"/>
+      <circle cx="12" cy="6" r="2" fill="currentColor"/>
+      <circle cx="18" cy="6" r="2" fill="currentColor"/>
+      <circle cx="6" cy="12" r="2" fill="currentColor"/>
+      <circle cx="12" cy="12" r="2" fill="currentColor"/>
+      <circle cx="18" cy="12" r="2" fill="currentColor"/>
+      <circle cx="6" cy="18" r="2" fill="currentColor"/>
+      <circle cx="12" cy="18" r="2" fill="currentColor"/>
+      <circle cx="18" cy="18" r="2" fill="currentColor"/>
+    </svg>
+
+  );
+}
+export function IconPlus({size = 'size-10 w-auto h-auto'}) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" className={size} viewBox="0 0 24 24" role="img">
+      <path fill="black" fill-rule="evenodd" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm.75 8a.75.75 0 0 0-1.5 0v3.25H8a.75.75 0 0 0 0 1.5h3.25V16a.75.75 0 0 0 1.5 0v-3.25H16a.75.75 0 0 0 0-1.5h-3.25z" clip-rule="evenodd" />
+    </svg>
+  );
+}
+
+export function IconMinus({size = 'size-10 w-auto h-auto'}) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" className={size} viewBox="0 0 24 24" role="img">
+      <path fill="black" fill-rule="evenodd" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-4 11.25a.75.75 0 0 0 0 1.5h8a.75.75 0 0 0 0-1.5H8z" clip-rule="evenodd" />
+    </svg>
+  );
 }

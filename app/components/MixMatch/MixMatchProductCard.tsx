@@ -7,6 +7,8 @@ import { motion } from 'framer-motion';
 import { getProductIcon } from '../ProductCard';
 import ProductLevelIndicator from '../ProductLevelIndicator';
 import { getProductCategory } from '../ProductCard';
+import { IconMinus, IconPlus } from '../Icon';
+import { ButtonPressable } from '../Button/ButtonPressable';
 
 interface Product {
   id: string;
@@ -68,26 +70,27 @@ export function MixMatchProductCard({
   const isAvailable = cardProduct.availableForSale;
 
   const negativeButtonProps = quantity > 0 && isAvailable ? {
-    whileHover: { scale: 1.05 },
-    whileTap: { scale: 0.95 },
     onClick: () => clickButton(cardProduct, false, isSmall),
-    'aria-label': `Remove one ${cardProduct.title} from the bundle`
+    'aria-label': `Remove one ${cardProduct.title} from the bundle`,
+    className: 'border border-black'
   } : { 
     className: "cursor-not-allowed opacity-50",
+    disabled: true,
     'aria-disabled': true,
     'aria-label': `Cannot remove ${cardProduct.title}, none added yet.`
    };
 
   const plusButtonProps = sumBags < currentQuantity && isAvailable ? {
-    whileHover: { scale: 1.05 },
-    whileTap: { scale: 0.95 },
     onClick: () => clickButton(cardProduct, true, isSmall),
     'aria-label': `Add one ${cardProduct.title} to the bundle`,
+    className: 'border border-black'
   } : { 
     className: "cursor-not-allowed opacity-50",
+    disabled: true,
     'aria-disabled': true,
     'aria-label': `Cannot add more ${cardProduct.title}, limit reached.`,
   };
+
   return (
     <motion.div 
       className={clsx('mySnapItem snap-start shrink-0 py-3 w-52', { 'cursor-not-allowed opacity-50': !isAvailable })}
@@ -127,15 +130,14 @@ export function MixMatchProductCard({
         </div>
         <div className="grid">
           <div className="flex gap-8 justify-between items-center">
-            <motion.button 
+            <ButtonPressable 
               {...negativeButtonProps}
-              type="button"
+              bgColor='white'
+              size='size-10'
               aria-live="polite"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" className="size-10" viewBox="0 0 24 24" role="img">
-                <path fill="black" fillRule="evenodd" d="M12 1.25C6.063 1.25 1.25 6.063 1.25 12S6.063 22.75 12 22.75S22.75 17.937 22.75 12S17.937 1.25 12 1.25m-4 10a.75.75 0 0 0 0 1.5h8a.75.75 0 0 0 0-1.5z" clipRule="evenodd" />
-              </svg>
-            </motion.button>
+              <IconMinus/>
+            </ButtonPressable>
             <span 
               id={`quantity-${cardProduct.id}`}
               className="text-xl"
@@ -143,15 +145,14 @@ export function MixMatchProductCard({
             >
               {quantity}
             </span>
-            <motion.button 
+            <ButtonPressable 
               {...plusButtonProps}
-              type="button"
+              bgColor='white'
+              size='size-10'
               aria-live="polite"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" className="size-10" viewBox="0 0 24 24" role="img">
-                <path fill="black" fillRule="evenodd" d="M12 1.25C6.063 1.25 1.25 6.063 1.25 12S6.063 22.75 12 22.75S22.75 17.937 22.75 12S17.937 1.25 12 1.25M12.75 8a.75.75 0 0 0-1.5 0v3.25H8a.75.75 0 0 0 0 1.5h3.25V16a.75.75 0 0 0 1.5 0v-3.25H16a.75.75 0 0 0 0-1.5h-3.25z" clipRule="evenodd" />
-              </svg>
-            </motion.button>
+              <IconPlus />
+            </ButtonPressable>
           </div>
         </div>
       </div>

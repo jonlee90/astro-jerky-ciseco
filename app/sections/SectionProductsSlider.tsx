@@ -23,6 +23,7 @@ import ButtonPrimary from '~/components/Button/ButtonPrimary';
 import { Link } from '~/components/Link';
 import ProductSwiper from '~/components/ProductSwiper';
 import NextPrevPressable from '~/components/NextPrev/NextPrevPressable';
+import { ButtonPressable } from '~/components/Button/ButtonPressable';
 
 export function SectionProductsSlider(props: SectionProductsSliderFragment) {
   const {heading_bold, heading_light, sub_heading, body, collection, style} =
@@ -130,14 +131,17 @@ export function SectionProductsSlider(props: SectionProductsSliderFragment) {
             
         </div>
         <div>
-          <Link
-            to={`/beef-jerky/${activeProduct?.handle}`}
-            className='group border !border-neutral-900 !bg-neutral-900 hover:!bg-neutral-700 focus:!ring-neutral-600 text-slate-50 py-3 px-4 lg:py-3.5 lg:px-7 mx-auto items-center justify-center rounded-full grid grid-cols-6 text-lead disabled:bg-opacity-90'
+          <ButtonPressable
+            href={`/beef-jerky/${activeProduct?.handle}`}
+            size="h-12 w-56 lg:w-60 lg:h-14"
+            className="mx-auto text-white border-black border"
+            buttonClass="grid grid-cols-8 py-3 px-8  lg:py-3.5"
             aria-label="Shop Now"
           >
             {getProductIcon(activeProduct, 24, 'fill-white')}
-            <span className='col-start-3 col-span-7 uppercase'>View Details</span>
-            </Link>
+            <span className='col-span-7 uppercase'>View Details</span>
+          </ButtonPressable>
+          
         </div>
       </div>
      </>

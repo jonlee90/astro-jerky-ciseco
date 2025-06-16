@@ -16,8 +16,8 @@ const SocialsList: FC<SocialsListProps> = ({
   data = [],
 }) => {
   return (
-    <nav
-      className={`nc-SocialsList flex flex-wrap gap-2.5 text-2xl text-neutral-600 ${className}`}
+    <div
+      className={`nc-SocialsList flex flex-wrap gap-5 text-2xl text-neutral-600 ${className}`}
       aria-label='Footer Social Media links'
     >
       {data.map((item, i) => (
@@ -42,7 +42,7 @@ const SocialsList: FC<SocialsListProps> = ({
           )}
         </a>
       ))}
-    </nav>
+    </div>
   );
 };
 

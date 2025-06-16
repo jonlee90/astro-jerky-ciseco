@@ -69,7 +69,6 @@ const Footer: React.FC<FooterProps> = ({
                 };
               })}
               itemClass="block opacity-90 hover:opacity-100"
-              className="!gap-5"
             />
           </div>
           <nav role='navigation' aria-label='Footer Navigation' className="mt-16 flex flex-wrap justify-center gap-5">

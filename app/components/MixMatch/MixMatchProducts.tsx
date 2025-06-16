@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { SwitchTab } from '../Tabs';
-import { AddToCartButton } from '../AddToCartButton';
+import { AddToCartButton } from '../Button/AddToCartButton';
 import { MixMatchProductsSlider } from './MixMatchProductsSlider';
 import { useAside } from '../Aside';
 import { ProductVariant } from '@shopify/hydrogen/storefront-api-types';

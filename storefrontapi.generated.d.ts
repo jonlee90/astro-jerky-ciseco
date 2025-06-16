@@ -597,12 +597,30 @@ export type HeaderMenuQueryVariables = StorefrontAPI.Exact<{
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
   headerMenuHandle: StorefrontAPI.Scalars['String']['input'];
+  mobileMenuHandle: StorefrontAPI.Scalars['String']['input'];
   featuredCollectionsFirst: StorefrontAPI.Scalars['Int']['input'];
   socialsFirst: StorefrontAPI.Scalars['Int']['input'];
 }>;
 
 export type HeaderMenuQuery = {
   headerMenu?: StorefrontAPI.Maybe<
+    Pick<StorefrontAPI.Menu, 'id' | 'title'> & {
+      items: Array<
+        Pick<
+          StorefrontAPI.MenuItem,
+          'id' | 'resourceId' | 'tags' | 'title' | 'type' | 'url'
+        > & {
+          items: Array<
+            Pick<
+              StorefrontAPI.MenuItem,
+              'id' | 'resourceId' | 'tags' | 'title' | 'type' | 'url'
+            >
+          >;
+        }
+      >;
+    }
+  >;
+  mobileSideMenu?: StorefrontAPI.Maybe<
     Pick<StorefrontAPI.Menu, 'id' | 'title'> & {
       items: Array<
         Pick<
@@ -4284,7 +4302,7 @@ interface GeneratedQueryTypes {
     return: FooterMenuQuery;
     variables: FooterMenuQueryVariables;
   };
-  '#graphql\n  query HeaderMenu(\n    $language: LanguageCode\n    $country: CountryCode\n    $headerMenuHandle: String!\n    $featuredCollectionsFirst: Int!\n    $socialsFirst: Int!\n  ) @inContext(language: $language, country: $country) {\n    headerMenu: menu(handle: $headerMenuHandle) {\n      ...Menu\n    }\n    featuredCollections: collections(first: $featuredCollectionsFirst, sortKey: UPDATED_AT) {\n      nodes {\n        ...CommonCollectionItem\n      }\n    }\n    socials: metaobjects(type: "ciseco--social", first: $socialsFirst) {\n      edges {\n        node {\n          type\n          id\n          handle\n          title: field(key: "title") {\n            type\n            key\n            value\n          }\n          description: field(key: "description") {\n            type\n            key\n            value\n          }\n          icon: field(key: "icon") {\n            type\n            key\n            reference {\n              ... on MediaImage {\n                image {\n                  altText\n                  url\n                  width\n                  height\n                }\n              }\n            }\n          }\n          link: field(key: "link") {\n            type\n            key\n            value\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment MenuItem on MenuItem {\n    id\n    resourceId\n    tags\n    title\n    type\n    url\n  }\n  fragment ChildMenuItem on MenuItem {\n    ...MenuItem\n  }\n  fragment ParentMenuItem on MenuItem {\n    ...MenuItem\n    items {\n      ...ChildMenuItem\n    }\n  }\n  fragment Menu on Menu {\n    id\n    title\n    items {\n      ...ParentMenuItem\n    }\n  }\n\n  #graphql\n  fragment CommonCollectionItem on Collection {\n    id\n    title\n    updatedAt\n    description\n    handle\n    image {\n      altText\n      width\n      height\n      url\n    }\n    horizontal_image: metafield(key: "horizontal_image", namespace: "ciseco--collection") {\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            altText\n            height\n            width\n            url\n          }\n        }\n      }\n    }\n    seo {\n      description\n      title\n    }\n  }\n\n': {
+  '#graphql\n  query HeaderMenu(\n    $language: LanguageCode\n    $country: CountryCode\n    $headerMenuHandle: String!\n    $mobileMenuHandle: String!\n    $featuredCollectionsFirst: Int!\n    $socialsFirst: Int!\n  ) @inContext(language: $language, country: $country) {\n    headerMenu: menu(handle: $headerMenuHandle) {\n      ...Menu\n    }\n    mobileSideMenu: menu(handle: $mobileMenuHandle) {\n      ...Menu\n    }\n    featuredCollections: collections(first: $featuredCollectionsFirst, sortKey: UPDATED_AT) {\n      nodes {\n        ...CommonCollectionItem\n      }\n    }\n    socials: metaobjects(type: "ciseco--social", first: $socialsFirst) {\n      edges {\n        node {\n          type\n          id\n          handle\n          title: field(key: "title") {\n            type\n            key\n            value\n          }\n          description: field(key: "description") {\n            type\n            key\n            value\n          }\n          icon: field(key: "icon") {\n            type\n            key\n            reference {\n              ... on MediaImage {\n                image {\n                  altText\n                  url\n                  width\n                  height\n                }\n              }\n            }\n          }\n          link: field(key: "link") {\n            type\n            key\n            value\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment MenuItem on MenuItem {\n    id\n    resourceId\n    tags\n    title\n    type\n    url\n  }\n  fragment ChildMenuItem on MenuItem {\n    ...MenuItem\n  }\n  fragment ParentMenuItem on MenuItem {\n    ...MenuItem\n    items {\n      ...ChildMenuItem\n    }\n  }\n  fragment Menu on Menu {\n    id\n    title\n    items {\n      ...ParentMenuItem\n    }\n  }\n\n  #graphql\n  fragment CommonCollectionItem on Collection {\n    id\n    title\n    updatedAt\n    description\n    handle\n    image {\n      altText\n      width\n      height\n      url\n    }\n    horizontal_image: metafield(key: "horizontal_image", namespace: "ciseco--collection") {\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            altText\n            height\n            width\n            url\n          }\n        }\n      }\n    }\n    seo {\n      description\n      title\n    }\n  }\n\n': {
     return: HeaderMenuQuery;
     variables: HeaderMenuQueryVariables;
   };

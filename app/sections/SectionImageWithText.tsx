@@ -21,6 +21,7 @@ import Input from '~/components/MyInput';
 import clsx from 'clsx';
 import { hexToRgba } from '~/lib/utils';
 import { IconCow } from '~/components/Icon';
+import { ButtonPressable } from '~/components/Button/ButtonPressable';
 
 export function SectionImageWithText(props: SectionImageWithTextFragment) {
   const section = parseSection<
@@ -208,14 +209,16 @@ export function SectionImageWithText(props: SectionImageWithTextFragment) {
                 </ButtonPrimary>
               )}
               {!!button_2?.href && (
-                <ButtonSecondary
+                <ButtonPressable
                   href={button_2.href.value || undefined}
-                  bgColor='bg-secondary-600 hover:!bg-secondary-900'
-                  className="py-3 px-8  lg:py-3.5 focus:!ring-neutral-600 grid grid-cols-7"
+                  size="h-12 w-56 lg:w-60 lg:h-14"
+                  className="mx-auto text-white border-black border bg-secondary-600"
+                  buttonClass="grid grid-cols-8 py-3 px-8 lg:py-3.5 bg-secondary-600 hover:!bg-secondary-900"
+                  aria-label="Shop Now"
                 >
                   <IconCow className="size-6 col-span-1 fill-white"  />
-                  <span className='uppercase col-span-6'>{button_2?.text?.value || 'Learn more'}</span>
-                </ButtonSecondary>
+                  <span className='uppercase col-span-7'>{button_2?.text?.value || 'Learn more'}</span>
+                </ButtonPressable>
               )}
             </div>
           )}

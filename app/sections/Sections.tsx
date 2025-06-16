@@ -80,7 +80,7 @@ export function Sections({
       }}
     >
 
-      <HeroSlider />
+      <HeroSlider key={0} />
       
       {sections?.references?.nodes.map((section, index, arr) => {
 
@@ -173,6 +173,7 @@ export function Sections({
 
         </section>*/}
         <section 
+            key={sections?.references?.nodes.length || 1}
             aria-labelledby="email-signup-form"
             className='bg-logo-green w-full'>
           <h2 id="email-signup-form" className="sr-only">

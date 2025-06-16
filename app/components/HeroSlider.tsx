@@ -6,6 +6,8 @@ import {ArrowLeftIcon} from '@heroicons/react/24/solid';
 import { Link } from "./Link";
 import ButtonPrimary from './Button/ButtonPrimary';
 import { IconCow } from './Icon';
+import { ButtonPressableLink } from './Button/ButtonPressableLink';
+import { ButtonPressable } from './Button/ButtonPressable';
 
 const HeroSlider = () => {
   const products = [
@@ -82,14 +84,16 @@ const HeroSlider = () => {
               <p className="text-lg">
               Providing quality hand-crafted jerky for our patrons since 2013.
               </p>
-                  <Link
-                    to="/best-beef-jerky-flavors"
-                    className='py-3 px-4 lg:py-3.5 lg:px-7 mx-auto items-center justify-center rounded-full grid grid-cols-8 w-64 h-[50px] text-lead !bg-neutral-900 hover:!bg-neutral-700 focus:!ring-neutral-600 text-slate-50 disabled:bg-opacity-90'
-                    aria-label="Shop Now"
-                  >
-                    <IconCow className="size-6 text-white col-span-1 fill-white"  />
-                    <span className='col-span-7'>SHOP NOW</span>
-                    </Link>
+
+              <ButtonPressable
+                href="/best-beef-jerky-flavors"
+                size="h-12 w-56 lg:w-60 lg:h-14"
+                className="mx-auto text-white border-black border"
+                buttonClass="grid grid-cols-8 py-3 px-8  lg:py-3.5"
+              >
+                <IconCow className="size-6 text-white col-span-1 fill-white" />
+                <span className='col-span-7'>SHOP NOW</span>
+              </ButtonPressable>
             </div>
           </div>
 

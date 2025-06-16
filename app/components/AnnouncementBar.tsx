@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { IconClose, IconXMark } from './Icon';
+import { ButtonClose } from './Button/ButtonClose';
 
 interface AnnouncementBarProps {
   content: string[];
@@ -17,7 +18,7 @@ export function AnnouncementBar({
     <div
       role="region"
       aria-label="Announcement Bar"
-      className="flex items-center shadow-lightHeader justify-center overflow-hidden bg-yellow-400 text-black h-12 sticky z-[96] top-0 mb-[3px]"
+      className="flex items-center shadow-lightHeader justify-center overflow-hidden bg-yellow-400 text-black h-12 z-[96] top-0"
     >
       <div className="flex whitespace-nowrap sm-max:animate-marqueeLeft">
         {content.map((message, index) => (
@@ -39,16 +40,13 @@ export function AnnouncementBar({
         ))}
       </div>
       {/* Close Button */}
-      <button
+      <ButtonClose 
         onClick={() => {
-          setVisible(false)
-          setIsVisible(false)
-        }} // Hide the bar on click
-        className="absolute right-2 text-white bg-black text-center hover:bg-slate-800 focus:outline-none rounded-full p-1"
-        aria-label="Close Announcement Bar"
-      >
-        <IconClose />
-      </button>
+          setVisible(false);
+          setIsVisible(false);
+        }}
+        className="absolute right-2"
+      />
     </div>
   );
 }

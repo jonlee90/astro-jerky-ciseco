@@ -14,6 +14,7 @@ import {
 } from '@headlessui/react';
 import {IconClose} from './Icon';
 import { motion } from 'framer-motion';
+import { ButtonClose } from './Button/ButtonClose';
 
 const swipePower = (offset: number, velocity: number) => {
   return Math.abs(offset) * velocity;
@@ -97,9 +98,9 @@ export function Aside({
                   <DialogPanel className="w-screen max-w-lg text-left align-middle transition-all transform shadow-xl h-screen bg-white overflow-hidden">
                     <div className="flex flex-col h-full px-5 md:px-8">
                       <header
-                        className={`flex-shrink-0 flex items-center h-16 md:h-20 border-b border-slate-100 ${
+                        className={`flex-shrink-0 flex items-center h-16 md:h-20 border-slate-100 ${
                           isHeading ? 'justify-between' : 'justify-end'
-                        }`}
+                        } ${renderHeading ? '' : ' border-b'}`}
                       >
                         {isHeading && (
                           <DialogTitle>
@@ -115,14 +116,10 @@ export function Aside({
                           </DialogTitle>
                         )}
 
-                        <button
-                          type="button"
-                          className="p-4 -m-4 transition text-primary hover:text-primary/50"
+                        <ButtonClose 
                           onClick={onClose}
-                          data-test="close-cart"
-                        >
-                          <IconClose aria-label="Close panel" />
-                        </button>
+                          className="absolute right-2"
+                          />
                       </header>
                       <div className="flex-1 overflow-hidden">{children}</div>
                     </div>
@@ -166,7 +163,6 @@ const AsideContext = createContext<AsideContextValue | null>(null);
 
 Aside.Provider = function AsideProvider({children}: {children: ReactNode}) {
   const [type, setType] = useState<AsideType>('closed');
-
   return (
     <AsideContext.Provider
       value={{

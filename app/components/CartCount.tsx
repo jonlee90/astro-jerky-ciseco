@@ -14,6 +14,7 @@ interface CartCountProps {
   className?: string;
   opacity: number;
   showCart?: boolean;
+  is3D?: boolean;
 }
 
 interface BadgeProps {
@@ -28,12 +29,12 @@ const Badge: React.FC<BadgeProps> = ({ openCart, count }) => {
     () => (
       <>
         <IconCart className="size-8" />
-        <div
+        {count ? (<div
           aria-label={`Cart has ${count} item`}
-          className='text-black bg-white absolute top-3 right-2.5 text-sm font-medium subpixel-antialiased size-4 flex items-center justify-center text-center rounded-full'
+          className='text-black bg-white absolute top-3 right-2.5 text-xs font-medium subpixel-antialiased size-3 flex items-center justify-center text-center rounded-full'
         >
           <span>{count || 0}</span>
-        </div>
+        </div>) : <></>}
       </>
     ),
     [count],
@@ -42,7 +43,7 @@ const Badge: React.FC<BadgeProps> = ({ openCart, count }) => {
   return isHydrated ? (
     <button
       onClick={openCart}
-      className="relative flex items-center justify-center size-14 focus:ring-primary/5"
+      className="relative flex items-center justify-center size-12 focus:ring-primary/5"
       aria-controls="CartDrawer"
       aria-label="View Cart"
       role="button"
@@ -52,14 +53,14 @@ const Badge: React.FC<BadgeProps> = ({ openCart, count }) => {
   ) : (
     <Link
       to="/cart"
-      className="relative flex items-center justify-center size-14 focus:ring-primary/5"
+      className="relative flex items-center justify-center size-12 focus:ring-primary/5"
     >
       {BadgeCounter}
     </Link>
   );
 };
 
-export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity, showCart = false}) => {
+export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity, showCart = false, is3D = true}) => {
   const rootData = useRouteLoaderData<RootLoader>('root');
   const {publish} = useAnalytics();
 //  const isMobile = useMediaQuery({maxWidth: 767});
@@ -70,10 +71,10 @@ export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity, s
         <Await resolve={rootData?.cart}>
           {(cart) => (
             <motion.div
-              className={`border-black border rounded-full size-14  ${className} ${cart?.totalQuantity || showCart ? '' : 'hidden'}`}
+              className={`border-black border rounded-full size-12  ${className} ${cart?.totalQuantity || showCart ? '' : 'hidden'}`}
               style={{opacity}}
             >
-           
+           {is3D ?
                 <ButtonPressable
                   bgColor='black'
                 >
@@ -85,6 +86,15 @@ export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity, s
                     count={cart?.totalQuantity || 0}
                   />
                 </ButtonPressable>
+                :
+                <Badge
+                    openCart={() => {
+                      publish('custom_cart_viewed', {cart});
+                      open('cart');
+                    }}
+                    count={cart?.totalQuantity || 0}
+                  />
+                }
             </motion.div>
           )}
         </Await>

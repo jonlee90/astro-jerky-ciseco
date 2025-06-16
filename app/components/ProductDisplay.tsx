@@ -4,7 +4,7 @@ import {Image} from '@shopify/hydrogen';
 import { motion } from 'framer-motion';
 import React, { Suspense, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import { AddToCartButton } from './AddToCartButton';
+import { AddToCartButton } from './Button/AddToCartButton';
 import { useAside } from './Aside';
 import { IconArrowRight } from './Icon';
 import Prices from './Prices';

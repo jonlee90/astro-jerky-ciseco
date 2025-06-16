@@ -154,9 +154,9 @@ shop-pay-button {
     -webkit-appearance: none;
   }
 
-  a.active {
+  /*a.active {
     @apply border-b;
-  }
+  }*/
 
   .prose {
     h1,
@@ -799,11 +799,11 @@ a.disabled {
 }
 
 .productFilterHiddenScrollBar {
-  background-color: rgb(245, 245, 245);
+  background-color: #d5d5d5;
 }
 .sticky-filter {
   position: sticky;
-  top: 0;
+  top: 61px;
   z-index: 99; /* Adjust if you need the filter to stay above other content */
 }
 

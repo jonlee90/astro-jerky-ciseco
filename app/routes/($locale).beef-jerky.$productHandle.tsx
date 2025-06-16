@@ -20,7 +20,7 @@ import type {
 import {ProductGallery} from '~/components/ProductGallery';
 import {Skeleton} from '~/components/Skeleton';
 import {Link} from '~/components/Link';
-import {AddToCartButton} from '~/components/AddToCartButton';
+import {AddToCartButton} from '~/components/Button/AddToCartButton';
 import {seoPayload} from '~/lib/seo.server';
 import type {Storefront} from '~/lib/type';
 import {routeHeaders} from '~/data/cache';
@@ -740,7 +740,7 @@ const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPri
   const {open} = useAside();
   const isPack = selectedVariant.product.title.includes('The Classic Pack');
   return (
-    <div className='col-span-4 flex flex-row gap-3'>
+    <div className='col-span-4 flex flex-row gap-3 items-center'>
         <div className={`text-base border-black border w-full`}>
           <AddToCartButton
             lines={[
@@ -793,7 +793,7 @@ const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPri
             
           </AddToCartButton>
         </div>
-        {isBackButton && (<CartCount opacity={1} className={`cursor-pointer size-14 md:hidden`} />)}
+        {isBackButton && (<CartCount opacity={1} className={`cursor-pointer md:hidden`} />)}
     </div>
   )
 }

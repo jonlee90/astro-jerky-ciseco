@@ -5,7 +5,7 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "shopify hydrogen dev --codegen",
+    "dev": "shopify hydrogen dev --codegen --port 3001",
     "build": "shopify hydrogen build --codegen",
     "preview": "npm run build && shopify hydrogen preview",
     "e2e": "npx playwright test",

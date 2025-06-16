@@ -11,8 +11,9 @@ import {CartLoading} from './CartLoading';
 import {CartMain} from './CartMain';
 import { Aside, useAside } from './Aside';
 import type { RootLoader } from '~/root';
-import { Header } from './Header/Header';
+import { Header, HeaderMenu } from './Header/Header';
 import { MotionConfig } from 'framer-motion';
+import {Image} from '@shopify/hydrogen';
 
 
 type LayoutProps = {
@@ -39,6 +40,7 @@ export function PageLayout({
     <Aside.Provider>
       <MotionConfig reducedMotion="user">
         <CartAside cart={cart} />
+        <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} primaryDomainUrl={primaryDomainUrl}/>
           <div>
             <a href="#mainContent" className="sr-only">
               Skip to content
@@ -83,7 +85,40 @@ function CartAside({cart}: {cart: LayoutProps['cart']}) {
     </Aside>
   );
 }
-
+function MobileMenuAside({
+  header,
+  publicStoreDomain,
+  primaryDomainUrl
+}: {
+  header: LayoutProps['header'];
+  publicStoreDomain: LayoutProps['publicStoreDomain'];
+  primaryDomainUrl: string;
+}) {
+  return (
+    header.mobileSideMenu &&
+    publicStoreDomain && (
+      <Aside 
+        type="mobile"  
+        openFrom="left" 
+        renderHeading={() => 
+        <img
+          src='https://cdn.shopify.com/s/files/1/0641/9742/7365/files/Astro_Logo_Alt.png?v=1750022263'
+          alt={'Astro Logo'}
+          className="size-20 top-5 absolute"
+        />
+        }
+        
+      >
+        <HeaderMenu
+          header={header}
+          viewport="mobile"
+          publicStoreDomain={publicStoreDomain}
+          primaryDomainUrl={primaryDomainUrl}
+        />
+      </Aside>
+    )
+  );
+}
 export function HeaderMenuDataWrap({
   children,
   fallback = null,

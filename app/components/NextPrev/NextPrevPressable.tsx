@@ -36,56 +36,47 @@ const NextPrevPressable: FC<NextPrevPressableProps> = ({
       className={`nc-NextPrev relative px-2 flex items-center justify-between text-slate-500 dark:text-slate-400 ${className}`}
     >
       {!onlyNext && (
-        <motion.button
+        <ButtonPressable
           className= {clsx(
-                        btnClassName,
-                        'border-black border rounded-full size-14 md:size-16 bg-black duration-50',
-                        activeIndex === 0 && ' !bg-white',
-                      )}
-          title="Prev"
-          data-glide-dir="<"
+                      btnClassName,
+                      'border-black border rounded-full bg-black duration-50',
+                      activeIndex === 0 && ' !bg-white',
+                    )}
+          bgColor='white'
+          size='size-14 md:size-16'
+          disabled={activeIndex === 0}
+          onClick={() => {
+            onClickPrev();
+          }}
         >
-            <ButtonPressable
-              bgColor='white'
-              disable={activeIndex === 0}
-              onClick={() => {
-                onClickPrev();
-              }}
-            >
-              <IconCaret 
-                stroke={stroke}
-                direction="right"
-                className='!size-14 md:!size-16'
-              />
-            </ButtonPressable>
-        </motion.button>
+          <IconCaret 
+            stroke={stroke}
+            direction="right"
+            className='!size-14 md:!size-16'
+          />
+        </ButtonPressable>
         
       )}
       {!onlyPrev && (
-        <motion.button
-          className= {clsx(
-                        btnClassName,
-                        'border-black border rounded-full size-14 md:size-16 bg-black duration-50',
-                        (activeIndex + 1) === totalItems && ' !bg-white',
-                      )}
-          title="Next"
-          data-glide-dir=">"
-          onMouseEnter={() => setFocus('right')}
-        >
-          <ButtonPressable
-              bgColor='white'
-              disable={(activeIndex + 1) === totalItems}
-              onClick={() => {
-                onClickNext();
-              }}
-            >
-          <IconCaret 
-            stroke={stroke}
-            direction="left"
-            className='!size-14 md:!size-16'
-          />
-          </ButtonPressable>
-        </motion.button>
+        <ButtonPressable
+            className= {clsx(
+                          btnClassName,
+                          'border-black border rounded-full size-14 md:size-16 bg-black duration-50',
+                          (activeIndex + 1) === totalItems && ' !bg-white',
+                        )}
+            bgColor='white'
+            size='size-14 md:size-16'
+            disabled={(activeIndex + 1) === totalItems}
+            onClick={() => {
+              onClickNext();
+            }}
+          >
+        <IconCaret 
+          stroke={stroke}
+          direction="left"
+          className='!size-14 md:!size-16'
+        />
+        </ButtonPressable>
       )}
     </div>
   );

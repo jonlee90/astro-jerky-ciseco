@@ -122,6 +122,7 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
         featuredCollectionsFirst: 1,
         socialsFirst: 10,
         headerMenuHandle: 'main-menu',
+        mobileMenuHandle: 'mobile-side-menu',
         language,
         country,
       },
@@ -379,10 +380,14 @@ const HEADER_QUERY = `#graphql
     $language: LanguageCode
     $country: CountryCode
     $headerMenuHandle: String!
+    $mobileMenuHandle: String!
     $featuredCollectionsFirst: Int!
     $socialsFirst: Int!
   ) @inContext(language: $language, country: $country) {
     headerMenu: menu(handle: $headerMenuHandle) {
+      ...Menu
+    }
+    mobileSideMenu: menu(handle: $mobileMenuHandle) {
       ...Menu
     }
     featuredCollections: collections(first: $featuredCollectionsFirst, sortKey: UPDATED_AT) {

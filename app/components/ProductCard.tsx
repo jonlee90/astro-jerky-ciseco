@@ -5,7 +5,7 @@ import {flattenConnection, Image, Money, useMoney} from '@shopify/hydrogen';
 import ButtonSecondary from './Button/ButtonSecondary';
 import {type ProductFragment} from 'storefrontapi.generated';
 import {useGetPublicStoreCdnStaticUrlFromRootLoaderData} from '~/hooks/useGetPublicStoreCdnStaticUrlFromRootLoaderData';
-import {AddToCartButton} from './AddToCartButton';
+import {AddToCartButton} from './Button/AddToCartButton';
 import {Link} from './Link';
 import Prices from './Prices';
 import {isDiscounted, isNewArrival} from '~/lib/utils';
@@ -16,10 +16,12 @@ import ProductStatus from './ProductStatus';
 import {useMediaQuery} from 'react-responsive';
 import { useAside } from './Aside';
 import { useVariantUrl } from '~/lib/variants';
-import { IconSpicy, IconBbq, IconChicken, IconPepper, IconCow, IconHoney } from "./Icon";
+import { IconSpicy, IconBbq, IconChicken, IconPepper, IconCow, IconHoney, IconPlus } from "./Icon";
 import {OkendoStarRating} from '@okendo/shopify-hydrogen';
 import ProductSoldOut from './ProductSoldOut';
 import ProductLevelIndicator from './ProductLevelIndicator';
+import { ButtonPressable } from './Button/ButtonPressable';
+import { AddToCartPressable } from './Button/AddToCartPressableButton';
 
 
 interface MoneyV2 {
@@ -261,26 +263,25 @@ const ProductCard: FC<ProductCardProps> = ({
       </Link>
       
       {quickAdd && firstVariant.availableForSale && (
-        <AddToCartButton
-          lines={[
-            {
-              quantity: 1,
-              merchandiseId: firstVariant.id,
-              selectedVariant: firstVariant,
-            },
-          ]}
-          variant="secondary"
-          className="absolute right-1 -bottom-2 lg:bottom-3"
-          analytics={{
-            products: [productAnalytics],
-            totalValue: parseFloat(productAnalytics.price),
-          }}
-          onClick={() => open('cart')}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" className="size-12" viewBox="0 0 24 24" role="img">
-            <path fill="black" fillRule="evenodd" d="M12 1.25C6.063 1.25 1.25 6.063 1.25 12S6.063 22.75 12 22.75S22.75 17.937 22.75 12S17.937 1.25 12 1.25M12.75 8a.75.75 0 0 0-1.5 0v3.25H8a.75.75 0 0 0 0 1.5h3.25V16a.75.75 0 0 0 1.5 0v-3.25H16a.75.75 0 0 0 0-1.5h-3.25z" clipRule="evenodd" />
-          </svg>
-        </AddToCartButton>
+        <AddToCartPressable
+            analytics={{
+              products: [productAnalytics],
+              totalValue: parseFloat(productAnalytics.price),
+            }}
+            lines={[
+              {
+                quantity: 1,
+                merchandiseId: firstVariant.id,
+                selectedVariant: firstVariant,
+              },
+            ]}
+            onClick={() => open('cart')}
+            className={'absolute right-1 -bottom-2 lg:bottom-0'}
+            aria-label="Add to cart button"
+            bgColor='white'
+          >
+          <IconPlus />
+        </AddToCartPressable>
       )}
     </motion.div>
   );
