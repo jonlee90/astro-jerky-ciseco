@@ -80,16 +80,19 @@ export function Sections({
       }}
     >
 
-      <HeroSlider key={0} />
       
       {sections?.references?.nodes.map((section, index, arr) => {
 
         switch (section.type as CisecoSectionType) {
           case 'ciseco--section_hero':
             return (
-              <WrapSection key={section.id} index={index} {...args}>
-                <SectionHero {...section} key={section.id} />
-              </WrapSection>
+              <>
+                <WrapSection key={section.id} index={index} {...args}>
+                  <SectionHero {...section} key={section.id} />
+                </WrapSection>
+                
+                <HeroSlider key={0} />
+              </>
             );
           case 'ciseco--section_hero_slider':
             return (

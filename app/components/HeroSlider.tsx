@@ -71,7 +71,7 @@ const HeroSlider = () => {
 
 
   return (
-    <section className="section-hero-slider bg-gradient-to-br from-yellow-400 via-yellow-300 to-yellow-200 pt-12 overflow-hidden mx-auto px-6">
+    <section className="section-hero-slider bg-gradient-to-br from-yellow-400 via-yellow-300 to-yellow-200 pt-12 overflow-hidden mx-auto px-6  !mt-0">
         <div className="container grid grid-cols-1 lg:grid-cols-2 items-center justify-center sm:min-h-[40rem]">
           {/* Hero Content */}
           <div className="text-center">

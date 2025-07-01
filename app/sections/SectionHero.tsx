@@ -30,7 +30,7 @@ export function SectionHero(props: SectionHeroFragment) {
     heroItem;
 
   return (
-    <section className="section-hero-slider overflow-hidden mx-auto !mt-0">
+    <section className="section-hero-slider overflow-hidden mx-auto">
       <div className="nc-SectionHero relative overflow-hidden bg-slate-100 ">
         {/* BG */}
         <div>
@@ -58,7 +58,7 @@ export function SectionHero(props: SectionHeroFragment) {
                   buttonClass="grid grid-cols-8 py-3 px-8  lg:py-3.5 bg-primary-600 hover:!bg-primary-900"
                 >
                     <IconCow className="size-6 text-white col-span-1 fill-black" />
-                  <span className='col-span-7'>{cta_button?.text?.value}</span>
+                  <span className='col-span-7 uppercase font-bold'>{cta_button?.text?.value}</span>
                 </ButtonPressable>
             </div>
           )}
