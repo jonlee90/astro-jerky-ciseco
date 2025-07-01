@@ -54,8 +54,8 @@ export function Header({
     prevScrollY.current = y;
   }, [y]);
   const content = [
+    "USE CODE JULY4 FOR 20% OFF",
     "FREE SHIPPING OVER $60",
-    "SAME DAY SHIPPING",
     "Buy 3 bags for $33",
   ];
   return (
