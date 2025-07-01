@@ -6,6 +6,8 @@ import type {
   SectionHeroFragment,
 } from 'storefrontapi.generated';
 import ButtonPrimary from '~/components/Button/ButtonPrimary';
+import { ButtonPressable } from '~/components/Button/ButtonPressable';
+import { IconCow } from '~/components/Icon';
 
 export function SectionHero(props: SectionHeroFragment) {
   const heroItem = props.hero_item?.reference
@@ -28,8 +30,8 @@ export function SectionHero(props: SectionHeroFragment) {
     heroItem;
 
   return (
-    <div className="container px-4">
-      <div className="nc-SectionHero aspect-h-16 aspect-w-10 relative overflow-hidden rounded-2xl bg-slate-100 sm:aspect-h-4 sm:aspect-w-3 lg:aspect-h-7 lg:aspect-w-16 2xl:aspect-w-16 2xl:aspect-h-7">
+    <section className="section-hero-slider overflow-hidden mx-auto !mt-0">
+      <div className="nc-SectionHero relative overflow-hidden bg-slate-100 ">
         {/* BG */}
         <div>
           {horizontal_image?.image && (
@@ -42,16 +44,29 @@ export function SectionHero(props: SectionHeroFragment) {
 
           {vertical_image?.image && (
             <Image
-              sizes="100vw"
-              className="block h-full w-full object-cover object-bottom lg:hidden"
+              sizes="850px"
+              className="block h-full w-full lg:hidden"
               data={vertical_image?.image}
             />
           )}
+          {!!cta_button?.href?.value && (
+            <div className="absolute bottom-16 left-1/2 -translate-x-1/2">
+              <ButtonPressable
+                  href={cta_button?.href?.value || ''}
+                  size="h-12 w-56 lg:w-60 lg:h-14"
+                  className="mx-auto text-black border-black  border"
+                  buttonClass="grid grid-cols-8 py-3 px-8  lg:py-3.5 bg-primary-600 hover:!bg-primary-900"
+                >
+                    <IconCow className="size-6 text-white col-span-1 fill-black" />
+                  <span className='col-span-7'>{cta_button?.text?.value}</span>
+                </ButtonPressable>
+            </div>
+          )}
         </div>
 
-        {/* CONTENT */}
-        <div className="flex py-12 sm:py-14 lg:items-center lg:pb-20">
-          <div className="container relative">
+        {/* CONTENT 
+        <div className="flex lg:items-center">
+          <div className="relative">
             <div className="flex max-w-lg flex-col items-start space-y-5 xl:max-w-2xl xl:space-y-8 ">
               {sub_heading?.value && (
                 <span className="font-semibold text-neutral-900 sm:text-xl md:text-2xl">
@@ -65,30 +80,22 @@ export function SectionHero(props: SectionHeroFragment) {
                 />
               )}
               {!!cta_button?.href?.value && (
-                <div className="sm:pt-4">
-                  <ButtonPrimary
-                    sizeClass="px-6 py-3 lg:px-8 lg:py-4"
-                    fontSize="text-lg sm:text-lg lg:text-xl font-medium"
-                    href={cta_button?.href?.value || ''}
-                    targetBlank={cta_button?.target?.value === 'true'}
-                  >
-                    <span>{cta_button?.text?.value}</span>
-                    {!!cta_button?.icon_svg?.value && (
-                      <span
-                        className="ms-2.5 flex max-w-5 *:!h-5 *:!w-5"
-                        dangerouslySetInnerHTML={{
-                          __html: cta_button?.icon_svg.value,
-                        }}
-                      />
-                    )}
-                  </ButtonPrimary>
+                <div className="absolute z-50">
+                  <ButtonPressable
+                      href={cta_button?.href?.value || ''}
+                      size="h-12 w-56 lg:w-60 lg:h-14"
+                      className="mx-auto text-white border-black border"
+                      buttonClass="grid grid-cols-8 py-3 px-8  lg:py-3.5"
+                    >
+                      <span className='col-span-7'>{cta_button?.text?.value}</span>
+                    </ButtonPressable>
                 </div>
               )}
             </div>
           </div>
-        </div>
+        </div>*/}
       </div>
-    </div>
+    </section>
   );
 }
 
