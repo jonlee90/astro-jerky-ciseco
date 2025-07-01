@@ -50,7 +50,7 @@ export function SectionHero(props: SectionHeroFragment) {
             />
           )}
           {!!cta_button?.href?.value && (
-            <div className="absolute bottom-16 left-1/2 -translate-x-1/2">
+            <div className="absolute bottom-10 xs:bottom-16 left-1/2 -translate-x-1/2">
               <ButtonPressable
                   href={cta_button?.href?.value || ''}
                   size="h-12 w-56 lg:w-60 lg:h-14"
