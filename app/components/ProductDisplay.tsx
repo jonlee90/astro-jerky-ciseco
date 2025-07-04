@@ -127,7 +127,7 @@ const ProductDisplay = () => {
                 <p>Next, experience the celestial fusion of <span className='font-bold'>Honey Teriyaki</span>. Crafted from premium grass-fed beef, this flavor blends real pineapple, golden honey, and authentic teriyaki sauce into a symphony of sweet and savory perfection. Slow-cooked to tender excellence, it’s a snack that transports you to the stars with every bite.</p>
                 <p>And finally, brace yourself for the fiery <span className='font-bold'>Supernova Hot</span>. Not for the faint of heart, this jerky is an explosive blend of cayenne peppers, habaneros, smoky undertones, and a touch of sweetness. It delivers a mouthwatering inferno of flavor, perfect for spice seekers who crave the heat and refuse to back down.</p>
                 <p>Each of these jerky bags is a one-way ticket to flavor town. And trust me, they won’t be here for long. These fan favorites sell out faster than a speeding comet, and this curated pack is sure to do the same. Add it to your cart now before they disappear!</p>
-                <p>NOTE: And here’s the best part—every slice of Astro Fresh Jerky is handcrafted in Los Angeles, with 100% premium beef. No fillers. No trimmings. No shortcuts. Just pure, mouthwatering jerky that’s packed with flavor and protein.</p>
+                <p>And here’s the best part—every slice of Astro Fresh Jerky is handcrafted in Los Angeles, with 100% premium beef. No fillers. No trimmings. No shortcuts. Just pure, mouthwatering jerky that’s packed with flavor and protein.</p>
             </div>
         </div>
     </section>
