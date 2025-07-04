@@ -1,4 +1,4 @@
-import { OKENDO_PRODUCT_STAR_RATING_FRAGMENT } from "@okendo/shopify-hydrogen";
+import { OKENDO_PRODUCT_STAR_RATING_FRAGMENT } from './commonFragments';
 
 export const MEDIA_FRAGMENT = `#graphql
   fragment Media on Media {

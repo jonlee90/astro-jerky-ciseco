@@ -26,7 +26,7 @@ import NextPrevPressable from '~/components/NextPrev/NextPrevPressable';
 import { ButtonPressable } from '~/components/Button/ButtonPressable';
 import {
   OKENDO_PRODUCT_STAR_RATING_FRAGMENT,
-} from '@okendo/shopify-hydrogen';
+} from '../data/commonFragments';
 
 export function SectionProductsSlider(props: SectionProductsSliderFragment) {
   const {heading_bold, heading_light, sub_heading, body, collection, style} =

@@ -48,6 +48,8 @@ import { RootLoader } from '~/root';
 import {
   OKENDO_PRODUCT_REVIEWS_FRAGMENT,
   OKENDO_PRODUCT_STAR_RATING_FRAGMENT,
+} from '../data/commonFragments';
+import {
   OkendoReviews,
   OkendoStarRating,
 } from '@okendo/shopify-hydrogen';

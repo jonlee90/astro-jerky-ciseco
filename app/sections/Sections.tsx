@@ -41,7 +41,6 @@ import {
 } from './SectionClientsSay';
 import clsx from 'clsx';
 import {SECTION_HERO_FRAGMENT, SectionHero} from './SectionHero';
-import {OKENDO_PRODUCT_STAR_RATING_FRAGMENT} from '@okendo/shopify-hydrogen';
 import HeroSlider from '~/components/HeroSlider';
 import ProductDisplay from '~/components/ProductDisplay';
 

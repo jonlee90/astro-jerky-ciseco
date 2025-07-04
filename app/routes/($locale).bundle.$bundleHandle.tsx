@@ -5,7 +5,6 @@ import { MixMatchProducts } from '~/components/MixMatch/MixMatchProducts';
 import { PRODUCT_MIX_FRAGMENT } from '~/data/fragments';
 import { ProductMixFragment } from 'storefrontapi.generated';
 import { seoPayload } from '~/lib/seo.server';
-import { OKENDO_PRODUCT_STAR_RATING_FRAGMENT } from '@okendo/shopify-hydrogen';
 
 import type {
   MixAllProductsQuery,

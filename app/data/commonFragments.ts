@@ -52,7 +52,7 @@ export const LINK_FRAGMENT = `#graphql
     }
 `;
 
-const OKENDO_PRODUCT_STAR_RATING_FRAGMENT = `#graphql
+export const OKENDO_PRODUCT_STAR_RATING_FRAGMENT = `#graphql
 	fragment OkendoStarRatingSnippet on Product {
 		okendoStarRatingSnippet: metafield(
 			namespace: "okendo"
@@ -63,7 +63,7 @@ const OKENDO_PRODUCT_STAR_RATING_FRAGMENT = `#graphql
 	}
 ` as const;
 
-const OKENDO_PRODUCT_REVIEWS_FRAGMENT = `#graphql
+export const OKENDO_PRODUCT_REVIEWS_FRAGMENT = `#graphql
 	fragment OkendoReviewsSnippet on Product {
 		okendoReviewsSnippet: metafield(
 			namespace: "okendo"
