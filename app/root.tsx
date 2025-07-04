@@ -196,7 +196,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <link rel="stylesheet" href={rcSliderStyle}></link>
         <Links />
         {/***********************************************/
-        /**********  EXAMPLE UPDATE STARTS  ************/}
+        /**********  EXAMPLE UPDATE STARTS  ************
         <Script
           nonce={nonce}
           dangerouslySetInnerHTML={{
@@ -206,7 +206,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer','GTM-5BP4M9R5');`,
           }}
-        ></Script>
+        ></Script>/}
         {/**********   EXAMPLE UPDATE END   ************/
         /***********************************************/}
       </head>
@@ -216,7 +216,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
           Skip to main content
         </a>
         {/***********************************************/
-        /**********  EXAMPLE UPDATE STARTS  ************/}
+        /**********  EXAMPLE UPDATE STARTS  ************
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-5BP4M9R5"
@@ -227,7 +227,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
               visibility: 'hidden',
             }}
           ></iframe>
-        </noscript>
+        </noscript>/}
         {/**********   EXAMPLE UPDATE END   ************/
         /***********************************************/}
           {data ? (
