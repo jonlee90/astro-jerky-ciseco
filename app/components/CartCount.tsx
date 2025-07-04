@@ -77,6 +77,7 @@ export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity, s
            {is3D ?
                 <ButtonPressable
                   bgColor='black'
+                  size='size-12'
                 >
                   <Badge
                     openCart={() => {

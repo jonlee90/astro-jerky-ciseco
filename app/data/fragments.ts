@@ -1,3 +1,5 @@
+import { OKENDO_PRODUCT_STAR_RATING_FRAGMENT } from "@okendo/shopify-hydrogen";
+
 export const MEDIA_FRAGMENT = `#graphql
   fragment Media on Media {
     __typename
@@ -109,6 +111,7 @@ export const PRODUCT_MIX_FRAGMENT = `#graphql
         product {
           handle
           title
+          ...OkendoStarRatingSnippet
         }
         price {
           amount
@@ -118,4 +121,5 @@ export const PRODUCT_MIX_FRAGMENT = `#graphql
     }
   }
   ${MEDIA_FRAGMENT}
+  ${OKENDO_PRODUCT_STAR_RATING_FRAGMENT}
 `;

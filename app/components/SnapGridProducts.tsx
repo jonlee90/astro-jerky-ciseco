@@ -36,7 +36,6 @@ export function SnapGridProducts(props: Props) {
   } = props;
 
 
-
   return (
     <div className={`nc-SectionGridProductCard ` + className}>
       {showHeading && (

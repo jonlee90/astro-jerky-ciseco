@@ -39,7 +39,6 @@ export function CollectionPage() {
   const onToggle = (value: string) => setIsSmall(value === "small");
 
   const totalProducts = noResults ? 0 : currentProducts.length;
-
   return (
     <div
       className="nc-PageCollection pb-20 lg:pb-28 md:container"

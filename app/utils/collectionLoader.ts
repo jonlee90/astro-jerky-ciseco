@@ -61,7 +61,7 @@ export async function loadCollectionData({
     (filter) => filter.id === "filter.v.price"
   );
 
-  return defer({
+  return {
     routePromise,
     collection,
     defaultPriceFilter: {
@@ -69,7 +69,7 @@ export async function loadCollectionData({
       locale,
     },
     seo,
-  });
+  };
 }
 const COLLECTION_QUERY = `#graphql
   query CollectionDetails(

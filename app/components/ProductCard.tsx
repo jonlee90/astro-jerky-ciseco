@@ -228,13 +228,13 @@ const ProductCard: FC<ProductCardProps> = ({
                   {product.title.replace(/beef jerky/gi, "")}
                 </h2>
               </div>
-             {/* <div className='flex'>
+              <div className='flex'>
                 <OkendoStarRating
                   productId={product.id}
                   okendoStarRatingSnippet={product.okendoStarRatingSnippet}
                 /> 
               
-              </div>*/}
+              </div>
             {false && (
               <div className='px-2'>
                 <ProductLevelIndicator product={product} size={25} /> {/* Render the icon based on tags */}
@@ -258,6 +258,9 @@ const ProductCard: FC<ProductCardProps> = ({
               </span>
             )}
             
+            <div className='mb-5 sm:mb-0'>
+              <p className='text-sm text-secondary-600'>25% Off With Code: <span className='font-bold'>JULY4</span></p>
+            </div>
           </div>
         </div>
       </Link>

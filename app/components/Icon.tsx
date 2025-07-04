@@ -498,7 +498,7 @@ export function IconMenuCircle(props: IconProps) {
 export function IconPlus({size = 'size-10 w-auto h-auto'}) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" className={size} viewBox="0 0 24 24" role="img">
-      <path fill="black" fill-rule="evenodd" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm.75 8a.75.75 0 0 0-1.5 0v3.25H8a.75.75 0 0 0 0 1.5h3.25V16a.75.75 0 0 0 1.5 0v-3.25H16a.75.75 0 0 0 0-1.5h-3.25z" clip-rule="evenodd" />
+      <path fill="black" fillRule="evenodd" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm.75 8a.75.75 0 0 0-1.5 0v3.25H8a.75.75 0 0 0 0 1.5h3.25V16a.75.75 0 0 0 1.5 0v-3.25H16a.75.75 0 0 0 0-1.5h-3.25z" clipRule="evenodd" />
     </svg>
   );
 }
@@ -506,7 +506,7 @@ export function IconPlus({size = 'size-10 w-auto h-auto'}) {
 export function IconMinus({size = 'size-10 w-auto h-auto'}) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" className={size} viewBox="0 0 24 24" role="img">
-      <path fill="black" fill-rule="evenodd" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-4 11.25a.75.75 0 0 0 0 1.5h8a.75.75 0 0 0 0-1.5H8z" clip-rule="evenodd" />
+      <path fill="black" fillRule="evenodd" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-4 11.25a.75.75 0 0 0 0 1.5h8a.75.75 0 0 0 0-1.5H8z" clipRule="evenodd" />
     </svg>
   );
 }

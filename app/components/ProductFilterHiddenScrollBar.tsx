@@ -40,25 +40,27 @@ const ProductFilterHiddenScrollBar = ({collectionHandle, totalProducts, filterRe
   ];
   const [isSticky, setIsSticky] = useState(false); // State to manage sticky behavior
 
-   // Function to handle scroll event and check when the filter should stick
-   const handleScroll = () => {
-    const filterElement = filterRef.current;
-    if (filterElement) {
-      const filterPosition = filterElement.getBoundingClientRect().top;
-      const shouldStick = filterPosition <= 61;
-
-      // Only update isSticky when there's an actual change
-      if (shouldStick !== isSticky) {
-        setIsSticky(shouldStick);
-      }
+  useEffect(() => {
+  let ticking = false;
+  const handleScroll = () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const filterElement = filterRef.current;
+        if (filterElement) {
+          const filterPosition = filterElement.getBoundingClientRect().top;
+          const shouldStick = filterPosition <= 61;
+          if (shouldStick !== isSticky) {
+            setIsSticky(shouldStick);
+          }
+        }
+        ticking = false;
+      });
+      ticking = true;
     }
   };
-
-  // Add scroll event listener
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll); // Cleanup
-  }, [isSticky]);
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, [isSticky]);
   
   return (
       <section

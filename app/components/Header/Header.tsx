@@ -12,7 +12,6 @@ import { FREE_SHIPPING_THRESHOLD } from '~/lib/const';
 import { useIsHydrated } from '~/hooks/useIsHydrated';
 import { useMediaQuery } from 'react-responsive';
 import useWindowScroll from './useWindowScroll';
-import BackButton from './BackButton';
 import { TopHeader } from './TopHeader';
 import { IconChicken, IconCow, IconHoney, IconPepper, IconSpicy } from '../Icon';
 import ButtonPrimary from '../Button/ButtonPrimary';
@@ -54,7 +53,7 @@ export function Header({
     prevScrollY.current = y;
   }, [y]);
   const content = [
-    "USE CODE JULY4 FOR 20% OFF",
+    "USE CODE JULY4 FOR 25% OFF",
     "FREE SHIPPING OVER $60",
     "Buy 3 bags for $33",
   ];

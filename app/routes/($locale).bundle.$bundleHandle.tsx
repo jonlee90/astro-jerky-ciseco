@@ -5,34 +5,17 @@ import { MixMatchProducts } from '~/components/MixMatch/MixMatchProducts';
 import { PRODUCT_MIX_FRAGMENT } from '~/data/fragments';
 import { ProductMixFragment } from 'storefrontapi.generated';
 import { seoPayload } from '~/lib/seo.server';
+import { OKENDO_PRODUCT_STAR_RATING_FRAGMENT } from '@okendo/shopify-hydrogen';
 
-// Type Definitions
-interface ProductVariant {
-  id: string;
-  availableForSale: boolean;
-  image: any;
-  handle: string;
-  quantity: number;
-  title: string;
-  tags: string[];
-  description: string;
-  media: any[];
-  size: string;
-  flavor_level: string;
-  heat_level: string;
-  sweetness_level: string;
-  dryness_level: string;
-  price: string;
-  compareAtPrice: string;
-  small_bag_quantity: any;
-  big_bag_quantity: any;
-}
+import type {
+  MixAllProductsQuery,
+} from 'storefrontapi.generated';
 
 interface LoaderData {
   bundleHandle: string;
   smallProducts: ProductMixFragment[];
   bigProducts: ProductMixFragment[];
-  bundleProducts: ProductVariant[];
+  bundleProducts: MixAllProductsQuery[];
 }
 
 export async function loader({ params, request, context: { storefront } }: LoaderFunctionArgs) {
@@ -48,15 +31,15 @@ export async function loader({ params, request, context: { storefront } }: Loade
   });
 
   const flattenedProducts = flattenConnection(products);
-  const smallProducts: ProductVariant[] = [];
-  const bigProducts: ProductVariant[] = [];
-  const bundleProducts: ProductVariant[] = [];
- 
+  const smallProducts: MixAllProductsQuery[] = [];
+  const bigProducts: MixAllProductsQuery[] = [];
+  const bundleProducts: MixAllProductsQuery[] = [];
   flattenedProducts.map((product: any) => {
     flattenConnection(product.variants).map((variant: any) => {
       const size = variant.selectedOptions[0].value;
-      const prod: ProductVariant = {
+      const prod: MixAllProductsQuery = {
         id: variant.id,
+        product_id: product.id,
         availableForSale: variant.availableForSale,
         image: variant.image,
         handle: variant.product.handle,
@@ -73,7 +56,8 @@ export async function loader({ params, request, context: { storefront } }: Loade
         small_bag_quantity: product.small_bag_quantity ? parseInt(product.small_bag_quantity.value) : 0,
         big_bag_quantity: product.big_bag_quantity ? parseInt(product.big_bag_quantity.value) : 0,
         price: product.priceRange.minVariantPrice.amount,
-        compareAtPrice: product.compareAtPriceRange.minVariantPrice.amount
+        compareAtPrice: product.compareAtPriceRange.minVariantPrice.amount,
+        okendoStarRatingSnippet: product.okendoStarRatingSnippet
       }
       if (size === '3oz') {
         bigProducts.push(prod);
@@ -90,13 +74,13 @@ export async function loader({ params, request, context: { storefront } }: Loade
     url: request.url,
   });
   
-  return json({
+  return {
     bundleHandle,
     smallProducts,
     bigProducts,
     bundleProducts,
     seo
-  });
+  };
 }
 
 export const meta = ({matches}: MetaArgs<typeof loader>) => {
@@ -106,6 +90,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 export default function Bundle() {
   const { smallProducts, bigProducts, bundleHandle, bundleProducts } = useLoaderData<LoaderData>();
   const currentBundle = bundleProducts.find(bundle => bundle.handle === bundleHandle);
+  console.log(bigProducts, 'currentBundleSad');
   return (
     <MixMatchProducts
       bigProducts={bigProducts}

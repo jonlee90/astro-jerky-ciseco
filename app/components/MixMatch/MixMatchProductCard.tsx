@@ -9,6 +9,7 @@ import ProductLevelIndicator from '../ProductLevelIndicator';
 import { getProductCategory } from '../ProductCard';
 import { IconMinus, IconPlus } from '../Icon';
 import { ButtonPressable } from '../Button/ButtonPressable';
+import { OkendoStarRating } from '@okendo/shopify-hydrogen';
 
 interface Product {
   id: string;
@@ -120,10 +121,16 @@ export function MixMatchProductCard({
           </div>
           <h2
             id={`card-title-${cardProduct.id}`}
-            className="w-full uppercase text-xl font-bold text-left"
+            className="w-full uppercase text-xl font-bold text-center"
           >
             {cardProduct.title.replace(/beef jerky/gi, "")}
           </h2>
+          <div className='text-center'>
+            <OkendoStarRating
+              productId={cardProduct?.product_id || ''}
+              okendoStarRatingSnippet={cardProduct?.okendoStarRatingSnippet}
+            /> 
+          </div>
         </div>
         <div className=''>
           <ProductLevelIndicator product={product} size={25} levelClass={'h-1 w-3 mr-1'} labelClass='text-sm' /> {/* Render the icon based on tags */}

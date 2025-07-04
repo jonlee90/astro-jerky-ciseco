@@ -24,6 +24,9 @@ import { Link } from '~/components/Link';
 import ProductSwiper from '~/components/ProductSwiper';
 import NextPrevPressable from '~/components/NextPrev/NextPrevPressable';
 import { ButtonPressable } from '~/components/Button/ButtonPressable';
+import {
+  OKENDO_PRODUCT_STAR_RATING_FRAGMENT,
+} from '@okendo/shopify-hydrogen';
 
 export function SectionProductsSlider(props: SectionProductsSliderFragment) {
   const {heading_bold, heading_light, sub_heading, body, collection, style} =
@@ -109,12 +112,12 @@ export function SectionProductsSlider(props: SectionProductsSliderFragment) {
           <h2 id={`product-title-${activeProduct?.handle}`} className="w-full uppercase font-bold text-2xl">
             {activeProduct?.title.replace(/beef jerky/gi, "")}
           </h2>
-        {/*  <div className='flex'>
+         <div className='flex'>
             <OkendoStarRating
               productId={activeProduct?.id || ''}
               okendoStarRatingSnippet={activeProduct?.okendoStarRatingSnippet}
             /> 
-          </div>*/}
+          </div>
         <div>
             <Prices
             contentClass="justify-start"
@@ -142,6 +145,9 @@ export function SectionProductsSlider(props: SectionProductsSliderFragment) {
             <span className='col-span-7 uppercase'>View Details</span>
           </ButtonPressable>
           
+        </div>
+        <div>
+          <p className='text-sm text-secondary-600'>25% Off With Code: <span className='font-bold'>JULY4</span></p>
         </div>
       </div>
      </>
@@ -195,14 +201,12 @@ export const SECTION_PRODUCTS_SLIDER_FRAGMENT = `#graphql
               flavor_level: metafield(namespace: "custom", key:"flavor_level") {
                 value
               }
+              ...OkendoStarRatingSnippet
             }
           }
         }
       }
     }
   }
+  ${OKENDO_PRODUCT_STAR_RATING_FRAGMENT}
 `;
-function useRef<T>(arg0: null) {
-  throw new Error('Function not implemented.');
-}
-

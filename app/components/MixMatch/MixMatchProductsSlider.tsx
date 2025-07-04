@@ -64,7 +64,6 @@ export function MixMatchProductsSlider({
 
   const {scrollToNextSlide, scrollToPrevSlide} = useSnapSlider({sliderRef});
 
-
   return (
     <section 
       className='mb-10 relative'

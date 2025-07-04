@@ -280,12 +280,12 @@ if(!isHydrated) {
           />
         )}
       </motion.div>
-        <div 
+        <section 
           aria-label='Product section'
           className="lg:flex 2xl:max-w-screen-xl mx-auto container sm-max:max-w-[640px]"
           >
           {/* Galleries */}
-          <section 
+          <div 
             aria-label="Product images"
             className="w-full lg:w-[55%] relative">
             {media?.nodes?.length > 0 ? (
@@ -303,10 +303,10 @@ if(!isHydrated) {
               className="absolute top-3 end-3 z-10 !w-10 !h-10"
             />
             */}
-          </section>
+          </div>
 
           {/* Product Details */}
-          <section 
+          <div 
             aria-label="Product Details"
             className="w-full lg:w-[45%] pt-10 lg:pt-0 lg:pl-7 xl:pl-9 2xl:pl-10">
             <div className="sticky top-10 grid gap-8">
@@ -328,13 +328,10 @@ if(!isHydrated) {
                   )}
                 </Await>
               </Suspense>
-                
-              
-
 
           {/* Product description */}
               {!!descriptionHtml && (
-                <section 
+                <div 
                   aria-labelledby="product-details"
                   className="grid gap-7 2xl:gap-8 description-container text-lg">
                   <h2 id="product-details" className="sr-only">Product Details</h2>
@@ -364,7 +361,7 @@ if(!isHydrated) {
                     sizes='(min-width: 48em) 60vw, 90vw'
                     className="object-cover rounded-2xl fadeIn"
                   />
-                </section>
+                </div>
               )}
 
               <section
@@ -398,15 +395,20 @@ if(!isHydrated) {
                */}
 
                
-              {/* Product reviews 
-              <ProductReviews product={product} />
-*/}
+
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
 
 
-          
+        <hr className="border-slate-200 dark:border-slate-700 my-8" />
+              {/* Product reviews */}
+              
+        <section
+          aria-label="Product reviews"
+          className='container'>
+              <ProductReviews product={product} />
+        </section>
 
         <hr className="border-slate-200 dark:border-slate-700 my-8" />
      
@@ -557,15 +559,15 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
             {product.title + (selectedVariant.title !== 'Default Title' ? ' (' + selectedVariant.title + ')' : '')}
         </h1>
       </div>
-{/*
-      <div className='px-2 flex'>
+
+      <div className='flex justify-center'>
         <OkendoStarRating
           productId={product.id}
           okendoStarRatingSnippet={product.okendoStarRatingSnippet}
         /> 
         <span className='ml-2'>Reviews</span>
       </div>
-      */}
+      
       <Prices
         priceClass="!text-3xl mx-auto"
         price={selectedVariant.price}
@@ -600,6 +602,9 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
               </motion.button>
             ))
           }
+        </div>
+        <div>
+          <p className='text-secondary-600'>Additional 25% Off With Code: <span className='font-bold'>JULY4</span></p>
         </div>
         {selectedVariant && (
           <div className="items-stretch gap-4">
@@ -851,7 +856,6 @@ const ProductReviews = ({product}: {product: ProductFragment}) => {
 
   return (
     <>
-      <hr className="border-slate-200 dark:border-slate-700" />
 
       <div className="product-page__reviews scroll-mt-nav" id="reviews">
         {/* HEADING */}
