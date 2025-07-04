@@ -55,7 +55,7 @@ export const TopHeader = ({
       (
         <motion.header
           aria-label="Mobile Header"
-          className={`${isAnnouncementBarVisible ? 'top-12': 'top-0' }  sticky h-[61px] bg-contrast text-primary shadow-md flex items-center backdrop-blur-lg z-[95] justify-center w-full leading-none py-1 px-4 md:px-8`}
+          className={`${isAnnouncementBarVisible ? 'top-16': 'top-0' }  sticky h-16 bg-contrast text-primary shadow-md flex items-center backdrop-blur-lg z-[95] justify-center w-full leading-none py-1 px-4 md:px-8`}
           initial={{ y: 0 }}
           transition={{ duration: 0.3 }}
           role="banner">

@@ -74,7 +74,7 @@ const ProductFilterHiddenScrollBar = ({collectionHandle, totalProducts, filterRe
       >
         <h2 id="product-filter-section" className="sr-only">Product Filters</h2>
         <Nav
-          className="p-1 productFilterHiddenScrollBar px-2 overflow-x-auto hiddenScrollbar w-full justify-start md:w-auto md:rounded-full"
+          className="h-16 py-1 productFilterHiddenScrollBar px-2 overflow-x-auto hiddenScrollbar w-full justify-start md:w-auto md:rounded-full"
           containerClassName="mb-12 lg:mb-14 relative flex w-full text-base md:text-lg md:justify-center"
         >
           {categoryData.map((item) => (

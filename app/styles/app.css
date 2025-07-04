@@ -803,7 +803,7 @@ a.disabled {
 }
 .sticky-filter {
   position: sticky;
-  top: 61px;
+  top: 64px;
   z-index: 99; /* Adjust if you need the filter to stay above other content */
 }
 

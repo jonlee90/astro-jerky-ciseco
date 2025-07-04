@@ -18,7 +18,7 @@ export function AnnouncementBar({
     <div
       role="region"
       aria-label="Announcement Bar"
-      className="flex items-center sticky shadow-lightHeader justify-center overflow-hidden bg-yellow-400 text-black h-12 z-[96] top-0"
+      className="flex items-center sticky shadow-lightHeader justify-center overflow-hidden bg-yellow-400 text-black h-16 z-[96] top-0"
     >
       <div className="flex whitespace-nowrap sm-max:animate-marqueeLeft">
         {content.map((message, index) => (
