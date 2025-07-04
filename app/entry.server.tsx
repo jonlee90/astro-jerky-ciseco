@@ -18,6 +18,7 @@ export default async function handleRequest(
     },
     scriptSrc: [
       "'self'",
+      ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
       'https://cdn.shopify.com',
       'https://d3hw6dc1ow8pp2.cloudfront.net',
       'https://d3g5hqndtiniji.cloudfront.net',
@@ -69,6 +70,7 @@ export default async function handleRequest(
       'https://surveys.okendo.io',
     ],
     fontSrc: [
+      ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
       'https://fonts.googleapis.com',
       'https://fonts.gstatic.com',
       'https://cdn.shopify.com',
@@ -82,6 +84,7 @@ export default async function handleRequest(
     connectSrc: [
       "'self'",
       'https://monorail-edge.shopifysvc.com',
+      ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*', ''] : []),
       'ws://127.0.0.1:*',
       'https://*.google-analytics.com',
       'https://*.analytics.google.com',

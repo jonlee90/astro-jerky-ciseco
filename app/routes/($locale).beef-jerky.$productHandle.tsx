@@ -267,7 +267,7 @@ if(!isHydrated) {
         transition={{ duration: 0.3, ease: 'easeOut' }}
         tabIndex={-1} // Make it focusable
         aria-hidden={!showBottomAddToCartButton} // Hide from screen readers when not visible
-        className={`fixed w-full lg:hidden z-20 ${isBackButton ? 'bottom-0' : 'bottom-16'}`}
+        className={`fixed w-full lg:hidden z-20 ${isBackButton ? 'bottom-0' : 'bottom-0'}`}
       >
         {!isOutOfStock &&(
           <BottomAddToCartButton
