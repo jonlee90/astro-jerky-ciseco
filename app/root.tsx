@@ -206,13 +206,6 @@ export function Layout({children}: {children?: React.ReactNode}) {
             })(window,document,'script','dataLayer','GTM-5BP4M9R5');`,
           }}
         ></Script>
-        <Script
-          dangerouslySetInnerHTML={{
-            __html: `
-            gtag('config', 'AW-16801558383');
-            `,
-          }}
-        ></Script>
         {/**********   EXAMPLE UPDATE END   ************/
         /***********************************************/}
       </head>
