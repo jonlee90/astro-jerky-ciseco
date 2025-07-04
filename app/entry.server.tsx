@@ -75,6 +75,7 @@ export default async function handleRequest(
       'https://dov7r31oq5dkj.cloudfront.net',
       'https://cdn.shopify.com',
       'https://*.okendo.io',
+      'data:', // <-- Add this line
     ],
     connectSrc: [
       "'self'",
