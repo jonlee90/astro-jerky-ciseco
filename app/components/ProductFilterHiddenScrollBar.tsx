@@ -48,9 +48,11 @@ const ProductFilterHiddenScrollBar = ({collectionHandle, totalProducts, filterRe
         const filterElement = filterRef.current;
         if (filterElement) {
           const filterPosition = filterElement.getBoundingClientRect().top;
-          const shouldStick = filterPosition <= 61;
-          if (shouldStick !== isSticky) {
-            setIsSticky(shouldStick);
+          // Add hysteresis: only set sticky if below 57, only unset if above 65
+          if (!isSticky && filterPosition <= 57) {
+            setIsSticky(true);
+          } else if (isSticky && filterPosition > 65) {
+            setIsSticky(false);
           }
         }
         ticking = false;
@@ -60,7 +62,7 @@ const ProductFilterHiddenScrollBar = ({collectionHandle, totalProducts, filterRe
   };
   window.addEventListener("scroll", handleScroll);
   return () => window.removeEventListener("scroll", handleScroll);
-}, [isSticky]);
+}, [isSticky, filterRef]);
   
   return (
       <section

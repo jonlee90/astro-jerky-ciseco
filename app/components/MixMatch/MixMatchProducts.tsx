@@ -7,6 +7,8 @@ import { MixMatchProductsSlider } from './MixMatchProductsSlider';
 import { useAside } from '../Aside';
 import { ProductVariant } from '@shopify/hydrogen/storefront-api-types';
 import { useAnalytics } from '@shopify/hydrogen';
+import { ButtonPressable } from '../Button/ButtonPressable';
+import { AddToCartPressable } from '../Button/AddToCartPressableButton';
 const progressClass: { [key: number]: string } = {
   1: `grid-cols-1`,
   2: `grid-cols-2`,
@@ -221,6 +223,13 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
     open('cart');
   };
 
+   const productAnalytics = {
+    productGid: currentBundle.id,
+    name: currentBundle.title,
+    price: currentBundle.price,
+    quantity: 1,
+  };
+
   return (
     <div className="mb-36">
       <header
@@ -235,21 +244,22 @@ export function MixMatchProducts({ bigProducts, smallProducts, currentBundle, bu
             </div>
             <div className="text-right self-center justify-end flex-row-reverse">
               {done || !(big_bag_quantity && small_bag_quantity) ? (
-                <AddToCartButton
-                  className="relative p-[3px]"
-                  lines={cartArray}
-                  variant="primary"
-                  data-test="add-to-cart"
-                  disabled={!done}
-                  onClick={handleAddToCart}
-                  aria-label="Add completed bundle to cart"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary-300 to-primary-500 rounded-full" />
-                  <div className="px-8 py-2  bg-black rounded-full relative group transition duration-200 text-white hover:bg-transparent">
-                    Add To Cart
-                  </div>
-                  
-                </AddToCartButton>
+         
+                <AddToCartPressable
+                    analytics={{
+                      products: [productAnalytics],
+                      totalValue: parseFloat(productAnalytics.price),
+                    }}
+                    lines={cartArray}
+                    onClick={handleAddToCart}
+                    size="h-11 w-48 lg:w-60 lg:h-14"
+                    className="mx-auto text-white border-black border"
+                    buttonClass="py-3 px-8  lg:py-3.5"
+                    aria-label="Add to cart button"
+                    bgColor='black'
+                  >
+                  Add To Cart
+                </AddToCartPressable>
               ) : (
                 <SwitchTab 
                   isSmall={isSmall} 
