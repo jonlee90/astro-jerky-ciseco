@@ -13,7 +13,7 @@ import { useIsHydrated } from '~/hooks/useIsHydrated';
 import { useMediaQuery } from 'react-responsive';
 import useWindowScroll from './useWindowScroll';
 import { TopHeader } from './TopHeader';
-import { IconChicken, IconCow, IconHoney, IconPepper, IconSpicy } from '../Icon';
+import { IconBundle, IconChicken, IconCow, IconHoney, IconPack, IconPepper, IconSpicy } from '../Icon';
 import ButtonPrimary from '../Button/ButtonPrimary';
 import SocialsList from '../SocialsList';
 
@@ -113,6 +113,10 @@ export function HeaderMenu({
         return <IconChicken className={className} size={24} />;
       case 'peppered':
         return <IconPepper className={className} size={24} />;
+      case 'shop curated packs':
+        return <IconPack className={className} size={24} />;
+      case 'build your own pack':
+        return <IconBundle className={className} size={24} />;
       case 'shop all':
         return <IconCow className={className} size={24} />;
       default:
@@ -125,7 +129,6 @@ export function HeaderMenu({
     <nav className={className + ' grid grid-cols-1 gap-7 mt-14'} role="navigation">
       {(mobileSideMenu || '').items.map((item, i) => {
         if (!item.url) return null;
-
         // if the url is internal, we strip the domain
         const url =
           item.url.includes('myshopify.com') ||
@@ -133,8 +136,10 @@ export function HeaderMenu({
           item.url.includes(primaryDomainUrl)
             ? new URL(item.url).pathname
             : item.url;
+
+            console.log(item.title, 'SADASD')
         return (
-          <div className={`grid grid-cols-1 ${item.items.length > 0 ? 'gap-7' : ''}`}>
+          <div key={i} className={`grid grid-cols-1 ${item.items.length > 0 ? 'gap-7' : ''}`}>
             <NavLink
               className={`header-menu-item font-bold text-2xl`}
               end
@@ -144,7 +149,10 @@ export function HeaderMenu({
               style={activeLinkStyle}
               to={url}
             >
-              {item.title}
+              <div className="flex flex-row">
+                {renderIcon(item.title)}
+                <span className='ml-2'>{item.title}</span>
+              </div>
             </NavLink>
             {item.items && (
               <div className='grid grid-cols-1 ml-5 gap-5'>
@@ -172,6 +180,7 @@ export function HeaderMenu({
 
       <div className='grid grid-cols-1 gap-5 mt-10 absolute bottom-5'>
 
+        <h2 className='text-xl font-bold'>Follow Us!</h2>
         <SocialsList
           data={header?.socials?.edges.map((edge) => {
             const node = edge.node;
