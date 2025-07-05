@@ -137,7 +137,7 @@ export function HeaderMenu({
             ? new URL(item.url).pathname
             : item.url;
 
-            console.log(item.title, 'SADASD')
+          
         return (
           <div key={i} className={`grid grid-cols-1 ${item.items.length > 0 ? 'gap-7' : ''}`}>
             <NavLink

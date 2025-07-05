@@ -89,7 +89,6 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 export default function Bundle() {
   const { smallProducts, bigProducts, bundleHandle, bundleProducts } = useLoaderData<LoaderData>();
   const currentBundle = bundleProducts.find(bundle => bundle.handle === bundleHandle);
-  console.log(bigProducts, 'currentBundleSad');
   return (
     <MixMatchProducts
       bigProducts={bigProducts}
