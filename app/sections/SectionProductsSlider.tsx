@@ -146,9 +146,11 @@ export function SectionProductsSlider(props: SectionProductsSliderFragment) {
           </ButtonPressable>
           
         </div>
+        {/* 
         <div>
           <p className='text-sm text-secondary-600'>25% Off With Code: <span className='font-bold'>JULY4</span></p>
         </div>
+        */}
       </div>
      </>
      
