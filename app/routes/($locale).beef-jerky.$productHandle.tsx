@@ -605,9 +605,11 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
             ))
           }
         </div>
+        {/* 
         <div>
           <p className='text-secondary-600'>Additional 25% Off With Code: <span className='font-bold'>JULY4</span></p>
         </div>
+        */}
         {selectedVariant && (
           <div className="items-stretch gap-4">
             <div 

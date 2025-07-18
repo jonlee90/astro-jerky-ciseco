@@ -257,10 +257,11 @@ const ProductCard: FC<ProductCardProps> = ({
                 {getProductIcon(product)} {/* Render the icon based on tags */}
               </span>
             )}
-            
+            {/* 
             <div className='mb-5 sm:mb-0'>
               <p className='text-sm text-secondary-600'>25% Off With Code: <span className='font-bold'>JULY4</span></p>
             </div>
+            */}
           </div>
         </div>
       </Link>

@@ -79,6 +79,7 @@ export function Sections({
       }}
     >
 
+      <HeroSlider key={0} />
       
       {sections?.references?.nodes.map((section, index, arr) => {
 
@@ -90,7 +91,6 @@ export function Sections({
                   <SectionHero {...section} key={section.id} />
                 </WrapSection>
                 
-                <HeroSlider key={0} />
               </>
             );
           case 'ciseco--section_hero_slider':
