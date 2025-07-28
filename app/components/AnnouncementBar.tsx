@@ -18,11 +18,11 @@ export function AnnouncementBar({
     <div
       role="region"
       aria-label="Announcement Bar"
-      className="flex items-center sticky shadow-lightHeader justify-center overflow-hidden bg-yellow-400 text-black h-16 z-[96] top-0"
+      className="flex items-center shadow-lightHeader justify-center overflow-hidden bg-logo-green text-white h-10 z-[96] top-0"
     >
       <div className="flex whitespace-nowrap sm-max:animate-marqueeLeft">
         {content.map((message, index) => (
-          index === 0 && <span key={index} className="px-10 font-bold uppercase text-base">
+          index === 0 && <span key={index} className="px-10 font-bold uppercase text-sm">
             {message}
           </span>
         ))}
@@ -32,21 +32,21 @@ export function AnnouncementBar({
         .map((message, index) => (
           <span
             key={`loop-${index + 1}`}
-            className="px-10 font-bold uppercase text-base md:hidden"
+            className="px-10 font-bold uppercase text-sm md:hidden"
             aria-hidden="true"
           >
             {message}
           </span>
         ))}
       </div>
-      {/* Close Button */}
+      {/* Close Button 
       <ButtonClose 
         onClick={() => {
           setVisible(false);
           setIsVisible(false);
         }}
         className="absolute right-2"
-      />
+      />*/}
     </div>
   );
 }

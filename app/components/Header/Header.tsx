@@ -63,10 +63,6 @@ export function Header({
         <MainNav openMenu={openMenu} openCart={openCart} isHome={isHome} />
       */}
       
-      <AnnouncementBar 
-        content={content}
-        setVisible={setAnnouncementBarVisible}
-      />
       <TopHeader 
             isLoggedIn={isLoggedIn}
             headerMenu={headerMenu}
@@ -75,6 +71,11 @@ export function Header({
             isBackButton={isBackButton} 
             isBundlePage={isBundlePage}
             isAnnouncementBarVisible={isAnnouncementBarVisible}
+      />
+      
+      <AnnouncementBar 
+        content={content}
+        setVisible={setAnnouncementBarVisible}
       />
           {isHydrated && (isBundlePage)  && (
               <>
@@ -180,7 +181,6 @@ export function HeaderMenu({
 
       <div className='grid grid-cols-1 gap-5 mt-10 absolute bottom-5'>
 
-        <h2 className='text-xl font-bold'>Follow Us!</h2>
         <SocialsList
           data={header?.socials?.edges.map((edge) => {
             const node = edge.node;

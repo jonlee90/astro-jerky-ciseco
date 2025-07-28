@@ -8,7 +8,7 @@ import { getUrlAndCheckIfExternal } from '~/lib/utils';
 import { useIsHydrated } from '~/hooks/useIsHydrated';
 import useWindowScroll from './useWindowScroll';
 import BackButton from './BackButton';
-import { IconMenuCircle } from '../Icon';
+import { IconMenuBacon } from '../Icon';
 import { useAside } from '../Aside';
 
 interface TopHeaderProps {
@@ -55,7 +55,7 @@ export const TopHeader = ({
       (
         <motion.header
           aria-label="Mobile Header"
-          className={`${isAnnouncementBarVisible ? 'top-16': 'top-0' }  sticky h-16 bg-contrast text-primary shadow-md flex items-center backdrop-blur-lg z-[95] justify-center w-full leading-none py-1 px-4 md:px-8`}
+          className={`top-0  sticky h-16 bg-contrast text-primary shadow-md flex items-center backdrop-blur-lg z-[95] justify-center w-full leading-none py-1 px-4 md:px-8`}
           initial={{ y: 0 }}
           transition={{ duration: 0.3 }}
           role="banner">
@@ -125,7 +125,7 @@ export const TopHeader = ({
                   className='header-menu-mobile-toggle reset'
                   onClick={() => open('mobile')}
                 >
-                  <IconMenuCircle className="size-12 cursor-pointer" />
+                  <IconMenuBacon className="size-12 cursor-pointer" />
                 </button>
               </div>
 

@@ -493,6 +493,19 @@ export function IconMenuCircle(props: IconProps) {
 
   );
 }
+export function IconMenuBacon(props: IconProps) {
+  return (
+    <svg width="48" height="48" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+      <path d="M5 10 C8 12, 12 8, 15 10 C18 12, 22 8, 25 10 C28 12, 32 8, 35 10" stroke="black" strokeWidth="4" strokeLinecap="round" fill="none"></path>
+      <path d="M5 20 C8 22, 12 18, 15 20 C18 22, 22 18, 25 20 C28 22, 32 18, 35 20" stroke="black" strokeWidth="4" strokeLinecap="round" fill="none"></path>
+      <path d="M5 30 C8 32, 12 28, 15 30 C18 32, 22 28, 25 30 C28 32, 32 28, 35 30" stroke="black" strokeWidth="4" strokeLinecap="round" fill="none"></path>
+      
+      </svg>
+
+
+  );
+}
 export function IconPlus({size = 'size-10 w-auto h-auto'}) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" className={size} viewBox="0 0 24 24" role="img">
