@@ -10,6 +10,7 @@ import {motion} from 'framer-motion';
 import {getThumbnailSkeletonByIndex} from './ThumbnailSkeletons';
 import ProductStatus from './ProductStatus';
 import {useMediaQuery} from 'react-responsive';
+import {useIsHydrated} from '~/hooks/useIsHydrated';
 import { useAside } from './Aside';
 import { useVariantUrl } from '~/lib/variants';
 import { IconSpicy, IconChicken, IconPepper, IconCow, IconHoney, IconPlus } from "./Icon";
@@ -96,7 +97,10 @@ const ProductCard: FC<ProductCardProps> = ({
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const isDesktop = useMediaQuery({minWidth: 767});
+  const isHydrated = useIsHydrated();
+  const mediaQueryDesktop = useMediaQuery({minWidth: 767});
+  // Use default value (true) during SSR to prevent hydration mismatch
+  const isDesktop = isHydrated ? mediaQueryDesktop : true;
 
   const intervalDuration = 2000; // 2 seconds per image
   const totalDuration = intervalDuration * productMedia.length; // Total duration for all images to display

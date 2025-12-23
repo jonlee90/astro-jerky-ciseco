@@ -39,7 +39,9 @@ export function Header({
   const [isAnnouncementBarVisible, setAnnouncementBarVisible] = useState(true);
   const isBackButton = isHydrated && (pathname.includes('/beef-jerky/') ? !!state : (pathname.includes('/bundle/') && true));
   const isBundlePage = isHydrated && !state && pathname.includes('/bundle/') && true;
-  const isDesktop = useMediaQuery({minWidth: 767});
+  const mediaQueryDesktop = useMediaQuery({minWidth: 767});
+  // Use default value (true) during SSR to prevent hydration mismatch
+  const isDesktop = isHydrated ? mediaQueryDesktop : true;
 
   const [opacity, setOpacity] = useState<number>(1);
   const prevScrollY = useRef<number>(0);
