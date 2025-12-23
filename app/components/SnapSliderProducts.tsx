@@ -1,5 +1,4 @@
-import {useRef} from 'react';
-import {Image} from '@shopify/hydrogen';
+import {useRef, useMemo} from 'react';
 import useSnapSlider from '~/hooks/useSnapSlider';
 import Heading from '~/components/Heading/Heading';
 import ProductCard, {ProductCardSkeleton} from '~/components/ProductCard';
@@ -9,8 +8,9 @@ import ProductCardLarge, {
 } from '~/components/ProductCardLarge';
 import clsx from 'clsx';
 import {type ProductFragment} from 'storefrontapi.generated';
-import NextPrev from './NextPrev/NextPrev';
 import NextPrevDesktop from './NextPrev/NextPrevDesktop';
+
+const SKELETON_COUNT = 5;
 
 export interface Props {
   heading_bold?: string | null;
@@ -42,11 +42,15 @@ export function SnapSliderProducts(props: Props) {
   const CardSkeleton =
     cardStyle === '2' ? ProductCardLargeSkeleton : ProductCardSkeleton;
 
-  const sortedProducts = products?.slice().sort((a, b) => {
-    const aAvailable = a.variants.nodes[0].availableForSale;
-    const bAvailable = b.variants.nodes[0].availableForSale;
-    return aAvailable === bAvailable ? 0 : aAvailable ? -1 : 1;
-  });
+  const sortedProducts = useMemo(
+    () =>
+      products?.slice().sort((a, b) => {
+        const aAvailable = a.variants?.nodes?.[0]?.availableForSale ?? false;
+        const bAvailable = b.variants?.nodes?.[0]?.availableForSale ?? false;
+        return aAvailable === bAvailable ? 0 : aAvailable ? -1 : 1;
+      }),
+    [products],
+  );
 
   return (
     <div 
@@ -69,7 +73,7 @@ export function SnapSliderProducts(props: Props) {
       >
         <div className="w-0 px-3"></div>
         {isSkeleton &&
-          [1, 1, 1, 1, 1].map((_, index) => (
+          Array.from({length: SKELETON_COUNT}, (_, index) => (
             <div
               key={index}
               className={clsx(
