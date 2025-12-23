@@ -109,8 +109,13 @@ export default async function handleRequest(
       'https://api.raygun.com',
       'https://www.google.com',
       'https://www.gstatic.com',
+      'https://*.run.app',
     ],
-    frameSrc: ['https://www.google.com', 'https://www.gstatic.com'],
+    frameSrc: [
+      'https://www.google.com',
+      'https://www.gstatic.com',
+      'https://*.googletagmanager.com',
+    ],
   });
   const body = await renderToReadableStream(
     <NonceProvider>
