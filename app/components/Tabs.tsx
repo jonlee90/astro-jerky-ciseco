@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
-import React from 'react';
 
 interface SwitchTabProps {
   isSmall: boolean;
@@ -13,16 +12,17 @@ interface SwitchTabProps {
 export function SwitchTab({
   isSmall,
   onToggle,
-  className,
+  className = '',
   bgColor = 'bg-neutral-900',
   width = 'w-24',
 }: SwitchTabProps) {
   const buttonStyle = 'py-1 items-center rounded-full disabled:opacity-50 disabled:pointer-events-none';
 
   return (
-    <div 
+    <div
       aria-label='Toggle button for Big bags and Small Bags'
-      className={`toggle-switch relative rounded-full w-48 grid-cols-2 text-base ${className}`}>
+      className={`toggle-switch relative rounded-full w-48 grid-cols-2 text-base ${className}`}
+    >
       <div className="absolute inset-0 flex">
         <motion.div
           className={clsx(bgColor, 'absolute top-0 bottom-0 rounded-full')}
@@ -35,6 +35,7 @@ export function SwitchTab({
         type="button"
         className={clsx(buttonStyle, !isSmall ? 'text-white' : '', width, 'relative z-10')}
         onClick={() => onToggle('big')}
+        aria-pressed={!isSmall}
       >
         Big bags
       </button>
@@ -42,6 +43,7 @@ export function SwitchTab({
         type="button"
         className={clsx(buttonStyle, isSmall ? 'text-white' : '', width, 'relative z-10')}
         onClick={() => onToggle('small')}
+        aria-pressed={isSmall}
       >
         Small bags
       </button>
@@ -61,17 +63,19 @@ export function FilterTab({
   data,
   onTabChange,
   activeTab,
-  className,
+  className = '',
   bgColor = 'bg-logo-yellow'
 }: FilterTabProps) {
   const buttonStyle = 'h-9 items-center text-center rounded-lg disabled:opacity-50 disabled:pointer-events-none w-full';
 
   return (
-    <div className={`toggle-switch max-w-lg rounded-lg text-base ${className}`}>
-      {data.map(({ label, value }, i) => (
+    <div className={`toggle-switch max-w-lg rounded-lg text-base ${className}`} role="tablist">
+      {data.map(({ label, value }) => (
         <button
           type="button"
-          key={i}
+          key={value}
+          role="tab"
+          aria-selected={value === activeTab}
           className={clsx(buttonStyle, value === activeTab ? `${bgColor} text-white` : '')}
           onClick={() => onTabChange(value)}
         >

@@ -1,6 +1,5 @@
-import React from 'react';
-import {type FetcherWithComponents} from '@remix-run/react';
-import {CartForm, type OptimisticCartLineInput} from '@shopify/hydrogen';
+import { type FetcherWithComponents } from '@remix-run/react';
+import { CartForm, type OptimisticCartLineInput } from '@shopify/hydrogen';
 import { ButtonPressable, type ButtonPressableProps } from './ButtonPressable';
 
 interface AddToCartPressableProps extends ButtonPressableProps {
@@ -9,21 +8,21 @@ interface AddToCartPressableProps extends ButtonPressableProps {
   analytics?: unknown;
 }
 
-export const AddToCartPressable = ({ 
+export const AddToCartPressable = ({
   children,
   onClick = () => {},
   bgColor = 'black',
   className = '',
   buttonClass = '',
   disabled = false,
-  size = 'size-10', // Default size
+  size = 'size-10',
   lines,
   discountCode = '',
   analytics,
 }: AddToCartPressableProps) => {
 
   return (
-    <CartForm route="/cart" inputs={{lines, discountCode}} action={CartForm.ACTIONS.LinesAdd}>
+    <CartForm route="/cart" inputs={{ lines, discountCode }} action={CartForm.ACTIONS.LinesAdd}>
       {(fetcher: FetcherWithComponents<any>) => (
         <>
           <input
@@ -33,13 +32,13 @@ export const AddToCartPressable = ({
           />
           <ButtonPressable
             onClick={onClick}
-            className={className + ' rounded-full border-black border '}
-            buttonClass = ''
+            className={`${className} rounded-full border-black border`}
+            buttonClass=""
             bgColor={bgColor}
             size={size}
             type="submit"
-            disabled={disabled ?? fetcher.state !== 'idle'}
-            aria-label={`Add item to cart`}
+            disabled={disabled || fetcher.state !== 'idle'}
+            aria-label="Add item to cart"
           >
             {children}
           </ButtonPressable>

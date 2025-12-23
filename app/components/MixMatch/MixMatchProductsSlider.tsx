@@ -1,11 +1,11 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef } from 'react';
 import { MixMatchProductCard } from './MixMatchProductCard';
-import { motion } from 'framer-motion';
-import NextPrevDesktop  from '../NextPrev/NextPrevDesktop';
+import NextPrevDesktop from '../NextPrev/NextPrevDesktop';
 import useSnapSlider from '~/hooks/useSnapSlider';
 
 interface Product {
   id: string;
+  product_id?: string;
   availableForSale: boolean;
   image: any;
   handle: string;
@@ -15,6 +15,11 @@ interface Product {
   description: string;
   media: any[];
   size: string;
+  okendoStarRatingSnippet?: any;
+  flavor_level?: { value: string };
+  heat_level?: { value: string };
+  sweetness_level?: { value: string };
+  dryness_level?: { value: string };
 }
 
 interface BundlePack {
@@ -28,11 +33,11 @@ interface BundlePack {
   description: string;
   media: any[];
   size: string;
-  flavor_level: string;
+  flavor_level?: { value: string };
   price: string;
   compareAtPrice: string;
-  small_bag_quantity: any;
-  big_bag_quantity: any;
+  small_bag_quantity: number;
+  big_bag_quantity: number;
 }
 
 interface MixMatchProductsSliderProps {
@@ -54,37 +59,38 @@ export function MixMatchProductsSlider({
   clickButton,
   currentBundle,
 }: MixMatchProductsSliderProps) {
-  const sortedProducts = products?.slice().sort((a, b) => {
-    const aAvailable = a.availableForSale;
-    const bAvailable = b.availableForSale;
-    return aAvailable === bAvailable ? 0 : aAvailable ? -1 : 1;
+  const sortedProducts = products.slice().sort((a, b) => {
+    if (a.availableForSale === b.availableForSale) {
+      return 0;
+    }
+    return a.availableForSale ? -1 : 1;
   });
 
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  const {scrollToNextSlide, scrollToPrevSlide} = useSnapSlider({sliderRef});
+  const { scrollToNextSlide, scrollToPrevSlide } = useSnapSlider({ sliderRef });
 
   return (
-    <section 
+    <section
       className='mb-10 relative'
       aria-labelledby={`slider-title-${title.replace(/\s+/g, '-').toLowerCase()}`}
     >
-      <h2 
+      <h2
         id={`slider-title-${title.replace(/\s+/g, '-').toLowerCase()}`}
         className='text-xl md:text-2xl font-semibold px-5'
       >
         {title}
       </h2>
-      <div 
+      <div
         ref={sliderRef}
         className="relative w-full flex px-5 gap-4 lg:gap-8 snap-x snap-mandatory overflow-x-auto scroll-p-l-container hiddenScrollbar"
         role="list"
         aria-label={`Product slider for ${title}`}
-        tabIndex={0} // Makes the scrollable area keyboard focusable
+        tabIndex={0}
       >
         {sortedProducts.map((product, i) => (
           <MixMatchProductCard
-            key={product.id || i}
+            key={product.id}
             product={product}
             bigBags={bigBags}
             isSmall={isSmall}

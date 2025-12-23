@@ -1,18 +1,17 @@
-import React from 'react';
 import clsx from 'clsx';
-import { flattenConnection, Image, Money, useMoney } from '@shopify/hydrogen';
-import ProductSoldOut  from '../ProductSoldOut';
+import { Image } from '@shopify/hydrogen';
+import ProductSoldOut from '../ProductSoldOut';
 import { getProductPlaceholder } from '~/lib/placeholders';
 import { motion } from 'framer-motion';
-import { getProductIcon } from '../ProductCard';
-import ProductLevelIndicator from '../ProductLevelIndicator';
 import { getProductCategory } from '../ProductCard';
+import ProductLevelIndicator from '../ProductLevelIndicator';
 import { IconMinus, IconPlus } from '../Icon';
 import { ButtonPressable } from '../Button/ButtonPressable';
 import { OkendoStarRating } from '@okendo/shopify-hydrogen';
 
 interface Product {
   id: string;
+  product_id?: string;
   availableForSale: boolean;
   image: any;
   handle: string;
@@ -22,6 +21,11 @@ interface Product {
   description: string;
   media: any[];
   size: string;
+  okendoStarRatingSnippet?: any;
+  flavor_level?: { value: string };
+  heat_level?: { value: string };
+  sweetness_level?: { value: string };
+  dryness_level?: { value: string };
 }
 
 interface BundlePack {
@@ -35,11 +39,11 @@ interface BundlePack {
   description: string;
   media: any[];
   size: string;
-  flavor_level: string;
+  flavor_level?: { value: string };
   price: string;
   compareAtPrice: string;
-  small_bag_quantity: any;
-  big_bag_quantity: any;
+  small_bag_quantity: number;
+  big_bag_quantity: number;
 }
 
 interface MixMatchProductCardProps {
@@ -70,25 +74,28 @@ export function MixMatchProductCard({
   const sumBags = productsArr.reduce((acc, o) => acc + o.quantity, 0);
   const isAvailable = cardProduct.availableForSale;
 
-  const negativeButtonProps = quantity > 0 && isAvailable ? {
+  const canRemove = quantity > 0 && isAvailable;
+  const canAdd = sumBags < currentQuantity && isAvailable;
+
+  const negativeButtonProps = canRemove ? {
     onClick: () => clickButton(cardProduct, false, isSmall),
     'aria-label': `Remove one ${cardProduct.title} from the bundle`,
-    className: 'border border-black'
-  } : { 
+    className: 'border border-black',
+    disabled: false
+  } : {
     className: "cursor-not-allowed opacity-50",
     disabled: true,
-    'aria-disabled': true,
     'aria-label': `Cannot remove ${cardProduct.title}, none added yet.`
-   };
+  };
 
-  const plusButtonProps = sumBags < currentQuantity && isAvailable ? {
+  const plusButtonProps = canAdd ? {
     onClick: () => clickButton(cardProduct, true, isSmall),
     'aria-label': `Add one ${cardProduct.title} to the bundle`,
-    className: 'border border-black'
-  } : { 
+    className: 'border border-black',
+    disabled: false
+  } : {
     className: "cursor-not-allowed opacity-50",
     disabled: true,
-    'aria-disabled': true,
     'aria-label': `Cannot add more ${cardProduct.title}, limit reached.`,
   };
 
@@ -116,8 +123,8 @@ export function MixMatchProductCard({
         </div>
         <div>
           <div className='flex flex-row justify-between text-gray-600 text-base'>
-            <h2 className="italic">{getProductCategory(product)}</h2>
-            <p className=''>{cardProduct.size}</p>
+            <p className="italic">{getProductCategory(product)}</p>
+            <p>{cardProduct.size}</p>
           </div>
           <h2
             id={`card-title-${cardProduct.id}`}
@@ -127,36 +134,34 @@ export function MixMatchProductCard({
           </h2>
           <div className='text-center'>
             <OkendoStarRating
-              productId={cardProduct?.product_id || ''}
-              okendoStarRatingSnippet={cardProduct?.okendoStarRatingSnippet}
-            /> 
+              productId={cardProduct.product_id || ''}
+              okendoStarRatingSnippet={cardProduct.okendoStarRatingSnippet}
+            />
           </div>
         </div>
-        <div className=''>
-          <ProductLevelIndicator product={product} size={25} levelClass={'h-1 w-3 mr-1'} labelClass='text-sm' /> {/* Render the icon based on tags */}
+        <div>
+          <ProductLevelIndicator product={product} size={25} levelClass={'h-1 w-3 mr-1'} labelClass='text-sm' />
         </div>
         <div className="grid">
           <div className="flex gap-8 justify-between items-center">
-            <ButtonPressable 
+            <ButtonPressable
               {...negativeButtonProps}
               bgColor='white'
               size='size-10'
-              aria-live="polite"
             >
-              <IconMinus/>
+              <IconMinus />
             </ButtonPressable>
-            <span 
+            <span
               id={`quantity-${cardProduct.id}`}
               className="text-xl"
               aria-live="polite"
             >
               {quantity}
             </span>
-            <ButtonPressable 
+            <ButtonPressable
               {...plusButtonProps}
               bgColor='white'
               size='size-10'
-              aria-live="polite"
             >
               <IconPlus />
             </ButtonPressable>

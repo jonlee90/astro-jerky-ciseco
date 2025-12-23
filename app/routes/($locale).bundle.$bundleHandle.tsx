@@ -1,25 +1,53 @@
-import { json, LoaderFunctionArgs, MetaArgs } from '@shopify/remix-oxygen';
+import { LoaderFunctionArgs, MetaArgs } from '@shopify/remix-oxygen';
 import { useLoaderData } from '@remix-run/react';
 import { flattenConnection, getSeoMeta } from '@shopify/hydrogen';
 import { MixMatchProducts } from '~/components/MixMatch/MixMatchProducts';
 import { PRODUCT_MIX_FRAGMENT } from '~/data/fragments';
-import { ProductMixFragment } from 'storefrontapi.generated';
 import { seoPayload } from '~/lib/seo.server';
 
 import type {
   MixAllProductsQuery,
+  ProductMixFragment,
 } from 'storefrontapi.generated';
+
+interface MixMatchProduct {
+  id: string;
+  product_id: string;
+  availableForSale: boolean;
+  image: ProductMixFragment['variants']['nodes'][0]['image'];
+  handle: string;
+  quantity: number;
+  title: string;
+  tags: string[];
+  description: string;
+  media: any[];
+  size: string;
+  flavor_level?: { value: string };
+  heat_level?: { value: string };
+  sweetness_level?: { value: string };
+  dryness_level?: { value: string };
+  small_bag_quantity: number;
+  big_bag_quantity: number;
+  price: string;
+  compareAtPrice: string;
+  okendoStarRatingSnippet?: any;
+}
 
 interface LoaderData {
   bundleHandle: string;
-  smallProducts: ProductMixFragment[];
-  bigProducts: ProductMixFragment[];
-  bundleProducts: MixAllProductsQuery[];
+  smallProducts: MixMatchProduct[];
+  bigProducts: MixMatchProduct[];
+  bundleProducts: MixMatchProduct[];
 }
 
 export async function loader({ params, request, context: { storefront } }: LoaderFunctionArgs) {
   const { bundleHandle } = params;
-  const { products } = await storefront.query(API_ALL_PRODUCTS_QUERY, {
+
+  if (!bundleHandle) {
+    throw new Response('Bundle handle is required', { status: 400 });
+  }
+
+  const { products } = await storefront.query<MixAllProductsQuery>(API_ALL_PRODUCTS_QUERY, {
     variables: {
       count: 25,
       sortKey: "BEST_SELLING",
@@ -30,13 +58,19 @@ export async function loader({ params, request, context: { storefront } }: Loade
   });
 
   const flattenedProducts = flattenConnection(products);
-  const smallProducts: MixAllProductsQuery[] = [];
-  const bigProducts: MixAllProductsQuery[] = [];
-  const bundleProducts: MixAllProductsQuery[] = [];
-  flattenedProducts.map((product: any) => {
-    flattenConnection(product.variants).map((variant: any) => {
-      const size = variant.selectedOptions[0].value;
-      const prod: MixAllProductsQuery = {
+  const smallProducts: MixMatchProduct[] = [];
+  const bigProducts: MixMatchProduct[] = [];
+  const bundleProducts: MixMatchProduct[] = [];
+
+  flattenedProducts.forEach((product) => {
+    const variants = flattenConnection(product.variants);
+
+    variants.forEach((variant) => {
+      const sizeOption = variant.selectedOptions[0];
+      if (!sizeOption) return;
+
+      const size = sizeOption.value;
+      const prod: MixMatchProduct = {
         id: variant.id,
         product_id: product.id,
         availableForSale: variant.availableForSale,
@@ -52,27 +86,30 @@ export async function loader({ params, request, context: { storefront } }: Loade
         heat_level: product.heat_level,
         sweetness_level: product.sweetness_level,
         dryness_level: product.dryness_level,
-        small_bag_quantity: product.small_bag_quantity ? parseInt(product.small_bag_quantity.value) : 0,
-        big_bag_quantity: product.big_bag_quantity ? parseInt(product.big_bag_quantity.value) : 0,
+        small_bag_quantity: product.small_bag_quantity ? parseInt(product.small_bag_quantity.value, 10) : 0,
+        big_bag_quantity: product.big_bag_quantity ? parseInt(product.big_bag_quantity.value, 10) : 0,
         price: product.priceRange.minVariantPrice.amount,
         compareAtPrice: product.compareAtPriceRange.minVariantPrice.amount,
         okendoStarRatingSnippet: product.okendoStarRatingSnippet
-      }
+      };
+
       if (size === '3oz') {
         bigProducts.push(prod);
       } else if (size === '2oz') {
         smallProducts.push(prod);
-      }else if (bundleHandle === variant.product.handle){
+      }
+
+      if (bundleHandle === variant.product.handle) {
         bundleProducts.push(prod);
       }
     });
   });
 
-   const seo = seoPayload.bundle({
+  const seo = seoPayload.bundle({
     bundleHandle,
     url: request.url,
   });
-  
+
   return {
     bundleHandle,
     smallProducts,
@@ -87,8 +124,13 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 };
 
 export default function Bundle() {
-  const { smallProducts, bigProducts, bundleHandle, bundleProducts } = useLoaderData<LoaderData>();
+  const { smallProducts, bigProducts, bundleHandle, bundleProducts } = useLoaderData<typeof loader>();
   const currentBundle = bundleProducts.find(bundle => bundle.handle === bundleHandle);
+
+  if (!currentBundle) {
+    throw new Response('Bundle not found', { status: 404 });
+  }
+
   return (
     <MixMatchProducts
       bigProducts={bigProducts}
