@@ -80,7 +80,10 @@ const ProductCard: FC<ProductCardProps> = ({
     product.handle,
     firstVariant.selectedOptions,
   );
-  const productMedia = flattenConnection(cardProduct.images);
+  const productMedia = flattenConnection(cardProduct.images).filter(
+    (img) => img && img.url
+  );
+  if (productMedia.length === 0) return null;
   const {selectedOptions} = firstVariant;
   const isAvailable = firstVariant.availableForSale;
 
@@ -162,7 +165,10 @@ const ProductCard: FC<ProductCardProps> = ({
         <div className={clsx('grid gap-4', className)}>
           <motion.div
             ref={cardRef}
-            className={"card-image pb-1 rounded-2xl " + imageAspectRatio}
+            className={clsx(
+              "card-image relative rounded-2xl overflow-hidden bg-gray-100",
+              imageAspectRatio
+            )}
             role="img"
             aria-label={product.title}
             onMouseEnter={() => {
@@ -178,15 +184,25 @@ const ProductCard: FC<ProductCardProps> = ({
               }
             }}
           >
-            <motion.img
-              className={`object-cover w-full absolute`}
-              src={productMedia[currentImageIndex].url}
+            <motion.div
+              className="absolute inset-0"
               key={productMedia[currentImageIndex].url}
-              alt={productMedia[currentImageIndex].altText || 'Product image'}
               initial={{opacity: 0}}
               animate={{opacity: 1}}
               transition={{duration: 0.5}}
-            />
+            >
+              <Image
+                className="object-cover object-center w-full h-full"
+                data={{
+                  url: productMedia[currentImageIndex].url,
+                  altText: productMedia[currentImageIndex].altText || product.title,
+                  width: productMedia[currentImageIndex].width,
+                  height: productMedia[currentImageIndex].height,
+                }}
+                sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                loading={loading}
+              />
+            </motion.div>
             {!isAvailable && (
               <ProductSoldOut/>
             )}
