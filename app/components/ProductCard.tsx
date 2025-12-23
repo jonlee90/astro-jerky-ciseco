@@ -1,26 +1,20 @@
 import clsx from 'clsx';
 import {type FC} from 'react';
 import {useState, useEffect, useRef} from 'react';
-import {flattenConnection, Image, Money, useMoney} from '@shopify/hydrogen';
-import ButtonSecondary from './Button/ButtonSecondary';
+import {flattenConnection, Image} from '@shopify/hydrogen';
 import {type ProductFragment} from 'storefrontapi.generated';
-import {useGetPublicStoreCdnStaticUrlFromRootLoaderData} from '~/hooks/useGetPublicStoreCdnStaticUrlFromRootLoaderData';
-import {AddToCartButton} from './Button/AddToCartButton';
 import {Link} from './Link';
 import Prices from './Prices';
-import {isDiscounted, isNewArrival} from '~/lib/utils';
 import {getProductPlaceholder} from '~/lib/placeholders';
-import {motion, useAnimationControls} from 'framer-motion';
+import {motion} from 'framer-motion';
 import {getThumbnailSkeletonByIndex} from './ThumbnailSkeletons';
 import ProductStatus from './ProductStatus';
 import {useMediaQuery} from 'react-responsive';
 import { useAside } from './Aside';
 import { useVariantUrl } from '~/lib/variants';
-import { IconSpicy, IconBbq, IconChicken, IconPepper, IconCow, IconHoney, IconPlus } from "./Icon";
+import { IconSpicy, IconChicken, IconPepper, IconCow, IconHoney, IconPlus } from "./Icon";
 import {OkendoStarRating} from '@okendo/shopify-hydrogen';
 import ProductSoldOut from './ProductSoldOut';
-import ProductLevelIndicator from './ProductLevelIndicator';
-import { ButtonPressable } from './Button/ButtonPressable';
 import { AddToCartPressable } from './Button/AddToCartPressableButton';
 
 
@@ -241,7 +235,7 @@ const ProductCard: FC<ProductCardProps> = ({
                 </div>
               <div>
                 <h2 id={`product-title-${product.handle}`} className="w-full uppercase font-bold text-xl">
-                  {product.title.replace(/beef jerky/gi, "")}
+                  {product.title.replace(/beef jerky/gi, '')}
                 </h2>
               </div>
               <div className='flex'>
@@ -251,11 +245,6 @@ const ProductCard: FC<ProductCardProps> = ({
                 /> 
               
               </div>
-            {false && (
-              <div className='px-2'>
-                <ProductLevelIndicator product={product} size={25} /> {/* Render the icon based on tags */}
-              </div>
-            )}
             <div>
                 <Prices
                 contentClass="justify-start"
@@ -306,7 +295,7 @@ const ProductCard: FC<ProductCardProps> = ({
     </motion.div>
   );
 }
-export const getProductIcon = (product: any, size = 30, className = '') => {
+export const getProductIcon = (product: ProductFragment, size = 30, className = '') => {
   const { tags, flavor_level, handle} = product;
   const tagsString = tags.join(' ');
   const count = flavor_level ? parseInt(flavor_level.value) : 1;
@@ -321,8 +310,8 @@ export const getProductIcon = (product: any, size = 30, className = '') => {
   return Array.from({ length: count }, (_, index) => getIconComponent(index));
 };
 
-export const getProductCategory = (product: any) => {
-  const { tags, flavor_level, handle, size = 30 } = product;
+export const getProductCategory = (product: ProductFragment) => {
+  const { tags, flavor_level, handle } = product;
   const tagsString = tags.join(' ');
   const count = flavor_level ? parseInt(flavor_level.value) : 1;
 
@@ -450,11 +439,11 @@ export const getProductStatus = ({
   }
   
 
-  if (tags?.includes('best_sellers') && size == '3oz') {
+  if (tags?.includes('best_sellers') && size === '3oz') {
     return 'Best Seller';
   }
-      
-  if (tags?.includes('label:3-for-33') && size == '3oz') {
+
+  if (tags?.includes('label:3-for-33') && size === '3oz') {
     return '3 FOR $33';
   }
 /*

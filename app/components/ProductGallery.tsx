@@ -3,8 +3,7 @@ import type {MediaFragment} from 'storefrontapi.generated';
 import {useEffect, useState} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import ButtonClose from './ButtonClose';
-import clsx from 'clsx';
-import {MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassPlusIcon, ViewfinderCircleIcon} from '@heroicons/react/24/outline';
+import {MagnifyingGlassIcon} from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
 
 /**
@@ -50,27 +49,26 @@ export function ProductGallery({
             <div
               className={`lg:col-span-1 snap-center card-image w-[calc(100vw_-_2rem)] sm:w-[calc(80vw_-_2rem)] lg:w-full cursor-pointer relative group bg-gray-100 rounded-2xl`}
               key={med.id || image?.id}
-              aria-hidden
             >
               <motion.button
-                className="bg-white absolute z-10 bottom-5 right-5 size-10 variant-button flex text-center justify-center group-hover:opacity-100 transition-opacity"
+                className="bg-white absolute z-10 bottom-5 right-5 size-10 variant-button flex items-center text-center justify-center group-hover:opacity-100 transition-opacity"
                 type="button"
                 onClick={() => {
                   setOpenModal(true);
                   setActiveIndex(i);
                 }}
                 whileTap={{
-                  boxShadow: "none", // Removes box-shadow
-                  translateX: "1px", // Moves 1px to the right
-                  translateY: "1px", // Moves 1px down
-                  backgroundPosition: "left", // Changes background position to left
+                  boxShadow: "none",
+                  translateX: "1px",
+                  translateY: "1px",
+                  backgroundPosition: "left",
                   transition: {
-                    duration: 0.05, // Applies a short transition
+                    duration: 0.05,
                   },
                 }}
+                aria-label={`View image ${i + 1} in full screen`}
               >
-                <span className="sr-only">View image</span>
-                <MagnifyingGlassIcon className="mx-auto w-5 h-5" />
+                <MagnifyingGlassIcon className="mx-auto w-5 h-5" aria-hidden="true" />
               </motion.button>
 
               <Image
@@ -85,12 +83,13 @@ export function ProductGallery({
         })}
       </div>
 
-      <div className="">
+      <div>
         <Transition show={isOpenModal} as={'div'}>
           <Dialog
             as="div"
             className="fixed inset-0 z-100 overflow-y-auto"
             onClose={closeModal}
+            aria-labelledby="image-gallery-dialog"
           >
             <>
               <Transition.Child
@@ -140,11 +139,11 @@ function ModalImageGallery({
   indexActive: number;
 }) {
   useEffect(() => {
-    if (!indexActive) return;
+    if (indexActive === 0) return;
     const image = document.getElementById('image' + indexActive);
     if (image) {
       image.scrollIntoView({
-        behavior: 'instant',
+        behavior: 'instant' as ScrollBehavior,
         block: 'start',
         inline: 'nearest',
       });

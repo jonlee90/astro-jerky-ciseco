@@ -1,12 +1,10 @@
 import React, { Suspense, useMemo  } from 'react';
 import { useIsHydrated } from '~/hooks/useIsHydrated';
-import { Link, useRouteLoaderData } from '@remix-run/react';
+import { Link, useRouteLoaderData, Await } from '@remix-run/react';
 import { motion } from 'framer-motion';
-import { useLoaderData, Await } from '@remix-run/react';
 import { IconCart } from './Icon';
 import { useAside } from './Aside';
 import { RootLoader } from '~/root';
-import { useMediaQuery } from 'react-responsive';
 import { useAnalytics } from '@shopify/hydrogen';
 import { ButtonPressable } from './Button/ButtonPressable';
 
@@ -63,7 +61,6 @@ const Badge: React.FC<BadgeProps> = ({ openCart, count }) => {
 export const CartCount: React.FC<CartCountProps> = ({ className = '', opacity, showCart = false, is3D = true}) => {
   const rootData = useRouteLoaderData<RootLoader>('root');
   const {publish} = useAnalytics();
-//  const isMobile = useMediaQuery({maxWidth: 767});
   const {open} = useAside();
 
   return (

@@ -1,8 +1,6 @@
-import {motion} from 'framer-motion';
-import React, {useRef} from 'react';
+import React from 'react';
 import {type FetcherWithComponents} from '@remix-run/react';
 import {CartForm, type OptimisticCartLineInput} from '@shopify/hydrogen';
-import {Link} from '../Link';
 import { ButtonPressable, type ButtonPressableProps } from './ButtonPressable';
 
 interface AddToCartPressableProps extends ButtonPressableProps {

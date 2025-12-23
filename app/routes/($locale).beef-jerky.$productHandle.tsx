@@ -1,4 +1,4 @@
-import {useRef, Suspense, useState, useEffect, Fragment} from 'react';
+import {useRef, Suspense, useState, useEffect, Fragment, type RefObject} from 'react';
 import {
   defer,
   type MetaArgs,
@@ -39,7 +39,7 @@ import { IconX } from '~/components/Icon';
 import { IconPinterest } from '~/components/Icon';
 import { convertToNumber } from '~/lib/utils';
 import { useAside } from '~/components/Aside';
-import LoadingScreen from '../components/LoadingScreen';
+import LoadingScreen from '~/components/LoadingScreen';
 import { Popover, Transition } from '@headlessui/react';
 import { CartCount } from '~/components/CartCount';
 import { useIsHydrated } from '~/hooks/useIsHydrated';
@@ -189,7 +189,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 };
 
 export default function Product() {
-  const {product, recommended, variants, routePromise} =
+  const {product, recommended, routePromise} =
     useLoaderData<typeof loader>();
   const {media, descriptionHtml, tags} =
     product;
@@ -202,7 +202,7 @@ export default function Product() {
   const addToCartButtonRef = useRef<HTMLDivElement>(null); 
 
   const [currentQuantity, setCurrentQuantity] = useState(isPack ? 1 : 3);
-  const selectedVariant = useOptimisticVariant(product.selectedVariant, variants);
+  const selectedVariant = useOptimisticVariant(product.selectedVariant, product.variants.nodes);
   const isHydrated = useIsHydrated();
   const isOutOfStock = !selectedVariant?.availableForSale;
 
@@ -215,7 +215,7 @@ export default function Product() {
   const remainingItems = currentQuantity % setQuantity;
   //variantPrice *= currentQuantity;
   // Buy 3 for $33 discount logic
-  if(selectedVariant.title == '3oz') {
+  if(selectedVariant.title === '3oz') {
     setPrice = 33;
     discountAmount = (sets * setQuantity * variantPrice - sets * setPrice);
     variantPrice = (sets * setPrice) + (remainingItems * variantPrice);
@@ -226,7 +226,7 @@ export default function Product() {
     currencyCode: "USD"
   };
   const selectedVariantCompareAtPrice = {
-    amount: selectedVariant?.compareAtPrice?.amount ? convertToNumber(selectedVariant.compareAtPrice.amount, currentQuantity) : 0,
+    amount: selectedVariant?.compareAtPrice?.amount ? convertToNumber(selectedVariant.compareAtPrice.amount, currentQuantity) : '0',
     currencyCode: "USD"
   };
 
@@ -244,13 +244,13 @@ export default function Product() {
       }
     }
   };
-  
+
     // Add scroll event listener
     useEffect(() => {
       window.addEventListener('scroll', handleScroll);
       // Cleanup on unmount
       return () => window.removeEventListener('scroll', handleScroll);
-    }, [showBottomAddToCartButton]);
+    }, []); // Empty dependency array to avoid infinite loop
 
 if(!isHydrated) {
   return <LoadingScreen isLoading={true} />; // Avoid mismatches during hydration
@@ -486,7 +486,16 @@ if(!isHydrated) {
   );
 }
 
-export function ProductForm({product, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity, addToCartButtonRef }) {
+interface ProductFormProps {
+  product: ProductQuery['product'];
+  currentQuantity: number;
+  selectedVariantPrice: {amount: string; currencyCode: string};
+  selectedVariantCompareAtPrice: {amount: number | string; currencyCode: string};
+  setCurrentQuantity: (quantity: number) => void;
+  addToCartButtonRef: React.RefObject<HTMLDivElement>;
+}
+
+export function ProductForm({product, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity, addToCartButtonRef }: ProductFormProps) {
 
 
   const { pathname } = useLocation();
@@ -636,7 +645,16 @@ export function ProductForm({product, currentQuantity, selectedVariantPrice, sel
     </>
   );
 }
-const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity, isBackButton }) => {
+interface BottomAddToCartButtonProps {
+  selectedVariant: ProductQuery['product']['selectedVariant'];
+  currentQuantity: number;
+  selectedVariantPrice: {amount: string; currencyCode: string};
+  selectedVariantCompareAtPrice: {amount: number | string; currencyCode: string};
+  setCurrentQuantity: (quantity: number) => void;
+  isBackButton: boolean;
+}
+
+const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, setCurrentQuantity, isBackButton }: BottomAddToCartButtonProps) => {
   const variantsByQuantity = [];
   const isOutOfStock = !selectedVariant?.availableForSale;
 
@@ -651,17 +669,17 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
   if (!selectedVariant) {
     return null;
   }
-  const [activeItem, setActiveItem] = useState(variantsByQuantity?.find((item) => item.quantity == currentQuantity));
+  const [activeItem, setActiveItem] = useState(variantsByQuantity?.find((item) => item.quantity === currentQuantity));
 
   // Update `activeItem` whenever `currentQuantity` changes
   useEffect(() => {
     const foundItem = variantsByQuantity.find(
       (item) => item.quantity === currentQuantity
     );
-    if(foundItem != activeItem) {
+    if(foundItem !== activeItem) {
       setActiveItem(foundItem);
     }
-  }, [currentQuantity]);
+  }, [currentQuantity, activeItem, variantsByQuantity]);
 
   return (
     <div 
@@ -745,9 +763,19 @@ const BottomAddToCartButton = ({ selectedVariant, currentQuantity, selectedVaria
   );
 };
 
-const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, isOutOfStock, isSmallButton = true, isBackButton = true}) => {
+interface AddToCartButton3dProps {
+  selectedVariant: ProductQuery['product']['selectedVariant'];
+  currentQuantity: number;
+  selectedVariantPrice: {amount: string; currencyCode: string};
+  selectedVariantCompareAtPrice: {amount: number | string; currencyCode: string};
+  isOutOfStock: boolean;
+  isSmallButton?: boolean;
+  isBackButton?: boolean;
+}
+
+const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPrice, selectedVariantCompareAtPrice, isOutOfStock, isSmallButton = true, isBackButton = true}: AddToCartButton3dProps) => {
   const {open} = useAside();
-  const isPack = selectedVariant.product.title.includes('The Classic Pack');
+  const isPack = selectedVariant?.product?.title?.includes('The Classic Pack') ?? false;
   return (
     <div className='col-span-4 flex flex-row gap-3 items-center'>
         <div className={`text-base border-black border w-full`}>
@@ -807,7 +835,11 @@ const AddToCartButton3d = ({selectedVariant, currentQuantity, selectedVariantPri
   )
 }
 
-const SocialSharing = ({selectedVariant}: {selectedVariant: any}) => {
+interface SocialSharingProps {
+  selectedVariant: NonNullable<ProductQuery['product']['selectedVariant']>;
+}
+
+const SocialSharing = ({selectedVariant}: SocialSharingProps) => {
   const location = useLocation();
   const currentUrl = `${location.pathname}${location.search}${location.hash}`;
 

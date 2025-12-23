@@ -35,7 +35,7 @@ const Prices: FC<PricesProps> = ({
             data={price}
           />
         ) : null}
-        {compareAtPrice && price && compareAtPrice.amount != price.amount ? (
+        {compareAtPrice && price && compareAtPrice.amount !== price.amount ? (
           <s className={`ms-1 ${compareAtPriceClass}`}>
             <Money
               withoutTrailingZeros={withoutTrailingZeros}

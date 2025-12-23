@@ -1,5 +1,4 @@
 import { AnimatePresence, motion } from "framer-motion";
-import astroLogo from '@/assets/images/astro-logo.png';
 
 interface LoadingScreenProps {
   isLoading: boolean;

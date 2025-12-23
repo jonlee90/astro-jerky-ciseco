@@ -40,7 +40,18 @@ const LevelIndicator: React.FC<LevelIndicatorProps> = ({
   );
 };
 
-const ProductLevelIndicator: React.FC<{ product: any }> = ({ product, size, levelClass, labelClass }) => {
+interface ProductLevelIndicatorProps {
+  product: {
+    dryness_level?: {value: string};
+    sweetness_level?: {value: string};
+    heat_level?: {value: string};
+  };
+  size?: number;
+  levelClass?: string;
+  labelClass?: string;
+}
+
+const ProductLevelIndicator: React.FC<ProductLevelIndicatorProps> = ({ product, size, levelClass, labelClass }) => {
   const { dryness_level, sweetness_level, heat_level } = product;
   const drynessLevel = dryness_level ? parseInt(dryness_level.value, 10) : 0;
   const sweetnessLevel = sweetness_level ? parseInt(sweetness_level.value, 10) : 0;
