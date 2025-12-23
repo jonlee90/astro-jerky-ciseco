@@ -18,6 +18,7 @@ export default async function handleRequest(
     },
     scriptSrc: [
       "'self'",
+      "'unsafe-inline'",
       ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
       'https://cdn.shopify.com',
       'https://d3hw6dc1ow8pp2.cloudfront.net',
